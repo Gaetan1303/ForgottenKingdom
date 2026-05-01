@@ -1,0 +1,89 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/ui/pnj_manager.gd" id="1_pnj_manager"]
+
+[node name="PNJManager" type="VBoxContainer"]
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource("1_pnj_manager")
+
+[node name="Header" type="PanelContainer" parent="."]
+layout_mode = 2
+
+[node name="Title" type="Label" parent="Header"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 40)
+text = "PNJ Manager - Planification"
+
+[node name="Body" type="VBoxContainer" parent="."]
+layout_mode = 2
+size_flags_vertical = 3
+size_flags_horizontal = 3
+
+[node name="RosterScroll" type="ScrollContainer" parent="Body"]
+layout_mode = 2
+size_flags_vertical = 3
+size_flags_horizontal = 3
+
+[node name="RosterList" type="VBoxContainer" parent="Body/RosterScroll"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 260)
+
+[node name="PlanningSummary" type="PanelContainer" parent="Body"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 160)
+
+[node name="PlanVBox" type="VBoxContainer" parent="Body/PlanningSummary"]
+layout_mode = 2
+
+[node name="PlanHeader" type="Label" parent="Body/PlanningSummary/PlanVBox"]
+layout_mode = 2
+text = "Planification"
+
+[node name="PlanList" type="VBoxContainer" parent="Body/PlanningSummary/PlanVBox"]
+layout_mode = 2
+
+[node name="Footer" type="HBoxContainer" parent="."]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 56)
+
+[node name="Status" type="Label" parent="Footer"]
+layout_mode = 2
+text = "Pret"
+
+[node name="Spacer" type="Control" parent="Footer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="TaskSelector" type="OptionButton" parent="Footer"]
+layout_mode = 2
+
+[node name="SoldierCount" type="SpinBox" parent="Footer"]
+layout_mode = 2
+min_value = 0.0
+max_value = 999.0
+step = 1.0
+value = 0.0
+
+[node name="ApplyNow" type="CheckBox" parent="Footer"]
+layout_mode = 2
+text = "Appliquer maintenant"
+button_pressed = false
+
+[node name="BtnsRight" type="HBoxContainer" parent="Footer"]
+layout_mode = 2
+
+[node name="BtnAssignSoldiers" type="Button" parent="Footer/BtnsRight"]
+layout_mode = 2
+text = "Assigner tous les soldats"
+
+[node name="BtnResolve" type="Button" parent="Footer/BtnsRight"]
+layout_mode = 2
+text = "Resoudre"
+
+[node name="BtnBack" type="Button" parent="Footer/BtnsRight"]
+layout_mode = 2
+text = "Retour"
+
+[node name="ConfirmDialog" type="ConfirmationDialog" parent="."]
+ok_button_text = "Confirmer"

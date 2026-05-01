@@ -1,0 +1,374 @@
+{
+  "_commentaire": "Configuration des actions disponibles par tour — toutes en français",
+
+  "actions": [
+    {
+      "id": "attaquer",
+      "nom": "Attaquer un Bastion",
+      "icone": "⚔",
+      "description": "Lance une attaque militaire contre un bastion ennemi. Le résultat dépend de votre Force + Commandement vs la Défense du bastion.",
+      "cout": {
+        "soldats": 10,
+        "or": 0,
+        "mana": 0
+      },
+      "stat_principale": "force",
+      "stat_secondaire": "commandement",
+      "formule": "force + commandement + d20 vs defense_bastion * 2",
+      "seuils": {
+        "victoire_eclatante": 10,
+        "victoire": 0,
+        "defaite_partielle": -5,
+        "defaite_totale": -99
+      },
+      "resultats": {
+        "victoire_eclatante": {
+          "texte": "Victoire éclatante ! Le bastion tombe sous vos assauts.",
+          "effets": {
+            "bastion_conquis": true,
+            "pertes_soldats_pct": 5,
+            "or_recupere": 50,
+            "reputation_gain": 3
+          }
+        },
+        "victoire": {
+          "texte": "Victoire difficile. Le bastion est pris mais à quel prix.",
+          "effets": {
+            "bastion_conquis": true,
+            "pertes_soldats_pct": 20,
+            "or_recupere": 20,
+            "reputation_gain": 1
+          }
+        },
+        "defaite_partielle": {
+          "texte": "Retraite forcée. Vos soldats reculent en désordre.",
+          "effets": {
+            "bastion_conquis": false,
+            "pertes_soldats_pct": 30,
+            "reputation_perte": 1
+          }
+        },
+        "defaite_totale": {
+          "texte": "Déroute totale. Vos forces sont décimées.",
+          "effets": {
+            "bastion_conquis": false,
+            "pertes_soldats_pct": 50,
+            "reputation_perte": 3
+          }
+        }
+      },
+      "classes_bonus": {
+        "chevalier_sombre": 3,
+        "mage_du_pacte": 0,
+        "stratege_des_ombres": -1
+      },
+      "requis": {
+        "soldats_min": 10
+      }
+    },
+
+    {
+      "id": "espionner",
+      "nom": "Espionner une Famille Noble",
+      "icone": "🕵",
+      "description": "Infiltrez les rangs d'une famille noble pour révéler ses bastions, son chef et ses ressources. Espionnage + Magie vs contre-espionnage.",
+      "cout": {
+        "soldats": 0,
+        "or": 50,
+        "mana": 10
+      },
+      "stat_principale": "espionnage",
+      "stat_secondaire": "magie",
+      "formule": "espionnage + magie + d20 vs resistance_cible",
+      "resistance_par_defaut": 10,
+      "seuils": {
+        "succes_critique": 10,
+        "succes": 0,
+        "echec_partiel": -5,
+        "echec_detecte": -99
+      },
+      "resultats": {
+        "succes_critique": {
+          "texte": "Infiltration parfaite. Vous avez accès aux secrets les plus profonds de la famille.",
+          "effets": {
+            "famille_revelee": true,
+            "bastions_reveles": true,
+            "ressources_cible_revelees": true,
+            "renseignements_gain": 20,
+            "detail_chef_revele": true
+          }
+        },
+        "succes": {
+          "texte": "Mission réussie. Les grandes lignes de leur organisation vous sont connues.",
+          "effets": {
+            "famille_revelee": true,
+            "bastions_reveles": true,
+            "renseignements_gain": 10
+          }
+        },
+        "echec_partiel": {
+          "texte": "Retrait à temps. Peu d'informations récoltées.",
+          "effets": {
+            "famille_revelee": true,
+            "renseignements_gain": 3
+          }
+        },
+        "echec_detecte": {
+          "texte": "Vos agents ont été détectés ! La famille suspecte un ennemi.",
+          "effets": {
+            "alerte_declenchee": true,
+            "or_penalite": -100,
+            "relation_perte": 2
+          }
+        }
+      },
+      "classes_bonus": {
+        "chevalier_sombre": -1,
+        "mage_du_pacte": 1,
+        "stratege_des_ombres": 4
+      }
+    },
+
+    {
+      "id": "recruter",
+      "nom": "Recruter des Soldats",
+      "icone": "🗡",
+      "description": "Invoquez de nouveaux soldats via la Magie des Pactes. Le gain dépend de votre Commandement et diminue quand l'armée est déjà massive.",
+      "cout": {
+        "soldats": 0,
+        "or": 0,
+        "mana": 35
+      },
+      "stat_principale": "commandement",
+      "stat_secondaire": null,
+      "formule": "commandement + d6 + 4, puis pénalité progressive selon soldats actuels",
+      "resultats": {
+        "succes": {
+          "texte": "De nouveaux soldats rejoignent vos rangs.",
+          "effets": {
+            "soldats_gain_formule": "commandement + d6 + 4",
+            "soldats_gain_min": 3,
+            "soldats_gain_max": 16,
+            "soldats_soft_cap": 120,
+            "soldats_soft_penalty_step": 40,
+            "soldats_soft_penalty_per_step": 2
+          }
+        }
+      },
+      "classes_bonus": {
+        "chevalier_sombre": 2,
+        "mage_du_pacte": 0,
+        "stratege_des_ombres": 1
+      },
+      "requis": {
+        "mana_min": 35
+      }
+    },
+
+    {
+      "id": "diplomatie",
+      "nom": "Proposer une Alliance",
+      "icone": "🤝",
+      "description": "Négociez avec une Famille Noble pour obtenir un accord de non-agression ou une alliance active. Diplomatie + Réputation vs résistance politique.",
+      "cout": {
+        "soldats": 0,
+        "or": 100,
+        "mana": 0,
+        "reputation": 5
+      },
+      "stat_principale": "diplomatie",
+      "stat_secondaire": null,
+      "formule": "diplomatie + reputation_bonus + d20 vs resistance_politique",
+      "resistance_par_defaut": 12,
+      "seuils": {
+        "succes_critique": 10,
+        "succes": 0,
+        "echec": -99
+      },
+      "resultats": {
+        "succes_critique": {
+          "texte": "Alliance conclue ! Cette famille noble est désormais votre alliée.",
+          "effets": {
+            "relation": "alliee",
+            "non_agression": true,
+            "or_partage_par_tour": 30,
+            "reputation_gain": 5
+          }
+        },
+        "succes": {
+          "texte": "Accord de non-agression signé. La paix règne entre vos clans.",
+          "effets": {
+            "relation": "neutre_positive",
+            "non_agression": true,
+            "reputation_gain": 2
+          }
+        },
+        "echec": {
+          "texte": "Offre rejetée. La famille préfère rester prudente.",
+          "effets": {
+            "relation_perte": 1,
+            "or_perdu": 100
+          }
+        }
+      },
+      "classes_bonus": {
+        "chevalier_sombre": -1,
+        "mage_du_pacte": 1,
+        "stratege_des_ombres": 2
+      },
+      "requis": {
+        "famille_revelee": true,
+        "or_min": 100
+      }
+    },
+
+    {
+      "id": "fortifier",
+      "nom": "Fortifier le Clan",
+      "icone": "🏰",
+      "description": "Investissez dans les défenses et l'infrastructure de votre clan. Artisanat + Or → amélioration des bastions tenus et production future.",
+      "cout": {
+        "soldats": 0,
+        "or": 300,
+        "mana": 0
+      },
+      "stat_principale": "artisanat",
+      "stat_secondaire": null,
+      "formule": "artisanat * 3 + d10",
+      "resultats": {
+        "succes": {
+          "texte": "Les défenses de votre clan sont renforcées.",
+          "effets": {
+            "defense_bonus_tours": 3,
+            "production_or_bonus": 20,
+            "soldats_bonus": 5
+          }
+        }
+      },
+      "classes_bonus": {
+        "chevalier_sombre": 0,
+        "mage_du_pacte": 0,
+        "stratege_des_ombres": 1
+      },
+      "requis": {
+        "or_min": 300
+      }
+    },
+
+    {
+      "id": "recuperer",
+      "nom": "Repos et Régénération",
+      "icone": "✨",
+      "description": "Votre clan se repose et récupère. Gain de Mana et remontée du moral. Aucun déploiement militaire ce tour.",
+      "cout": {
+        "soldats": 0,
+        "or": 0,
+        "mana": 0
+      },
+      "stat_principale": null,
+      "resultats": {
+        "succes": {
+          "texte": "Votre clan prend du recul. Les réserves de Mana se reconstituent.",
+          "effets": {
+            "mana_gain": 50,
+            "soldats_gain": 5,
+            "reputation_gain": 1
+          }
+        }
+      },
+      "classes_bonus": {
+        "chevalier_sombre": 0,
+        "mage_du_pacte": 1,
+        "stratege_des_ombres": 0
+      }
+    },
+
+    {
+      "id": "recruter_pnj",
+      "nom": "Recruter un PNJ de Domaine",
+      "icone": "🜂",
+      "description": "Rituel de Magie des Pactes pour attirer un spécialiste de domaine (forgeron, alchimiste, intendant, arcaniste).",
+      "cout": {
+        "soldats": 0,
+        "or": 0,
+        "mana": 45
+      },
+      "stat_principale": "magie",
+      "stat_secondaire": "diplomatie",
+      "formule": "magie + diplomatie + d20",
+      "resultats": {
+        "succes": {
+          "texte": "Le pacte est scellé. Un spécialiste rejoint votre domaine.",
+          "effets": {
+            "renseignements_gain": 2
+          }
+        }
+      },
+      "classes_bonus": {
+        "chevalier_sombre": 0,
+        "mage_du_pacte": 2,
+        "stratege_des_ombres": 1
+      },
+      "requis": {
+        "mana_min": 45
+      }
+    }
+  ],
+
+  "production_par_tour": {
+    "_commentaire": "Production de base par tour, avant bonus de bastion",
+    "or": 120,
+    "soldats": 0,
+    "mana": 20,
+    "reputation": 0,
+    "renseignements": 0
+  },
+
+  "evenements_aleatoires": [
+    {
+      "id": "embuscade_nuit",
+      "probabilite": 0.1,
+      "condition": "tour > 3",
+      "titre": "Embuscade Nocturne",
+      "texte": "Des créatures de la nuit ont attaqué votre camp. Vous perdez des soldats.",
+      "effets": { "soldats_perte_pct": 10 }
+    },
+    {
+      "id": "marchand_demon",
+      "probabilite": 0.15,
+      "condition": "or > 300",
+      "titre": "Marchand Démoniaque",
+      "texte": "Un marchand mystérieux propose des équipements rares en échange d'Or.",
+      "effets": { "ouvre_boutique_speciale": true, "tours_disponibilite": 1 }
+    },
+    {
+      "id": "brume_mana",
+      "probabilite": 0.08,
+      "condition": null,
+      "titre": "Brume de Mana",
+      "texte": "Une concentration de Mana traversant la région recharge vos réserves.",
+      "effets": { "mana_gain": 40 }
+    },
+    {
+      "id": "desertion",
+      "probabilite": 0.05,
+      "condition": "soldats > 100 AND reputation < 5",
+      "titre": "Désertion",
+      "texte": "La faible réputation du clan pousse certains soldats à fuir.",
+      "effets": { "soldats_perte_pct": 15, "reputation_perte": 2 }
+    }
+  ],
+
+  "conditions_victoire": {
+    "principale": "Conquérir tous les bastions de la Maison 9 (Famille Γ)",
+    "secondaires": [
+      "Conclure des alliances avec au moins 3 familles nobles",
+      "Espionner toutes les familles nobles",
+      "Terminer le jeu avec la barre d'âme d'Ingrid > 50%"
+    ],
+    "defaite": [
+      "Soldats = 0 ET Or < 50 ET aucune alliance active",
+      "Barre d'âme d'Ingrid = 0 (Ingrid absorbée par le dragon Grenier)"
+    ]
+  }
+}

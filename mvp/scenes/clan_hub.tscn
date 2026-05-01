@@ -1,0 +1,285 @@
+[gd_scene load_steps=2 format=3 uid="uid://bw51t08o7act7"]
+
+[ext_resource type="Script" uid="uid://ptihhfkd1td6" path="res://scripts/ui/clan_hub.gd" id="1_clanhub"]
+
+[node name="ClanHub" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_clanhub")
+
+[node name="Background" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.04, 0, 0.1, 1)
+
+[node name="Header" type="HBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 56.0
+grow_horizontal = 0
+theme_override_constants/separation = 0
+
+[node name="BgHeader" type="ColorRect" parent="Header"]
+layout_mode = 2
+size_flags_horizontal = 3
+color = Color(0.08, 0, 0.18, 1)
+
+[node name="InfoClan" type="HBoxContainer" parent="Header/BgHeader"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 30
+
+[node name="LabelNomClan" type="Label" parent="Header/BgHeader/InfoClan"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.9, 0.7, 1, 1)
+theme_override_font_sizes/font_size = 18
+text = "Clan des Flammes Noires"
+
+[node name="LabelTour" type="Label" parent="Header/BgHeader/InfoClan"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.7, 0.7, 0.7, 1)
+theme_override_font_sizes/font_size = 14
+text = "Tour 1"
+
+[node name="Spacer" type="Control" parent="Header/BgHeader/InfoClan"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="RessourcesHeader" type="HBoxContainer" parent="Header/BgHeader/InfoClan"]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="LabelOr" type="Label" parent="Header/BgHeader/InfoClan/RessourcesHeader"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.85, 0.2, 1)
+theme_override_font_sizes/font_size = 13
+text = "Or: 500"
+
+[node name="LabelSoldats" type="Label" parent="Header/BgHeader/InfoClan/RessourcesHeader"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.7, 0.9, 0.7, 1)
+theme_override_font_sizes/font_size = 13
+text = "Soldats: 50"
+
+[node name="LabelMana" type="Label" parent="Header/BgHeader/InfoClan/RessourcesHeader"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.5, 0.7, 1, 1)
+theme_override_font_sizes/font_size = 13
+text = "Mana: 100"
+
+[node name="LabelReputation" type="Label" parent="Header/BgHeader/InfoClan/RessourcesHeader"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.7, 0.3, 1)
+theme_override_font_sizes/font_size = 13
+text = "Rep: 10"
+
+[node name="LabelAme" type="Label" parent="Header/BgHeader/InfoClan/RessourcesHeader"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.8, 0.4, 1, 1)
+theme_override_font_sizes/font_size = 13
+text = "Ame: 100%"
+
+[node name="ContenuPrincipal" type="HBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 66.0
+offset_bottom = -48.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 14
+
+[node name="PanneauMaisons" type="ScrollContainer" parent="ContenuPrincipal"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="ListeMaisons" type="VBoxContainer" parent="ContenuPrincipal/PanneauMaisons"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 6
+
+[node name="PanneauActions" type="PanelContainer" parent="ContenuPrincipal"]
+custom_minimum_size = Vector2(360, 0)
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="ContenuActions" type="VBoxContainer" parent="ContenuPrincipal/PanneauActions"]
+layout_mode = 2
+theme_override_constants/separation = 4
+
+[node name="TitreActions" type="Label" parent="ContenuPrincipal/PanneauActions/ContenuActions"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.8, 0.6, 1, 1)
+theme_override_font_sizes/font_size = 15
+text = "Actions disponibles"
+horizontal_alignment = 1
+
+[node name="DescAction" type="Label" parent="ContenuPrincipal/PanneauActions/ContenuActions"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.7, 0.7, 0.7, 0.8)
+theme_override_font_sizes/font_size = 11
+text = "Sélectionnez une action
+pour voir son effet."
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="SepActions" type="HSeparator" parent="ContenuPrincipal/PanneauActions/ContenuActions"]
+layout_mode = 2
+
+[node name="BoutonActions" type="VBoxContainer" parent="ContenuPrincipal/PanneauActions/ContenuActions"]
+layout_mode = 2
+theme_override_constants/separation = 4
+
+[node name="BtnAttaquer" type="Button" parent="ContenuPrincipal/PanneauActions/ContenuActions/BoutonActions"]
+layout_mode = 2
+text = "Attaquer un bastion"
+
+[node name="BtnEspionner" type="Button" parent="ContenuPrincipal/PanneauActions/ContenuActions/BoutonActions"]
+layout_mode = 2
+text = "Espionner une famille"
+
+[node name="BtnRecruter" type="Button" parent="ContenuPrincipal/PanneauActions/ContenuActions/BoutonActions"]
+layout_mode = 2
+text = "Recruter des soldats"
+
+[node name="BtnDiplomatie" type="Button" parent="ContenuPrincipal/PanneauActions/ContenuActions/BoutonActions"]
+layout_mode = 2
+text = "Proposer une alliance"
+
+[node name="BtnFortifier" type="Button" parent="ContenuPrincipal/PanneauActions/ContenuActions/BoutonActions"]
+layout_mode = 2
+text = "Fortifier le clan"
+
+[node name="BtnRecuperer" type="Button" parent="ContenuPrincipal/PanneauActions/ContenuActions/BoutonActions"]
+layout_mode = 2
+text = "Repos et regeneration"
+
+[node name="SepFinTour" type="HSeparator" parent="ContenuPrincipal/PanneauActions/ContenuActions"]
+layout_mode = 2
+
+[node name="BtnFinTour" type="Button" parent="ContenuPrincipal/PanneauActions/ContenuActions"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.9, 0.7, 1, 1)
+text = "Fin de tour"
+
+[node name="BtnMenu" type="Button" parent="ContenuPrincipal/PanneauActions/ContenuActions"]
+layout_mode = 2
+text = "Menu principal"
+
+[node name="BtnDonjon" type="Button" parent="ContenuPrincipal/PanneauActions/ContenuActions"]
+layout_mode = 2
+text = "Explorer le Donjon"
+
+[node name="SepNavigation" type="HSeparator" parent="ContenuPrincipal/PanneauActions/ContenuActions"]
+layout_mode = 2
+
+[node name="LabelNavigation" type="Label" parent="ContenuPrincipal/PanneauActions/ContenuActions"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.8, 0.65, 1, 1)
+theme_override_font_sizes/font_size = 14
+text = "Navigation"
+horizontal_alignment = 1
+
+[node name="BtnProfil" type="Button" parent="ContenuPrincipal/PanneauActions/ContenuActions"]
+layout_mode = 2
+text = "Profil & Inventaire"
+
+[node name="BtnMaisons" type="Button" parent="ContenuPrincipal/PanneauActions/ContenuActions"]
+layout_mode = 2
+text = "Vue Maisons"
+
+[node name="BtnCoffre" type="Button" parent="ContenuPrincipal/PanneauActions/ContenuActions"]
+layout_mode = 2
+text = "Coffre du clan"
+
+[node name="BtnBibliotheque" type="Button" parent="ContenuPrincipal/PanneauActions/ContenuActions"]
+layout_mode = 2
+text = "Bibliothèque"
+
+[node name="Footer" type="HBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -48.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_constants/separation = 0
+
+[node name="BgFooter" type="ColorRect" parent="Footer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+color = Color(0.04, 0, 0.1, 0.9)
+
+[node name="MessageLog" type="Label" parent="Footer/BgFooter"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 10.0
+offset_right = -10.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.85, 0.85, 0.85, 1)
+theme_override_font_sizes/font_size = 13
+text = "Bienvenue dans les Royaumes Démoniques. Choisissez votre première action."
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="DialogueCible" type="AcceptDialog" parent="."]
+title = "Choisir une cible"
+size = Vector2i(400, 300)
+
+[node name="ListeCibles" type="ItemList" parent="DialogueCible"]
+offset_left = 8.0
+offset_top = 8.0
+offset_right = -8.0
+offset_bottom = -50.0
+
+[node name="ProfilDialog" type="AcceptDialog" parent="."]
+title = "Profil & Inventaire"
+size = Vector2i(620, 420)
+
+[node name="ProfilTexte" type="RichTextLabel" parent="ProfilDialog"]
+offset_left = 10.0
+offset_top = 10.0
+offset_right = -10.0
+offset_bottom = -44.0
+scroll_following = true
+
+[node name="CoffreDialog" type="AcceptDialog" parent="."]
+title = "Coffre du clan"
+size = Vector2i(560, 360)
+
+[node name="CoffreTexte" type="RichTextLabel" parent="CoffreDialog"]
+offset_left = 10.0
+offset_top = 10.0
+offset_right = -10.0
+offset_bottom = -44.0
+
+[node name="BibliothequeDialog" type="AcceptDialog" parent="."]
+title = "Bibliothèque"
+size = Vector2i(700, 460)
+
+[node name="BibliothequeTexte" type="RichTextLabel" parent="BibliothequeDialog"]
+offset_left = 10.0
+offset_top = 10.0
+offset_right = -10.0
+offset_bottom = -44.0

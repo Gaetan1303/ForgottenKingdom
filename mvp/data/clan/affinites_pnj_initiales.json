@@ -1,0 +1,131 @@
+{
+  "_commentaire": "Table d'affinites PNJ initiale coherente avec les factions du canon Ingrid",
+  "version": "1.0",
+  "factions": {
+    "nomad": {
+      "label": "Nomad",
+      "position_initiale": 15
+    },
+    "nobles": {
+      "label": "Bloc des 9 Nobles",
+      "position_initiale": 5
+    },
+    "independants_yomihara": {
+      "label": "Independants de Yomihara",
+      "position_initiale": 10
+    },
+    "interferences": {
+      "label": "Factions opportunistes",
+      "position_initiale": -5
+    }
+  },
+  "roles_pnj": [
+    "forgeron",
+    "alchimiste",
+    "intendant",
+    "arcaniste"
+  ],
+  "affinites_par_role": {
+    "forgeron": {
+      "nomad": 8,
+      "nobles": -2,
+      "independants_yomihara": 12,
+      "interferences": -4
+    },
+    "alchimiste": {
+      "nomad": 4,
+      "nobles": 6,
+      "independants_yomihara": 3,
+      "interferences": 2
+    },
+    "intendant": {
+      "nomad": 10,
+      "nobles": 4,
+      "independants_yomihara": 8,
+      "interferences": -6
+    },
+    "arcaniste": {
+      "nomad": 6,
+      "nobles": 8,
+      "independants_yomihara": -2,
+      "interferences": 4
+    }
+  },
+  "pnj_initiaux": [
+    {
+      "id": "pnj_forg_01",
+      "nom": "Ravik",
+      "role": "forgeron",
+      "faction_principale": "independants_yomihara",
+      "affinite_depart": 12,
+      "seuils_relation": {
+        "hostile": -40,
+        "mefiant": -10,
+        "neutre": 0,
+        "favorable": 20,
+        "loyal": 45
+      }
+    },
+    {
+      "id": "pnj_alch_01",
+      "nom": "Selyra",
+      "role": "alchimiste",
+      "faction_principale": "nobles",
+      "affinite_depart": 6,
+      "seuils_relation": {
+        "hostile": -40,
+        "mefiant": -10,
+        "neutre": 0,
+        "favorable": 20,
+        "loyal": 45
+      }
+    },
+    {
+      "id": "pnj_int_01",
+      "nom": "Borel",
+      "role": "intendant",
+      "faction_principale": "nomad",
+      "affinite_depart": 10,
+      "seuils_relation": {
+        "hostile": -40,
+        "mefiant": -10,
+        "neutre": 0,
+        "favorable": 20,
+        "loyal": 45
+      }
+    },
+    {
+      "id": "pnj_arc_01",
+      "nom": "Ithra",
+      "role": "arcaniste",
+      "faction_principale": "nobles",
+      "affinite_depart": 8,
+      "seuils_relation": {
+        "hostile": -40,
+        "mefiant": -10,
+        "neutre": 0,
+        "favorable": 20,
+        "loyal": 45
+      }
+    }
+  ],
+  "modificateurs_actions": {
+    "aider_quartier_yomihara": {
+      "independants_yomihara": 4,
+      "nomad": -1
+    },
+    "executer_ordre_nomad": {
+      "nomad": 3,
+      "independants_yomihara": -2
+    },
+    "traiter_avec_nobles": {
+      "nobles": 3,
+      "nomad": -1
+    },
+    "usage_pouvoir_grenier": {
+      "interferences": 2,
+      "nobles": -1,
+      "independants_yomihara": -1
+    }
+  }
+}

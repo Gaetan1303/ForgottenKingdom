@@ -1,0 +1,23 @@
+[gd_scene load_steps=3 format=2]
+[ext_resource path="res://assets/images/yomihara.png" type="Texture2D" id=1]
+[ext_resource path="res://assets/images/ingrid_39.png" type="Texture2D" id=2]
+[ext_resource path="res://assets/images/edwin_black.png" type="Texture2D" id=3]
+[ext_resource path="res://assets/images/lina_rina_1.png" type="Texture2D" id=4]
+
+[node name="ChapterIngrid" type="Node2D"]
+
+[node name="Background" type="Sprite" parent="."]
+texture = ExtResource( 1 )
+position = Vector2( 0, 0 )
+
+[node name="ingrid_39" type="Sprite" parent="."]
+texture = ExtResource( 2 )
+position = Vector2( 200, 300 )
+
+[node name="edwin_black" type="Sprite" parent="."]
+texture = ExtResource( 3 )
+position = Vector2( 500, 300 )
+
+[node name="lina_rina_1" type="Sprite" parent="."]
+texture = ExtResource( 4 )
+position = Vector2( 800, 300 )

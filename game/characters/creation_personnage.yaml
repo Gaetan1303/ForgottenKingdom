@@ -1,0 +1,297 @@
+# Système de création de personnage — Royaumes Démoniques
+# Données de configuration pour Godot 4
+
+character_creation:
+
+  # ──────────────────────────────────────────
+  # CLASSES DE PERSONNAGE
+  # ──────────────────────────────────────────
+  classes:
+    - id: "chevalier_sombre"
+      nom: "Chevalier Sombre"
+      description: |
+        Guerrier d'avant-garde. Tu frappes vite et fort.
+        Ta présence au combat inspire tes soldats et intimide les ennemis.
+        Les bastions s'effondrent sous tes assauts directs.
+      stats_bonus:
+        force: +3
+        magie: 0
+        espionnage: -1
+        artisanat: 0
+        diplomatie: -1
+        commandement: +2
+      equipement_depart:
+        - "Épée à deux mains du Clan Brisé"
+        - "Armure de cuir renforcée"
+        - "Bouclier fendu (héritage familial)"
+      pouvoirs_disponibles:
+        - "Frappe Sismique"
+        - "Cri de Guerre"
+        - "Charge Dévastatrice"
+        - "Résistance Démoniaque"
+      couleur_ui: "#c0392b"
+      icone: "knight_icon"
+
+    - id: "mage_du_pacte"
+      nom: "Mage du Pacte"
+      description: |
+        Invocateur et lanceur de sorts. Ta magie est ta force.
+        Tu relies le monde des monstres et celui des démons,
+        formant des pactes que d'autres ne pourraient imaginer.
+      stats_bonus:
+        force: -1
+        magie: +4
+        espionnage: 0
+        artisanat: 0
+        diplomatie: +1
+        commandement: -1
+      equipement_depart:
+        - "Bâton de Canalisation Obscur"
+        - "Robe de Mage (anti-dissipation)"
+        - "Grimoire de Pactes Anciens"
+      pouvoirs_disponibles:
+        - "Boule de Feu Démoniaque"
+        - "Invocation Mineure"
+        - "Barrière Mystique"
+        - "Lecture d'Âme"
+      couleur_ui: "#8e44ad"
+      icone: "mage_icon"
+
+    - id: "stratege_des_ombres"
+      nom: "Stratège des Ombres"
+      description: |
+        Tu gagnes les guerres avant qu'elles commencent.
+        L'espionnage, la manipulation, le renseignement —
+        c'est ta spécialité. Tu connais tes ennemis mieux qu'eux-mêmes.
+      stats_bonus:
+        force: -1
+        magie: +1
+        espionnage: +4
+        artisanat: 0
+        diplomatie: +2
+        commandement: -1
+      equipement_depart:
+        - "Lame courte silencieuse"
+        - "Cloak de dissimulation (magie mineure)"
+        - "Carnet de renseignements chiffré"
+      pouvoirs_disponibles:
+        - "Invisibilité Partielle"
+        - "Lecture de Mémoire"
+        - "Manipulation Mentale (faible)"
+        - "Détection de mensonge"
+      couleur_ui: "#2c3e50"
+      icone: "spy_icon"
+
+    - id: "forgeron_de_sang"
+      nom: "Forgeron de Sang"
+      description: |
+        Tu construis ce que d'autres ne peuvent qu'imaginer.
+        Ton bastion deviendra une forteresse en peu de temps.
+        Les armes que tu forges portent l'essence du Demon Realm.
+      stats_bonus:
+        force: +1
+        magie: +1
+        espionnage: -1
+        artisanat: +5
+        diplomatie: 0
+        commandement: 0
+      equipement_depart:
+        - "Marteau de Forge Démoniaque"
+        - "Tablier de sang forgé"
+        - "Kit de forge portable"
+        - "Minerai de Sang (×5)"
+      pouvoirs_disponibles:
+        - "Renforcement d'équipement"
+        - "Création de Rune"
+        - "Armure de Pierre (sort défensif)"
+        - "Instinct de Construction"
+      couleur_ui: "#e67e22"
+      icone: "smith_icon"
+
+    - id: "sang_noble"
+      nom: "Sang Noble"
+      description: |
+        Tu es l'héritier d'un clan. Tu en as la noblesse, le charisme,
+        et la magie innée. Polyvalent, tu excelles dans les pactes démoniques
+        et la diplomatie. C'est toi que les autres suivront.
+      stats_bonus:
+        force: +1
+        magie: +2
+        espionnage: 0
+        artisanat: 0
+        diplomatie: +2
+        commandement: +1
+      equipement_depart:
+        - "Épée de noble (héritage du clan)"
+        - "Cape aux armoiries familiales brisées"
+        - "Anneau du Pacte (bonus Pactes démoniques)"
+      pouvoirs_disponibles:
+        - "Aura Charismatique"
+        - "Pacte Supérieur"
+        - "Magie Héritée"
+        - "Cri d'Autorité"
+      couleur_ui: "#f39c12"
+      icone: "noble_icon"
+
+  # ──────────────────────────────────────────
+  # POUVOIRS MAGIQUES (en choisir 2)
+  # ──────────────────────────────────────────
+  pouvoirs_magiques:
+    - id: "pyrokinesis"
+      nom: "Pyrokynésie"
+      description: "Contrôle du feu. Attaques enflammées, zone de flammes."
+      cout_magie: 12
+      element: "Feu"
+      type: "Offensif"
+
+    - id: "telekinesis"
+      nom: "Télékinésie"
+      description: "Déplacement d'objets par la pensée. Jet de débris, barrières."
+      cout_magie: 10
+      element: "Force"
+      type: "Polyvalent"
+
+    - id: "shadow_step"
+      nom: "Pas d'Ombre"
+      description: "Téléportation courte distance dans les ombres."
+      cout_magie: 15
+      element: "Ombre"
+      type: "Mobilité"
+
+    - id: "demon_invocation"
+      nom: "Invocation Démoniaque"
+      description: "Convoque un démon mineur pour combattre à tes côtés."
+      cout_magie: 20
+      element: "Invocation"
+      type: "Soutien"
+
+    - id: "thunder_chain"
+      nom: "Chaîne de Foudre"
+      description: "Frappe enchaînée d'éclairs sur plusieurs cibles."
+      cout_magie: 18
+      element: "Foudre"
+      type: "Offensif"
+
+    - id: "blood_shield"
+      nom: "Bouclier de Sang"
+      description: "Barrière mystique absorbant les dégâts physiques."
+      cout_magie: 14
+      element: "Sang"
+      type: "Défensif"
+
+    - id: "mind_crush"
+      nom: "Écrasement Mental"
+      description: "Attaque psychique. Désorganise l'ennemi, réduit ses stats temporairement."
+      cout_magie: 16
+      element: "Mental"
+      type: "Debuff"
+
+    - id: "earth_tremor"
+      nom: "Tremblement de Terre"
+      description: "Soulève le sol sous les ennemis. Dégâts de zone massifs."
+      cout_magie: 22
+      element: "Terre"
+      type: "Offensif"
+
+  # ──────────────────────────────────────────
+  # DONS PASSIFS (en choisir 1)
+  # ──────────────────────────────────────────
+  dons_passifs:
+    - id: "regeneration"
+      nom: "Régénération Démoniaque"
+      description: "Récupère 5% de tes PV au début de chaque phase Nuit."
+      effet: "regen_pv_nuit: 5%"
+
+    - id: "demon_vision"
+      nom: "Vision Démoniaque"
+      description: "Vois à travers les illusions. Immunité aux informations d'espionnage fausses."
+      effet: "immunite_illusions: true"
+
+    - id: "monster_empathy"
+      nom: "Empathie des Monstres"
+      description: "Les Pactes démoniques coûtent 30% moins d'énergie mystique."
+      effet: "reduction_cout_pacte: 30%"
+
+    - id: "iron_will"
+      nom: "Volonté de Fer"
+      description: "Résistance aux effets de peur et de charme. +10% défense mentale."
+      effet: "resistance_mentale: +10%"
+
+    - id: "noble_presence"
+      nom: "Présence Nobiliaire"
+      description: "+15% d'influence gagnée dans toutes les interactions diplomatiques."
+      effet: "bonus_influence: +15%"
+
+    - id: "battlefield_tactician"
+      nom: "Tacticien de Champ de Bataille"
+      description: "+10% à toutes les attaques militaires. Les décisions d'attaque du Matin coûtent moins de soldats."
+      effet: "bonus_attaque: +10%; reduction_cout_soldats: 10%"
+
+    - id: "craftsman_soul"
+      nom: "Âme d'Artisan"
+      description: "Les constructions de la phase Nuit se terminent 1 jour plus tôt."
+      effet: "reduction_temps_construction: 1j"
+
+  # ──────────────────────────────────────────
+  # COMPÉTENCES (5 points à répartir)
+  # ──────────────────────────────────────────
+  competences:
+    - id: "combat"
+      nom: "Combat"
+      description: "Efficacité en bataille — dégâts, victoires plus probables."
+      max_level: 5
+
+    - id: "magie"
+      nom: "Magie"
+      description: "Réserve et puissance des sorts. Coût réduit des pouvoirs."
+      max_level: 5
+
+    - id: "espionnage"
+      nom: "Espionnage"
+      description: "Qualité des renseignements collectés. Contre-espionnage."
+      max_level: 5
+
+    - id: "artisanat"
+      nom: "Artisanat"
+      description: "Vitesse et qualité de construction. Meilleurs items craftés."
+      max_level: 5
+
+    - id: "diplomatie"
+      nom: "Diplomatie"
+      description: "Influence gagnée, meilleurs termes de négociation, dialogue avec PNJ."
+      max_level: 5
+
+    - id: "commandement"
+      nom: "Commandement"
+      description: "Moral des troupes, capacité max de soldats, efficacité des ordres."
+      max_level: 5
+
+  # ──────────────────────────────────────────
+  # ÉQUIPEMENTS DE DÉPART ALTERNATIFS
+  # (Chacun peut échanger 1 item de classe pour un item de ce pool)
+  # ──────────────────────────────────────────
+  equipements_alternatifs:
+    - id: "potion_energie_x3"
+      nom: "Potions d'Énergie Mystique ×3"
+      description: "Restaure 30 points d'énergie mystique chacune."
+      type: "Consommable"
+
+    - id: "carte_espion"
+      nom: "Carte d'agent infiltré"
+      description: "Permet un espionnage gratuit sur n'importe quelle Maison dès le premier jour."
+      type: "Unique"
+
+    - id: "blueprint_caserne"
+      nom: "Plans de Caserne Avancée"
+      description: "Construit une Caserne Niveau 2 dès le premier soir (sans coût de ressources)."
+      type: "Plan de construction"
+
+    - id: "rune_protection"
+      nom: "Rune de Protection Ancestrale"
+      description: "Annule les dommages d'une attaque de boss une seule fois."
+      type: "Équipement passif"
+
+    - id: "traite_alliance"
+      nom: "Traité d'Alliance Provisoire"
+      description: "Une des 9 Maisons commence neutre au lieu d'hostile (à choisir au départ)."
+      type: "Document diplomatique"

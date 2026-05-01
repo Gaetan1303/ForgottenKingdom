@@ -1,0 +1,58 @@
+[gd_scene load_steps=2 format=3 uid="uid://pnj_card"]
+[ext_resource path="res://scripts/ui/pnj_card.gd" type="Script" id=1]
+
+[node name="PnjCard" type="PanelContainer"]
+script = ExtResource( 1 )
+custom_colors/panel = Color( 0.08, 0.08, 0.08, 0.6 )
+min_size = Vector2( 0, 64 )
+[node name="Content" type="VBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="HBox" type="HBoxContainer" parent="Content"]
+size_flags_horizontal = 3
+separation = 8
+
+[node name="Left" type="VBoxContainer" parent="HBox"]
+size_flags_horizontal = 3
+[node name="Portrait" type="TextureRect" parent="HBox/Left"]
+stretch_mode = 3
+custom_minimum_size = Vector2(8, 8)
+size_flags_horizontal = 0
+size_flags_vertical = 0
+[node name="LabelName" type="Label" parent="HBox/Left"]
+text = "PNJ Name"
+[node name="LabelRole" type="Label" parent="HBox/Left"]
+text = "role (niv)"
+theme/font_size_override/size = 12
+
+[node name="Right" type="HBoxContainer" parent="HBox"]
+[node name="SpacerLeft" type="Control" parent="HBox/Right"]
+size_flags_horizontal = 3
+[node name="BtnSupport" type="Button" parent="HBox/Right"]
+text = "Support"
+[node name="SpacerMid1" type="Control" parent="HBox/Right"]
+size_flags_horizontal = 3
+[node name="BtnExpedition" type="Button" parent="HBox/Right"]
+text = "Expedition"
+[node name="SpacerMid2" type="Control" parent="HBox/Right"]
+size_flags_horizontal = 3
+[node name="BtnDetails" type="Button" parent="HBox/Right"]
+text = "Details"
+[node name="SpacerRight" type="Control" parent="HBox/Right"]
+size_flags_horizontal = 3
+
+[node name="DetailsPanel" type="VBoxContainer" parent="Content"]
+visible = false
+[node name="DetailRow" type="HBoxContainer" parent="DetailsPanel"]
+layout_mode = 2
+[node name="DetailPortrait" type="TextureRect" parent="DetailsPanel/DetailRow"]
+stretch_mode = 3
+custom_minimum_size = Vector2(8, 8)
+size_flags_horizontal = 0
+size_flags_vertical = 0
+[node name="DetailStats" type="VBoxContainer" parent="DetailsPanel/DetailRow"]
+[node name="StatList" type="VBoxContainer" parent="DetailsPanel/DetailRow/DetailStats"]
+[node name="LabelEquip" type="Label" parent="DetailsPanel/DetailRow/DetailStats/StatList"]
+text = "Equipement: -"
+[node name="LabelBehavior" type="Label" parent="DetailsPanel/DetailRow/DetailStats/StatList"]
+text = "Comportement: -"

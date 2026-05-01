@@ -1,0 +1,52 @@
+; Engine configuration file.
+; It's best edited using the editor UI and not directly,
+; since the parameters that go here are not all obvious.
+;
+; Format:
+;   [section] ; section goes between []
+;   param=value ; assign values to parameters
+
+config_version=5
+
+[animation]
+
+compatibility/default_parent_skeleton_in_mesh_instance_3d=true
+
+[application]
+
+config/name="Royaumes Démoniques — Histoire d'Ingrid"
+config/description="Parcours narratif interactif retraçant l'histoire d'Ingrid (イングリッド), Chevalière de l'Enfer."
+config/version="0.1.0"
+run/main_scene="res://scenes/main_menu.tscn"
+config/features=PackedStringArray("4.6", "Forward Plus")
+config/icon="res://icon.png"
+
+[autoload]
+
+GameManager="*res://scripts/autoload/game_manager.gd"
+SaveSystem="*res://scripts/autoload/save_system.gd"
+AudioManager="*res://scripts/autoload/audio_manager.gd"
+ChapterLoader="*res://scripts/autoload/chapter_loader.gd"
+ClanManager="*res://scripts/autoload/clan_manager.gd"
+GameDataLoader="*res://scripts/autoload/game_data_loader.gd"
+DungeonGenerator="*res://scripts/autoload/dungeon_generator.gd"
+
+[display]
+
+window/size/viewport_width=1280
+window/size/viewport_height=720
+window/stretch/mode="canvas_items"
+
+[input]
+
+ui_next={
+"deadzone": 0.5,
+"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":4194309,"physical_keycode":0,"key_label":0,"unicode":0,"location":0,"echo":false,"script":null)
+, Object(InputEventMouseButton,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"button_mask":0,"position":Vector2(0, 0),"global_position":Vector2(0, 0),"factor":1.0,"button_index":1,"canceled":false,"pressed":false,"double_click":false,"script":null)
+]
+}
+ui_previous={
+"deadzone": 0.5,
+"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":4194308,"physical_keycode":0,"key_label":0,"unicode":0,"location":0,"echo":false,"script":null)
+]
+}

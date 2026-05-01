@@ -1,0 +1,415 @@
+# ═══════════════════════════════════════════════════════════════════════
+#  DONNÉES — 9 FAMILLES NOBLES DU MONDE DÉMONIAQUE
+#  Source : Taimanin Wiki (taimanin.fandom.com) — CC-BY-SA
+#  Lore canonique adapté en français pour le jeu RPG
+# ═══════════════════════════════════════════════════════════════════════
+#
+#  HIÉRARCHIE AU-DESSUS DES 9 NOBLES :
+#  ┌─ Roi des Démons (Trône VACANT — lignée royale éteinte)
+#  └─ Chancelier Bismarck (de facto dirigeant suprême, commande les Hell Knights)
+#
+#  Les 9 Familles Nobles dirigent chacune une tribu démoniaque et un territoire.
+#  Elles sont défendues par les 12 Ordres des Chevaliers Infernaux.
+#  Seul Bismarck peut nommer ou démettre un Seigneur Noble.
+#
+#  STATUTS EN 2088 (début du jeu, timeline RPGX) :
+#  - Seigneur Flamme : poste vacant (Gaap mort, titre abandonné)
+#  - Seigneur Cadavre : vacant (Teutates tué lors du Massacre de Gaiza)
+#  - Seigneur Fantôme : Mizuki Shiranui (ancienne humaine, récente)
+#  - 2 postes potentiellement inconnus du joueur
+# ═══════════════════════════════════════════════════════════════════════
+
+nine_noble_houses:
+
+  # ──────────────────────────────────────────────────────────────────
+  #  Note : les Familles 7, 8, 9 ne sont pas toutes révélées dans
+  #  les sources canoniques. Elles sont marquées « identité inconnue »
+  #  et peuvent être personnalisées pour les besoins du jeu.
+  # ──────────────────────────────────────────────────────────────────
+
+  - id: 1
+    nom: "Famille du Sang (Blood Family)"
+    titre: "Seigneure du Sang (Blood Lord)"
+    chef_actuel: "Cara Cromwell"
+    chef_alias: ["Cara la Seigneure du Sang", "Carla Cromwell"]
+    espece: "Vampire"
+    territoire: "Côte Nord / Mer Hivernale"
+    capital: "Domaines Cromwell"
+    niveau_difficulte: 3
+    ressource_vitale: "Sang pur (Sang Écarlate)"
+    statut_en_2088: "Actif — Cara Cromwell en place"
+    description: |
+      La Famille du Sang gouverne l'une des tribus les plus nobles du Monde
+      Démoniaque — les Vampires. Cara Cromwell est la favorite de Bismarck,
+      qui regarde favorablement sa famille.
+      
+      Edwin Black (Roi des Vampires indépendant) est considéré comme un rival
+      potentiel au trône — il n'a pas encore revendiqué ce titre.
+      Meia Bradford est aussi appelée « Blood Lord » dans certaines lignes temporelles.
+    relations:
+      - avec: "Chancelier Bismarck"
+        type: "Faveur — Bismarck apprécie particulièrement cette famille"
+      - avec: "Edwin Black (NOMAD)"
+        type: "Rival potentiel — aspire peut-être au titre de Roi des Démons"
+    bastions:
+      - nom: "Manoir Cromwell"
+        niveau_defense: 5
+        description: "Siège ancestral des Vampires nobles"
+      - nom: "Forteresse Côtière des Vampires"
+        niveau_defense: 7
+    capacite_speciale: "Régénération vampirique — les soldats blessés se soignent lentement"
+    magie_caracteristique: "Magie du Sang (Blood Magic)"
+    chevalier_infernal_assigne: "Marika Krishna (Ordre du Dragon d'Or)"
+    recompense_capture: "Accès aux réseaux de renseignement vampiriques"
+
+
+  - id: 2
+    nom: "Famille du Cadavre (Corpse Family)"
+    titre: "Seigneur Cadavre (Corpse Lord)"
+    chef_actuel: "POSTE VACANT (2088)"
+    chef_precedent: "Teutates (Roi des Wraiths de la Mort)"
+    espece: "Wraith / Revenants"
+    territoire: "Terres des Morts-Vivants"
+    capital: "Nécropole de Teutates (abandon)"
+    niveau_difficulte: 5
+    ressource_vitale: "Âmes liées (contrats de mort)"
+    statut_en_2088: |
+      VACANT — Teutates a été tué lors du Massacre de Gaiza (2088).
+      Le titre de Seigneur Cadavre n'a pas encore de successeur.
+      Ses Revenant Knights (Chevaliers Revenants) sont désorientés.
+    description: |
+      Teutates était l'un des Seigneurs les plus dangereux et imprévisibles.
+      Autrefois un Chevalier Infernal lui-même, il a trahi son seigneur et rejoint
+      les assassins pour se venger. Il a conclu un pacte avec un démon pour tuer
+      Heliogabalus Gaap (Seigneur Flamme) — mais cela l'a transformé en quelque
+      chose de monstrueux.
+      
+      Teutates sabotait discrètement les autres Familles Nobles depuis des années.
+      Il a finalement attaqué directement NOMAD et Yomihara avant d'être vaincu.
+      Sa mort a laissé un vide de pouvoir significatif dans la hiérarchie.
+    relations:
+      - avec: "Blood Lord Cara Cromwell"
+        type: "Rivalité naturelle (Vampires vs Wraiths)"
+      - avec: "Phantom Lord"
+        type: "Teutates a ressuscité Ereshkigal pour déstabiliser les autres"
+      - avec: "Edwin Black (NOMAD)"
+        type: "Ennemi — a utilisé Fürst et Oboro comme agents doubles contre NOMAD"
+    bastions:
+      - nom: "Forteresse des Wraiths"
+        niveau_defense: 9
+        description: "Nécropole fortifiée, gardée par des Revenant Knights"
+      - nom: "Tour des Âmes Liées"
+        niveau_defense: 11
+    capacite_speciale: |
+      Régénération des Revenants — soldats vaincus peuvent revenir comme morts-vivants.
+      Revenant Knights : élite au-dessus des Chevaliers Infernaux normaux, tous des Wraiths.
+    magie_caracteristique: "Nécromancie, magie de l'ombre et des pactes"
+    chevalier_infernal_assigne: "Aucun assigné (Teutates était lui-même ancien Hell Knight)"
+    recompense_capture: |
+      Contrôle des Revenant Knights (soldats spéciaux non-morts).
+      Accès aux secrets de Teutates sur les autres Nobles.
+
+  - id: 3
+    nom: "Famille Fantôme (Phantom Family)"
+    titre: "Seigneur/Seigneure Fantôme (Phantom Lord)"
+    chef_actuel: "Mizuki Shiranui (ancienne humaine, 2088)"
+    chef_precedent: "Kamadeva (mort — a cédé ses pouvoirs pour sa fille Lilim)"
+    chef_intermediaire: "Ereshkigal (ressuscitée par Teutates, puis destituée)"
+    espece: "Incubus / Succube"
+    territoire: "Terres de l'Illusion et du Désir"
+    capital: "Palais des Plaisirs"
+    niveau_difficulte: 4
+    ressource_vitale: "Mana vital (extrait via séduction / Incubus-Succube)"
+    statut_en_2088: |
+      Mizuki Shiranui (The Phantom Lord) — ancienne humaine devenue Reine de
+      l'Incubus/Succube. En expansion d'influence à Amidahara.
+      Soutient (en secret) Ingrid pour la restauration de la Porte de Yomihara.
+    description: |
+      La Famille Fantôme représente les Incubus et Succubes — maîtres de la séduction
+      et de la magie de l'esprit. Kamadeva cherchait à dominer le Monde Humain pour
+      devenir Roi des Démons, avant que Kuroi Ryuuji ne lui succède via le jeu politique.
+      
+      Ereshkigal fut ressuscitée par Teutates pour déstabiliser l'alliance, mais la
+      lignée a finalement convergé vers Mizuki Shiranui nommée par Bismarck.
+      La Famille est rivale de la Famille Assassine (Lord Nuit / Ceres).
+    relations:
+      - avec: "Famille Assassine (Ceres)"
+        type: "Rivalité — Incubus vs assassins, tous deux présents à King's Rock"
+      - avec: "NOMAD (Ingrid)"
+        type: "Alliance secrète pour la restauration de la Porte de Yomihara"
+      - avec: "Chancelier Bismarck"
+        type: "Soumission formelle — Bismarck a nommé Mizuki Shiranui"
+    bastions:
+      - nom: "Domaine de l'Illusion"
+        niveau_defense: 7
+      - nom: "Palais des Plaisirs Sombres"
+        niveau_defense: 9
+    capacite_speciale: "Charme — chance de retourner des soldats ennemis temporairement"
+    magie_caracteristique: "Magie mentale, séduction, illusions"
+    chevalier_infernal_assigne: "Aucun directement assigné (rattaché au Chancelier)"
+    recompense_capture: "Réseau d'espions Succubus (renseignement passif sur les autres nobles)"
+
+  - id: 4
+    nom: "Famille des Sages (Wise Family)"
+    titre: "Seigneure Sage (Wise Lord)"
+    chef_actuel: "Marjaana"
+    chef_alias: ["La Sage Reine", "Wise Queen"]
+    espece: "Brain Flayer (Dévoreur de Cerveaux)"
+    territoire: "Terres de la Connaissance Obscure"
+    capital: "Bibliothèque Interdite de Marjaana"
+    niveau_difficulte: 6
+    ressource_vitale: "Connaissance arcanique (grimoires, mémoires volées)"
+    statut_en_2088: |
+      ANTAGONISTE — Marjaana a détruit la Porte Démonique de Yomihara en 2088,
+      causant chaos et pénurie. Elle contrôle Arondight (Golem, Ordre du Dragon
+      Mécanique) et utilise la domination mentale comme arme principale.
+      Sa motivation reste obscure.
+    description: |
+      Marjaana n'est pas un démon au sens strict — elle est respectée et redoutée
+      pour sa puissance intellectuelle et magique extraordinaire.
+      
+      Les Brain Flayers (Dévoreurs de Cerveaux) se nourrissent de souvenirs et
+      peuvent dominer mentalement leurs victimes. Marjaana contrôle le « Golem du Mariage »
+      et d'autres créatures artificielles via domination mentale.
+      
+      Elle a trahi l'Alliance en détruisant la Porte de Yomihara, acte contre les
+      intérêts de Bismarck lui-même. Elle n'est pas directement poursuivie car sa
+      puissance rend toute confrontation risquée.
+    relations:
+      - avec: "Chancelier Bismarck"
+        type: "Friction — destruction de la Porte va contre ses objectifs"
+      - avec: "Ragnarok Sinmara"
+        type: "Conflit — Sinmara attaque Marjaana par vengeance personnelle"
+      - avec: "NOMAD (Ingrid)"
+        type: "Ennemi indirect — Arondight est envoyé contre Ingrid"
+    bastions:
+      - nom: "Tour des Grimoires"
+        niveau_defense: 11
+      - nom: "Sanctuaire de la Connaissance Interdite"
+        niveau_defense: 14
+      - nom: "Labyrinthe Mental de Marjaana"
+        niveau_defense: 16
+    capacite_speciale: |
+      Domination mentale — peut retourner des PNJ alliés temporairement.
+      Golems de combat (Arondight) : soldats mécaniques indestructibles normalement.
+    magie_caracteristique: "Magie mentale, télépathie, domination, création de golems"
+    chevalier_infernal_assigne: "Arondight (Ordre du Dragon Mécanique — Golem sous son contrôle)"
+    recompense_capture: "Accès aux archives secrètes — lore caché sur d'autres nobles"
+
+  - id: 5
+    nom: "Famille Assassine (Assassin Family)"
+    titre: "Seigneure Assassine / Seigneure Nuit (Assassin Lord / Night Lord)"
+    chef_actuel: "Ceres (vrai nom : Vasuki)"
+    chef_alias: ["Lord Nuit", "Reine de la Nuit", "Seigneure Assassine"]
+    espece: "Naga (Chef de la tribu Naga)"
+    territoire: "King's Rock (nuit) + Territoires Naga"
+    capital: "King's Rock (partage jour/nuit avec Bismarck)"
+    niveau_difficulte: 7
+    ressource_vitale: "Contracts d'assassinat (or et loyautés)"
+    statut_en_2088: |
+      Vasuki (Ceres) soutient Ingrid pour la restauration de la Porte de Yomihara.
+      Shesha (sa subordonnée) est leader de l'Ordre du Dragon à Neuf Têtes.
+      Alliance secrète avec NOMAD et le Seigneur Fantôme contre le Sage Lord.
+    description: |
+      Ceres partage King's Rock avec Bismarck — elle gouverne la nuit, lui le jour.
+      Sa vraie identité de Vasuki (chef Naga) n'est pas publiquement connue.
+      
+      La Famille Assassine est rivale de la Famille Fantôme (Incubus/Succubus).
+      Ses membres sont des assassins d'élite, souvent utilisés pour des missions
+      que les autres Familles Nobles ne peuvent avouer officiellement.
+      
+      Vasuki a proposé à Ingrid une alliance pour restaurer la Porte de Yomihara
+      et accéder au Monde Humain à nouveau — une nécessité pour les deux parties.
+    relations:
+      - avec: "Chancelier Bismarck"
+        type: "Alliance — co-gouvernance de King's Rock (jour/nuit)"
+      - avec: "Famille Fantôme"
+        type: "Rivalité — les deux familles se disputent l'influence"
+      - avec: "NOMAD (Ingrid)"
+        type: "Alliance secrète pour la Porte de Yomihara"
+      - avec: "Tribu Naga (Kaliya, Takshaka)"
+        type: "Famille — les trois chefs Naga sont liés"
+    bastions:
+      - nom: "Tour des Ombres (King's Rock, secteur nuit)"
+        niveau_defense: 13
+      - nom: "Repaire des Assassins"
+        niveau_defense: 10
+        description: "Caché, localisation inconnue des autres familles"
+      - nom: "Temple des Nagas"
+        niveau_defense: 12
+    capacite_speciale: |
+      Embuscades nocturnes — attaques doublées en phase nuit.
+      Réseau d'assassins — peut cibler des PNJ spécifiques (même alliés).
+    magie_caracteristique: "Magie des ombres, venin, vitesse surnaturelle"
+    chevalier_infernal_assigne: "Shesha (Ordre du Dragon à Neuf Têtes — Naga)"
+    recompense_capture: "Réseau d'assassins recrutables + carte des repaires secrets"
+
+  - id: 6
+    nom: "Famille Flamme (Flame Family)"
+    titre: "Seigneur Flamme (Flame Lord)"
+    chef_actuel: "POSTE VACANT (depuis la mort de Gaap, ~100 ans avant 2088)"
+    chef_precedent: "Heliogabalus Gaap"
+    espece: "Démon Infernal (Inferno Demon)"
+    territoire: "Plaines Ardentes (Burning Plains)"
+    capital: "Pyrovalcan (Forteresse volcanique)"
+    niveau_difficulte: 4
+    ressource_vitale: "Feu Démoniaque (essence volcanique)"
+    statut_en_2088: |
+      VACANT depuis ~100 ans — Heliogabalus Gaap a tenté de devenir Roi des Démons,
+      contrairement à l'ordre de Bismarck. Teutates l'a tué avec un pouvoir acquis
+      via un pacte avec un démon supérieur.
+      Le titre est désormais non reconnu, et les Démons Infernaux des Plaines Ardentes
+      sont gouvernés par Astaroth (noble régionale indépendante).
+    description: |
+      Heliogabalus Gaap était un Seigneur ambitieux qui a rompu le pacte de neutralité
+      des 9 Nobles en cherchant à devenir le nouveau Roi des Démons.
+      Bismarck a orchestré sa mort via Teutates (et Beowulf comme couverture),
+      puis n'a pas nommé de successeur — laissant le poste vacant stratégiquement.
+      
+      L'absence de Seigneur Flamme fragilise l'Alliance des 9 Familles.
+      Astaroth (Reine des Plaines Ardentes) comble partiellement ce vide mais
+      n'est pas officiellement membre des 9 Nobles.
+    relations:
+      - avec: "Chancelier Bismarck"
+        type: "Conflit fatal — Bismarck a ordonné la mort de Gaap"
+      - avec: "Seigneur Cadavre (Teutates)"
+        type: "Gaap tué par Teutates — dette politique utilisée par Bismarck"
+      - avec: "Astaroth (noble régionale indépendante)"
+        type: "Successrice de facto des Plaines Ardentes (non officielle)"
+    bastions:
+      - nom: "Pyrovalcan — Forteresse Volcanique"
+        niveau_defense: 8
+      - nom: "Champs de Lave"
+        niveau_defense: 6
+    capacite_speciale: "Résistance totale au feu — soldats immunisés. Magie de feu intense."
+    magie_caracteristique: "Pyromagnie, feu infernal, chaleur pure"
+    chevalier_infernal_assigne: "Aucun (depuis mort de Gaap)"
+    recompense_capture: |
+      Territoire des Plaines Ardentes + allégeance partielle d'Astaroth + feu infernal.
+      Peut débloquer la quête « Restaurer le Titre de Seigneur Flamme ».
+
+  - id: 7
+    nom: "Famille Inconnue Α"
+    titre: "Seigneur/Seigneure inconnu(e)"
+    chef_actuel: "Identité non révélée (à définir en jeu)"
+    espece: "Non révélée"
+    territoire: "Non révélé"
+    niveau_difficulte: 6
+    statut_en_2088: "Actif — statut du seigneur inconnu du joueur au départ"
+    description: |
+      L'une des trois Familles Nobles dont l'identité n'est pas encore connue
+      publiquement dans le Monde Démoniaque. Le joueur découvre progressivement
+      qui les dirige via des missions d'espionnage et de diplomatie.
+    recompense_capture: "À définir selon les besoins narratifs"
+
+  - id: 8
+    nom: "Famille Inconnue Β"
+    titre: "Seigneur/Seigneure inconnu(e)"
+    chef_actuel: "Identité non révélée (à définir en jeu)"
+    espece: "Non révélée"
+    territoire: "Non révélé"
+    niveau_difficulte: 7
+    statut_en_2088: "Actif — peut être lié à d'anciens conflits de la famille d'Ingrid"
+    description: |
+      Cette famille pourrait avoir un lien direct avec la chute du statut noble
+      de la famille d'Ingrid. Sa révélation constitue un moment narratif clé du jeu.
+    recompense_capture: "Révèle un pan de l'histoire d'Ingrid + territoire stratégique"
+
+  - id: 9
+    nom: "Famille Inconnue Γ"
+    titre: "Le Grand Adversaire"
+    chef_actuel: "Chef mystérieux — antagoniste principal du jeu"
+    espece: "Non révélée (peut être Vampires altérés, Wraiths, ou autre)"
+    territoire: "Non révélé — la Citadelle Finale"
+    niveau_difficulte: 9
+    statut_en_2088: |
+      ANTAGONISTE PRINCIPAL — Cette famille a contribué à la chute du statut
+      d'Ingrid et cherche à consolider son emprise sur le vacuum de pouvoir
+      laissé par les postes vacants (Flamme, Cadavre).
+    description: |
+      LA famille ennemie — celle qui a orchestré la marginalisation de la lignée
+      d'Ingrid dans la hiérarchie des Chevaliers Infernaux et la corruption
+      du système des 9 Familles Nobles.
+      
+      Sa révélation est la résolution narrative principale du jeu.
+      La confrontation finale permet à Ingrid de restaurer l'honneur de sa famille.
+    bastions:
+      - nom: "Avant-Poste des Traîtres"
+        niveau_defense: 16
+      - nom: "Tour de la Conspiration"
+        niveau_defense: 19
+      - nom: "Donjon des Serments Brisés"
+        niveau_defense: 21
+      - nom: "Citadelle de l'Antagoniste"
+        niveau_defense: 25
+    capacite_speciale: |
+      Résistances multiples. Peut convoquer des Chevaliers Infernaux corrompus.
+      Combat boss en plusieurs phases narrative.
+    recompense_victoire: |
+      Fin principale du jeu — restauration complète du statut noble d'Ingrid.
+      Épilogue : Ingrid décide de son avenir (Hell Knight, NOMAD, ou indépendante).
+
+
+
+
+
+# ─────────────────────────────────────────────────────────────────────
+#  BISMARCK — LE CHANCELIER (AU-DESSUS DES 9 FAMILLES)
+# ─────────────────────────────────────────────────────────────────────
+chancelier:
+  nom: "Bismarck"
+  titre: "Chancelier (宰相卿)"
+  alias: "Bismarck le Sang-Froid"
+  espece: "Démon (très probablement Vampire — utilise la Magie du Sang)"
+  statut: "Vivant — de facto dirigeant du Monde Démoniaque"
+  apparence: "Vieil homme, longs cheveux blancs, yeux verts"
+  territoire: "King's Rock (partage le jour avec Ceres le soir)"
+  personnalite: |
+    Pragmatique, froid, calculateur. Loyal à l'ancien roi décédé.
+    Refuse formellement de s'asseoir sur le trône lui-même.
+    Pense que la stabilité passe par la division du pouvoir entre les 9 Nobles.
+  capacites:
+    - "Magie du Sang : lames, armure, projectiles sanguins"
+    - "Purge sanguine : neutralise les poisons dans son propre système"
+    - "Faiblesse : poison (compensée par la purge)"
+    - "Formation de Chevalier Infernal — vétéran de guerre"
+  politique: |
+    S'oppose catégoriquement à tout nouveau Roi des Démons.
+    Préfère le status quo — le trône vacant maintient l'équilibre fragile.
+    A fait assassiner Gaap pour avoir tenté de devenir Roi.
+    Commande les 12 Ordres de Chevaliers Infernaux via l'Ordre 1 (Chevaliers Sacrés Célestes).
+  relations:
+    - avec: "Cara Cromwell (Seigneure du Sang)"
+      type: "Faveur — la famille Cromwell a toujours la grâce de Bismarck"
+    - avec: "Ceres / Vasuki (Seigneure Assassine)"
+      type: "Co-gouvernance de King's Rock — partenaires de fait"
+    - avec: "Edwin Black (NOMAD)"
+      type: "Antagonisme — voit Black comme déstabilisateur potentiel"
+    - avec: "Ingrid"
+      type: "Respect mutuel distant — Ingrid était encore son Chevalier Infernal"
+  citation: |
+    « Maintenant que la lignée royale s'est éteinte, je crois que le Monde Démoniaque
+    devrait être divisé et gouverné par les nobles puissants.
+    C'est la meilleure façon de maintenir le statu quo. »
+
+# ─────────────────────────────────────────────────────────────────────
+#  RÔLE D'INGRID DANS LE JEU
+# ─────────────────────────────────────────────────────────────────────
+ingrid_role_in_game:
+  type: "Événement spécial"
+  declenchement: "Après conquête de la Maison 6 (Tempesvar)"
+  nom_evenement: "L'Émissaire aux Flammes Violettes"
+  description: |
+    Ingrid apparaît comme envoyée d'Edwin Black, venue évaluer
+    si le joueur représente une menace ou une opportunité.
+    
+    Selon les choix du joueur lors de la rencontre (diplomatie ou combat),
+    elle peut : ignorer le joueur, devenir une rivale active, ou rejoindre
+    le clan comme alliée exceptionnelle.
+  outcomes:
+    - condition: "Score de diplomatie élevé + bonne réputation"
+      resultat: "Ingrid rejoint le clan comme Hell Knight alliée (PNJ S-rank)"
+    - condition: "Combat victorieux contre Ingrid"
+      resultat: "Ingrid capturée — peut être recrutée après négociation"
+    - condition: "Fuite ou défaite du joueur"
+      resultat: "Ingrid observe, décide que le joueur n'est pas encore digne"

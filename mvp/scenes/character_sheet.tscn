@@ -1,0 +1,9 @@
+[gd_scene load_steps=1 format=3 uid="uid://character_sheet"]
+
+[ext_resource path="res://scripts/ui/character_sheet.gd" type="Script" id=1]
+
+[node name="CharacterSheet" type="Control"]
+script = ExtResource( 1 )
+anchor_right = 1.0
+anchor_bottom = 1.0
+name = "CharacterSheet"

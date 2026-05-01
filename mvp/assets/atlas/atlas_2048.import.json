@@ -1,0 +1,8 @@
+{
+  "compress": "lossy",
+  "quality": 0.9,
+  "generate_mipmaps": true,
+  "filter": true,
+  "repeat": false,
+  "notes": "Apply in Godot Import Dock. For UI icons set generate_mipmaps=False and filter as needed."
+}

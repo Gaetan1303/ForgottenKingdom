@@ -1,0 +1,204 @@
+[gd_scene load_steps=2 format=3 uid="uid://resolution_action"]
+
+[ext_resource type="Script" path="res://scripts/ui/resolution_action.gd" id="1_resaction"]
+
+[node name="ResolutionAction" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource("1_resaction")
+
+[node name="Background" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color(0.12, 0.01, 0.01, 1)
+
+[node name="PanneauCentre" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_left = 0.1
+anchor_top = 0.08
+anchor_right = 0.9
+anchor_bottom = 0.92
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 0.0
+offset_bottom = 0.0
+theme_override_constants/separation = 8
+
+[node name="TitreAction" type="Label" parent="PanneauCentre"]
+layout_mode = 2
+text = "Attaquer un Bastion"
+horizontal_alignment = 1
+theme_override_font_sizes/font_size = 26
+theme_override_colors/font_color = Color(1, 0.7, 0.7, 1)
+name = "TitreAction"
+
+[node name="SousTitreAction" type="Label" parent="PanneauCentre"]
+layout_mode = 2
+text = "Cible : Famille Inconnue"
+horizontal_alignment = 1
+theme_override_font_sizes/font_size = 14
+theme_override_colors/font_color = Color(0.8, 0.6, 0.6, 0.8)
+name = "SousTitreAction"
+
+[node name="PanneauStats" type="PanelContainer" parent="PanneauCentre"]
+layout_mode = 2
+size_flags_vertical = 0
+custom_minimum_size = Vector2(0, 110)
+
+[node name="ContenuStats" type="HBoxContainer" parent="PanneauCentre/PanneauStats"]
+layout_mode = 2
+theme_override_constants/separation = 50
+
+[node name="JournalResolutionScroll" type="ScrollContainer" parent="PanneauCentre"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 8)
+size_flags_vertical = 0
+clip_contents = true
+
+[node name="JournalResolution" type="RichTextLabel" parent="PanneauCentre/JournalResolutionScroll"]
+layout_mode = 2
+bbcode_enabled = false
+autowrap_mode = 3
+scroll_following = true
+name = "JournalResolution"
+
+[node name="ColJoueur" type="VBoxContainer" parent="PanneauCentre/PanneauStats/ContenuStats"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="IconeClanJoueur" type="TextureRect" parent="PanneauCentre/PanneauStats/ContenuStats/ColJoueur"]
+layout_mode = 2
+stretch_mode = 2
+custom_minimum_size = Vector2(48, 48)
+name = "IconeClanJoueur"
+
+[node name="LblJoueurTitre" type="Label" parent="PanneauCentre/PanneauStats/ContenuStats/ColJoueur"]
+layout_mode = 2
+text = "VOTRE SCORE"
+horizontal_alignment = 1
+theme_override_font_sizes/font_size = 11
+theme_override_colors/font_color = Color(0.7, 0.7, 0.7, 0.7)
+
+[node name="LblJoueurScore" type="Label" parent="PanneauCentre/PanneauStats/ContenuStats/ColJoueur"]
+layout_mode = 2
+text = "—"
+horizontal_alignment = 1
+theme_override_font_sizes/font_size = 36
+theme_override_colors/font_color = Color(0.7, 0.9, 1, 1)
+name = "LblJoueurScore"
+
+[node name="LblJoueurDetail" type="Label" parent="PanneauCentre/PanneauStats/ContenuStats/ColJoueur"]
+layout_mode = 2
+text = "Force + Commandement + Dé"
+horizontal_alignment = 1
+theme_override_font_sizes/font_size = 10
+theme_override_colors/font_color = Color(0.6, 0.7, 0.8, 0.7)
+name = "LblJoueurDetail"
+
+[node name="ColVs" type="Label" parent="PanneauCentre/PanneauStats/ContenuStats"]
+layout_mode = 2
+text = "VS"
+vertical_alignment = 1
+theme_override_font_sizes/font_size = 18
+theme_override_colors/font_color = Color(0.7, 0.5, 0.5, 0.7)
+
+[node name="ColResistance" type="VBoxContainer" parent="PanneauCentre/PanneauStats/ContenuStats"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="IconeClanCible" type="TextureRect" parent="PanneauCentre/PanneauStats/ContenuStats/ColResistance"]
+layout_mode = 2
+stretch_mode = 2
+custom_minimum_size = Vector2(48, 48)
+name = "IconeClanCible"
+
+[node name="LblResTitre" type="Label" parent="PanneauCentre/PanneauStats/ContenuStats/ColResistance"]
+layout_mode = 2
+text = "RÉSISTANCE CIBLE"
+horizontal_alignment = 1
+theme_override_font_sizes/font_size = 11
+theme_override_colors/font_color = Color(0.7, 0.7, 0.7, 0.7)
+
+[node name="LblResScore" type="Label" parent="PanneauCentre/PanneauStats/ContenuStats/ColResistance"]
+layout_mode = 2
+text = "—"
+horizontal_alignment = 1
+theme_override_font_sizes/font_size = 36
+theme_override_colors/font_color = Color(1, 0.5, 0.4, 1)
+name = "LblResScore"
+
+[node name="LblResDetail" type="Label" parent="PanneauCentre/PanneauStats/ContenuStats/ColResistance"]
+layout_mode = 2
+text = "Défense du bastion × 2"
+horizontal_alignment = 1
+theme_override_font_sizes/font_size = 10
+theme_override_colors/font_color = Color(0.8, 0.6, 0.6, 0.7)
+name = "LblResDetail"
+
+[node name="LabelResultat" type="Label" parent="PanneauCentre"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 44)
+text = "Le sort en est jeté..."
+horizontal_alignment = 1
+vertical_alignment = 1
+theme_override_font_sizes/font_size = 22
+theme_override_colors/font_color = Color(0.9, 0.9, 0.9, 1)
+name = "LabelResultat"
+
+[node name="LabelDescription" type="Label" parent="PanneauCentre"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 52)
+text = ""
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+theme_override_font_sizes/font_size = 13
+theme_override_colors/font_color = Color(0.8, 0.8, 0.8, 0.85)
+name = "LabelDescription"
+
+[node name="BarreAnimation" type="ProgressBar" parent="PanneauCentre"]
+layout_mode = 2
+value = 0.0
+name = "BarreAnimation"
+
+[node name="PanneauEffets" type="PanelContainer" parent="PanneauCentre"]
+layout_mode = 2
+visible = false
+name = "PanneauEffets"
+
+[node name="ContenuEffets" type="VBoxContainer" parent="PanneauCentre/PanneauEffets"]
+layout_mode = 2
+theme_override_constants/separation = 4
+
+[node name="TitreEffets" type="Label" parent="PanneauCentre/PanneauEffets/ContenuEffets"]
+layout_mode = 2
+text = "Conséquences :"
+theme_override_font_sizes/font_size = 12
+theme_override_colors/font_color = Color(0.7, 0.7, 0.7, 0.7)
+
+[node name="ListeEffets" type="VBoxContainer" parent="PanneauCentre/PanneauEffets/ContenuEffets"]
+layout_mode = 2
+name = "ListeEffets"
+
+[node name="ActionBarBottom" type="HBoxContainer" parent="PanneauCentre"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 0
+name = "ActionBarBottom"
+
+[node name="Spacer" type="Control" parent="PanneauCentre/ActionBarBottom"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="BtnContinuer" type="Button" parent="PanneauCentre/ActionBarBottom"]
+layout_mode = 2
+text = "→  Continuer"
+visible = false
+name = "BtnContinuer"
+
+

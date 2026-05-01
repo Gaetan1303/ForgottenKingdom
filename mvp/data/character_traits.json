@@ -1,0 +1,170 @@
+{
+  "dons": {
+    "regeneration": {
+      "label": "Regeneration Demoniaque",
+      "effects": {
+        "night_soul_regen": 3
+      }
+    },
+    "demon_vision": {
+      "label": "Vision Demoniaque",
+      "effects": {
+        "bonus_score_actions": {
+          "espionner": 1
+        }
+      }
+    },
+    "monster_empathy": {
+      "label": "Empathie des Monstres",
+      "effects": {
+        "mana_cost_reduction_pct": 20
+      }
+    },
+    "iron_will": {
+      "label": "Volonte de Fer",
+      "effects": {
+        "night_soul_regen": 1,
+        "bonus_score_actions": {
+          "recruter_pnj": 1
+        }
+      }
+    },
+    "noble_presence": {
+      "label": "Presence Nobiliaire",
+      "effects": {
+        "bonus_score_actions": {
+          "diplomatie": 2
+        },
+        "night_reputation_gain": 1
+      }
+    },
+    "battlefield_tactician": {
+      "label": "Tacticien de Champ de Bataille",
+      "effects": {
+        "soldats_cost_reduction_attaquer_pct": 10,
+        "bonus_score_actions": {
+          "attaquer": 2
+        }
+      }
+    },
+    "craftsman_soul": {
+      "label": "Ame d'Artisan",
+      "effects": {
+        "bonus_score_actions": {
+          "fortifier": 2
+        }
+      }
+    }
+  },
+  "pouvoirs": {
+    "pyrokinesis": {
+      "label": "Pyrokinesie",
+      "effects": {
+        "bonus_score_actions": {
+          "attaquer": 1
+        }
+      }
+    },
+    "telekinesis": {
+      "label": "Telekinesie",
+      "effects": {
+        "bonus_score_actions": {
+          "fortifier": 1
+        }
+      }
+    },
+    "shadow_step": {
+      "label": "Pas d'Ombre",
+      "effects": {
+        "bonus_score_actions": {
+          "espionner": 1
+        }
+      }
+    },
+    "demon_invocation": {
+      "label": "Invocation Demoniaque",
+      "effects": {
+        "mana_cost_reduction_pct": 10,
+        "bonus_score_actions": {
+          "recruter": 1,
+          "recruter_pnj": 1
+        }
+      }
+    },
+    "thunder_chain": {
+      "label": "Chaine de Foudre",
+      "effects": {
+        "bonus_score_actions": {
+          "attaquer": 1
+        }
+      }
+    },
+    "blood_shield": {
+      "label": "Bouclier de Sang",
+      "effects": {
+        "night_soul_regen": 1
+      }
+    },
+    "mind_crush": {
+      "label": "Ecrasement Mental",
+      "effects": {
+        "bonus_score_actions": {
+          "espionner": 1,
+          "diplomatie": 1
+        }
+      }
+    },
+    "earth_tremor": {
+      "label": "Tremblement de Terre",
+      "effects": {
+        "bonus_score_actions": {
+          "attaquer": 1,
+          "fortifier": 1
+        }
+      }
+    }
+  },
+  "competences": {
+    "maitrise_martiale": {
+      "label": "Maitrise martiale",
+      "effects": {
+        "bonus_score_actions": {
+          "attaquer": 1
+        }
+      }
+    },
+    "rituel_occulte": {
+      "label": "Rituel occulte",
+      "effects": {
+        "mana_cost_reduction_pct": 10,
+        "bonus_score_actions": {
+          "recruter_pnj": 1
+        }
+      }
+    },
+    "diplomatie_de_guerre": {
+      "label": "Diplomatie de guerre",
+      "effects": {
+        "bonus_score_actions": {
+          "diplomatie": 1,
+          "recruter": 1
+        }
+      }
+    },
+    "infiltration": {
+      "label": "Infiltration",
+      "effects": {
+        "bonus_score_actions": {
+          "espionner": 1
+        }
+      }
+    }
+  },
+  "caps": {
+    "mana_cost_reduction_pct": 35,
+    "soldats_cost_reduction_attaquer_pct": 20,
+    "night_soul_regen": 4,
+    "night_reputation_gain": 2,
+    "bonus_per_action_max": 3
+  }
+}

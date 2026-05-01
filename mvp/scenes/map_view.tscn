@@ -1,0 +1,142 @@
+[gd_scene load_steps=2 format=3 uid="uid://map_view"]
+
+[ext_resource type="Script" path="res://scripts/ui/map_view.gd" id="1_mapview"]
+
+
+[node name="MapView" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource("1_mapview")
+
+[node name="Background" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color(0.02, 0.0, 0.08, 1)
+
+[node name="MapContainer" type="SubViewportContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 0.88
+stretch = true
+
+[node name="MapViewport" type="SubViewport" parent="MapContainer"]
+size = Vector2i(1280, 634)
+
+[node name="MapBackground" type="ColorRect" parent="MapContainer/MapViewport"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color(0.05, 0.02, 0.15, 1)
+
+[node name="MapImage" type="TextureRect" parent="MapContainer/MapViewport"]
+name = "MapImage"
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+stretch_mode = 4
+expand = true
+
+[node name="LocationMarkers" type="Node2D" parent="MapContainer/MapViewport"]
+; NOTE: legacy Node2D kept for compatibility, markers are placed on MapOverlay/LocationMarkers
+name = "LocationMarkers"
+
+[node name="MapOverlay" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 0.88
+size_flags_horizontal = 3
+
+[node name="LocationMarkers" type="Control" parent="MapOverlay"]
+name = "LocationMarkers"
+size_flags_horizontal = 0
+
+
+[node name="Tooltip" type="PanelContainer" parent="."]
+name = "Tooltip"
+layout_mode = 1
+visible = false
+anchor_left = 0.0
+anchor_top = 0.0
+size_flags_horizontal = 0
+custom_minimum_size = Vector2(280, 0)
+
+[node name="TooltipVBox" type="VBoxContainer" parent="Tooltip"]
+layout_mode = 2
+
+[node name="TooltipTitle" type="Label" parent="Tooltip/TooltipVBox"]
+name = "TooltipTitle"
+layout_mode = 2
+text = "Lieu"
+theme_override_font_sizes/font_size = 14
+theme_override_colors/font_color = Color(0.8, 0.5, 1, 1)
+
+[node name="TooltipPeriod" type="Label" parent="Tooltip/TooltipVBox"]
+name = "TooltipPeriod"
+layout_mode = 2
+theme_override_font_sizes/font_size = 11
+theme_override_colors/font_color = Color(0.6, 0.5, 0.8, 0.8)
+
+[node name="TooltipDesc" type="RichTextLabel" parent="Tooltip/TooltipVBox"]
+name = "TooltipDesc"
+layout_mode = 2
+custom_minimum_size = Vector2(260, 80)
+bbcode_enabled = true
+theme_override_font_sizes/normal_font_size = 12
+autowrap_mode = 3
+
+[node name="BtnGoChapitre" type="Button" parent="Tooltip/TooltipVBox"]
+name = "BtnGoChapitre"
+layout_mode = 2
+text = "Lire le chapitre"
+
+[node name="Timeline" type="HBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 12
+anchor_left = 0.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -48.0
+offset_bottom = -8.0
+offset_left = 10.0
+offset_right = -10.0
+
+[node name="BtnDemonRealm" type="Button" parent="Timeline"]
+name = "BtnDemonRealm"
+layout_mode = 2
+text = "Demon Realm"
+
+[node name="BtnJapon" type="Button" parent="Timeline"]
+name = "BtnJapon"
+layout_mode = 2
+text = "Japon — Yomihara"
+
+[node name="Spacer" type="Control" parent="Timeline"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="BtnMenu" type="Button" parent="Timeline"]
+name = "BtnMenu"
+layout_mode = 2
+text = "↩ Menu"
+
+[node name="BtnStopMusic" type="Button" parent="MapOverlay"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.0
+anchor_top = 1.0
+anchor_right = 0.0
+anchor_bottom = 1.0
+offset_left = 12.0
+offset_top = -48.0
+offset_right = 76.0
+offset_bottom = -12.0
+text = "⏹"
+custom_minimum_size = Vector2(48, 32)
+name = "BtnStopMusic"

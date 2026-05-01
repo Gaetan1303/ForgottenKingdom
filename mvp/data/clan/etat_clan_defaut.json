@@ -1,0 +1,216 @@
+{
+  "_commentaire": "État initial du clan du joueur — chargé au début d'une nouvelle partie",
+  "clan": {
+    "nom": "",
+    "personnage": {
+      "nom": "",
+      "classe": "",
+      "genre": "Homme",
+      "apparence": "Vétéran balafré",
+      "pouvoir_magique": "Pyromancie",
+      "archetype_pathfinder": "Lame jurée (inspiration Guerrier)",
+      "don": "Volonté de fer",
+      "competence": "Maîtrise martiale",
+      "equipement_depart": "Arme lourde + bouclier",
+      "magie_pactes": true,
+      "competences_depart": ["Magie des Pactes"],
+      "stats": {
+        "force": 5,
+        "magie": 5,
+        "espionnage": 5,
+        "artisanat": 5,
+        "diplomatie": 5,
+        "commandement": 5
+      },
+      "caracteristiques": {
+        "vigueur": 10,
+        "esprit": 10,
+        "presence": 10,
+        "discipline": 10
+      },
+      "equipement": [],
+      "competences_actives": [],
+      "forme_dragon_utilisations": 0,
+      "barre_ame": 100
+    },
+    "ressources": {
+      "or": 500,
+      "soldats": 50,
+      "mana": 100,
+      "reputation": 10,
+      "renseignements": 0,
+      "bois": 60,
+      "fer": 40,
+      "pierre": 30,
+      "nourriture": 120,
+      "essence": 10
+    },
+    "ressources_par_tour": {
+      "or": 120,
+      "soldats": 0,
+      "mana": 20,
+      "reputation": 0,
+      "renseignements": 0,
+      "bois": 10,
+      "fer": 6,
+      "pierre": 5,
+      "nourriture": 12,
+      "essence": 2
+    },
+    "stats_clan": {
+      "stabilite": 5,
+      "influence": 5,
+      "logistique": 5,
+      "autorite": 5
+    },
+    "affinites_pnj": {
+      "forgeron": 0,
+      "alchimiste": 0,
+      "intendant": 0,
+      "arcaniste": 0
+    },
+    "fiche_hero": {},
+    "fiches_domaine": {},
+    "territoire": {
+      "bastions_tenus": ["palais_tenebres_yomihara"],
+      "bonus_production": {}
+    },
+    "tour_actuel": 1,
+    "actions_ce_tour": 1,
+    "actions_max_par_tour": 1
+  },
+  "maisons_nobles": [
+    {
+      "id": 1,
+      "nom": "Famille du Sang",
+      "titre": "Seigneure du Sang",
+      "chef": "Cara Cromwell",
+      "statut": "inconnue",
+      "relation": "neutre",
+      "bastions": [
+        { "id": "manoir_cromwell",   "nom": "Manoir Cromwell",                "defense": 5, "conquis": false },
+        { "id": "forteresse_vampires","nom": "Forteresse Côtière des Vampires","defense": 7, "conquis": false }
+      ],
+      "revelee": false,
+      "espionnee": false
+    },
+    {
+      "id": 2,
+      "nom": "Famille du Cadavre",
+      "titre": "Seigneur Cadavre (VACANT)",
+      "chef": "Vacant",
+      "statut": "desstabilisee",
+      "relation": "neutre",
+      "bastions": [
+        { "id": "forteresse_wraiths","nom": "Forteresse des Wraiths",   "defense": 9,  "conquis": false },
+        { "id": "tour_ames_liees",   "nom": "Tour des Âmes Liées",      "defense": 11, "conquis": false }
+      ],
+      "revelee": false,
+      "espionnee": false
+    },
+    {
+      "id": 3,
+      "nom": "Famille Fantôme",
+      "titre": "Seigneure Fantôme",
+      "chef": "Mizuki Shiranui",
+      "statut": "active",
+      "relation": "neutre",
+      "bastions": [
+        { "id": "domaine_illusion",     "nom": "Domaine de l'Illusion",         "defense": 7, "conquis": false },
+        { "id": "palais_plaisirs",      "nom": "Palais des Plaisirs Sombres",   "defense": 9, "conquis": false }
+      ],
+      "revelee": false,
+      "espionnee": false
+    },
+    {
+      "id": 4,
+      "nom": "Famille des Sages",
+      "titre": "Seigneure Sage",
+      "chef": "Marjaana",
+      "statut": "hostile",
+      "relation": "hostile",
+      "bastions": [
+        { "id": "tour_grimoires",       "nom": "Tour des Grimoires",                 "defense": 11, "conquis": false },
+        { "id": "sanctuaire_interdit",  "nom": "Sanctuaire de la Connaissance Interdite","defense": 14,"conquis": false },
+        { "id": "labyrinthe_mental",    "nom": "Labyrinthe Mental de Marjaana",       "defense": 16, "conquis": false }
+      ],
+      "revelee": true,
+      "espionnee": false
+    },
+    {
+      "id": 5,
+      "nom": "Famille Assassine",
+      "titre": "Seigneure Assassine",
+      "chef": "Ceres (Vasuki)",
+      "statut": "active",
+      "relation": "neutre",
+      "bastions": [
+        { "id": "tour_ombres",          "nom": "Tour des Ombres (King's Rock)", "defense": 13, "conquis": false },
+        { "id": "repaire_assassins",    "nom": "Repaire des Assassins",         "defense": 10, "conquis": false },
+        { "id": "temple_nagas",         "nom": "Temple des Nagas",              "defense": 12, "conquis": false }
+      ],
+      "revelee": false,
+      "espionnee": false
+    },
+    {
+      "id": 6,
+      "nom": "Famille Flamme",
+      "titre": "Seigneur Flamme (VACANT)",
+      "chef": "Vacant (Astaroth de facto)",
+      "statut": "desstabilisee",
+      "relation": "neutre",
+      "bastions": [
+        { "id": "pyrovalcan",           "nom": "Pyrovalcan — Forteresse Volcanique","defense": 8, "conquis": false },
+        { "id": "champs_lave",          "nom": "Champs de Lave",                    "defense": 6, "conquis": false }
+      ],
+      "revelee": false,
+      "espionnee": false
+    },
+    {
+      "id": 7,
+      "nom": "Famille Inconnue Α",
+      "titre": "Inconnue",
+      "chef": "???",
+      "statut": "inconnue",
+      "relation": "neutre",
+      "bastions": [
+        { "id": "bastion_alpha_1", "nom": "Bastion Inconnu Α-1", "defense": 10, "conquis": false },
+        { "id": "bastion_alpha_2", "nom": "Bastion Inconnu Α-2", "defense": 13, "conquis": false }
+      ],
+      "revelee": false,
+      "espionnee": false
+    },
+    {
+      "id": 8,
+      "nom": "Famille Inconnue Β",
+      "titre": "Inconnue",
+      "chef": "???",
+      "statut": "inconnue",
+      "relation": "neutre",
+      "bastions": [
+        { "id": "bastion_beta_1", "nom": "Bastion Inconnu Β-1", "defense": 12, "conquis": false },
+        { "id": "bastion_beta_2", "nom": "Bastion Inconnu Β-2", "defense": 15, "conquis": false }
+      ],
+      "revelee": false,
+      "espionnee": false
+    },
+    {
+      "id": 9,
+      "nom": "Famille Inconnue Γ",
+      "titre": "Le Grand Adversaire",
+      "chef": "???",
+      "statut": "inconnue",
+      "relation": "hostile",
+      "bastions": [
+        { "id": "avantposte_traitres",  "nom": "Avant-Poste des Traîtres",    "defense": 16, "conquis": false },
+        { "id": "tour_conspiration",    "nom": "Tour de la Conspiration",      "defense": 19, "conquis": false },
+        { "id": "donjon_serments",      "nom": "Donjon des Serments Brisés",   "defense": 21, "conquis": false },
+        { "id": "citadelle_finale",     "nom": "Citadelle de l'Antagoniste",   "defense": 25, "conquis": false }
+      ],
+      "revelee": false,
+      "espionnee": false
+    }
+  ],
+  "evenements_declenches": [],
+  "historique_tours": []
+}

@@ -1,0 +1,465 @@
+[gd_scene load_steps=2 format=3 uid="uid://creation_personnage"]
+
+[ext_resource type="Script" path="res://scripts/ui/creation_personnage.gd" id="1_creatperso"]
+
+[node name="CreationPersonnage" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource("1_creatperso")
+
+[node name="Background" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color(0.08, 0, 0.16, 1)
+
+[node name="PanneauCentre" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 20.0
+offset_top = 200.0
+offset_right = -20.0
+offset_bottom = -240.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 10
+
+[node name="Titre" type="Label" parent="PanneauCentre"]
+layout_mode = 2
+text = "Création de votre Personnage"
+horizontal_alignment = 1
+theme_override_font_sizes/font_size = 24
+theme_override_colors/font_color = Color(0.8, 0.6, 1, 1)
+
+[node name="SousTitre" type="Label" parent="PanneauCentre"]
+layout_mode = 2
+text = "Forgez l'héritière qui restaurera l'honneur de votre clan"
+horizontal_alignment = 1
+theme_override_font_sizes/font_size = 14
+theme_override_colors/font_color = Color(0.6, 0.4, 0.9, 0.7)
+
+[node name="Separateur1" type="HSeparator" parent="PanneauCentre"]
+layout_mode = 2
+
+[node name="LigneNoms" type="HBoxContainer" parent="PanneauCentre"]
+layout_mode = 2
+theme_override_constants/separation = 20
+theme_override_constants/margin_top = 80
+
+[node name="ColNomPerso" type="VBoxContainer" parent="PanneauCentre/LigneNoms"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="LabelNomPerso" type="Label" parent="PanneauCentre/LigneNoms/ColNomPerso"]
+layout_mode = 2
+text = "Nom du personnage"
+theme_override_colors/font_color = Color(0.7, 0.5, 1, 1)
+visible = false
+
+[node name="NomPersonnage" type="LineEdit" parent="PanneauCentre/LigneNoms/ColNomPerso"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 34)
+placeholder_text = "Ex : Ingrid von Schwarzwald"
+max_length = 40
+name = "NomPersonnage"
+
+[node name="ColNomClan" type="VBoxContainer" parent="PanneauCentre/LigneNoms"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="LabelNomClan" type="Label" parent="PanneauCentre/LigneNoms/ColNomClan"]
+layout_mode = 2
+text = "Nom du clan"
+theme_override_colors/font_color = Color(0.7, 0.5, 1, 1)
+visible = false
+
+[node name="NomClan" type="LineEdit" parent="PanneauCentre/LigneNoms/ColNomClan"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 34)
+placeholder_text = "Ex : Clan des Flammes Noires"
+max_length = 40
+name = "NomClan"
+
+[node name="CreationBody" type="HBoxContainer" parent="PanneauCentre"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/separation = 18
+
+[node name="ColGauche" type="VBoxContainer" parent="PanneauCentre/CreationBody"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+size_flags_stretch_ratio = 1.15
+theme_override_constants/separation = 8
+
+[node name="ColDroite" type="VBoxContainer" parent="PanneauCentre/CreationBody"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.95
+theme_override_constants/separation = 8
+
+[node name="LabelPortrait" type="Label" parent="PanneauCentre/CreationBody/ColDroite"]
+layout_mode = 2
+text = "Portrait"
+theme_override_font_sizes/font_size = 15
+theme_override_colors/font_color = Color(0.75, 0.55, 1, 1)
+
+[node name="PortraitPanel" type="PanelContainer" parent="PanneauCentre/CreationBody/ColDroite"]
+layout_mode = 2
+size_flags_horizontal = 3
+custom_minimum_size = Vector2(0, 220)
+
+[node name="PortraitContent" type="VBoxContainer" parent="PanneauCentre/CreationBody/ColDroite/PortraitPanel"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="PortraitPreview" type="TextureRect" parent="PanneauCentre/CreationBody/ColDroite/PortraitPanel/PortraitContent"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 150)
+expand_mode = 1
+stretch_mode = 5
+
+[node name="PortraitPathLabel" type="Label" parent="PanneauCentre/CreationBody/ColDroite/PortraitPanel/PortraitContent"]
+layout_mode = 2
+text = "Aucune image sélectionnée"
+autowrap_mode = 3
+theme_override_font_sizes/font_size = 11
+theme_override_colors/font_color = Color(0.82, 0.82, 0.92, 0.92)
+
+[node name="PortraitButtons" type="HBoxContainer" parent="PanneauCentre/CreationBody/ColDroite/PortraitPanel/PortraitContent"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="BtnUploadPortrait" type="Button" parent="PanneauCentre/CreationBody/ColDroite/PortraitPanel/PortraitContent/PortraitButtons"]
+layout_mode = 2
+text = "Importer une image"
+
+[node name="BtnResetPortrait" type="Button" parent="PanneauCentre/CreationBody/ColDroite/PortraitPanel/PortraitContent/PortraitButtons"]
+layout_mode = 2
+text = "Retirer"
+
+[node name="LabelFiche" type="Label" parent="PanneauCentre/CreationBody/ColDroite"]
+layout_mode = 2
+text = "Fiche personnage"
+theme_override_font_sizes/font_size = 15
+theme_override_colors/font_color = Color(0.75, 0.55, 1, 1)
+[node name="RightScroll" type="ScrollContainer" parent="PanneauCentre/CreationBody/ColDroite"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_minimum_size = Vector2(320, 240)
+clip_contents = true
+
+[node name="FicheHostPanel" type="PanelContainer" parent="PanneauCentre/CreationBody/ColDroite/RightScroll"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_minimum_size = Vector2(320, 280)
+
+[node name="FicheHost" type="MarginContainer" parent="PanneauCentre/CreationBody/ColDroite/RightScroll/FicheHostPanel"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 120
+
+[node name="PortraitFileDialog" type="FileDialog" parent="."]
+title = "Choisir un portrait"
+file_mode = 0
+access = 2
+use_native_dialog = true
+filters = PackedStringArray("*.png ; PNG", "*.jpg,*.jpeg ; JPEG", "*.webp ; WEBP")
+
+[node name="SectionBuild" type="VBoxContainer" parent="PanneauCentre/CreationBody/ColGauche"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 8
+
+[node name="LabelBuild" type="Label" parent="PanneauCentre/CreationBody/ColGauche/SectionBuild"]
+layout_mode = 2
+text = "Profil RPG (inspiré des CRPG)"
+theme_override_font_sizes/font_size = 15
+theme_override_colors/font_color = Color(0.75, 0.55, 1, 1)
+
+[node name="GrilleBuild" type="GridContainer" parent="PanneauCentre/CreationBody/ColGauche/SectionBuild"]
+layout_mode = 2
+columns = 2
+theme_override_constants/h_separation = 12
+theme_override_constants/v_separation = 6
+
+[node name="LabelGenre" type="Label" parent="PanneauCentre/CreationBody/ColGauche/SectionBuild/GrilleBuild"]
+layout_mode = 2
+text = "Genre"
+
+[node name="OptionGenre" type="OptionButton" parent="PanneauCentre/CreationBody/ColGauche/SectionBuild/GrilleBuild"]
+layout_mode = 2
+name = "OptionGenre"
+
+[node name="OptionApparence" type="OptionButton" parent="PanneauCentre/CreationBody/ColGauche/SectionBuild/GrilleBuild"]
+layout_mode = 2
+name = "OptionApparence"
+
+[node name="LabelApparence" type="Label" parent="PanneauCentre/CreationBody/ColGauche/SectionBuild/GrilleBuild"]
+layout_mode = 2
+text = "Apparence"
+
+[node name="LabelPouvoir" type="Label" parent="PanneauCentre/CreationBody/ColGauche/SectionBuild/GrilleBuild"]
+layout_mode = 2
+text = "Pouvoir magique"
+
+[node name="OptionPouvoir" type="OptionButton" parent="PanneauCentre/CreationBody/ColGauche/SectionBuild/GrilleBuild"]
+layout_mode = 2
+name = "OptionPouvoir"
+
+[node name="LabelArchetype" type="Label" parent="PanneauCentre/CreationBody/ColGauche/SectionBuild/GrilleBuild"]
+layout_mode = 2
+text = "Archétype"
+
+[node name="OptionArchetype" type="OptionButton" parent="PanneauCentre/CreationBody/ColGauche/SectionBuild/GrilleBuild"]
+layout_mode = 2
+name = "OptionArchetype"
+
+[node name="LabelDon" type="Label" parent="PanneauCentre/CreationBody/ColGauche/SectionBuild/GrilleBuild"]
+layout_mode = 2
+text = "Don"
+
+[node name="OptionDon" type="OptionButton" parent="PanneauCentre/CreationBody/ColGauche/SectionBuild/GrilleBuild"]
+layout_mode = 2
+name = "OptionDon"
+
+[node name="LabelCompetence" type="Label" parent="PanneauCentre/CreationBody/ColGauche/SectionBuild/GrilleBuild"]
+layout_mode = 2
+text = "Compétence"
+
+[node name="OptionCompetence" type="OptionButton" parent="PanneauCentre/CreationBody/ColGauche/SectionBuild/GrilleBuild"]
+layout_mode = 2
+name = "OptionCompetence"
+
+[node name="LabelEquipement" type="Label" parent="PanneauCentre/CreationBody/ColGauche/SectionBuild/GrilleBuild"]
+layout_mode = 2
+text = "Équipement de départ"
+
+[node name="OptionEquipement" type="OptionButton" parent="PanneauCentre/CreationBody/ColGauche/SectionBuild/GrilleBuild"]
+layout_mode = 2
+name = "OptionEquipement"
+
+[node name="LabelBuildResume" type="Label" parent="PanneauCentre/CreationBody/ColGauche/SectionBuild"]
+layout_mode = 2
+text = ""
+autowrap_mode = 3
+theme_override_font_sizes/font_size = 11
+theme_override_colors/font_color = Color(0.82, 0.82, 0.92, 0.92)
+name = "LabelBuildResume"
+
+[node name="LabelPacteFixe" type="Label" parent="PanneauCentre/CreationBody/ColGauche/SectionBuild"]
+layout_mode = 2
+text = "Règle de jeu: Magie des Pactes obligatoire pour recruter des PNJ."
+autowrap_mode = 3
+theme_override_font_sizes/font_size = 11
+theme_override_colors/font_color = Color(0.88, 0.75, 0.95, 0.95)
+
+[node name="LabelClasse" type="Label" parent="PanneauCentre/CreationBody/ColGauche"]
+layout_mode = 2
+text = "Choisissez votre classe"
+theme_override_font_sizes/font_size = 16
+theme_override_colors/font_color = Color(0.7, 0.5, 1, 1)
+
+[node name="CartesScroll" type="ScrollContainer" parent="PanneauCentre/CreationBody/ColGauche"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_minimum_size = Vector2(480, 220)
+clip_contents = true
+
+[node name="CartesClasses" type="GridContainer" parent="PanneauCentre/CreationBody/ColGauche/CartesScroll"]
+layout_mode = 2
+columns = 3
+size_flags_horizontal = 3
+theme_override_constants/separation = 10
+name = "CartesClasses"
+custom_minimum_size = Vector2(440, 0)
+
+[node name="CarteChevSombre" type="PanelContainer" parent="PanneauCentre/CreationBody/ColGauche/CartesScroll/CartesClasses"]
+layout_mode = 2
+size_flags_horizontal = 3
+name = "CarteChevSombre"
+
+[node name="ContenuChevalier" type="VBoxContainer" parent="PanneauCentre/CreationBody/ColGauche/CartesScroll/CartesClasses/CarteChevSombre"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="IcoChevalier" type="Label" parent="PanneauCentre/CreationBody/ColGauche/CartesScroll/CartesClasses/CarteChevSombre/ContenuChevalier"]
+layout_mode = 2
+text = "[ Guerrier ]"
+horizontal_alignment = 1
+theme_override_font_sizes/font_size = 24
+
+[node name="NomClasseChevalier" type="Label" parent="PanneauCentre/CreationBody/ColGauche/CartesScroll/CartesClasses/CarteChevSombre/ContenuChevalier"]
+layout_mode = 2
+text = "Chevalier Sombre"
+horizontal_alignment = 1
+theme_override_font_sizes/font_size = 14
+theme_override_colors/font_color = Color(0.9, 0.3, 0.3, 1)
+
+[node name="DescChevalier" type="Label" parent="PanneauCentre/CreationBody/ColGauche/CartesScroll/CartesClasses/CarteChevSombre/ContenuChevalier"]
+layout_mode = 2
+text = "Guerrier d'avant-garde.\nLes bastions s'effondrent sous vos assauts."
+horizontal_alignment = 1
+autowrap_mode = 3
+theme_override_font_sizes/font_size = 11
+theme_override_colors/font_color = Color(0.8, 0.8, 0.8, 0.9)
+
+[node name="BtnChevalier" type="Button" parent="PanneauCentre/CreationBody/ColGauche/CartesScroll/CartesClasses/CarteChevSombre/ContenuChevalier"]
+layout_mode = 2
+text = "Choisir"
+name = "BtnChevalier"
+
+[node name="CarteMage" type="PanelContainer" parent="PanneauCentre/CreationBody/ColGauche/CartesScroll/CartesClasses"]
+layout_mode = 2
+size_flags_horizontal = 3
+name = "CarteMage"
+
+[node name="ContenuMage" type="VBoxContainer" parent="PanneauCentre/CreationBody/ColGauche/CartesScroll/CartesClasses/CarteMage"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="IcoMage" type="Label" parent="PanneauCentre/CreationBody/ColGauche/CartesScroll/CartesClasses/CarteMage/ContenuMage"]
+layout_mode = 2
+text = "[ Mage ]"
+horizontal_alignment = 1
+theme_override_font_sizes/font_size = 24
+
+[node name="NomClasseMage" type="Label" parent="PanneauCentre/CreationBody/ColGauche/CartesScroll/CartesClasses/CarteMage/ContenuMage"]
+layout_mode = 2
+text = "Mage du Pacte"
+horizontal_alignment = 1
+theme_override_font_sizes/font_size = 14
+theme_override_colors/font_color = Color(0.6, 0.3, 0.9, 1)
+
+[node name="DescMage" type="Label" parent="PanneauCentre/CreationBody/ColGauche/CartesScroll/CartesClasses/CarteMage/ContenuMage"]
+layout_mode = 2
+text = "Invocateur et lanceur de sorts. Formez des pactes aux pouvoirs anciens."
+horizontal_alignment = 1
+autowrap_mode = 3
+theme_override_font_sizes/font_size = 11
+theme_override_colors/font_color = Color(0.8, 0.8, 0.8, 0.9)
+
+[node name="BtnMage" type="Button" parent="PanneauCentre/CreationBody/ColGauche/CartesScroll/CartesClasses/CarteMage/ContenuMage"]
+layout_mode = 2
+text = "Choisir"
+name = "BtnMage"
+
+[node name="CarteStratege" type="PanelContainer" parent="PanneauCentre/CreationBody/ColGauche/CartesScroll/CartesClasses"]
+layout_mode = 2
+size_flags_horizontal = 3
+name = "CarteStratege"
+
+[node name="ContenuStratege" type="VBoxContainer" parent="PanneauCentre/CreationBody/ColGauche/CartesScroll/CartesClasses/CarteStratege"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="IcoStratege" type="Label" parent="PanneauCentre/CreationBody/ColGauche/CartesScroll/CartesClasses/CarteStratege/ContenuStratege"]
+layout_mode = 2
+text = "[ Stratege ]"
+horizontal_alignment = 1
+theme_override_font_sizes/font_size = 24
+
+[node name="NomClasseStratege" type="Label" parent="PanneauCentre/CreationBody/ColGauche/CartesScroll/CartesClasses/CarteStratege/ContenuStratege"]
+layout_mode = 2
+text = "Stratège des Ombres"
+horizontal_alignment = 1
+theme_override_font_sizes/font_size = 14
+theme_override_colors/font_color = Color(0.3, 0.7, 0.5, 1)
+
+[node name="DescStratege" type="Label" parent="PanneauCentre/CreationBody/ColGauche/CartesScroll/CartesClasses/CarteStratege/ContenuStratege"]
+layout_mode = 2
+text = "Gagnez les guerres avant qu'elles commencent. Maîtrisez l'ombre."
+horizontal_alignment = 1
+autowrap_mode = 3
+theme_override_font_sizes/font_size = 11
+theme_override_colors/font_color = Color(0.8, 0.8, 0.8, 0.9)
+
+[node name="BtnStratege" type="Button" parent="PanneauCentre/CreationBody/ColGauche/CartesScroll/CartesClasses/CarteStratege/ContenuStratege"]
+layout_mode = 2
+text = "Choisir"
+name = "BtnStratege"
+
+[node name="LabelClasseChoisie" type="Label" parent="PanneauCentre/CreationBody/ColGauche"]
+layout_mode = 2
+text = "Aucune classe sélectionnée"
+horizontal_alignment = 1
+theme_override_colors/font_color = Color(0.6, 0.6, 0.6, 0.7)
+name = "LabelClasseChoisie"
+
+[node name="Separateur2" type="HSeparator" parent="PanneauCentre/CreationBody/ColGauche"]
+layout_mode = 2
+
+[node name="LigneBoutons" type="HBoxContainer" parent="PanneauCentre"]
+layout_mode = 2
+alignment = 1
+theme_override_constants/separation = 20
+visible = false
+
+[node name="BtnRetour" type="Button" parent="PanneauCentre/LigneBoutons"]
+layout_mode = 2
+text = "Retour"
+name = "BtnRetour"
+
+[node name="BtnCommencer" type="Button" parent="PanneauCentre/LigneBoutons"]
+layout_mode = 2
+text = "Commencer l'aventure"
+disabled = true
+name = "BtnCommencer"
+theme_override_colors/font_color = Color(0.9, 0.7, 1, 1)
+
+[node name="ActionBar" type="PanelContainer" parent="."]
+layout_mode = 1
+anchors_preset = 8
+# anchor the bar to the right edge with a fixed width so it doesn't span the full bottom
+anchor_left = 1.0
+anchor_right = 1.0
+anchor_top = 1.0
+anchor_bottom = 1.0
+# negative left offset creates a fixed width box anchored to the right
+offset_left = -520.0
+offset_right = 0.0
+offset_top = -64.0
+offset_bottom = 0.0
+theme_override_constants/separation = 8
+
+[node name="ActionButtons" type="HBoxContainer" parent="ActionBar"]
+layout_mode = 1
+alignment = 2
+theme_override_constants/separation = 12
+size_flags_horizontal = 3
+
+[node name="BtnRetourBottom" type="Button" parent="ActionBar/ActionButtons"]
+layout_mode = 2
+text = "Retour"
+name = "BtnRetourBottom"
+flat = true
+
+[node name="BtnCommencerBottom" type="Button" parent="ActionBar/ActionButtons"]
+layout_mode = 2
+text = "Commencez l'aventure"
+name = "BtnCommencerBottom"
+disabled = true
+theme_override_colors/font_color = Color(0.9, 0.7, 1, 1)
+custom_minimum_size = Vector2(240, 36)
+flat = true
+
+[node name="LabelErreur" type="Label" parent="PanneauCentre/CreationBody/ColGauche"]
+layout_mode = 2
+text = ""
+horizontal_alignment = 1
+theme_override_colors/font_color = Color(1, 0.3, 0.3, 1)
+name = "LabelErreur"

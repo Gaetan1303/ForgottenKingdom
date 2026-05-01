@@ -1,0 +1,242 @@
+# Carte Interactive — Points d'intérêt (Ingrid MVP)
+# Coordonnées relatives sur la carte du Demon Realm / Japon
+
+map_regions:
+  - id: "demon_realm"
+    nom: "Demon Realm"
+    couleur: "#8B0000"
+    description: "Monde démoniaque — domaine des 9 Grandes Maisons Nobles"
+
+  - id: "japan"
+    nom: "Japon — Monde Humain"
+    couleur: "#1a1a2e"
+    description: "Monde humain — Yomihara, ville-frontière"
+
+locations:
+  - id: "nine_noble_dominion"
+    nom: "Nine Noble Dominion"
+    region: "demon_realm"
+    # Position relative sur la carte (0.0 à 1.0)
+    pos_x: 0.3
+    pos_y: 0.25
+    chapitre_associe: 1
+    icone: "castle_icon"
+    couleur: "#9b59b6"
+    description: |
+      Siège de l'alliance des 9 Grandes Maisons nobles démoniques.
+      C'est ici qu'Ingrid prête serment en tant que Hell Knight,
+      au service de l'ordre le plus puissant du Demon Realm.
+    period: "Antiquité"
+    chapitres: [1, 2]
+
+  - id: "ritual_temple"
+    nom: "Temple du Rituel Primordial"
+    region: "demon_realm"
+    pos_x: 0.25
+    pos_y: 0.45
+    chapitre_associe: 2
+    icone: "magic_circle_icon"
+    couleur: "#2c3e50"
+    description: |
+      Lieu secret où se déroule l'ancien Rituel Primordial des Hell Knights.
+      C'est ici qu'Ingrid scelle le dragon noir Grenier dans son corps,
+      devenant une Hell Knight Primordale.
+    period: "Antiquité"
+    chapitres: [2]
+
+  - id: "greenfort_village"
+    nom: "Greenfort Village"
+    region: "demon_realm"
+    pos_x: 0.55
+    pos_y: 0.35
+    chapitre_associe: 3
+    icone: "village_icon"
+    couleur: "#27ae60"
+    description: |
+      Village démoniaque rural sauvé par Ingrid lors d'une intervention
+      dont les détails restent légendaires. Une statue à son effigie
+      trône au centre du village. Peut-être le lieu de sa première
+      rencontre avec Edwin Black.
+    period: "Antiquité"
+    chapitres: [3]
+
+  - id: "kings_rock"
+    nom: "King's Rock — Siège de l'Ordre du Dragon Noir"
+    region: "demon_realm"
+    pos_x: 0.4
+    pos_y: 0.55
+    chapitre_associe: 4
+    icone: "fortress_icon"
+    couleur: "#c0392b"
+    description: |
+      Ancienne résidence d'Ingrid et siège de l'Ordre du Dragon Noir,
+      qu'elle dirige. L'un des 12 Ordres des Hell Knights.
+      C'est d'ici qu'elle est reconnue comme "Le Sabre de l'Alliance".
+    period: "Antiquité — Avant 2063"
+    chapitres: [4]
+
+  - id: "rosemary_territory"
+    nom: "Rosemary Territory"
+    region: "demon_realm"
+    pos_x: 0.65
+    pos_y: 0.4
+    chapitre_associe: 4
+    icone: "noble_house_icon"
+    couleur: "#e67e22"
+    description: |
+      Territoire de la famille Rosemary — nobles démons alliés d'Ingrid.
+      C'est ici qu'elle rencontre Lina pour la première fois et décide
+      de l'aider à devenir une Hell Knight.
+    period: "Avant 2063"
+    chapitres: [4]
+
+  - id: "dark_world_departure"
+    nom: "Dark World — Poste d'Ingrid (ancien)"
+    region: "demon_realm"
+    pos_x: 0.2
+    pos_y: 0.65
+    chapitre_associe: 5
+    icone: "dark_portal_icon"
+    couleur: "#7f8c8d"
+    description: |
+      Poste d'Ingrid dans le Dark World qu'elle abandonne pour suivre
+      Edwin Black. Ce choix est perçu comme une trahison par les 9 Nobles.
+      Pour Ingrid, c'est le début de la liberté.
+    period: "Avant 2063"
+    chapitres: [5]
+
+  - id: "yomihara"
+    nom: "Yomihara — Japon"
+    region: "japan"
+    pos_x: 0.75
+    pos_y: 0.3
+    chapitre_associe: 6
+    icone: "city_icon"
+    couleur: "#3498db"
+    description: |
+      Ville japonaise aux portes du monde démoniaque.
+      Siège de Nomad. Ingrid y vit et y dirige les opérations
+      au nom d'Edwin Black depuis 2063.
+    period: "2063–2088+"
+    chapitres: [6, 7, 8, 9, 10]
+
+  - id: "palace_of_darkness"
+    nom: "Palace of Darkness — QG Nomad"
+    region: "japan"
+    pos_x: 0.78
+    pos_y: 0.27
+    chapitre_associe: 6
+    icone: "headquarters_icon"
+    couleur: "#1a1a2e"
+    description: |
+      Quartier général de Nomad à Yomihara. Géré par Ingrid
+      en l'absence d'Edwin Black. Elle y accueille Lina,
+      Dolores (sa cousine éloignée), et surveille les opérations.
+    period: "2063–2088+"
+    chapitres: [6, 9]
+
+  - id: "chaos_arena"
+    nom: "Chaos Arena"
+    region: "japan"
+    pos_x: 0.72
+    pos_y: 0.35
+    chapitre_associe: 7
+    icone: "arena_icon"
+    couleur: "#e74c3c"
+    description: |
+      Arène de combats clandestins de Yomihara. Théâtre de l'Affaire Sabato
+      en 2075. C'est ici qu'Ingrid démasque la trahison de Sabato
+      et combat la fusion Sabato-Murasaki.
+    period: "2075"
+    chapitres: [7]
+
+  - id: "ufs_america"
+    nom: "UFS — Amérique"
+    region: "japan"
+    pos_x: 0.1
+    pos_y: 0.4
+    chapitre_associe: 8
+    icone: "map_flag_icon"
+    couleur: "#bdc3c7"
+    description: |
+      En 2082, Ingrid mène des opérations aux États-Unis (UFS),
+      où elle affronte la Taimanin masquée dans un combat sans vainqueur.
+    period: "2082"
+    chapitres: [8]
+
+  - id: "demon_gate_amidahara"
+    nom: "Demon Gate Amidahara"
+    region: "japan"
+    pos_x: 0.8
+    pos_y: 0.38
+    chapitre_associe: 10
+    icone: "demon_gate_icon"
+    couleur: "#8e44ad"
+    description: |
+      Porte démonique du district d'Amidahara à Yomihara.
+      Ingrid s'y rend en secret pour tisser une alliance avec
+      l'Assassin Lord Vasuki, dans la quête de réouverture
+      de la porte et du retour d'Edwin Black.
+    period: "2088+"
+    chapitres: [10]
+
+timeline_events:
+  - annee: "Antiquité"
+    evenements:
+      - "Naissance d'Ingrid dans une famille noble du Demon Realm"
+      - "Formation et entrée chez les Hell Knights"
+      - "Rituel Primordial — Scellement du dragon Grenier"
+      - "Sauvetage de Greenfort Village"
+      - "Accession au rang de chef de l'Ordre du Dragon Noir"
+
+  - annee: "Avant 2063"
+    evenements:
+      - "Rencontre avec Edwin Black (probablement à Greenfort)"
+      - "Abandon du poste aux 9 Nobles — trahison perçue"
+      - "Recrutement de Lina dans Nomad"
+
+  - annee: "2063"
+    evenements:
+      - "Fondation de Nomad et Zero Nations Group avec Black et Sakyo"
+      - "Installation à Yomihara — Palace of Darkness"
+
+  - annee: "2075"
+    evenements:
+      - "Affaire Sabato — Chaos Arena"
+      - "Ingrid démasque et neutralise la trahison"
+
+  - annee: "2082"
+    evenements:
+      - "Opérations aux UFS — combat contre la Taimanin masquée"
+      - "Retour au Japon — sauvegarde de Fürst et Oboro"
+
+  - annee: "2083"
+    evenements:
+      - "Neo Chaos Arena — combat contre Fuuma Kotaro"
+
+  - annee: "2084"
+    evenements:
+      - "Rift spatio-temporel — crise de la Me-duse avec Sakura"
+      - "Vacances à la plage (épisode comique)"
+
+  - annee: "2085"
+    evenements:
+      - "Lina devient Hell Knight officielle"
+      - "Tentative d'assassinat par Bunny K — neutralisée"
+
+  - annee: "2086"
+    evenements:
+      - "Démasquage et abandon de Fürst (agent double de Teutates)"
+      - "Bataille contre les Revenant Knights"
+
+  - annee: "2087"
+    evenements:
+      - "Alliance temporaire avec les Taimanin contre Teutates"
+      - "Bataille contre Lady Shark et Felicia"
+
+  - annee: "2088"
+    evenements:
+      - "Gaiza Massacre — destruction de la porte démonique"
+      - "Black disparu — Ingrid prend les rênes de Nomad"
+      - "Piègeée dans un monde de rêve par le Marriage Golem"
+      - "Quête pour rouvrir la porte — alliance avec Vasuki"

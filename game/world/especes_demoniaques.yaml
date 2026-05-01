@@ -1,0 +1,606 @@
+# ═══════════════════════════════════════════════════════════════════════
+#  ESPÈCES DÉMONIAQUES DU MONDE SOMBRE  (tout en français)
+#  Source : Taimanin Wiki (taimanin.fandom.com) — CC-BY-SA
+#  Données de conception du jeu RPG — races jouables et adversaires
+# ═══════════════════════════════════════════════════════════════════════
+
+# ─────────────────────────────────────────────────────────────────────
+#  RÈGLES UNIVERSELLES DES DÉMONS
+# ─────────────────────────────────────────────────────────────────────
+regles_universelles:
+  mana: |
+    Énergie magique que les démons manipulent instinctivement.
+    La quantité et le type de Mana varient selon l'espèce.
+    Les démons de rang plus élevé ont un réservoir de Mana beaucoup plus grand.
+  miasme: |
+    Substance toxique naturelle du Monde Démoniaque.
+    Tous les démons y sont immunisés nativement.
+    Pour les humains : contamination progressive → mutation → démonisation complète.
+  faiblesse_universelle: |
+    Particules Taima (対魔粒子) — utilisées par les Taimanin.
+    Neutralisent la régénération démonique et bloquent le Mana.
+    Seule substance capable d'infliger des dégâts durables contre des démons de haut rang.
+  regeneration: |
+    Les démons se régénèrent rapidement de blessures normales.
+    Les blessures infligées par les Particules Taima ne se régénèrent pas.
+    Les démons Mystiques (les plus anciens) ont une régénération quasi totale.
+  longevite: |
+    Démons communs : 100-500 ans
+    Démons nobles : 500-3000 ans
+    Démons Mystiques / Anciens : 3000-10 000 ans (certains immortels effectifs)
+  demonisation: |
+    Des cellules démoniques implantées dans un humain déclenchent une transformation.
+    Résultat : hybride demi-démon puis démon complet selon la dose et la race donneuse.
+    Les Taimanin ont hérité de cette biologie via les ancêtres Aion/Vampires.
+  hybrides: |
+    Demi-démons (sang-mêlé) : existent mais sont discriminés par les deux camps.
+    Taimanin = techniquement des hybrides lointains, mais assez intégrés dans le monde humain.
+  rang: |
+    Bas → Haut selon rareté, puissance magique, et ancienneté.
+    Un démon commun peut monter en rang par accumulation de Mana sur sa vie.
+    Les Démons Mystiques sont nés anciens — ils ne progressent pas par apprentissage.
+
+# ─────────────────────────────────────────────────────────────────────
+#  CATÉGORIE A — DÉMONS HUMANOÏDES
+# ─────────────────────────────────────────────────────────────────────
+especes_humanoïdes:
+
+  - id: "demon_commun"
+    nom: "Démon Humanoïde Commun"
+    nom_japonais: "人型悪魔"
+    rang: 3
+    description: |
+      La forme démonique la plus répandue et la plus proche de la morphologie humaine.
+      Aspect généralement humain avec des traits exotiques (cornes, queue, yeux inhabituels,
+      teinte de peau non-humaine, oreilles pointues, etc.).
+      Certains clans nobles ont développé des lignages de grande puissance à partir de ce point.
+    capacites:
+      - "Mana naturel (variable selon individu)"
+      - "Régénération standard"
+      - "Force et vitesse légèrement supérieures à un humain"
+    exemples_notables:
+      - "Ingrid (lignée noble)"
+    presence_dans_jeu:
+      - "Race la plus commune parmi les soldats du clan du joueur"
+      - "Ingrid elle-même est de cette espèce"
+
+  - id: "vampire"
+    nom: "Vampire"
+    nom_japonais: "ヴァンパイア"
+    rang: 5
+    sous_types: ["Vampire Noble", "Vampire Commun", "Revenant (mort-vivant partiel)"]
+    description: |
+      Aristocratie du sang démoniaque. Les Vampires sont parmi les espèces les plus
+      puissantes et les plus organisées. Leurs pouvoirs tournent autour du Sang :
+      absorption, manipulation, animation du sang mort.
+      Ils survivent en consommant l'énergie vitale de leurs victimes (sang = Mana concentré).
+    capacites:
+      - "Magie du Sang (Blood Magic) — lames, armures, projectiles de sang"
+      - "Absorption d'énergie vitale au contact"
+      - "Vol (certains nobles)"
+      - "Charme / hypnose de faible intensité"
+      - "Régénération accélérée (sauf blessures au cœur ou UV intenses)"
+      - "Résistance au Miasme élevée"
+    faiblesses:
+      - "Lumière solaire intense (affaiblit, ne tue pas nécessairement)"
+      - "Bois de cerisier (tradition folklorique) ou matériaux imprégnés de Taima"
+    exemples_notables:
+      - "Bismarck (probable)"
+      - "Cara Cromwell (Seigneure du Sang)"
+      - "Edwin Black (Roi des Vampires)"
+      - "Marika Krishna (Ordre Dragon d'Or)"
+      - "Meia Bradford"
+    presence_dans_jeu:
+      - "Ennemis principaux de la Maison 1 (Famille du Sang)"
+      - "Peuvent être recrutés via alliance ou conquête"
+      - "Capacité spéciale des soldats vampires : régénération lente au fil des tours"
+
+  - id: "wraith"
+    nom: "Wraith (Spectre)"
+    nom_japonais: "レイス / 怨霊"
+    rang: 4
+    sous_types: ["Wraith de Mort", "Revenant Knight", "Mort-Vivant supérieur"]
+    description: |
+      Entités semi-corporelles — entre le monde physique et celui des ombres.
+      Les Wraiths sont nés de la mort violente de démons puissants ou d'humains
+      corrompus par des pactes avec des démons supérieurs.
+      Ils se nourrissent de l'énergie psychique de la peur et de la douleur.
+    capacites:
+      - "Semi-immatérialité — traversent les objets physiques normaux"
+      - "Nécromancie mineure (animent les cadavres)"
+      - "Terreur surnaturelle (aura de peur)"
+      - "Vol naturel"
+      - "Vision dans l'obscurité totale"
+      - "Résistance aux attaques physiques non-enchantées"
+    faiblesses:
+      - "Lumière enchantée ou Mana lumineux"
+      - "Particules Taima (neutralisation complète)"
+      - "Sel rituel (tradition folklorique, efficacité limitée)"
+    exemples_notables:
+      - "Teutates (ex-Seigneur Cadavre, mort)"
+      - "Revenant Knights (gardes du Corpse Lord)"
+    presence_dans_jeu:
+      - "Ennemis de la Maison 2 (Famille du Cadavre)"
+      - "Résistants aux attaques physiques — nécessitent Sort ou armes enchantées"
+      - "Peuvent revenir après défaite (Revenant = mécanisme de résurrection)"
+
+  - id: "incube_succube"
+    nom: "Incube / Succube"
+    nom_japonais: "インキュバス / サキュバス"
+    rang: 4
+    description: |
+      Démons du désir et de la manipulation psychique. Ils se nourrissent
+      de l'énergie vitale via le contact intime ou la manipulation émotionnelle.
+      Peuvent changer de genre et d'apparence facilement.
+      Les Incubes et Succubes forment une société matriarcale dans le Monde Sombre.
+    capacites:
+      - "Charme puissant (effets mentaux sur humains et démons faibles)"
+      - "Altération d'apparence (illusions physiques)"
+      - "Absorption d'énergie vitale"
+      - "Magie mentale (suggestion, manipulation des émotions)"
+      - "Vol (ailes démoniques)"
+    faiblesses:
+      - "Volonté forte ou magie mentale supérieure (contre-charme)"
+      - "Particules Taima (reviennent à leur forme réelle)"
+    exemples_notables:
+      - "Kamadeva (ex-Seigneur Fantôme)"
+      - "Ereshkigal (ex-Seigneure Fantôme)"
+      - "Mizuki Shiranui (Seigneure Fantôme actuelle — ancienne humaine)"
+    presence_dans_jeu:
+      - "Espions naturels — capacité de charme utile pour l'espionnage"
+      - "Ennemis de la Maison 3 (Famille Fantôme)"
+      - "Soldats Succubes / Incubus recrutables : bonus d'espionnage"
+
+  - id: "oni"
+    nom: "Oni (+ Ogre, Gobelin)"
+    nom_japonais: "鬼 / オーガ / ゴブリン"
+    rang: "2 (Goblin) à 4 (Oni de rang supérieur)"
+    hiérarchie_interne: "Gobelin < Ogre < Oni < Grand Oni"
+    description: |
+      L'une des races démoniques les plus nombreuses dans le Monde Sombre.
+      Les Gobelins sont bas de gamme — nombreux mais faibles.
+      Les Oni sont robustes, puissants physiquement, souvent peu intelligents
+      mais certains atteignent des niveaux de sagesse impressionnants avec l'âge.
+      Les Oni forment souvent des tribus clanniques avec des structures féodales.
+    capacites:
+      - "Force physique exceptionnelle (même chez les Ogres communs)"
+      - "Résistance aux températures extrêmes"
+      - "Magie élémentaire basique (Oni de rang supérieur)"
+      - "Régénération rapide"
+    faiblesses:
+      - "Intelligence limitée (chez les individus bas de gamme)"
+      - "Vulnérabilité aux soutiens magiques ennemis"
+    exemples_notables:
+      - "Sokushitsuki (Rakshasa, Reine des Oni)"
+      - "Ragnarok Sinmara (dirige aussi une mafia oni)"
+    presence_dans_jeu:
+      - "Soldats de base très accessibles — recruter des Oni = peu coûteux mais bas niveau"
+      - "Peuvent former des armées nombreuses"
+
+  - id: "homme_bete"
+    nom: "Homme-Bête (Beastman)"
+    nom_japonais: "獣人"
+    rang: 3
+    sous_types: ["Homme-Loup", "Homme-Lion", "Homme-Oiseau", "Homme-Serpent", "autres"]
+    description: |
+      Hybrides animaux humanoïdes — corps humain avec caractéristiques animales marquées.
+      Forment des tribus selon leur espèce animale.
+      Souvent des guerriers naturels, très adaptés au combat physique.
+      La Tribu des Loups d'Argent est gouvernée par Crocell.
+    capacites:
+      - "Sens animaux (olfaction, vision nocturne, ouïe) selon sous-espèce"
+      - "Force et agilité selon sous-espèce"
+      - "Magie animale mineure"
+    exemples_notables:
+      - "Crocell (Reine Homme-Loup d'Argent)"
+    presence_dans_jeu:
+      - "Disponibles comme mercenaires ou soldats à recruter"
+      - "Bonus de combat dans les forêts (terrain naturel)"
+
+  - id: "naga"
+    nom: "Naga"
+    nom_japonais: "ナーガ"
+    rang: 4
+    description: |
+      Serpents humanoïdes de grande taille. Corps supérieur humanoïde, inférieur en serpent.
+      Puissants magiciens et guerriers. Leur venin est d'une toxicité extrême.
+      Le clan Naga a trois chefs principaux : Kaliya, Takshaka et Vasuki (= Ceres).
+      Vasuki est la plus puissante des trois.
+    capacites:
+      - "Venin extrêmement toxique (ingéré ou injecté)"
+      - "Magie du Venin et des serpents"
+      - "Force physique élevée"
+      - "Esquive naturelle (corps serpentiforme)"
+      - "Résistance aux poisons"
+    exemples_notables:
+      - "Ceres / Vasuki (Seigneure Assassine)"
+      - "Shesha (Chef de l'Ordre du Dragon à Neuf Têtes)"
+      - "Kaliya, Takshaka (autres chefs Nagas)"
+    presence_dans_jeu:
+      - "Ennemis / alliés de la Maison 5 (Famille Assassine)"
+      - "Soldats Nagas : bonus d'empoisonnement des combats"
+      - "Shesha = boss optionnel si alliance avec Ceres"
+
+  - id: "brain_flayer"
+    nom: "Brain Flayer (Dévoreur de Cerveaux)"
+    nom_japonais: "ブレインフレイヤー"
+    rang: 5
+    description: |
+      Créatures psychiques rares et extrêmement intelligentes.
+      Se nourrissent de souvenirs et d'intelligence — leurs victimes perdent
+      leurs capacités cognitives au fil des repas mentaux.
+      Peuvent dominer mentalement des sujets plus faibles.
+    capacites:
+      - "Domination mentale (contrôle d'entités moins puissantes)"
+      - "Lecture de souvenirs et de pensées"
+      - "Télékinésie psychique"
+      - "Création et contrôle de golems (Marjaana)"
+      - "Immunité aux illusions"
+    faiblesses:
+      - "Physiquement fragiles — doivent éviter le corps à corps"
+      - "Volonté exceptionnelle peut résister à la domination"
+    exemples_notables:
+      - "Marjaana (la Seigneure Sage)"
+    presence_dans_jeu:
+      - "Ennemis principaux de la Maison 4 (Famille des Sages)"
+      - "Ne peuvent pas être recrutés normalement — trop indépendants"
+      - "Marjaana = boss final optionnel (accès au secret de la Porte Démonique)"
+
+  - id: "elfe_noir"
+    nom: "Elfe Noir (Dark Elf)"
+    nom_japonais: "ダークエルフ"
+    rang: 2
+    description: |
+      Elfes adaptés à l'environnement sombre du Monde Démoniaque — peau sombre,
+      yeux clairs, oreilles allongées. Maîtres de la magie naturelle sombre.
+      Bien que techniquement de rang inférieur dans la hiérarchie, les Elfes Noirs
+      ont une culture riche et ancienne. Emma Rollo est la première de leur race
+      à avoir atteint le rang de Chevalière Infernale.
+    capacites:
+      - "Magie sylvaine sombre"
+      - "Agilité et précision au tir naturelles"
+      - "Sens développés dans les milieux naturels"
+      - "Longévité élevée (pour leur rang)"
+    exemples_notables:
+      - "Emma Rollo (ex-Chevalière Infernale, Vicomtesse)"
+    presence_dans_jeu:
+      - "Archers et éclaireurs recrutables"
+      - "Territoire Vicomté Rollo — alliance possible avec Emma"
+
+  - id: "golem"
+    nom: "Golem"
+    nom_japonais: "ゴーレム"
+    rang: "3 à 5 (selon construction)"
+    description: |
+      Créatures construites artificiellement. Ne possèdent pas de volonté propre —
+      ils obéissent à leur créateur ou à quiconque détient leur Pierre de Cœur.
+      Les Golems avancés (comme Arondight) ont une intelligence artificielle développée
+      mais restent soumis au contrôle.
+    capacites:
+      - "Force physique extrême"
+      - "Résistance physique totale (immunité aux poisons, venins, maladies)"
+      - "Magie élémentaire intégrée (selon le matériau de construction)"
+    faiblesses:
+      - "Pierre de Cœur — briser ou voler = prendre le contrôle"
+      - "Magie de dispellation puissante"
+    exemples_notables:
+      - "Arondight (Ordre du Dragon Mécanique, sous contrôle de Marjaana)"
+      - "'Golem du Mariage' (Golem spécial de Marjaana)"
+    presence_dans_jeu:
+      - "Ennemis de la Maison 4 (Famille des Sages)"
+      - "Arondight : boss intermédiaire"
+      - "Golems mineurs : recrutables via Artisanat avancé"
+
+  - id: "fee"
+    nom: "Fée"
+    nom_japonais: "妖精"
+    rang: 2
+    description: |
+      Petites créatures magiques. Bien que physiquement faibles, leur magie peut
+      être extrêmement capricieuse et difficile à prédire.
+      Le Roi des Fées gouverne la forêt de Till-Tiel.
+    capacites:
+      - "Magie illusoire et naturaliste"
+      - "Vol naturel"
+      - "Dissimulation parfaite dans la nature"
+    exemples_notables:
+      - "Roi des Fées (Till-Tiel)"
+    presence_dans_jeu:
+      - "PNJ neutres — les Fées ne participent pas directement aux conflits nobles"
+      - "Peuvent révéler des lieux secrets en échange de services"
+
+  - id: "dryade"
+    nom: "Dryade"
+    nom_japonais: "ドリアード"
+    rang: 3
+    description: |
+      Esprits végétaux humanoïdes — liés à des arbres anciens du Monde Sombre.
+      Les Dryades ne peuvent s'éloigner de leur arbre source sans affaiblissement.
+    capacites:
+      - "Magie végétale (croissance, empoisonnement, enracinement)"
+      - "Régénération liée à leur arbre source"
+    exemples_notables:
+      - "Roselina (Reine Dryade)"
+    presence_dans_jeu:
+      - "Soutien magique recrutables dans les forêts"
+      - "Roselina : PNJ neutre, peut accorder des pouvoirs végétaux"
+
+  - id: "arachni"
+    nom: "Arachni (Démon-Araignée)"
+    nom_japonais: "アラクニ"
+    rang: 3
+    description: |
+      Hybrides araignée-humanoïde. Créateurs de toiles démoniaque qui peuvent
+      piéger la magie aussi bien que les corps. Souvent des traqueurs.
+    capacites:
+      - "Toiles démoniques (pièges physiques et magiques)"
+      - "Venin paralysant"
+      - "Escalade murs et plafonds"
+    presence_dans_jeu: ["Soldats pièges — peuvent être déployés pour défendre les bastions"]
+
+  - id: "yatagarasu"
+    nom: "Yatagarasu (Corbeau à Trois Pattes)"
+    nom_japonais: "八咫烏"
+    rang: 3
+    description: |
+      Corbeaux démoniques d'origine japonaise. Liés à la divination et au guidage.
+      Leur troisième patte symbolise un pouvoir cosmique.
+    capacites:
+      - "Vol rapide, reconnaissance aérienne"
+      - "Divination limitée"
+      - "Magie noire légère"
+    presence_dans_jeu: ["Éclaireurs aériens — missions d'espionnage à grande distance"]
+
+  - id: "badhbh"
+    nom: "Badhbh (Corbeau de Bataille)"
+    nom_japonais: "バズブ"
+    rang: 3
+    description: |
+      Figures de la guerre. Les Badhbh sont des présages de mort — leur présence
+      sur un champ de bataille annonce des carnages.
+    capacites:
+      - "Aura de démoralisation ennemie"
+      - "Magie de malédiction de guerre"
+    presence_dans_jeu: ["Soutien de bataille — réduisent le moral des soldats ennemis"]
+
+  - id: "doppelganger"
+    nom: "Doppelgänger (Imitateur de Forme)"
+    nom_japonais: "ドッペルゲンガー"
+    rang: 3
+    description: |
+      Maîtres du mimétisme parfait. Peuvent copier l'apparence et la voix
+      de n'importe quel individu vu assez longtemps.
+    capacites:
+      - "Mimétisme physique parfait"
+      - "Copie partielle des souvenirs de surface (via contact prolongé)"
+    faiblesses:
+      - "Ne peuvent copier les pouvoirs magiques"
+      - "Vision démoniaque les détecte"
+    presence_dans_jeu: ["Espions d'élite — agents infiltrés parmi les familles nobles"]
+
+  - id: "troll"
+    nom: "Troll"
+    nom_japonais: "トロール"
+    rang: 2
+    description: |
+      Créatures de grande taille, peau épaisse comme de la pierre, très résistantes.
+      Régénération extrêmement rapide des blessures physiques.
+    capacites:
+      - "Régénération exceptionnelle (membres sectionnés repoussent)"
+      - "Force brute massive"
+    faiblesses:
+      - "Feu — bloque la régénération"
+      - "Intelligence limitée"
+    presence_dans_jeu: ["Tanks de première ligne — soldats lents mais très résistants"]
+
+  - id: "fantome"
+    nom: "Fantôme (Ghost)"
+    nom_japonais: "ゴースト"
+    rang: 2
+    description: |
+      Version faible des Wraiths — esprits errants non organisés.
+      Contrairement aux Wraiths nobles, les Fantômes sont souvent
+      des âmes perdues sans direction propre.
+    presence_dans_jeu: ["Troupes de siège peu coûteuses — résistent aux attaques physiques"]
+
+  - id: "imp"
+    nom: "Imp (Diablotin)"
+    nom_japonais: "インプ"
+    rang: 1
+    description: |
+      Les démons de plus bas rang — petits, espièges, facilement manipulables.
+      Nombreux dans le Monde Sombre. Souvent utilisés comme serviteurs ou espions.
+    presence_dans_jeu: ["Serviteurs de base — peu coûteux, utiles pour les missions à faible risque"]
+
+  - id: "imitateur"
+    nom: "Imitateur (Mimic)"
+    nom_japonais: "ミミック"
+    rang: 2
+    description: |
+      Créatures qui imitent des objets inanimés (coffres, portes, murs).
+      Utilisés pour tendre des pièges ou infiltrer des forteresses ennemies.
+    presence_dans_jeu: ["Pièges de siège — cachés dans les bastions défendus"]
+
+# ─────────────────────────────────────────────────────────────────────
+#  CATÉGORIE B — BÊTES DÉMONIQUES
+# ─────────────────────────────────────────────────────────────────────
+especes_betes:
+
+  - id: "dragon"
+    nom: "Dragon"
+    nom_japonais: "ドラォン"
+    rang: 6
+    sous_types: ["Dragon Ancien", "Dragon Cornu (Yinglong)", "Dragon Maléfique"]
+    description: |
+      Sommet de la hiérarchie des bêtes démoniques. Puissance magique et physique
+      immense. Très rares — leur présence modifie l'équilibre régional.
+      Les Chevaliers Infernaux tirent leur symbolique des Dragons (chaque ordre
+      porte le nom d'un type de dragon).
+      Ingrid a vaincu et scellé le dragon Grenier (Dragon Maléfique) en elle.
+    capacites:
+      - "Souffle élémentaire (feu, glace, poison, etc. selon sous-type)"
+      - "Magie draconique de niveau légendaire"
+      - "Vol naturel"
+      - "Peau écailleuse : résistance physique et magique"
+      - "Longévité millénaire"
+    exemples_notables:
+      - "Grenier le Dragon Maléfique (scellé en Ingrid)"
+    presence_dans_jeu:
+      - "Boss de zones spéciales"
+      - "La Forme Dragon Grenier d'Ingrid : capacité ultime coûteuse"
+
+  - id: "dragon_grenier"
+    nom: "Grenier le Dragon Maléfique"
+    nom_japonais: "グレニエル (邪悪竜)"
+    rang: 7
+    description: |
+      Dragon Maléfique de puissance légendaire. Vaincu par Ingrid, désormais scellé
+      dans son corps. Quand le sceau s'affaiblit, Ingrid manifeste son pouvoir :
+      flammes bleu sombre, marques sur la peau, dépassement de tout limite.
+      Mais le sceau dévore son âme à chaque utilisation.
+    capacites:
+      - "Flammes Bleues Abyssales (détruisent la matière et la magie)"
+      - "Transformation physique d'Ingrid (marques, cornes, ailes)"
+      - "Puissance physique et magique transcendante"
+    faiblesses:
+      - "Utilisation = perte d'âme (mécanisme de gameplay : barre d'âme)"
+    presence_dans_jeu:
+      - "Forme Ultime d'Ingrid — utilisable X fois par partie"
+      - "Barre d'âme d'Ingrid diminue à chaque activation"
+      - "Si la barre atteint 0 → fin Bad End (Ingrid perdue dans le dragon)"
+
+  - id: "behemoth"
+    nom: "Béhémoth"
+    nom_japonais: "ベヒーモス"
+    rang: 6
+    description: |
+      Créature colosse — plus grande et plus lourde que tout autre bête sur Terre.
+      Force brute incomparable. Lent mais représente une force de siège naturelle.
+    capacites:
+      - "Force physique de niveau légendaire"
+      - "Aura de tremblements du sol (fragilise les fortifications)"
+    presence_dans_jeu: ["Arme de siège — déployer un Béhémoth contre un bastion"]
+
+  - id: "chien_noir"
+    nom: "Chien Noir (Black Dog)"
+    nom_japonais: "ブラックドッグ"
+    rang: 3
+    description: |
+      Loups ou chiens de grande taille baignés dans le Mana du Monde Sombre.
+      Rapides, furtifs, souvent utilisés en meute pour traquer.
+    capacites:
+      - "Vitesse et furtivité exceptionnelles"
+      - "Sens développés — pistage parfait"
+    presence_dans_jeu: ["Soldats de pistage — retouvent cibles cachées pendant l'espionnage"]
+
+  - id: "hydre"
+    nom: "Hydre"
+    nom_japonais: "ヒュドラ"
+    rang: 5
+    description: |
+      Serpent géant à têtes multiples — chacune régénère si coupée sans être brûlée.
+      Venin massif. Créature semi-intelligente.
+    capacites:
+      - "Régénération des têtes (si non brûlées)"
+      - "Venin massif sur large zone"
+      - "Chaque tête agit indépendamment (attaques multiples)"
+    presence_dans_jeu: ["Boss intermédiaire de zones marécageuses"]
+
+  - id: "infernotaurus"
+    nom: "Infernotaurus"
+    nom_japonais: "インフェルノタウルス"
+    rang: 4
+    description: |
+      Taureaux des Plaines Ardentes — corps de taureau couvert de flammes vivantes.
+      Charge irrésistible. Leur corps chaud fond les armures ordinaires.
+    presence_dans_jeu: ["Cavalerie lourde des Plaines Ardentes — Maison 6 (Flamme)"]
+
+  - id: "gargouille"
+    nom: "Gargouille"
+    nom_japonais: "ガーゴイル"
+    rang: 3
+    description: |
+      Créatures de pierre animée. La nuit elles volent — le jour elles se pétrifient
+      en position défensive. Gardiennes naturelles des forteresses.
+    capacites:
+      - "Pétrification partielle (immunité au feu, froid)"
+      - "Ailes — vol nocturne"
+    presence_dans_jeu: ["Défenseurs de bastions — bonus de défense en mode fortifié"]
+
+  - id: "injuu"
+    nom: "Injuu (Bête Obscène)"
+    nom_japonais: "淫獣"
+    rang: 3
+    description: |
+      Bêtes démoniques liées à l'énergie sexuelle et à la corruption.
+      Souvent utilisées par des nobles démoniques peu scrupuleux comme armes d'humiliation.
+      Détestées par Ingrid (qui s'oppose à ce type d'utilisation).
+    presence_dans_jeu: ["Ennemi exclusif — ne peuvent pas être recrutés par Ingrid"]
+
+  - id: "kanaloa"
+    nom: "Kanaloa (Pieuvre Démonique)"
+    nom_japonais: "カナロア"
+    rang: 5
+    description: |
+      Kraken du Monde Sombre — pieuvre géante habitant les profondeurs aquatiques.
+      Peut envelopper et briser des forteresses côtières.
+    presence_dans_jeu: ["Boss des zones côtières — Maison 1 si attaque maritime"]
+
+  - id: "dragon_de_feu"
+    nom: "Poisson Dragon (Dragon de Mer)"
+    nom_japonais: "竜魚"
+    rang: 4
+    presence_dans_jeu: ["Montures aquatiques recrutables si alliance côtière"]
+
+  - id: "zaqqum"
+    nom: "Zaqqum (Arbre Démonique)"
+    nom_japonais: "ザックム"
+    rang: 4
+    description: |
+      L'Arbre de l'Enfer — entité végétale démonique. Ses racines phagocytent
+      les zones environnantes, transformant le terrain en zone hostile.
+    presence_dans_jeu: ["Piège de territoire — peut corrompre un bastion capturé si non nettoyé"]
+
+  - id: "bete_nocturne"
+    nom: "Bête Nocturne"
+    nom_japonais: "夜の獣"
+    rang: 2
+    description: |
+      Terme générique pour les bêtes actives la nuit dans le Monde Sombre.
+      La nuit, toute créature hors des villes démoniques risque de les croiser.
+    presence_dans_jeu: ["Danger aléatoire lors des missions nocturnes — jet de résistance requis"]
+
+  - id: "sleipnir"
+    nom: "Sleipnir (Destrier Démoniaque)"
+    nom_japonais: "スレイプニル"
+    rang: 4
+    description: |
+      Cheval démoniaque à huit pattes de la mythologie nordique.
+      Capable de se déplacer entre les mondes.
+    capacites:
+      - "Traversée entre dimensions (rare)"
+      - "Vitesse incomparable"
+    presence_dans_jeu: ["Monture de commandant — réduit le temps de déplacement sur la carte"]
+
+  - id: "feu_follet"
+    nom: "Feu Follet (Will-o'-the-Wisp)"
+    nom_japonais: "鬼火"
+    rang: 2
+    description: |
+      Petites flammes démoniques errantes. Attirent les voyageurs vers leur perte.
+      Peu dangereuses seules — en essaim, peuvent enflammer de grands espaces.
+    presence_dans_jeu: ["Piège de terrain — perturbent les marches militaires nocturnes"]
+
+# ─────────────────────────────────────────────────────────────────────
+#  TABLEAU DE GAMEPLAY — DISPONIBILITÉ PAR MAISON CONQUISE
+# ─────────────────────────────────────────────────────────────────────
+recrutement_par_maison:
+  depart: ["demon_commun", "imp", "chien_noir", "feu_follet"]
+  apres_maison_1: ["vampire", "chien_noir_elite", "gargouille"]
+  apres_maison_2: ["fantome", "troll"]
+  apres_maison_3: ["incube_succube", "doppelganger"]
+  apres_maison_4: ["golem_mineur"]
+  apres_maison_5: ["naga", "arachni"]
+  apres_maison_6: ["infernotaurus"]
+  apres_maison_7: ["elfe_noir", "fee"]
+  special_dragon_grenier: "Forme Ultime d'Ingrid — débloquée via quête principale"

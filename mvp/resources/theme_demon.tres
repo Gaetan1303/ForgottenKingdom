@@ -1,0 +1,5 @@
+[gd_resource type="Theme" format=3]
+
+[resource]
+# Les styles sont définis en GDScript via ThemeDB.
+# Ce fichier sert de référence ; le thème effectif est appliqué dans game_manager.gd.

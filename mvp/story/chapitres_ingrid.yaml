@@ -1,0 +1,387 @@
+# Histoire d'Ingrid — Données narratives (11 chapitres)
+# Format : TRES-like JSON pour Godot 4 ResourceLoader
+# Chaque chapitre sera converti en Resource (.tres) dans Godot
+
+chapters:
+  - id: 0
+    numero: 0
+    titre: "Prologue — Les Origines Nobles"
+    periode: "Antiquité du Demon Realm"
+    lieux_cles:
+      - nom: "Nine Noble Dominion"
+        description: "Territoire des 9 Grandes Familles nobles démoniques"
+      - nom: "Lignée noble d'Ingrid"
+        description: "Famille démoniaque d'élite, sang noble pur"
+    illustration: "ingrid_noble_origins.png"
+    animation: "flame_intro"
+    scenes:
+      - texte: |
+          Dans les profondeurs du Demon Realm, là où les cieux rouges s'embrasent
+          sous l'éclat des flammes violettes, naît Ingrid — イングリッド.
+          
+          Issue d'une lignée noble aussi ancienne que le Demon Realm lui-même,
+          son sang porte le sceau des élus : une magie puissante, une volonté d'acier,
+          et un destin marqué par le feu.
+          
+          Elle grandira dans l'ombre des Neuf Nobles, les seigneurs suprêmes
+          du monde démoniaque. Mais son chemin ne sera pas celui de la soumission.
+        illustration: "ingrid_child_noble.png"
+      - texte: |
+          Le Demon Realm est un monde de puissance et de hiérarchie.
+          Neuf Grandes Maisons dominent tout, chacune contrôlant un territoire,
+          des ressources, et une armée de démons à leur service.
+          
+          Au sommet de l'ordre militaire : les Hell Knights — l'élite guerrière
+          au service des Nobles. Ingrid, avec son sang de noble et sa magie naturelle
+          hors du commun, est promise à leur rang.
+        illustration: "demon_realm_map.png"
+
+  - id: 1
+    numero: 1
+    titre: "Chapitre I — L'Alliance"
+    periode: "Antiquité, début de carrière"
+    lieux_cles:
+      - nom: "Nine Noble Dominion"
+        description: "Siège de l'alliance des 9 Nobles"
+      - nom: "Ordre des Hell Knights"
+        description: "Organisation militaire démoniaque — 12 Ordres"
+    illustration: "ingrid_hell_knight_crest.png"
+    scenes:
+      - texte: |
+          Ingrid rejoint les Hell Knights. Non pas par obéissance aveugle,
+          mais par conviction : protéger le peuple du Demon Realm.
+          
+          Parmi les 12 Ordres qui composent cette organisation d'élite,
+          elle gravit les échelons avec une vitesse qui laisse ses pairs sans voix.
+          Force brute, magie violette, sens de l'honneur — Ingrid est dans une
+          catégorie à part.
+        illustration: "ingrid_hell_knight_armor.png"
+      - texte: |
+          Elle se lie d'amitié avec Beowulf, un autre Hell Knight d'exception —
+          tueur de dragons. Sa rivalité avec Carmella, une guerrière acharnée,
+          forge son caractère.
+          
+          Ingrid n'est pas une soldate ordinaire. Elle pense. Elle juge.
+          Et quand elle voit les Nobles utiliser les Hell Knights comme
+          simples instruments de pouvoir plutôt que comme gardiens du peuple,
+          quelque chose se fragilise en elle.
+        illustration: "ingrid_and_beowulf.png"
+
+  - id: 2
+    numero: 2
+    titre: "Chapitre II — Le Rituel Primordial"
+    periode: "Antiquité"
+    lieux_cles:
+      - nom: "Temple des Hell Knights Primordiaux"
+        description: "Lieu secret du rituel d'élévation"
+    illustration: "ingrid_ritual.png"
+    animation: "dragon_seal_effect"
+    scenes:
+      - texte: |
+          Il existe, dans les profondeurs de l'histoire des Hell Knights,
+          un rituel oublié de presque tous : le Rituel Primordial.
+          
+          Réservé aux rares élus capables de le survivre, il transforme
+          un Hell Knight en quelque chose de plus grand — et de plus dangereux.
+          
+          Ingrid est choisie. Ou plutôt : elle choisit.
+        illustration: "ritual_chamber.png"
+      - texte: |
+          Le dragon noir Grenier — « Grenier le Maléfique » — est une entité
+          d'une puissance colossale. Ingrid le combat seule.
+          
+          Elle ne le tue pas. Elle le soumet. Et scelle sa puissance
+          à l'intérieur de son propre corps.
+          
+          Désormais, quand Ingrid libère cette puissance, des flammes bleu sombre
+          enveloppent son corps, des marques apparaissent sur sa peau.
+          Elle devient presque invincible. Mais Grenier dévore son âme
+          à chaque utilisation. Un pouvoir à double tranchant.
+        illustration: "ingrid_dragon_seal.png"
+        animation: "grenier_flame_burst"
+
+  - id: 3
+    numero: 3
+    titre: "Chapitre III — La Sauveure de Greenfort"
+    periode: "Époque indéterminée"
+    lieux_cles:
+      - nom: "Greenfort Village"
+        description: "Village démoniaque rural — statue d'Ingrid en son centre"
+    illustration: "greenfort_village.png"
+    scenes:
+      - texte: |
+          Greenfort Village. Un endroit qui n'aurait pas dû compter.
+          
+          Une menace plane sur ce modeste village — l'histoire exacte se perd
+          dans la légende. Ce qu'on sait : Ingrid est intervenue.
+          Elle a combattu. Et elle a sauvé Greenfort.
+          
+          Une statue à son effigie trône maintenant au centre du village.
+          Les anciens en parlent encore : « La Flamme Violette qui a repoussé
+          les ténèbres. »
+        illustration: "ingrid_statue_greenfort.png"
+      - texte: |
+          C'est peut-être ici qu'elle rencontre Edwin Black pour la première fois.
+          Les détails sont inconnus — Black lui-même y fait allusion des années plus tard,
+          sans jamais préciser.
+          
+          Mais quelque chose se passe à Greenfort. Une graine est plantée.
+        illustration: "greenfort_meeting.png"
+
+  - id: 4
+    numero: 4
+    titre: "Chapitre IV — L'Ordre du Dragon Noir"
+    periode: "Avant 2063"
+    lieux_cles:
+      - nom: "King's Rock"
+        description: "Ancienne résidence d'Ingrid, siège de l'Ordre"
+      - nom: "Rosemary Territory"
+        description: "Territoire de la famille Rosemary, alliée d'Ingrid"
+    illustration: "black_dragon_order.png"
+    scenes:
+      - texte: |
+          Ingrid est nommée chef de l'Ordre du Dragon Noir —
+          l'un des 12 Ordres qui composent les Hell Knights.
+          
+          Elle est reconnue dans tout le Demon Realm comme la Hell Knight
+          à la force offensive la plus dévastatrice.
+          On l'appelle : « Le Sabre de l'Alliance ».
+          
+          Respectée. Crainte. Honorée.
+        illustration: "ingrid_order_leader.png"
+      - texte: |
+          Hors de ses fonctions officielles, Ingrid est aussi une protectrice.
+          Elle entretient des liens avec la famille Rosemary — des nobles
+          qui, sans servir les 9 Grandes Maisons, restent dignes d'estime.
+          
+          Elle rencontre Lina, une jeune servante du domaine.
+          La jeune fille s'entraîne en secret, admirant Ingrid de loin.
+          Ingrid la remarque. Elle voit quelque chose dans ses yeux.
+          
+          « Tu veux devenir Hell Knight ? Même sans grande réserve magique ? »
+          
+          Elle décide de l'aider.
+        illustration: "ingrid_meets_lina.png"
+
+  - id: 5
+    numero: 5
+    titre: "Chapitre V — La Rencontre avec Edwin Black"
+    periode: "Avant 2063"
+    lieux_cles:
+      - nom: "Demon Realm — lieu non précisé"
+        description: "Rencontre initiale avec Edwin Black"
+      - nom: "Dark World"
+        description: "Ancienne affectation d'Ingrid"
+    illustration: "ingrid_meets_black.png"
+    scenes:
+      - texte: |
+          Edwin Black. Un homme qui défie toute classification.
+          
+          Ingrid le rencontre. Et pour la première fois de son existence,
+          quelque chose en elle vacille.
+          
+          Ce n'est pas une faiblesse. C'est une reconnaissance —
+          celle d'un equal, ou peut-être de quelque chose de plus grand,
+          qu'elle ne peut pas encore nommer.
+        illustration: "edwin_black_portrait.png"
+      - texte: |
+          Ingrid abandonne son poste au service des 9 Nobles.
+          Cela est perçu comme une trahison par l'Alliance.
+          
+          Elle s'en moque.
+          
+          Les 9 Nobles n'ont jamais véritablement protégé le peuple.
+          Ils ont utilisé les Hell Knights pour maintenir leur propre pouvoir.
+          Ingrid en a assez d'un système corrompu depuis la mort
+          de l'Ancien Roi Démon, remplacé par la règle de Bismarck.
+          
+          Elle rejoint Black. Elle rejoint Nomad.
+          Et elle n'a aucun regret.
+        illustration: "ingrid_leaves_hell_knights.png"
+        animation: "departure_flames"
+
+  - id: 6
+    numero: 6
+    titre: "Chapitre VI — Le Monde des Humains"
+    periode: "2063"
+    lieux_cles:
+      - nom: "Yomihara"
+        description: "Ville japonaise aux portes du monde démoniaque"
+      - nom: "Palace of Darkness"
+        description: "Siège de Nomad à Yomihara"
+      - nom: "Zero Nations Group"
+        description: "Façade légale de Nomad"
+    illustration: "yomihara_city.png"
+    scenes:
+      - texte: |
+          Yomihara, Japon. Une ville qui n'existe sur aucune carte officielle.
+          Une ville où humains et démons cohabitent sous tension permanente,
+          entre portails interdimensionnels et marchés noirs mystiques.
+          
+          Ingrid s'y installe. Elle est désormais la secrétaire d'Edwin Black,
+          son bras droit au sein de Nomad. Quand Black n'est pas là —
+          ce qui arrive souvent — c'est elle qui dirige.
+        illustration: "ingrid_secretary.png"
+      - texte: |
+          Les autres membres de Nomad la respectent. La craignent aussi.
+          Oboro et Fürst, deux exécutifs de l'organisation, la voient
+          comme un obstacle à supprimer.
+          
+          Ingrid le sait. Elle les surveille.
+          
+          De son côté, elle continue de veiller sur Lina, sa jeune élève,
+          qu'elle a intégrée à Nomad après les avoir retrouvées
+          lors d'une mission dans le Demon Realm.
+          Ensemble, elles avaient vaincu une Hydre redoutable.
+        illustration: "ingrid_lina_nomad.png"
+
+  - id: 7
+    numero: 7
+    titre: "Chapitre VII — L'Affaire Sabato (2075)"
+    periode: "2075"
+    lieux_cles:
+      - nom: "Chaos Arena"
+        description: "Arène clandestine de combats à Yomihara"
+    illustration: "chaos_arena.png"
+    scenes:
+      - texte: |
+          2075. Le Chaos Arena rouvre sous la gestion de Kiryu Sabato,
+          un membre de Nomad dont la loyauté a toujours semblé fragile.
+          
+          Ingrid est là quand les Taimanin — les ninjas anti-démons —
+          font irruption. Avec Black à ses côtés, elle repousse l'attaque.
+          
+          Mais elle a des doutes sur Sabato depuis longtemps.
+          Elle rassemble des preuves, méthodiquement, en silence.
+        illustration: "ingrid_chaos_arena.png"
+      - texte: |
+          La trahison est confirmée : Sabato a vendu des données à Dragon Gate,
+          une organisation rivale.
+          
+          Ingrid prend d'assaut l'Arène. Sabato, acculé, fusionne avec la Taimanin
+          Murasaki dans un rituel désespéré. Ils combattent à égalité.
+          
+          Dans le chaos, Sabato, Murasaki et Sakura parviennent à fuir.
+          Ingrid les laisse partir — pour l'instant.
+          Elle a prouvé sa valeur. Nomad est protégée.
+        illustration: "ingrid_arena_fight.png"
+        animation: "purple_flame_combat"
+
+  - id: 8
+    numero: 8
+    titre: "Chapitre VIII — La Guerre des Ombres (2082–2086)"
+    periode: "2082–2086"
+    lieux_cles:
+      - nom: "UFS (United Federation States)"
+        description: "Amérique — théâtre d'opérations de Nomad"
+      - nom: "Yomihara"
+        description: "Retour au Japon"
+    illustration: "ingrid_ufs_combat.png"
+    scenes:
+      - texte: |
+          2082. Ingrid est en Amérique, affrontant la Taimanin masquée
+          dans un combat brutal qui se termine sans vainqueur définitif.
+          
+          De retour au Japon, elle sauve Fürst et Oboro —
+          deux individus qu'elle méprise — parce que la stabilité de Nomad
+          passe avant ses sentiments personnels.
+          
+          Elle voix tout. Elle sait qu'Oboro et Fürst complotent.
+          Elle accumule les preuves.
+        illustration: "ingrid_masked_taimanin.png"
+      - texte: |
+          En 2086, Ingrid démasque Fürst comme agent double au service
+          de Teutates, un rival d'Edwin Black.
+          
+          Elle coupe la protection de Nomad envers Fürst.
+          Les conséquences sont immédiates : les Taimanin l'éliminent.
+          
+          Ingrid observe. Elle n'exprime aucune émotion.
+          Ce n'est pas de la cruauté — c'est de la rigueur.
+        illustration: "ingrid_judges.png"
+
+  - id: 9
+    numero: 9
+    titre: "Chapitre IX — Le Gardien de Yomihara (2084–2088)"
+    periode: "2084–2088"
+    lieux_cles:
+      - nom: "Palace of Darkness"
+        description: "QG de Nomad, géré par Ingrid en l'absence de Black"
+      - nom: "Demon Arena"
+        description: "Arène démoniaque à Yomihara"
+      - nom: "Autre dimension"
+        description: "Rift spatio-temporel connecté à Yomihara"
+    illustration: "ingrid_palace_of_darkness.png"
+    scenes:
+      - texte: |
+          Black est absent. C'est Ingrid qui dirige Nomad au quotidien.
+          
+          En 2084, un rift spatio-temporel s'ouvre dans l'Arène Démoniaque.
+          Une autre dimension se connecte à Yomihara. Une fièvre mystérieuse
+          commence à frapper la ville — humains et démons sans distinction.
+          
+          Lina tombe malade. Ingrid, elle-même proche de ses limites,
+          refuse de le montrer.
+        illustration: "yomihara_rift.png"
+      - texte: |
+          La fièvre est en réalité une malédiction lancée par une créature
+          de l'autre dimension : la Me-duse, un être fantôme-méduse capable
+          de disparaître dans un espace à deux dimensions.
+          
+          Ingrid retourne seule dans cette dimension pour en finir.
+          Elle reçoit l'aide inattendue d'Igawa Sakura — une Taimanin,
+          officiellement son ennemie.
+          
+          Ensemble, elles tendent un piège à la Me-duse.
+          Ingrid libère la puissance de Grenier et porte le coup fatal.
+          
+          Yomihara est sauvée.
+        illustration: "ingrid_sakura_teamup.png"
+        animation: "grenier_dragon_power"
+
+  - id: 10
+    numero: 10
+    titre: "Épilogue — La Recherche"
+    periode: "2088 et au-delà"
+    lieux_cles:
+      - nom: "Amidahara"
+        description: "District de Yomihara — Demon Gate Amidahara"
+      - nom: "Yomihara"
+        description: "Ville sans porte démonique active"
+    illustration: "ingrid_epilogue.png"
+    scenes:
+      - texte: |
+          2088. La porte démonique de Yomihara est détruite.
+          Edwin Black a disparu lors de la bataille finale contre Teutates.
+          
+          Nomad est décapitée. La ville est en crise.
+          Le crime augmente. Les démons du Realm ne peuvent plus passer.
+          
+          Ingrid prend les commandes. Seule. Encore.
+        illustration: "ingrid_alone_ruins.png"
+      - texte: |
+          Elle n'abandonne pas. Elle ne l'a jamais fait.
+          
+          Ingrid cherche un moyen de rouvrir la porte. De ramener Black.
+          Elle tisse des alliances avec d'anciens ennemis,
+          forme un triangle improbable avec les Taimanin et d'autres factions.
+          
+          On l'a souvent sous-estimée. On a eu tort.
+          
+          Ingrid n'est pas juste le bras droit d'Edwin Black.
+          Elle est l'épine dorsale de tout ce qu'il a construit.
+          Et elle se battra jusqu'à la fin pour le préserver.
+        illustration: "ingrid_determined.png"
+        animation: "final_flame"
+      - texte: |
+          Dans le village de Greenfort, sa statue la regarde toujours.
+          
+          Dans le cœur de Lina, son exemple brille.
+          
+          Dans l'ombre de Yomihara, sa flamme violette continue de veiller.
+          
+          Ingrid. イングリッド.
+          
+          La Chevalière de l'Enfer qui a choisi son propre chemin.
+        illustration: "ingrid_final.png"
+        animation: "credits_flame"

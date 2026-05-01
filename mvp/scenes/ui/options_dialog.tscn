@@ -1,0 +1,35 @@
+[gd_scene load_steps=3 format=3]
+
+[node name="OptionsDialog" type="Panel"]
+; Simple options panel (WindowDialog not available in this headless/runtime), positioned when instantiated
+
+[node name="VBox" type="VBoxContainer" parent="OptionsDialog"]
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="LabelVolume" type="Label" parent="OptionsDialog/VBox"]
+text = "Musique"
+
+[node name="HSliderVolume" type="HSlider" parent="OptionsDialog/VBox"]
+min_value = 0.0
+max_value = 100.0
+step = 1.0
+value = 100.0
+name = "HSliderVolume"
+
+[node name="LabelDifficulty" type="Label" parent="OptionsDialog/VBox"]
+text = "Difficulté"
+
+[node name="OptionDifficulty" type="OptionButton" parent="OptionsDialog/VBox"]
+items = ["Facile", "Normal", "Difficile"]
+name = "OptionDifficulty"
+
+[node name="HBoxButtons" type="HBoxContainer" parent="OptionsDialog/VBox"]
+
+[node name="BtnApply" type="Button" parent="OptionsDialog/VBox/HBoxButtons"]
+text = "Appliquer"
+name = "BtnApply"
+
+[node name="BtnClose" type="Button" parent="OptionsDialog/VBox/HBoxButtons"]
+text = "Fermer"
+name = "BtnClose"

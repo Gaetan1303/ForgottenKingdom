@@ -1,0 +1,299 @@
+# ═══════════════════════════════════════════════════════════════════════
+#  LORE DU MONDE — TAIMANIN UNIVERSE  (tout en français)
+#  Source : Taimanin Wiki (taimanin.fandom.com) — CC-BY-SA
+#  Usage  : données de conception du jeu RPG / histoire interactive
+# ═══════════════════════════════════════════════════════════════════════
+
+# ─────────────────────────────────────────────────────────────────────
+#  COSMOLOGIE — STRUCTURE DE L'UNIVERS
+# ─────────────────────────────────────────────────────────────────────
+cosmologie:
+  concept: "Mère Océan (Mer Mère)"
+  description: |
+    La Mère Océan (aussi appelée Océan Primordial) contient l'ensemble des univers
+    connus en son sein, distincts mais reliés.
+  univers:
+    - nom: "Monde Humain (Monde Réel)"
+      alias: ["Terre", "Monde des Hommes"]
+      description: |
+        Japon futuriste, 2ème moitié du XXIe siècle. Terre alternative
+        où la Guerre Froide a conduit à l'exploitation militaire de la magie arcane.
+        La corruption démonique s'y est répandue via les Portes Démoniques.
+    - nom: "Monde Démoniaque (Makai)"
+      alias: ["Monde Sombre", "Monde des Démons", "Démoniverse"]
+      japonais: "魔界"
+      description: |
+        Dimension parallèle adjacente au Monde Humain. Berceau des démons.
+        Relié au Monde Humain via les Portes Démoniques (Demon Gates).
+    - nom: "Autre Monde (Otherworld)"
+      description: |
+        Monde des anciens dieux, des esprits et des entités divines.
+        Les anciens dieux y furent bannis par Lilith et les Dragons Anciens.
+    - nom: "Cyberespace"
+      description: |
+        Espace numérique, dimensions virtuelles reliées aux réseaux technologiques.
+    - nom: "Monde des Rêves"
+      description: |
+        Royaume des illusions mentales. Accessible via magie spéciale (Brain Flayers, etc.)
+
+  origines_demons: |
+    Des entités appelées « Aion » venues de la Mère Océan ont visité le Monde Sombre
+    et créé les tout premiers Vampires. Les croisements entre démons et humains
+    ont progressivement donné naissance au sang mixte — fondement des Taimanin.
+
+# ─────────────────────────────────────────────────────────────────────
+#  MONDE HUMAIN — CONTEXTE
+# ─────────────────────────────────────────────────────────────────────
+monde_humain:
+  epoque: "2ème moitié du XXIe siècle (env. 2060–2088+)"
+  nature: "Terre alternative, Histoire divergente"
+
+  histoire_cle: |
+    La Guerre Froide avancée a poussé les nations à utiliser la magie arcane
+    comme arme. L'abus de cette magie a ouvert des failles vers le Monde Démoniaque.
+    La corruption s'est répandue. Seuls les Taimanin — Ninjas Anti-Démons agréés
+    par le gouvernement — peuvent contenir la menace.
+
+    Le « Conflit de la Péninsule » est un événement majeur : les UFS ont utilisé
+    une arme magique équivalente à une bombe nucléaire sur Amidahara,
+    ouvrant de nouvelles Portes Démoniques et exacerbant les tensions.
+
+  grandes_puissances:
+    - nom: "UFS (United Free States)"
+      alias: "États-Unis futurs"
+      role: "Superpuissance militaire, utilisateurs de technologie magique"
+    - nom: "Union Chinoise"
+      role: "Autre superpuissance mondiale"
+    - nom: "Japon"
+      role: "Épicentre des conflits — présence Taimanin + infiltration NOMAD"
+
+  organisations_cles:
+    - nom: "Taimanin (対魔忍)"
+      type: "Organisation gouvernementale anti-démon"
+      description: |
+        Ninjas d'élite formés pour combattre les démons. Issus des clans ninja,
+        ils possèdent souvent du sang mixte démon-humain (héritage Aion/Vampire).
+      quartier_general: "Village de Gosha (五車村) — Académie de Gosha"
+      clans: ["Igawa", "Koukawa", "Fuuma", "Nisha", "autres"]
+
+    - nom: "NOMAD"
+      type: "Organisation criminelle internationale"
+      description: |
+        Coopération criminelle multinationale avec des liens profonds dans le
+        Monde Démoniaque. Dirigée officiellement par Edwin Black (Roi des Vampires),
+        opérée en pratique par Ingrid. Basée à Yomihara, Palais des Ténèbres.
+      statut: "Antagoniste — certains membres défecteurs au fil du temps"
+
+    - nom: "DSO (Dark Security Office)"
+      type: "Agence gouvernementale"
+      description: "Équivalent gouvernemental des opérations secrètes anti-démon"
+
+    - nom: "Organisation Fuuma"
+      type: "Clan ninja indépendant"
+
+  villes_cles:
+    - nom: "Yomihara"
+      type: "Ville Sombre"
+      description: |
+        Ville corrompue par les démons, zone autonome semi-légale.
+        Siège de NOMAD (Palais des Ténèbres). Porte Démonique détruite
+        lors de la Gaiza Massacre (2088).
+    - nom: "Amidahara"
+      type: "Zone de Porte Démonique"
+      description: |
+        Site de la Prison Amidahara — projet conjoint humains/démons.
+        Détruite partiellement lors du Conflit de la Péninsule (bombe magique UFS).
+        Une Porte Démonique subsiste.
+    - nom: "Tokyo / Tokyo-Royaume"
+      description: "Grande métropole, théâtre d'opérations récentes"
+
+# ─────────────────────────────────────────────────────────────────────
+#  MONDE DÉMONIAQUE — GÉOGRAPHIE & SOCIÉTÉ
+# ─────────────────────────────────────────────────────────────────────
+monde_demoniaque:
+  nom_japonais: "魔界"
+  alias: ["Makai", "Monde Sombre", "Dark World"]
+
+  description: |
+    Dimension parallèle vaste avec ses propres cycles jour/nuit.
+    Technologie médiévale — royaumes féodaux, villes fortifiées.
+    Concentration de Mana élevée dans l'atmosphère.
+    La Miasme (équivalente à la radioactivité) rend les longs séjours dangereux
+    pour les non-démons.
+    La nuit, les bêtes démoniques sortent — les voyages hors des villes de nuit
+    sont mortels.
+
+  atmosphere:
+    mana: |
+      Énergie magique naturelle présente partout dans le Monde Démoniaque.
+      Les démons la manipulent instinctivement. Les humains doivent l'apprendre.
+    miasme: |
+      Substance toxique du Monde Sombre. À fortes doses, elle tue.
+      En doses modérées, elle provoque une démonisation progressive des humains.
+      Les démons y sont immunisés nativement.
+
+  geographie:
+    capitale: "Pierre du Roi (King's Rock)"
+    regions:
+      - nom: "Plaines Ardentes"
+        peuple: "Démons Infernaux (Inferno Demons)"
+        description: "Région volcanique du sud, territoire d'Astaroth"
+      - nom: "Terre de Glace et de Neige"
+        peuple: "Fantômes du Givre (Frost Phantoms)"
+        points_notables: ["Yggdrasil", "Territoire de Ragnarok Sinmara"]
+      - nom: "Mer Hivernale"
+        description: "Côte nord, territoire des Vampires (Edwin Black)"
+      - nom: "Forêts du Centre"
+        description: "Théâtre d'escarmouches inter-clans"
+      - nom: "Terres Barbares du Sud"
+        description: "Régions sans gouvernance stable des 9 nobles"
+    villes_portes:
+      - nom: "Cité des Portes (Gate City)"
+        description: "Ville proche des Portes Démoniques, point de passage"
+      - nom: "Yomihara (côté démoniaque)"
+        description: "Hell City reliée au Monde Humain via Porte Démonique (détruite en 2088)"
+      - nom: "Amidahara (côté démoniaque)"
+        description: "Hell City reliée au Monde Humain, Porte toujours active"
+      - nom: "Village de Greenfort"
+        description: |
+          Village où Ingrid est honorée comme sauveuse. Une statue d'elle
+          trône en son centre. C'est là qu'elle rencontra Edwin Black.
+
+  societe:
+    systeme: "Monarchie composite héréditaire — Hégémonie des 9 Familles Nobles"
+    classes:
+      - niveau: 1
+        nom: "Roi des Démons (Maō)"
+        statut: "Vacant — throne non occupé depuis la mort de la lignée royale"
+      - niveau: 2
+        nom: "Chancelier"
+        occupant: "Bismarck"
+        description: "Bras droit du Roi. De facto, le dirigeant actuel."
+      - niveau: 3
+        nom: "Seigneurs Nobles (Lords)"
+        nombre: 9
+        description: "Les 9 familles nobles — chacune dirige une tribu démoniaque"
+      - niveau: 4
+        nom: "Chevaliers Infernaux (Hell Knights)"
+        description: |
+          Guerriers d'élite au-dessus des nobles locaux.
+          Même un roturier devenu Chevalier Infernal peut renverser une maison noble.
+          12 Ordres de Chevaliers, commandés par Bismarck.
+      - niveau: 5
+        nom: "Rois / Reines régionaux"
+        description: "Nobles locaux indépendants des 9 familles"
+      - niveau: 6
+        nom: "Nobles communs"
+        description: "Noblesse locale (ex: Elfes Noirs — bas de la hiérarchie)"
+      - niveau: 7
+        nom: "Civils démoniaques"
+        description: "Villageois, artisans, soldats ordinaires"
+
+    regles_sociales:
+      - "Pacte de non-ingérence humains/démons — rompu progressivement par les humains"
+      - "Le titre de Seigneur dépasse le titre de Roi local"
+      - "Seul Bismarck peut nommer un nouveau Seigneur"
+      - "Les Chevaliers Infernaux peuvent abattre une maison noble sans justification légale"
+      - "Les demi-démons (sang-mêlé) sont discriminés et mal vus"
+      - "Les Ryoumanin (équivalent démonique des Taimanin) maintiennent l'ordre local"
+      - "Hell Knights protégeaient le vrai Roi avant d'être rattachés aux 9 nobles"
+    marriage: "Confirmé — les démons se marient (Ingrid a confirmé cette pratique)"
+
+  factions_regionales_independantes:
+    - nom: "Ragnarok Sinmara"
+      titre: "Reine des Fantômes du Givre + mafia oni"
+      statut: "Indépendante, conflit avec la Sage Seigneure"
+    - nom: "Crocell"
+      titre: "Reine de la tribu Homme-Loup d'Argent"
+      statut: "Indépendante"
+    - nom: "Tribu Naga"
+      chefs: ["Kaliya", "Takshaka", "Vasuki (vraie identité de Ceres)"]
+      statut: "Semi-intégrée, Vasuki est Seigneure Assassin"
+    - nom: "Roi des Fées"
+      territoire: "Till-Tiel et les forêts des Fées"
+    - nom: "Empereur Céleste"
+      note: "Dieu des Valkyries, statut ambigu"
+    - nom: "Ixchel Ludara"
+      titre: "Reine d'un petit royaume"
+    - nom: "Roselina"
+      titre: "Reine Dryade"
+    - nom: "Sokushitsuki"
+      titre: "Rakshasa, Reine des Oni"
+    - nom: "Roi des Wraiths de la Mort (Death Wraith King)"
+      note: "Ennemi du Seigneur Cadavre Teutates"
+    - nom: "Astaroth"
+      titre: "Reine des Plaines Ardentes, Démon Infernal"
+
+# ─────────────────────────────────────────────────────────────────────
+#  CHRONOLOGIE SIMPLIFIÉE
+# ─────────────────────────────────────────────────────────────────────
+chronologie:
+  - periode: "Antiquité"
+    evenements:
+      - "Les entités Aion créent les Vampires primordiaux dans le Monde Sombre"
+      - "Lilith et les Dragons Anciens bannissent les anciens dieux dans l'Autre Monde"
+      - "Pacte de non-ingérence signé entre humains et démons"
+      - "Les Chevaliers Infernaux gardent le vrai Roi des Démons"
+
+  - periode: "Ère médiévale démonique"
+    evenements:
+      - "Formation des 9 Familles Nobles sous la direction du Roi des Démons"
+      - "Ingrid sauve le Village de Greenfort — une statue est érigée en son honneur"
+      - "Ingrid devient leader de l'Ordre du Dragon Noir (Chevaliers Infernaux)"
+      - "Ingrid scelle le dragon Grenier en elle-même"
+
+  - periode: "~100 ans avant RPGX"
+    evenements:
+      - "Mort du dernier vrai Roi des Démons (lignée éteinte)"
+      - "Bismarck assume le rôle de Chancelier de facto"
+      - "Heliogabalus Gaap (Seigneur Flamme) tente de devenir Roi — tué par Teutates"
+
+  - periode: "2063"
+    evenements:
+      - "Edwin Black fonde NOMAD + Zero Nations Group avec Shinganji Sakyo"
+      - "Ingrid (déjà avec Black) quitte les Chevaliers Infernaux pour rejoindre NOMAD"
+
+  - periode: "2075"
+    evenements:
+      - "Ingrid neutralise la menace Sabato — fuite de Murasaki et Sakura"
+
+  - periode: "2082"
+    evenements:
+      - "Ingrid combat la Taimanin Masquée (Oboro) en Amérique (UFS)"
+      - "Ingrid est capturée et hypnotisée par Oboro + Fürst"
+
+  - periode: "2083-2086"
+    evenements:
+      - "Lina obtient son titre de vraie Chevalière Infernale via le rituel primordial"
+      - "Fürst révélé comme agent double de Teutates — coupé par Ingrid, éliminé"
+      - "Ingrid découvre la liaison Oboro-Teutates"
+
+  - periode: "2087"
+    evenements:
+      - "Partenariat temporaire Ingrid-Taimanin contre Teutates"
+
+  - periode: "2088"
+    evenements:
+      - "Massacre de Gaiza — mort de Nisha Gaiza et de Teutates"
+      - "La Sage Seigneure Marjaana détruit la Porte de Yomihara"
+      - "Edwin Black (RPGX) disparaît pendant la bataille contre Teutates"
+      - "Ingrid assume seule la direction de NOMAD"
+      - "Ingrid cherche à restaurer la Porte de Yomihara"
+
+
+# ─────────────────────────────────────────────────────────────────────
+#  NOTES DE CONCEPTION
+# ─────────────────────────────────────────────────────────────────────
+notes_conception:
+  langue: "Tout le jeu est en français"
+  inspiration: "Univers Taimanin (Lilith-Soft) — adapté pour jeu RPG gestion"
+  protagoniste: "Ingrid — Chevalière Infernale, noble démon, ex-leader Ordre Dragon Noir"
+  objectif_jeu: |
+    Ingrid doit restaurer le statut de sa famille dans la hiérarchie démoniaque,
+    naviguer les intrigues des 9 Familles Nobles, et gérer NOMAD
+    tout en cherchant Edwin Black disparu.
+  themes:
+    - "Honneur démoniaque vs trahison perçue"
+    - "Système politique corrompu — réforme ou rébellion"
+    - "Loyauté à une cause vs loyauté à une personne"
+    - "Famille et héritage noble"

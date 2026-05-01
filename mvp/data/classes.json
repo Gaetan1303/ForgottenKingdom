@@ -1,0 +1,117 @@
+{
+  "fighter": {
+    "name": "Fighter",
+    "description": "Maître des armes et des armures, fiable en première ligne.",
+    "hit_die": 10,
+    "primary": ["force"],
+    "starting_feats": ["toughness"],
+    "starting_abilities": ["Second souffle"],
+    "icon": "mvp/assets/class_icons/chevalier_sombre.webp"
+  },
+  "wizard": {
+    "name": "Wizard",
+    "description": "Erudit des arcanes, puissant mais fragile.",
+    "hit_die": 6,
+    "primary": ["magie"],
+    "starting_feats": ["ritual_caster"],
+    "starting_abilities": ["Récupération arcanique"],
+    "icon": "mvp/assets/class_icons/mage_du_pacte.webp"
+  },
+  "rogue": {
+    "name": "Rogue",
+    "description": "Spécialiste de l'infiltration, des pièges et des frappes précises.",
+    "hit_die": 8,
+    "primary": ["espionnage"],
+    "starting_feats": ["sneak_mastery"],
+    "starting_abilities": ["Attaque sournoise"]
+  },
+  "cleric": {
+    "name": "Cleric",
+    "description": "Canalise la foi et les pactes pour soigner et soutenir.",
+    "hit_die": 8,
+    "primary": ["magie"],
+    "starting_feats": ["healer"],
+    "starting_abilities": ["Canalisation divine"]
+  },
+  "ranger": {
+    "name": "Ranger",
+    "description": "Traqueur polyvalent, efficace en escarmouche et reconnaissance.",
+    "hit_die": 10,
+    "primary": ["force", "espionnage"],
+    "starting_feats": ["quick_reflexes"],
+    "starting_abilities": ["Ennemi favori"]
+  },
+  "paladin": {
+    "name": "Paladin",
+    "description": "Champion discipliné, protecteur et meneur au combat.",
+    "hit_die": 10,
+    "primary": ["force", "commandement"],
+    "starting_feats": ["iron_will"],
+    "starting_abilities": ["Imposition des mains"]
+  },
+  "warlock": {
+    "name": "Warlock",
+    "description": "Occultiste lié à une entité, excelle en magie de pacte.",
+    "hit_die": 8,
+    "primary": ["magie", "diplomatie"],
+    "starting_feats": ["pact_focus"],
+    "starting_abilities": ["Explosion occulte"]
+  },
+  "bard": {
+    "name": "Bard",
+    "description": "Inspire les alliés et manipule les foules avec aisance.",
+    "hit_die": 8,
+    "primary": ["diplomatie", "magie"],
+    "starting_feats": ["silver_tongue"],
+    "starting_abilities": ["Inspiration"]
+  },
+  "barbarian": {
+    "name": "Barbarian",
+    "description": "Guerrier féroce, dominateur en assaut frontal.",
+    "hit_die": 12,
+    "primary": ["force"],
+    "starting_feats": ["power_attack"],
+    "starting_abilities": ["Rage"]
+  },
+  "monk": {
+    "name": "Monk",
+    "description": "Combattant discipliné, mobilité et précision extrêmes.",
+    "hit_die": 8,
+    "primary": ["espionnage", "force"],
+    "starting_feats": ["evasion"],
+    "starting_abilities": ["Enchaînement de frappes"]
+  },
+  "druid": {
+    "name": "Druid",
+    "description": "Gardien des forces naturelles et des métamorphoses.",
+    "hit_die": 8,
+    "primary": ["magie", "artisanat"],
+    "starting_feats": ["nature_bond"],
+    "starting_abilities": ["Métamorphose"]
+  },
+  "sorcerer": {
+    "name": "Sorcerer",
+    "description": "Magie innée et explosive, orientée puissance brute.",
+    "hit_die": 6,
+    "primary": ["magie"],
+    "starting_feats": ["arcane_precision"],
+    "starting_abilities": ["Impulsion métamagique"]
+  },
+  "artificer": {
+    "name": "Artificer",
+    "description": "Ingénieur mystique, combine artisanat et arcanes.",
+    "hit_die": 8,
+    "primary": ["artisanat", "magie"],
+    "starting_feats": ["battle_engineer"],
+    "starting_abilities": ["Infuser un objet"]
+  },
+  "commander": {
+    "name": "Commander",
+    "description": "Stratège du champ de bataille, optimise l'armée du clan.",
+    "hit_die": 10,
+    "primary": ["commandement", "diplomatie"],
+    "starting_feats": ["battlefield_tactician"],
+    "starting_abilities": ["Ordre tactique"],
+    "icon": "mvp/assets/class_icons/stratege_des_ombres.webp"
+  }
+}
