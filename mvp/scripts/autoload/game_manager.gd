@@ -31,13 +31,8 @@ func _ready() -> void:
 	_try_run_smoke_tests()
 	if _is_headless_runtime():
 		return
-	# Spawn global StopMusic UI (bottom-left) so it's available on all pages
-	var stop_scene := load("res://scenes/ui/stop_music_ui.tscn") as PackedScene
-	if stop_scene:
-		var stop_inst = stop_scene.instantiate()
-		get_tree().root.call_deferred("add_child", stop_inst)
-		# connect deferred after the node is added to the scene tree
-		call_deferred("_deferred_connect_stop", stop_inst)
+	# Global StopMusic UI removed to avoid duplicate audio controls
+	# The main menu uses its own stop_icon footer button.
 
 
 func _try_run_smoke_tests() -> void:

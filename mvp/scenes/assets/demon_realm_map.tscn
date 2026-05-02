@@ -1,7 +1,0 @@
-[gd_scene load_steps=1 format=2]
-[ext_resource path="res://assets/images/demon_realm_map.png" type="Texture" id=1]
-
-[node name="demon_realm_map" type="Node2D"]
-
-[node name="Sprite" type="Sprite" parent="."]
-texture = ExtResource( 1 )
