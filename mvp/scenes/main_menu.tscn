@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://duxx0d0ccqb3" path="res://scripts/ui/main_menu.gd" id="1_main_menu"]
 
+
 [node name="MainMenu" type="Control" unique_id=725039375]
 layout_mode = 3
 anchors_preset = 15
@@ -19,7 +20,8 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 expand_mode = 1
-stretch_mode = 6
+stretch_mode = 4
+texture = "res://assets/backgrounds/background_menuprincipal.png"
 
 [node name="Content" type="MarginContainer" parent="." unique_id=277298946]
 layout_mode = 1

@@ -286,7 +286,8 @@ func _on_menu_action(action: String) -> void:
 
 
 func _request_continue_game() -> void:
-	if bool(SaveSystem.get_value(INGRID_MVP_NOTICE_KEY, false)):
+	var notice_enabled: Variant = SaveSystem.get_value(INGRID_MVP_NOTICE_KEY, false)
+	if notice_enabled == true or str(notice_enabled).to_lower() == "true":
 		_open_saved_chapter()
 		return
 	_pending_ingrid_target = "continue_game"
@@ -308,7 +309,8 @@ func _open_saved_chapter() -> void:
 		GameManager.open_chapter(saved_last_chapter, saved_last_scene)
 		return
 	for slot_summary in SaveSystem.list_slot_summaries():
-		if bool(slot_summary.get("has_progress", false)):
+		var has_progress: Variant = slot_summary.get("has_progress", false)
+		if has_progress == true or str(has_progress).to_lower() == "true":
 			SaveSystem.set_active_slot(str(slot_summary.get("slot_id", "slot_1")))
 			GameManager.open_chapter(int(slot_summary.get("last_chapter", 0)), int(slot_summary.get("last_scene", 0)))
 			return
@@ -388,7 +390,13 @@ func _open_options_dialog() -> void:
 
 	_options_fullscreen = CheckBox.new()
 	_options_fullscreen.text = "Plein écran"
-	_options_fullscreen.set_pressed(bool(SaveSystem.get_value("settings/fullscreen", false)))
+	var fullscreen_setting: Variant = SaveSystem.get_value("settings/fullscreen", false)
+	var fullscreen_enabled: bool = false
+	if typeof(fullscreen_setting) == TYPE_BOOL and fullscreen_setting:
+		fullscreen_enabled = true
+	elif str(fullscreen_setting).to_lower() == "true":
+		fullscreen_enabled = true
+	_options_fullscreen.set_pressed(fullscreen_enabled)
 	root.add_child(_options_fullscreen)
 
 	var buttons := HBoxContainer.new()
@@ -419,16 +427,18 @@ func _on_options_apply() -> void:
 		return
 	SaveSystem.set_value("settings/music_volume_pct", int(_options_slider.value))
 	SaveSystem.set_value("settings/resolution", _options_resolution.get_item_text(_options_resolution.selected))
-	SaveSystem.set_value("settings/fullscreen", _options_fullscreen.pressed)
+	SaveSystem.set_value("settings/fullscreen", _options_fullscreen.is_pressed())
 	SaveSystem.save()
 
 	var settings := {
 		"music_volume_pct": int(_options_slider.value),
 		"resolution": _options_resolution.get_item_text(_options_resolution.selected),
-		"fullscreen": _options_fullscreen.pressed,
+		"fullscreen": _options_fullscreen.is_pressed(),
 	}
 	_write_user_settings(settings)
-	_apply_display_settings(settings.resolution, settings.fullscreen)
+	var selected_resolution: String = str(settings["resolution"])
+	var fullscreen_enabled: bool = _options_fullscreen.is_pressed()
+	_apply_display_settings(selected_resolution, fullscreen_enabled)
 	_on_options_close()
 
 
@@ -471,6 +481,8 @@ func _apply_display_settings(resolution: String, fullscreen: bool) -> void:
 		return
 	var width := int(parts[0])
 	var height := int(parts[1])
+	if Engine.is_editor_hint() or OS.has_feature("editor"):
+		return
 	DisplayServer.window_set_size(Vector2i(width, height), 0)
 	DisplayServer.window_set_mode(
 		(DisplayServer.WINDOW_MODE_FULLSCREEN if fullscreen else DisplayServer.WINDOW_MODE_WINDOWED),

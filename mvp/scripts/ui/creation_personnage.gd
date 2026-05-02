@@ -102,6 +102,68 @@ const CREATION_GOLD := Color(0.90, 0.78, 0.42, 1.0)
 const CREATION_GOLD_DIM := Color(0.78, 0.64, 0.29, 1.0)
 const CREATION_TEXT_MAIN := Color(0.93, 0.88, 0.78, 1.0)
 const CREATION_TEXT_MUTED := Color(0.68, 0.56, 0.44, 1.0)
+const CREATION_SLIDES := [
+	{
+		"title": "Etape 1/5",
+		"subtitle": "Classe, identite et portrait",
+		"build_title": "Identite et apparence",
+		"options": ["OptionGenre", "OptionApparence"],
+		"show_names": true,
+		"show_class_cards": true,
+		"show_portrait": true,
+		"show_sheet": false,
+	},
+	{
+		"title": "Etape 2/5",
+		"subtitle": "Dons et capacites",
+		"build_title": "Dons et capacites",
+		"options": ["OptionArchetype", "OptionDon", "OptionCompetence"],
+		"show_names": false,
+		"show_class_cards": false,
+		"show_portrait": false,
+		"show_sheet": true,
+	},
+	{
+		"title": "Etape 3/5",
+		"subtitle": "Stats et pouvoirs raciaux",
+		"build_title": "Stats et pouvoirs raciaux",
+		"options": ["OptionPouvoir"],
+		"show_names": false,
+		"show_class_cards": false,
+		"show_portrait": false,
+		"show_sheet": true,
+	},
+	{
+		"title": "Etape 4/5",
+		"subtitle": "Equipements",
+		"build_title": "Equipements de depart",
+		"options": ["OptionEquipement"],
+		"show_names": false,
+		"show_class_cards": false,
+		"show_portrait": false,
+		"show_sheet": true,
+	},
+	{
+		"title": "Etape 5/5",
+		"subtitle": "Resume du personnage",
+		"build_title": "Resume final",
+		"options": [],
+		"show_names": false,
+		"show_class_cards": false,
+		"show_portrait": true,
+		"show_sheet": true,
+	},
+]
+const BUILD_OPTION_NAMES := ["OptionGenre", "OptionApparence", "OptionPouvoir", "OptionArchetype", "OptionDon", "OptionCompetence", "OptionEquipement"]
+const DEFAULT_OPTION_LABELS := {
+	"LabelGenre": "Genre",
+	"LabelApparence": "Apparence",
+	"LabelPouvoir": "Pouvoir magique",
+	"LabelArchetype": "Archetype",
+	"LabelDon": "Don",
+	"LabelCompetence": "Competence",
+	"LabelEquipement": "Equipement de depart",
+}
 
 # Class panel color presets
 const CLASS_PANEL_FORCE_BG := Color(0.12, 0.02, 0.02, 0.85)
@@ -150,6 +212,7 @@ var _fiche_stats := StatDefs.make_default_stats(StatDefs.CHARACTER_MIN_STAT)
 var _fiche_feats: Array = []
 var _embedded_sheet: Node = null
 var _portrait_data: Dictionary = {}
+var _slide_index: int = 0
 
 
 func _build_grid() -> GridContainer:
@@ -197,6 +260,18 @@ func _portrait_file_dialog() -> FileDialog:
 	return $PortraitFileDialog as FileDialog
 
 
+func _subtitle_label() -> Label:
+	return get_node_or_null("PanneauCentre/SousTitre") as Label
+
+
+func _back_button() -> Button:
+	return get_node_or_null("ActionBar/ActionButtons/BtnRetourBottom") as Button
+
+
+func _primary_button() -> Button:
+	return get_node_or_null("ActionBar/ActionButtons/BtnCommencerBottom") as Button
+
+
 func _ready() -> void:
 	_appliquer_style_creation()
 	_configurer_build_inputs()
@@ -217,6 +292,8 @@ func _ready() -> void:
 	var vp := get_viewport()
 	if vp:
 		vp.connect("size_changed", Callable(self, "_update_responsive_layout"))
+	_configurer_flux_par_slides()
+	_aller_a_slide(0)
 
 	# Debug helper: show current name/clan overlay and highlight fields (temporary)
 	# debug overlay removed; label will show name & clan instead
@@ -318,9 +395,161 @@ func _appliquer_style_creation() -> void:
 	if ligne_noms:
 		ligne_noms.add_theme_constant_override("margin_top", 80)
 
+	var label_nom_perso := get_node_or_null("PanneauCentre/LigneNoms/ColNomPerso/LabelNomPerso") as Label
+	if label_nom_perso:
+		label_nom_perso.text = "Nom / prenom"
+		label_nom_perso.visible = true
+	var label_nom_clan := get_node_or_null("PanneauCentre/LigneNoms/ColNomClan/LabelNomClan") as Label
+	if label_nom_clan:
+		label_nom_clan.text = "Nom du clan"
+		label_nom_clan.visible = true
+
+
+func _configurer_flux_par_slides() -> void:
+	var titre_fiche := get_node_or_null("PanneauCentre/CreationBody/ColDroite/LabelFiche") as Label
+	if titre_fiche:
+		titre_fiche.text = "Fiche et apercus"
+	var bouton_principal := _primary_button()
+	if bouton_principal:
+		bouton_principal.custom_minimum_size = Vector2(260, 36)
+
 
 func _configurer_portrait_panel() -> void:
 	_rafraichir_portrait_ui()
+
+
+func _slide_courante() -> Dictionary:
+	return CREATION_SLIDES[clampi(_slide_index, 0, CREATION_SLIDES.size() - 1)] as Dictionary
+
+
+func _set_build_options_visible(visible_options: Array) -> void:
+	for opt_name in BUILD_OPTION_NAMES:
+		var opt := _find_option(opt_name)
+		if opt == null:
+			continue
+		var row := opt.get_parent()
+		if row:
+			row.visible = visible_options.has(opt_name)
+
+
+func _set_build_labels_defaults() -> void:
+	for label_name in DEFAULT_OPTION_LABELS.keys():
+		var label := find_child(str(label_name), true, false) as Label
+		if label:
+			label.text = str(DEFAULT_OPTION_LABELS[label_name])
+
+
+func _refresh_action_buttons() -> void:
+	var bouton_retour := _back_button()
+	if bouton_retour:
+		bouton_retour.text = "Retour au menu" if _slide_index == 0 else "Etape precedente"
+	var bouton_principal := _primary_button()
+	if bouton_principal:
+		bouton_principal.text = "Suivant" if _slide_index < CREATION_SLIDES.size() - 1 else "Commencer l'aventure"
+	_valider_formulaire()
+
+
+func _refresh_slide_layout() -> void:
+	var slide := _slide_courante()
+	var sous_titre := _subtitle_label()
+	if sous_titre:
+		sous_titre.text = "%s · %s" % [str(slide.get("title", "")), str(slide.get("subtitle", ""))]
+
+	var ligne_noms := get_node_or_null("PanneauCentre/LigneNoms") as Control
+	if ligne_noms:
+		ligne_noms.visible = bool(slide.get("show_names", false))
+
+	var label_classe := get_node_or_null("PanneauCentre/CreationBody/ColGauche/LabelClasse") as Control
+	if label_classe:
+		label_classe.visible = bool(slide.get("show_class_cards", false))
+	var cartes_scroll := get_node_or_null("PanneauCentre/CreationBody/ColGauche/CartesScroll") as Control
+	if cartes_scroll:
+		cartes_scroll.visible = bool(slide.get("show_class_cards", false))
+	var classe_choisie_label := _class_label()
+	if classe_choisie_label:
+		classe_choisie_label.visible = bool(slide.get("show_class_cards", false)) or _slide_index == CREATION_SLIDES.size() - 1
+	var separateur_classe := get_node_or_null("PanneauCentre/CreationBody/ColGauche/Separateur2") as Control
+	if separateur_classe:
+		separateur_classe.visible = bool(slide.get("show_class_cards", false))
+
+	var portrait_label := get_node_or_null("PanneauCentre/CreationBody/ColDroite/LabelPortrait") as Control
+	if portrait_label:
+		portrait_label.visible = bool(slide.get("show_portrait", false))
+	var portrait_panel := get_node_or_null("PanneauCentre/CreationBody/ColDroite/PortraitPanel") as Control
+	if portrait_panel:
+		portrait_panel.visible = bool(slide.get("show_portrait", false))
+	var fiche_label := get_node_or_null("PanneauCentre/CreationBody/ColDroite/LabelFiche") as Label
+	if fiche_label:
+		fiche_label.visible = bool(slide.get("show_sheet", false))
+		match _slide_index:
+			1:
+				fiche_label.text = "Fiche, dons et capacites"
+			2:
+				fiche_label.text = "Fiche de stats et pouvoirs"
+			3:
+				fiche_label.text = "Apercu de l'equipement"
+			4:
+				fiche_label.text = "Apercu final du personnage"
+			_:
+				fiche_label.text = "Fiche et apercus"
+	var fiche_scroll := get_node_or_null("PanneauCentre/CreationBody/ColDroite/RightScroll") as Control
+	if fiche_scroll:
+		fiche_scroll.visible = bool(slide.get("show_sheet", false))
+
+	var build_title := get_node_or_null("PanneauCentre/CreationBody/ColGauche/SectionBuild/LabelBuild") as Label
+	if build_title:
+		build_title.text = str(slide.get("build_title", "Profil RPG"))
+	var pacte_label := get_node_or_null("PanneauCentre/CreationBody/ColGauche/SectionBuild/LabelPacteFixe") as Label
+	if pacte_label:
+		pacte_label.visible = _slide_index > 0
+
+	_set_build_labels_defaults()
+	var label_pouvoir := find_child("LabelPouvoir", true, false) as Label
+	if label_pouvoir and _slide_index == 2:
+		label_pouvoir.text = "Pouvoir racial"
+
+	var options := slide.get("options", []) as Array
+	_set_build_options_visible(options)
+	var resume := _build_resume_label()
+	if resume:
+		resume.visible = true
+
+	_refresh_action_buttons()
+
+
+func _aller_a_slide(index: int) -> void:
+	_slide_index = clampi(index, 0, CREATION_SLIDES.size() - 1)
+	_refresh_slide_layout()
+	_mettre_a_jour_resume_build()
+
+
+func _verifier_slide_courante() -> String:
+	if _slide_index != 0:
+		return ""
+	var nom_perso: String = ($PanneauCentre/LigneNoms/ColNomPerso/NomPersonnage as LineEdit).text.strip_edges()
+	var nom_clan: String = ($PanneauCentre/LigneNoms/ColNomClan/NomClan as LineEdit).text.strip_edges()
+	return _verifier_saisies(nom_perso, nom_clan)
+
+
+func _on_action_principale() -> void:
+	if _slide_index < CREATION_SLIDES.size() - 1:
+		var erreur := _verifier_slide_courante()
+		if erreur != "":
+			_error_label().text = erreur
+			return
+		_error_label().text = ""
+		_aller_a_slide(_slide_index + 1)
+		return
+	_on_commencer()
+
+
+func _format_string_list(values: Array) -> String:
+	if values.is_empty():
+		return "—"
+	var parts: Array[String] = []
+	for value in values:
+		parts.append(str(value))
+	return ", ".join(parts)
 
 
 func _connecter_boutons() -> void:
@@ -332,7 +561,7 @@ func _connecter_boutons() -> void:
 	$PanneauCentre/LigneNoms/ColNomPerso/NomPersonnage.text_changed.connect(_on_texte_change)
 	$PanneauCentre/LigneNoms/ColNomClan/NomClan.text_changed.connect(_on_texte_change)
 
-	for opt_name in ["OptionGenre", "OptionApparence", "OptionPouvoir", "OptionArchetype", "OptionDon", "OptionCompetence", "OptionEquipement"]:
+	for opt_name in BUILD_OPTION_NAMES:
 		var opt := _find_option(opt_name)
 		if opt:
 			opt.item_selected.connect(_on_selection_build_change)
@@ -343,7 +572,7 @@ func _connecter_boutons() -> void:
 		btn_retour_bottom.pressed.connect(_on_retour)
 	var btn_commencer_bottom := get_node_or_null("ActionBar/ActionButtons/BtnCommencerBottom")
 	if btn_commencer_bottom:
-		btn_commencer_bottom.pressed.connect(_on_commencer)
+		btn_commencer_bottom.pressed.connect(_on_action_principale)
 	var btn_upload_portrait := get_node_or_null("PanneauCentre/CreationBody/ColDroite/PortraitPanel/PortraitContent/PortraitButtons/BtnUploadPortrait") as Button
 	if btn_upload_portrait:
 		btn_upload_portrait.pressed.connect(_ouvrir_selection_portrait)
@@ -412,14 +641,14 @@ func _configurer_build_inputs() -> void:
 
 
 func _forcer_selection_options_build() -> void:
-	for opt_name in ["OptionGenre", "OptionApparence", "OptionPouvoir", "OptionArchetype", "OptionDon", "OptionCompetence", "OptionEquipement"]:
+	for opt_name in BUILD_OPTION_NAMES:
 		var opt := _find_option(opt_name)
 		if opt and opt.item_count > 0 and opt.selected < 0:
 			opt.select(0)
 
 
 func _sync_all_option_button_texts() -> void:
-	for opt_name in ["OptionGenre", "OptionApparence", "OptionPouvoir", "OptionArchetype", "OptionDon", "OptionCompetence", "OptionEquipement"]:
+	for opt_name in BUILD_OPTION_NAMES:
 		var opt := _find_option(opt_name)
 		if opt:
 			_sync_option_button_text(opt)
@@ -910,7 +1139,7 @@ func _mettre_a_jour_resume_build() -> void:
 		mana += total_mana_bonus
 		ame_pct = int(clan_mgr.barre_ame)
 
-	_build_resume_label().text = "Nom: %s | Clan: %s\nClasse: %s · Genre: %s\nPouvoir: %s | Don: %s | Compétence: %s\n%s\nPV Max: %d (%+d) | Défense: %d | Initiative: %d | Mana: %d (%+d) | Âme: %d%%" % [
+	var summary_text := "Nom: %s | Clan: %s\nClasse: %s · Genre: %s\nPouvoir: %s | Don: %s | Compétence: %s\n%s\nPV Max: %d (%+d) | Défense: %d | Initiative: %d | Mana: %d (%+d) | Âme: %d%%" % [
 		nom_perso if not nom_perso.is_empty() else "—",
 		nom_clan if not nom_clan.is_empty() else "—",
 		classe_label,
@@ -927,6 +1156,40 @@ func _mettre_a_jour_resume_build() -> void:
 		total_mana_bonus_preview,
 		ame_pct,
 	]
+	var classe_data := _get_class_data(_classe_choisie)
+	var equipements_classe := _format_string_list(classe_data.get("equipement", []) as Array)
+	var feats_resume := _format_string_list(_fiche_feats)
+	var portrait_resume := "Image importee" if not _portrait_data.is_empty() else "Aucun portrait"
+	match _slide_index:
+		0:
+			_build_resume_label().text = "Classe: %s\nStyle: %s · %s\nPortrait: %s" % [
+				classe_label,
+				genre,
+				_texte_option(_find_option("OptionApparence")),
+				portrait_resume,
+			]
+		1:
+			_build_resume_label().text = "Archetype: %s\nDon: %s\nCompetence: %s\nFeats de fiche: %s" % [
+				_texte_option(_find_option("OptionArchetype")),
+				don,
+				competence,
+				feats_resume,
+			]
+		2:
+			_build_resume_label().text = "Pouvoir racial: %s\n%s\nPV Max: %d | Defense: %d | Initiative: %d" % [
+				pouvoir,
+				stats_line if stats_line != "" else "Stats non disponibles",
+				pv_max,
+				defense,
+				initiative,
+			]
+		3:
+			_build_resume_label().text = "Equipement choisi: %s\nEquipements lies a la classe: %s" % [
+				_texte_option(_find_option("OptionEquipement")),
+				equipements_classe,
+			]
+		_:
+			_build_resume_label().text = summary_text
 
 
 func _texte_option(option: OptionButton) -> String:
@@ -957,6 +1220,7 @@ func _choisir_classe(classe_id: String) -> void:
 		if _embedded_sheet.has_method("set_class_locked"):
 			_embedded_sheet.set_class_locked(true)
 	_valider_formulaire()
+	_mettre_a_jour_resume_build()
 
 
 func _mettre_a_jour_surbrillance(classe_choisie: String) -> void:
@@ -983,7 +1247,7 @@ func _valider_formulaire() -> void:
 	$PanneauCentre/LigneBoutons/BtnCommencer.disabled = not ok
 	var btn_bottom := get_node_or_null("ActionBar/ActionButtons/BtnCommencerBottom") as Button
 	if btn_bottom:
-		btn_bottom.disabled = not ok
+		btn_bottom.disabled = not ok if _slide_index == CREATION_SLIDES.size() - 1 else false
 
 
 # ── Actions ─────────────────────────────────────────────────────────
@@ -1416,6 +1680,10 @@ func _verifier_saisies(nom_perso: String, nom_clan: String) -> String:
 
 
 func _on_retour() -> void:
+	if _slide_index > 0:
+		_error_label().text = ""
+		_aller_a_slide(_slide_index - 1)
+		return
 	var game_mgr := _game_manager()
 	if game_mgr:
 		game_mgr.go_to("main_menu")

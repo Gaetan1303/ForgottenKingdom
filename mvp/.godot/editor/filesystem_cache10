@@ -1,5 +1,5 @@
 63f7b34db8d8cdea90c76aacccf841ec
-::res://::1777736444
+::res://::1777742717
 godot_run.log::TextFile::-1::1776098660::0::1::::<><><>0<>0<><>::
 icon.png::CompressedTexture2D/CompressedTexture2D::7693981552901003797::1776098660::1776280074::1::::<><><>0<>0<>a67d4e17d634630f6e0670da3f4b97d6<>res://.godot/imported/icon.png-487276ed1e3a0c39cad0279d744ee560.ctex::
 ::res://assets/::1777644442
@@ -62,7 +62,8 @@ silent_4.ogg::AudioStreamOggVorbis/AudioStreamOggVorbis::6057422544578979637::17
 silent_5.ogg::AudioStreamOggVorbis/AudioStreamOggVorbis::8393367136217795798::1776098659::1776280073::1::::<><><>0<>0<>8dd91074b1721b1d26aa523149ab573f<>res://.godot/imported/silent_5.ogg-af18c2b247cd20825f4c99969d2f94f1.oggvorbisstr::
 swing.ogg::AudioStreamOggVorbis/AudioStreamOggVorbis::3634491232533170458::1776098659::1776280073::1::::<><><>0<>0<>54608d20e5d13a6ec9170827c02ffd6e<>res://.godot/imported/swing.ogg-c1e6dcacf92374b145d2cc7354d324b9.oggvorbisstr::
 whoosh.ogg::AudioStreamOggVorbis/AudioStreamOggVorbis::1708161910609731154::1776098659::1776280073::1::::<><><>0<>0<>d45da16573c4dc897511bcd611d7610a<>res://.godot/imported/whoosh.ogg-a15e302587404768652faeb9bb0d95d7.oggvorbisstr::
-::res://assets/backgrounds/::1777711263
+::res://assets/backgrounds/::1777741280
+background_menuprincipal.png::CompressedTexture2D::727028367748850345::1777741057::1777741280::1::::<><><>0<>0<>be86e2a2c4dc112762ba8c5e3b494981<>res://.godot/imported/background_menuprincipal.png-b3ebc9c2096ee62ad0837a48b70d142f.ctex::
 ::res://assets/class_icons/::1777642385
 chevalier_sombre.webp::CompressedTexture2D/CompressedTexture2D::407353034512131252::1776098659::1776280075::1::::<><><>0<>0<>a1dbe671fc822d22bb750b90313987be<>res://.godot/imported/chevalier_sombre.webp-2d041a14d4cba8e4cd0ac8cc26dd4015.ctex::
 mage_du_pacte.webp::CompressedTexture2D/CompressedTexture2D::7837553812246365646::1776098659::1776280075::1::::<><><>0<>0<>bca7cb3593e48d0b30042bf05ce5b54c<>res://.godot/imported/mage_du_pacte.webp-31865d2af68d1f88aabd316c490453fd.ctex::
@@ -130,14 +131,14 @@ clan_hub.tscn::PackedScene::3994120512988888878::1776271545::0::1::::<><><>0<>0<
 creation_personnage.tscn::PackedScene::-1::1776880979::0::1::::<><><>0<>0<><>::res://scripts/ui/creation_personnage.gd
 dungeon_view.tscn::PackedScene::-1::1776098660::0::1::::<><><>0<>0<><>::res://scripts/ui/dungeon_view.gd
 intro_vn.tscn::PackedScene::-1::1776711845::0::1::::<><><>0<>0<><>::res://scripts/ui/intro_vn.gd
-main_menu.tscn::PackedScene::2208979568939166700::1777736246::0::1::::<><><>0<>0<><>::uid://duxx0d0ccqb3::::res://scripts/ui/main_menu.gd
+main_menu.tscn::PackedScene::2208979568939166700::1777741449::0::1::::<><><>0<>0<><>::uid://duxx0d0ccqb3::::res://scripts/ui/main_menu.gd
 main_menu_reworked.tscn::PackedScene::-1::1777708062::0::1::::<><><>0<>0<><>::res://scripts/ui/main_menu_reworked.gd<>res://scripts/ui/menu_item.gd<>res://scripts/ui/colors.gd
 map_view.tscn::PackedScene::-1::1776108511::0::1::::<><><>0<>0<><>::res://scripts/ui/map_view.gd
 pnj_card.tscn::PackedScene::-1::1776713205::0::1::::<><><>0<>0<><>::res://scripts/ui/pnj_card.gd
 pnj_manager.tscn::PackedScene::-1::1776515672::0::1::::<><><>0<>0<><>::res://scripts/ui/pnj_manager.gd
 resolution_action.tscn::PackedScene::-1::1776880979::0::1::::<><><>0<>0<><>::res://scripts/ui/resolution_action.gd
 slot_select.tscn::PackedScene::-1::1776098660::0::1::::<><><>0<>0<><>::res://scripts/ui/slot_select.gd
-::res://scenes/ui/::1777642386
+::res://scenes/ui/::1777741266
 options_dialog.tscn::PackedScene::-1::1776104788::0::1::::<><><>0<>0<><>::
 stop_music_ui.tscn::PackedScene::-1::1776104043::0::1::::<><><>0<>0<><>::
 ::res://scripts/::1777642387
@@ -199,10 +200,10 @@ chapter_view.gd::GDScript::1877027300515558240::1776279862::0::1::::<>Control<><
 character_sheet.gd::GDScript::8430622994024314964::1776880979::0::1::::<>Control<><>0<>0<><>::
 clan_hub.gd::GDScript::1092554444243967825::1776880979::0::1::::<>Control<><>0<>0<><>::
 colors.gd::GDScript::4034486998800261979::1777707365::0::1::::UIColors<>Node<><>0<>0<><>::
-creation_personnage.gd::GDScript::6084850906881856693::1776880979::0::1::::<>Control<><>0<>0<><>::
+creation_personnage.gd::GDScript::6084850906881856693::1777742696::0::1::::<>Control<><>0<>0<><>::
 dungeon_view.gd::GDScript::7700975743159883213::1776880979::0::1::::<>Control<><>0<>0<><>::
 intro_vn.gd::GDScript::8681035273592839328::1776880979::0::1::::<>Control<><>0<>0<><>::
-main_menu.gd::GDScript::253292968945556238::1777736433::0::1::::<>Control<><>0<>0<><>::
+main_menu.gd::GDScript::253292968945556238::1777740653::0::1::::<>Control<><>0<>0<><>::
 main_menu_reworked.gd::GDScript::897250788366598664::1777707982::0::1::::<>Control<><>0<>0<><>::
 map_view.gd::GDScript::921814710578825389::1776108456::0::1::::<>Control<><>0<>0<><>::
 menu_actions.gd::GDScript::7703217945384219429::1777707510::0::1::::MenuActions<>Node<><>0<>0<><>::
