@@ -1,6 +1,6 @@
 extends SceneTree
 
-const CharacterBuildService = preload("res://scripts/data/character_build_service.gd")
+# Use global CharacterBuildService class_name from data scripts
 
 func _initialize() -> void:
 	var failures: Array = []

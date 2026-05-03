@@ -1,7 +1,6 @@
 extends SceneTree
 
-const StatDefs = preload("res://scripts/data/stat_defs.gd")
-const CharacterBuildService = preload("res://scripts/data/character_build_service.gd")
+# Use global class_names from data scripts (StatDefs, CharacterBuildService, Character)
 const CharacterClass = preload("res://scripts/data/character.gd")
 
 func _read_json_dict(path: String) -> Dictionary:

@@ -4,13 +4,15 @@ extends Control
 signal saved(stats, points_remaining, char_class, feats)
 
 var CharacterClass = preload("res://scripts/data/character.gd")
-var StatDefsClass = preload("res://scripts/data/stat_defs.gd")
-const CharacterBuildService = preload("res://scripts/data/character_build_service.gd")
+# Use the global classes registered by `class_name` in the data scripts
+# StatDefs and CharacterBuildService are referenced directly.
 var _character = null
+var StatDefsClass = StatDefs
+const FKHelpers = preload("res://scripts/utils/fk_helpers.gd")
 
 var _points_label: Label
 var _stat_labels: Dictionary = {}
-var _stat_keys: Array = StatDefsClass.STAT_KEYS
+var _stat_keys: Array = StatDefs.STAT_KEYS
 var _class_option: OptionButton
 var _selected_class_id: String = ""
 var _feats_scroll
@@ -512,7 +514,7 @@ func _update_ui() -> void:
 			parts.append("PV: %s" % _format_signed(int(feats_bonus.get("pv_bonus", 0))))
 		if int(feats_bonus.get("mana_bonus", 0)) != 0:
 			parts.append("Mana: %s" % _format_signed(int(feats_bonus.get("mana_bonus", 0))))
-		_feats_bonus_label.text = ", ".join(parts) if parts.size() > 0 else "—"
+		_feats_bonus_label.text = FKHelpers.join_array(parts, ", ") if parts.size() > 0 else "—"
 
 
 func _stat_modifier(score: int) -> int:
@@ -572,7 +574,7 @@ func _on_feat_selected(index: int) -> void:
 		for f in freq:
 			pre_lines.append("Requires feat: %s" % str(f))
 		if pre_lines.size() > 0:
-			desc += "\nPrerequisites: %s" % ", ".join(pre_lines)
+			desc += "\nPrerequisites: %s" % FKHelpers.join_array(pre_lines, ", ")
 	_feat_desc.text = desc
 
 
@@ -633,7 +635,7 @@ func _on_feat_toggled(pressed: bool, key: String) -> void:
 		for f in freq:
 			pre_lines.append("Requires feat: %s" % str(f))
 		if pre_lines.size() > 0:
-			desc += "\nPrerequisites: %s" % ", ".join(pre_lines)
+			desc += "\nPrerequisites: %s" % FKHelpers.join_array(pre_lines, ", ")
 	_feat_desc.text = desc
 
 
@@ -718,8 +720,8 @@ func _on_cancel() -> void:
 
 func _on_export() -> void:
 	var base_dir: String = "res://data/exports/"
-	var abs: String = ProjectSettings.globalize_path(base_dir)
-	DirAccess.make_dir_recursive_absolute(abs)
+	var abs_path: String = ProjectSettings.globalize_path(base_dir)
+	DirAccess.make_dir_recursive_absolute(abs_path)
 	var char_name: String = "npc"
 	if _character != null:
 		char_name = _character.name.strip_edges()

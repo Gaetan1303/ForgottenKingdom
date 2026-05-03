@@ -1,6 +1,6 @@
 extends Control
 
-const DateTimeFormatter = preload("res://scripts/services/date_time_formatter.gd")
+## Use global class_name DateTimeFormatter for formatting utilities.
 
 var _slots: Array = []
 var _selected_slot_id: String = ""

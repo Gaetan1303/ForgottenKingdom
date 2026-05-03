@@ -3,10 +3,9 @@
 ## Chargé depuis game/clan/etat_clan_defaut.json + sauvegarde utilisateur.
 extends Node
 
-const StatDefs = preload("res://scripts/data/stat_defs.gd")
-const PnjDailyPlannerService = preload("res://scripts/services/pnj_daily_planner_service.gd")
-const PnjGenerator = preload("res://scripts/services/pnj_generator.gd")
-const JsonPersistenceService = preload("res://scripts/services/json_persistence_service.gd")
+## rely on the script's class_name (StatDefs) instead of preloading it here
+## Use the service classes registered by class_name (PnjDailyPlannerService, PnjGenerator, JsonPersistenceService)
+const FKHelpers = preload("res://scripts/utils/fk_helpers.gd")
 
 # ── Chemins ────────────────────────────────────────────────────────────
 const DEFAULT_STATE_PATH := "res://data/clan/etat_clan_defaut.json"
@@ -470,7 +469,7 @@ func appliquer_passifs_nuit() -> String:
 
 	if details.is_empty():
 		return ""
-	return "Passifs de nuit: %s" % ", ".join(details)
+	return "Passifs de nuit: %s" % FKHelpers.join_array(details, ", ")
 
 
 func get_resume_traits_actifs() -> String:
@@ -503,7 +502,7 @@ func get_resume_traits_actifs() -> String:
 
 	if parts.is_empty():
 		return "Traits actifs: aucun effet chiffré"
-	return "Traits actifs: %s" % " | ".join(parts)
+	return "Traits actifs: %s" % FKHelpers.join_array(parts, " | ")
 
 
 func _get_traits_caps() -> Dictionary:

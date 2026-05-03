@@ -1,6 +1,8 @@
 extends PanelContainer
 class_name PnjCard
 
+const FKHelpers = preload("res://scripts/utils/fk_helpers.gd")
+
 var _profile: Dictionary = {}
 
 var _lbl_name: Label
@@ -72,7 +74,7 @@ func _apply_profile_to_ui() -> void:
 	if _lbl_equip:
 		var eq = _profile.get("equipment", [])
 		if typeof(eq) == TYPE_ARRAY:
-			_lbl_equip.text = "Equipement: %s" % ", ".join(eq)
+			_lbl_equip.text = "Equipement: %s" % FKHelpers.join_array(eq, ", ")
 		else:
 			_lbl_equip.text = "Equipement: -"
 	if _lbl_behavior:

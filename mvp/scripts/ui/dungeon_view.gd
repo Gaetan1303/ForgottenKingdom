@@ -1,5 +1,7 @@
 extends Control
 
+const FKHelpers = preload("res://scripts/utils/fk_helpers.gd")
+
 @onready var lbl_floor_room: Label = $VBox/FloorRoom
 @onready var lbl_type: Label = $VBox/TypeRoom
 @onready var lbl_enemies: RichTextLabel = $VBox/Enemies
@@ -39,7 +41,7 @@ func _refresh_room() -> void:
 	if enemies.is_empty():
 		lbl_enemies.text = "[i]Aucun ennemi[/i]"
 	else:
-		lbl_enemies.text = "[b]Ennemis:[/b] " + ", ".join(enemies)
+		lbl_enemies.text = "[b]Ennemis:[/b] " + FKHelpers.join_array(enemies, ", ")
 
 	btn_resolve.disabled = bool(room.get("cleared", false))
 	btn_next.disabled = not bool(room.get("cleared", false))

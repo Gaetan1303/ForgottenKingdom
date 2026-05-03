@@ -37,7 +37,7 @@ func _run_test() -> void:
         quit(2)
         return
 
-    var JsonPersistenceService = preload("res://scripts/services/json_persistence_service.gd")
+    ## Use class_name JsonPersistenceService in tests.
     var path = save_system.get_clan_save_path()
     print("Save path:", path)
     var saved = JsonPersistenceService.read_json_with_backup(path)
@@ -106,7 +106,7 @@ func _post_ready(inst: Node) -> void:
         quit(10)
         return
 
-    var JsonPersistenceService = preload("res://scripts/services/json_persistence_service.gd")
+    ## Use class_name JsonPersistenceService in tests.
     var path = save_system.get_clan_save_path()
     print("Save path:", path)
     var saved = JsonPersistenceService.read_json_with_backup(path)

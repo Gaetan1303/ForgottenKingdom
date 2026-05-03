@@ -251,13 +251,13 @@ func get_abilities() -> Dictionary:
 		var entry := _classes[cid] as Dictionary
 		var arr := entry.get("starting_abilities", []) as Array
 		for a in arr:
-			var name := str(a).strip_edges()
-			var id := _slugify(name)
+			var entry_name := str(a).strip_edges()
+			var id := _slugify(entry_name)
 			if not out.has(id):
 				out[id] = {
 					"id": id,
-					"name": name,
-					"description": _find_library_entry_description(name),
+					"name": entry_name,
+					"description": _find_library_entry_description(entry_name),
 					"from_classes": [cid],
 				}
 			else:
@@ -272,8 +272,8 @@ func get_abilities() -> Dictionary:
 
 func get_ability_by_id(id: String) -> Dictionary:
 	var idn := str(id)
-	var abs := get_abilities()
-	return abs.get(idn, {}) as Dictionary
+	var abilities_map := get_abilities()
+	return abilities_map.get(idn, {}) as Dictionary
 
 
 func get_feats_for_ability(ability_id: String) -> Dictionary:
@@ -298,8 +298,8 @@ func _slugify(s: String) -> String:
 	return str(s).strip_edges().to_lower().replace(" ", "_").replace("-", "_")
 
 
-func _find_library_entry_description(name: String) -> String:
-	var title := str(name).strip_edges().to_lower()
+func _find_library_entry_description(entry_name: String) -> String:
+	var title := str(entry_name).strip_edges().to_lower()
 	var secs := _library_entries.get("sections", []) as Array
 	for sec in secs:
 		var entries := sec.get("entries", []) as Array

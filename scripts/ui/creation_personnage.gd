@@ -2,8 +2,8 @@
 ## Copied to satisfy scene ext_resource references.
 extends Control
 
-const StatDefs = preload("res://scripts/data/stat_defs.gd")
-const CharacterBuildService = preload("res://scripts/data/character_build_service.gd")
+# Controller pour l'interface de création de personnage.
+# Utilise les scripts de données définis ailleurs (via class_name).
 
 func _clan_manager() -> Node:
 	return get_node_or_null("/root/ClanManager")
@@ -275,42 +275,45 @@ func _ready() -> void:
 	# debug overlay removed; label will show name & clan instead
 
 
-func _make_panel_style(bg: Color, border: Color) -> StyleBoxFlat:
-	var sb := StyleBoxFlat.new()
-	sb.bg_color = bg
-	sb.border_color = border
-	sb.set_border_width_all(1)
-	sb.set_corner_radius_all(4)
-	return sb
+	# Créer le bloc des descriptions de la slide 2 uniquement s'il n'existe pas
+	if fiche.get_node_or_null("Slide2Descriptions") == null:
+		# séparer le tableau et placer les descriptions directement sous le tableau
+		fiche.add_child(HSeparator.new())
 
+		# Bloc descriptions (labels nommés pour mise à jour rapide sans recréer)
+		var vbox := VBoxContainer.new()
+		vbox.name = "Slide2Descriptions"
+		vbox.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		vbox.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+		vbox.custom_minimum_size = Vector2(0, 160)
+		fiche.add_child(vbox)
 
-func _color_from_hex(hex: String, fallback: Color) -> Color:
-	var s := str(hex).strip_edges()
-	if s.begins_with("#"):
-		s = s.substr(1)
-	if s.length() == 6 or s.length() == 8:
-		var r = int("0x" + s.substr(0, 2))
-		var g = int("0x" + s.substr(2, 2))
-		var b = int("0x" + s.substr(4, 2))
-		var a = 255
-		if s.length() == 8:
-			a = int("0x" + s.substr(6, 2))
-		return Color(r / 255.0, g / 255.0, b / 255.0, a / 255.0)
-	return fallback
+		var abil_title := Label.new()
+		abil_title.name = "AbilTitleLabel"
+		abil_title.add_theme_font_size_override("font_size", 14)
+		abil_title.add_theme_color_override("font_color", CREATION_GOLD)
+		vbox.add_child(abil_title)
 
+		var abil_desc := RichTextLabel.new()
+		abil_desc.name = "AbilDescLabel"
+		abil_desc.bbcode_enabled = false
+		abil_desc.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+		vbox.add_child(abil_desc)
 
-func _color_from_value(val: Variant, fallback: Color) -> Color:
-	if val == null:
-		return fallback
-	if typeof(val) == TYPE_STRING:
-		var s := str(val).strip_edges()
-		if s.begins_with("#"):
-			return _color_from_hex(s, fallback)
-		return fallback
-	if typeof(val) == TYPE_ARRAY:
-		if val.size() >= 3:
-			var a := 1.0
-			if val.size() >= 4:
+		var feat_title := Label.new()
+		feat_title.name = "FeatTitleLabel"
+		feat_title.add_theme_font_size_override("font_size", 14)
+		feat_title.add_theme_color_override("font_color", CREATION_GOLD)
+		vbox.add_child(feat_title)
+
+		var feat_desc := RichTextLabel.new()
+		feat_desc.name = "FeatDescLabel"
+		feat_desc.bbcode_enabled = false
+		feat_desc.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+		vbox.add_child(feat_desc)
+
+	# Met à jour ensuite les descriptions (existant ou nouvellement créées)
+	_refresh_slide2_descriptions()
 				a = float(val[3])
 			return Color(float(val[0]), float(val[1]), float(val[2]), a)
 		return fallback
@@ -563,7 +566,18 @@ func _format_string_list(values: Array) -> String:
 	var parts: Array[String] = []
 	for value in values:
 		parts.append(str(value))
-	return ", ".join(parts)
+	return _join_array(parts, ", ")
+
+
+func _join_array(arr: Array, sep: String = ", ") -> String:
+	if arr == null or arr.size() == 0:
+		return ""
+	var out := ""
+	for i in range(arr.size()):
+		out += str(arr[i])
+		if i < arr.size() - 1:
+			out += sep
+	return out
 
 
 func _connecter_boutons() -> void:
@@ -823,6 +837,56 @@ func _texture_portrait_depuis_payload(payload: Dictionary) -> Texture2D:
 	return ImageTexture.create_from_image(image)
 
 
+func _format_prerequisite(pr: Variant) -> String:
+	if pr == null:
+		return "Aucun"
+	if typeof(pr) == TYPE_DICTIONARY:
+		var parts: Array = []
+		var stats := pr.get("stats", {}) as Dictionary
+		if stats.size() > 0:
+			var sarr: Array = []
+			for k in stats.keys():
+				sarr.append("%s >= %s" % [str(k), str(stats[k])])
+			parts.append("Stats: %s" % _join_array(sarr, ", "))
+		var feats := pr.get("feats", []) as Array
+		if feats.size() > 0:
+			var names: Array = []
+			for fid in feats:
+				var fdata := GameDataLoader.get_feats().get(str(fid), {}) as Dictionary
+				names.append(str(fdata.get("name", str(fid))))
+			parts.append("Dons requis: %s" % _join_array(names, ", "))
+		return _join_array(parts, "\n") if parts.size() > 0 else "Aucun"
+	elif typeof(pr) == TYPE_ARRAY:
+		var names2: Array = []
+		for fid in pr:
+			var fdata2 := GameDataLoader.get_feats().get(str(fid), {}) as Dictionary
+			names2.append(str(fdata2.get("name", str(fid))))
+		return "Dons requis: %s" % _join_array(names2, ", ")
+	return str(pr)
+
+
+func _format_effects(effects: Variant) -> String:
+	if effects == null:
+		return "Aucun"
+	if typeof(effects) != TYPE_DICTIONARY:
+		return str(effects)
+	var out: Array = []
+	if effects.has("stats"):
+		var st := effects.get("stats", {}) as Dictionary
+		for k in st.keys():
+			out.append("%+d %s" % [int(st[k]), str(k)])
+	if effects.has("pv_bonus"):
+		out.append("PV %+d" % int(effects.get("pv_bonus", 0)))
+	if effects.has("mana_bonus"):
+		out.append("Mana %+d" % int(effects.get("mana_bonus", 0)))
+	# autres clefs éventuelles
+	for key in effects.keys():
+		if key in ["stats", "pv_bonus", "mana_bonus"]:
+			continue
+		out.append("%s: %s" % [str(key), str(effects.get(key))])
+	return _join_array(out, ", ") if out.size() > 0 else "Aucun"
+
+
 func _on_carte_gui_input(ev: InputEvent, classe_id: String) -> void:
 	if ev is InputEventMouseButton:
 		var mb := ev as InputEventMouseButton
@@ -1023,8 +1087,8 @@ func _mettre_a_jour_resume_build() -> void:
 	var nom_clan: String  = ($PanneauCentre/LigneNoms/ColNomClan/NomClan as LineEdit).text.strip_edges()
 	var classe_label := "Aucune"
 	if not _classe_choisie.is_empty():
-		var classe_data := _get_class_data(_classe_choisie)
-		classe_label = str(classe_data.get("nom", _classe_choisie))
+		var classe_data_top := _get_class_data(_classe_choisie)
+		classe_label = str(classe_data_top.get("nom", _classe_choisie))
 	var genre := _texte_option(_find_option("OptionGenre"))
 	var pouvoir := _texte_option(_find_option("OptionPouvoir"))
 	var don := _texte_option(_find_option("OptionDon"))
@@ -1075,8 +1139,8 @@ func _mettre_a_jour_resume_build() -> void:
 		var total_mana_bonus := 0
 		var feats_defs: Dictionary = GameDataLoader.get_feats()
 		if not _classe_choisie.is_empty():
-			var classe_data := _get_class_data(_classe_choisie)
-			var class_feats := (classe_data.get("competences", []) as Array)
+			var classe_data_mana := _get_class_data(_classe_choisie)
+			var class_feats := (classe_data_mana.get("competences", []) as Array)
 			for cf in class_feats:
 				var cf_def := feats_defs.get(str(cf), {}) as Dictionary
 				var ceff := cf_def.get("effects", {}) as Dictionary
@@ -1107,8 +1171,8 @@ func _mettre_a_jour_resume_build() -> void:
 		total_mana_bonus_preview,
 		ame_pct,
 	]
-	var classe_data := _get_class_data(_classe_choisie)
-	var equipements_classe := _format_string_list(classe_data.get("equipement", []) as Array)
+	var classe_data_info := _get_class_data(_classe_choisie)
+	var equipements_classe := _format_string_list(classe_data_info.get("equipement", []) as Array)
 	var feats_resume := _format_string_list(_fiche_feats)
 	var portrait_resume := "Image importee" if not _portrait_data.is_empty() else "Aucun portrait"
 	match _slide_index:
@@ -1215,7 +1279,7 @@ func _on_commencer() -> void:
 		_error_label().text = erreur
 		return
 
-	var classe_data := _get_class_data(_classe_choisie)
+	var classe_data_final := _get_class_data(_classe_choisie)
 	var profil := _construire_profil_personnage()
 	var bonus_comp := _bonus_competence(str(profil.get("competence_id", "")))
 	var bonus_archetype := _bonus_archetype(str(profil.get("archetype_pathfinder", "")))
@@ -1224,7 +1288,7 @@ func _on_commencer() -> void:
 	var feats_defs: Dictionary = GameDataLoader.get_feats()
 	var feats_bonus: Dictionary = {}
 	# inclure les feats de départ de la classe (si présents)
-	var class_feats := (classe_data.get("competences", []) as Array)
+	var class_feats := (classe_data_final.get("competences", []) as Array)
 	for cf in class_feats:
 		var cf_def := feats_defs.get(str(cf), {}) as Dictionary
 		var eff := cf_def.get("effects", {}) as Dictionary
@@ -1240,14 +1304,14 @@ func _on_commencer() -> void:
 			feats_bonus[sk] = int(feats_bonus.get(sk, 0)) + int(stats_eff[sk])
 
 	var stats_finales := CharacterBuildService.compute_final_stats(
-		(classe_data.get("stats_bonus", {}) as Dictionary),
+		(classe_data_final.get("stats_bonus", {}) as Dictionary),
 		_fiche_stats,
 		bonus_comp,
 		bonus_archetype,
 		feats_bonus
 	)
 
-	profil["competences_depart"] = _competences_depart(classe_data, profil)
+	profil["competences_depart"] = _competences_depart(classe_data_final, profil)
 
 	# --- User-requested defaults: set parents' given names
 	profil["pere_name"] = "Vincent"
@@ -1255,9 +1319,9 @@ func _on_commencer() -> void:
 
 	# Compose full player name as "Prénom NomDeClan" (use clan as family name)
 	var prenom := nom_perso.strip_edges()
-	var nom_complet := prenom
+	var _nom_complet := prenom
 	if nom_clan.strip_edges() != "":
-		nom_complet = "%s %s" % [prenom, nom_clan]
+		_nom_complet = "%s %s" % [prenom, nom_clan]
 
 	var clan_mgr := _clan_manager()
 	var game_mgr := _game_manager()
@@ -1710,7 +1774,12 @@ func _on_abilities_list_selected(index: int) -> void:
 		_on_feats_list_selected(0)
 	else:
 		_selected_feat_id = ""
-		_refresh_slide2_descriptions()
+
+	# Actualiser les descriptions (capacité + don) pour la slide 2
+	_refresh_slide2_descriptions()
+
+	# Mettre à jour aussi le résumé compact (capacité potentiellement sans don)
+	_update_compact_sheet_summary()
 
 
 func _on_feats_list_selected(index: int) -> void:
@@ -1827,13 +1896,55 @@ func _build_slide2_right_pane() -> void:
 	lbl.text = "Portrait:"
 	lbl.add_theme_color_override("font_color", CREATION_TEXT_MUTED)
 	grid.add_child(lbl)
-	val = Label.new()
+	val = TextureRect.new()
 	val.name = "Compact_Portrait"
-	val.text = portrait_resume
-	val.add_theme_color_override("font_color", CREATION_TEXT_MAIN)
+	# afficher la texture si disponible
+	var t := _texture_portrait_depuis_payload(_portrait_data)
+	val.texture = t
+	val.expand = true
+	val.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	val.custom_minimum_size = Vector2(64, 64)
+	if val.has_method("set_tooltip"):
+		val.set_tooltip(str(_portrait_data.get("file_name", "")))
 	grid.add_child(val)
 
-	pane.add_child(HSeparator.new())
+	# Créer les widgets du résumé compact uniquement s'ils n'existent pas déjà
+	if grid.get_node_or_null("Compact_Ability") == null:
+		# Capacité (nom) — résumé compact
+		lbl = Label.new()
+		lbl.text = "Capacité:"
+		lbl.add_theme_color_override("font_color", CREATION_TEXT_MUTED)
+		grid.add_child(lbl)
+		val = Label.new()
+		val.name = "Compact_Ability"
+		val.text = "—"
+		val.add_theme_color_override("font_color", CREATION_TEXT_MAIN)
+		grid.add_child(val)
+
+		# Don (nom) — résumé compact
+		lbl = Label.new()
+		lbl.text = "Don:"
+		lbl.add_theme_color_override("font_color", CREATION_TEXT_MUTED)
+		grid.add_child(lbl)
+		val = Label.new()
+		val.name = "Compact_Feat"
+		val.text = "—"
+		val.add_theme_color_override("font_color", CREATION_TEXT_MAIN)
+		grid.add_child(val)
+
+	# S'assurer que la description compacte existe (sous 'fiche')
+	if fiche.get_node_or_null("Compact_FeatsDesc") == null:
+		var compact_desc := RichTextLabel.new()
+		compact_desc.name = "Compact_FeatsDesc"
+		compact_desc.bbcode_enabled = false
+		compact_desc.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+		compact_desc.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		compact_desc.add_theme_color_override("font_color", CREATION_TEXT_MAIN)
+		compact_desc.custom_minimum_size = Vector2(0, 80)
+		fiche.add_child(compact_desc)
+
+	# séparer le tableau et placer les descriptions directement sous le tableau
+	fiche.add_child(HSeparator.new())
 
 	# Bloc descriptions (labels nommés pour mise à jour rapide sans recréer)
 	var vbox := VBoxContainer.new()
@@ -1841,7 +1952,7 @@ func _build_slide2_right_pane() -> void:
 	vbox.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	vbox.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 	vbox.custom_minimum_size = Vector2(0, 160)
-	pane.add_child(vbox)
+	fiche.add_child(vbox)
 
 	var abil_title := Label.new()
 	abil_title.name = "AbilTitleLabel"
@@ -1855,7 +1966,6 @@ func _build_slide2_right_pane() -> void:
 	abil_desc.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	vbox.add_child(abil_desc)
 
-	vbox.add_child(VSeparator.new())
 
 	var feat_title := Label.new()
 	feat_title.name = "FeatTitleLabel"
@@ -1883,6 +1993,16 @@ func _refresh_slide2_descriptions() -> void:
 	var feat_title := vbox.get_node_or_null("FeatTitleLabel") as Label
 	var feat_desc := vbox.get_node_or_null("FeatDescLabel") as RichTextLabel
 
+	# (debug logs removed)
+
+	# Ensure description labels are visible and use readable color
+	if abil_desc != null:
+		abil_desc.add_theme_color_override("font_color", CREATION_TEXT_MAIN)
+		abil_desc.visible = true
+	if feat_desc != null:
+		feat_desc.add_theme_color_override("font_color", CREATION_TEXT_MAIN)
+		feat_desc.visible = true
+
 	if abil_title != null:
 		if _selected_ability_id != "":
 			var ad: Dictionary = GameDataLoader.get_ability_by_id(_selected_ability_id) as Dictionary
@@ -1899,7 +2019,12 @@ func _refresh_slide2_descriptions() -> void:
 			var fd: Dictionary = GameDataLoader.get_feats().get(_selected_feat_id, {}) as Dictionary
 			feat_title.text = str(fd.get("name", "Don"))
 			if feat_desc != null:
-				feat_desc.text = str(fd.get("description", "Aucune description disponible."))
+				var fdesc: String = str(fd.get("description", "Aucune description disponible."))
+				var prereq: Dictionary = fd.get("prerequisite", {}) as Dictionary
+				var effects: Dictionary = fd.get("effects", {}) as Dictionary
+				var prereq_text: String = _format_prerequisite(prereq)
+				var effects_text: String = _format_effects(effects)
+				feat_desc.text = "%s\n\nPrerequis:\n%s\n\nEffets:\n%s" % [fdesc, prereq_text, effects_text]
 		else:
 			feat_title.text = "Don"
 			if feat_desc != null:
@@ -1938,10 +2063,48 @@ func _update_compact_sheet_summary() -> void:
 		apparence_lbl.text = apparence if not apparence.is_empty() else "—"
 
 	# Portrait (texte résumé)
-	var portrait_lbl := grid.get_node_or_null("Compact_Portrait") as Label
-	var portrait_resume := "Image importee" if not _portrait_data.is_empty() else "Aucun portrait"
-	if portrait_lbl != null:
-		portrait_lbl.text = portrait_resume
+	var portrait_tex := grid.get_node_or_null("Compact_Portrait") as TextureRect
+	var tex := _texture_portrait_depuis_payload(_portrait_data)
+	if portrait_tex != null:
+		portrait_tex.texture = tex
+		if portrait_tex.has_method("set_tooltip"):
+			portrait_tex.set_tooltip(str(_portrait_data.get("file_name", "")))
+
+	# Mettre à jour nom de capacité / don dans la fiche compacte
+	var ability_lbl := grid.get_node_or_null("Compact_Ability") as Label
+	var feat_lbl := grid.get_node_or_null("Compact_Feat") as Label
+	var compact_desc := find_child("Compact_FeatsDesc", true, false) as RichTextLabel
+
+	var ability_name := "—"
+	var ability_desc := ""
+	if _selected_ability_id != "":
+		var ad := GameDataLoader.get_ability_by_id(_selected_ability_id) as Dictionary
+		ability_name = str(ad.get("name", "—"))
+		ability_desc = str(ad.get("description", ""))
+
+	var feat_name := "—"
+	var feat_desc := ""
+	if _selected_feat_id != "":
+		var fd := GameDataLoader.get_feats().get(_selected_feat_id, {}) as Dictionary
+		feat_name = str(fd.get("name", "—"))
+		feat_desc = str(fd.get("description", ""))
+
+	if ability_lbl != null:
+		ability_lbl.text = ability_name if ability_name != "" else "—"
+	if feat_lbl != null:
+		feat_lbl.text = feat_name if feat_name != "" else "—"
+
+	if compact_desc != null:
+		var short_desc := ""
+		if ability_desc.strip_edges() != "":
+			short_desc += "%s: %s\n" % [ability_name, ability_desc]
+		if feat_desc.strip_edges() != "":
+			if short_desc != "":
+				short_desc += "\n"
+			short_desc += "%s: %s\n" % [feat_name, feat_desc]
+		if short_desc == "":
+			short_desc = "Aucune description disponible."
+		compact_desc.text = short_desc
 
 
 func _on_retour() -> void:

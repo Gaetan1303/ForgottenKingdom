@@ -1,7 +1,7 @@
+
 extends SceneTree
 
-const StatDefs = preload("res://scripts/data/stat_defs.gd")
-const CharacterBuildService = preload("res://scripts/data/character_build_service.gd")
+# Use global class_names from data scripts (StatDefs, CharacterBuildService, Character)
 const CharacterFactoryClass = preload("res://scripts/factory/character_factory.gd")
 const CharacterClass = preload("res://scripts/data/character.gd")
 

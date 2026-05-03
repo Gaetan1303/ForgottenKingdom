@@ -8,6 +8,8 @@
 ##  4. Fin de tour → produit ressources + événements → tour suivant
 extends Control
 
+const FKHelpers = preload("res://scripts/utils/fk_helpers.gd")
+
 ## Données de cible mémorisées lors du retour depuis la résolution
 var maison_cible_id: int   = -1
 var action_en_cours: String = ""
@@ -53,7 +55,6 @@ const DISPLAY_LABELS := {
 
 var _fallback_house_portrait: Texture2D = null
 var _icones_pretes: bool = false
-var JsonPersistenceService = preload("res://scripts/services/json_persistence_service.gd")
 
 # Icônes pixel art des ressources — header
 const ICON_RES_HEADER := {
@@ -676,7 +677,7 @@ func _construire_panneau_capacites(profil: Dictionary) -> PanelContainer:
 		var abilities := class_entry.get("starting_abilities", []) as Array
 		if not abilities.is_empty():
 			var ab_lbl := Label.new()
-			ab_lbl.text = "Capacités : " + ", ".join(abilities)
+			ab_lbl.text = "Capacités : " + FKHelpers.join_array(abilities, ", ")
 			ab_lbl.add_theme_color_override("font_color", Color(0.94, 0.90, 0.80, 1.0))
 			ab_lbl.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 			vbox.add_child(ab_lbl)
@@ -703,7 +704,7 @@ func _construire_panneau_capacites(profil: Dictionary) -> PanelContainer:
 		var primary := class_entry.get("primary", []) as Array
 		if not primary.is_empty():
 			var prim_lbl := Label.new()
-			prim_lbl.text = "Stats primaires : " + ", ".join(primary).replace("_", " ").capitalize()
+			prim_lbl.text = "Stats primaires : " + FKHelpers.join_array(primary, ", ").replace("_", " ").capitalize()
 			prim_lbl.add_theme_color_override("font_color", Color(0.66, 0.54, 0.40, 1.0))
 			vbox.add_child(prim_lbl)
 
@@ -1054,7 +1055,7 @@ func _to_display_name(value: Variant) -> String:
 	var parts := cleaned.split(" ", false)
 	for i in range(parts.size()):
 		parts[i] = String(parts[i]).capitalize()
-	return " ".join(parts)
+	return FKHelpers.join_array(parts, " ")
 
 
 func _make_tween():
@@ -1242,7 +1243,7 @@ func _on_fin_tour() -> void:
 			var parts := []
 			for k in gains.keys():
 				parts.append("%s %+d" % [str(k), int(gains.get(k, 0))])
-			report_msg = "%s %s" % [report_msg, ", ".join(parts)]
+			report_msg = "%s %s" % [report_msg, FKHelpers.join_array(parts, ", ")]
 
 		ClanManager.moment_journee = "nuit"
 		ClanManager.reset_actions_pour_nuit()
@@ -1279,7 +1280,7 @@ func _on_fin_tour() -> void:
 func _construire_resume_tour(production: Dictionary) -> String:
 	var lignes := ["Tour %d terminé." % ClanManager.tour_actuel]
 	lignes.append("Production : +%d or, +%d mana" % [int(production.get("or", 0)), int(production.get("mana", 0))])
-	return " | ".join(lignes)
+	return FKHelpers.join_array(lignes, " | ")
 
 
 func _verifier_fin_de_partie() -> void:

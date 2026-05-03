@@ -3,7 +3,7 @@
 class_name Character
 extends RefCounted
 
-const StatDefs = preload("res://scripts/data/stat_defs.gd")
+# Use the globally-registered StatDefs script (class_name StatDefs)
 const STAT_KEYS := StatDefs.STAT_KEYS
 const MIN_STAT: int = StatDefs.CHARACTER_MIN_STAT
 const MAX_STAT: int = StatDefs.CHARACTER_MAX_STAT
