@@ -25,17 +25,12 @@ func create_from_profile(profile: Dictionary) -> Character:
             StatDefs.CHARACTER_MIN_STAT
         )
 
-    # Add starting feats/abilities from classes.json if present
-    var file := FileAccess.open(CLASSES_PATH, FileAccess.READ)
-    if file:
-        var parsed: Variant = JSON.parse_string(file.get_as_text())
-        if parsed != null and parsed is Dictionary:
-            var classes := parsed as Dictionary
-            var cid: String = ch.char_class
-            if classes.has(cid):
-                var cdef := classes[cid] as Dictionary
-                for f in cdef.get("starting_feats", []):
-                    ch.add_feat(str(f))
-                for a in cdef.get("starting_abilities", []):
-                    ch.abilities.append(a)
+    # Add starting feats/abilities from centralized GameDataLoader
+    var cid: String = ch.char_class
+    var cdef := GameDataLoader.get_class_by_id(cid)
+    if not cdef.is_empty():
+        for f in cdef.get("starting_feats", []):
+            ch.add_feat(str(f))
+        for a in cdef.get("starting_abilities", []):
+            ch.abilities.append(a)
     return ch

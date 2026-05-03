@@ -388,9 +388,7 @@ func setup(stats: Dictionary, points_left: int, char_class: String = "") -> void
 	print("CharacterSheet.setup: end; feats_count=", _feat_keys.size())
 
 func _load_classes() -> void:
-	var classes: Dictionary = _read_json_dict("res://data/classes.json")
-	if classes.is_empty():
-		classes = _read_json_dict("res://data/classes.json")
+	var classes: Dictionary = GameDataLoader.get_classes()
 	if classes.is_empty():
 		return
 	_class_keys.clear()
@@ -415,10 +413,8 @@ func _load_feats() -> void:
 	if _feats_vbox == null:
 		push_warning("CharacterSheet: _feats_vbox not initialized, skipping _load_feats for now")
 		return
-	var feats: Dictionary = _read_json_dict("res://data/feats.json")
+	var feats: Dictionary = GameDataLoader.get_feats()
 	print("CharacterSheet: _load_feats called; feats count:", feats.size())
-	if feats.is_empty():
-		feats = _read_json_dict("res://data/feats.json")
 	if feats.is_empty():
 		return
 	# clear existing widgets
@@ -757,7 +753,7 @@ func _compute_feats_bonus() -> Dictionary:
 		return out
 	# Ensure feat definitions are loaded
 	if _feat_defs == null or _feat_defs.size() == 0:
-		_feat_defs = _read_json_dict("res://data/feats.json")
+		_feat_defs = GameDataLoader.get_feats()
 	var feats_arr: Array = _character.feats if _character.feats != null else []
 	for f in feats_arr:
 		var fkey = str(f)

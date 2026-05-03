@@ -12,37 +12,8 @@ func _game_manager() -> Node:
 
 func _game_data_loader() -> Node:
 	return get_node_or_null("/root/GameDataLoader")
-
-# ── Données des classes (synchronisé avec creation_personnage.yaml) ──
-const CLASSES := {
-	"chevalier_sombre": {
-		"nom": "Chevalier Sombre",
-		"stats_bonus": {
-			"force": 3, "magie": 0, "espionnage": -1,
-			"artisanat": 0, "diplomatie": -1, "commandement": 2
-		},
-		"equipement": ["Épée à deux mains du Clan Brisé", "Armure de cuir renforcée", "Bouclier fendu"],
-		"competences": ["Frappe Sismique", "Cri de Guerre", "Charge Dévastatrice", "Résistance Démoniaque"],
-	},
-	"mage_du_pacte": {
-		"nom": "Mage du Pacte",
-		"stats_bonus": {
-			"force": -1, "magie": 4, "espionnage": 0,
-			"artisanat": 0, "diplomatie": 1, "commandement": -1
-		},
-		"equipement": ["Bâton de Canalisation Obscur", "Robe de Mage", "Grimoire de Pactes Anciens"],
-		"competences": ["Boule de Feu Démoniaque", "Invocation Mineure", "Barrière Mystique", "Lecture d'Âme"],
-	},
-	"stratege_des_ombres": {
-		"nom": "Stratège des Ombres",
-		"stats_bonus": {
-			"force": -1, "magie": 1, "espionnage": 4,
-			"artisanat": 0, "diplomatie": 2, "commandement": -1
-		},
-		"equipement": ["Lame courte silencieuse", "Cloak de dissimulation", "Carnet de renseignements chiffré"],
-		"competences": ["Invisibilité Partielle", "Lecture de Mémoire", "Manipulation Mentale (faible)", "Réseau d'Espions"],
-	},
-}
+# Les définitions de classes sont centralisées dans `res://mvp/data/classes.json` via l'autoload `GameDataLoader`.
+# Suppression de la définition locale `CLASSES` pour éviter les doublons.
 
 var _classe_choisie: String = ""
 
@@ -402,12 +373,10 @@ func _build_class_cards() -> void:
 	for c in container.get_children():
 		c.queue_free()
 
-	var classes := _read_json_dict("res://data/classes.json")
+	var classes := GameDataLoader.get_classes()
 	if classes.is_empty():
-		# fallback: use local CLASSES constant for the three default entries
-		classes = {}
-		for k in CLASSES.keys():
-			classes[k] = {"name": CLASSES[k].get("nom", k), "description": "", "starting_abilities": CLASSES[k].get("competences", [])}
+		push_warning("creation_personnage: aucune classe chargée — vérifiez res://mvp/data/classes.json ou GameDataLoader.")
+		return
 
 	var keys := classes.keys()
 	keys.sort()
@@ -428,22 +397,8 @@ func _build_class_cards() -> void:
 			v.add_theme_constant_override("separation", 8)
 		panel.add_child(v)
 
-		# Charger l'icône depuis le système de fichiers directement (évite les imports manquants)
-		var tex: Texture2D = null
-		var proj_root: String = ProjectSettings.globalize_path("res://")
-		var icon_dirs: Array = [proj_root + "assets/class_icons/", proj_root + "mvp/assets/class_icons/"]
-		var icon_exts: Array = [".webp", ".png", ".jpg", ".jpeg"]
-		for icon_dir in icon_dirs:
-			for icon_ext in icon_exts:
-				var fpath: String = icon_dir + str(key) + icon_ext
-				if FileAccess.file_exists(fpath):
-					var img := Image.load_from_file(fpath)
-					if img != null and not img.is_empty():
-						tex = ImageTexture.create_from_image(img)
-						break
-			if tex:
-				break
-
+		# Récupération centralisée de l'icône via GameDataLoader
+		var tex: Texture2D = GameDataLoader.get_class_icon(str(key))
 		if tex:
 			var texr := TextureRect.new()
 			texr.texture = tex
@@ -833,12 +788,8 @@ func _construire_fiche_complete() -> Dictionary:
 
 
 func _get_class_data(classe_id: String) -> Dictionary:
-	# Prefer the CLASSES hardcoded map (contains detailed stats).
-	if CLASSES.has(classe_id):
-		return CLASSES[classe_id] as Dictionary
-
-	# Otherwise, try to read from res://data/classes.json and build a minimal entry.
-	var classes := _read_json_dict("res://data/classes.json")
+	# Récupère la définition depuis GameDataLoader (single source of truth)
+	var classes := GameDataLoader.get_classes()
 	if classes.has(classe_id):
 		var entry := classes[classe_id] as Dictionary
 		var stats_bonus := {

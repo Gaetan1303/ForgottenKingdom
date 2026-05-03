@@ -51,6 +51,7 @@ var _sound_button: Button
 var _menu_top_spacing: int = 48
 var _card_vertical_step: int = 100
 var _card_height: int = 92
+@export var allow_resize_in_editor: bool = true
 
 
 func _ready() -> void:
@@ -481,7 +482,9 @@ func _apply_display_settings(resolution: String, fullscreen: bool) -> void:
 		return
 	var width := int(parts[0])
 	var height := int(parts[1])
-	if Engine.is_editor_hint() or OS.has_feature("editor"):
+	# Par défaut on évite de modifier la fenêtre de l'éditeur.
+	# Pour tester le resize depuis l'éditeur, activez `allow_resize_in_editor`.
+	if (Engine.is_editor_hint() or OS.has_feature("editor")) and not allow_resize_in_editor:
 		return
 	DisplayServer.window_set_size(Vector2i(width, height), 0)
 	DisplayServer.window_set_mode(

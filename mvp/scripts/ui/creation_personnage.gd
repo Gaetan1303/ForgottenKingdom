@@ -15,37 +15,9 @@ func _game_manager() -> Node:
 
 func _game_data_loader() -> Node:
 	return get_node_or_null("/root/GameDataLoader")
-
-# ── Données des classes (synchronisé avec creation_personnage.yaml) ──
-const CLASSES := {
-	"chevalier_sombre": {
-		"nom": "Chevalier Sombre",
-		"stats_bonus": {
-			"force": 3, "magie": 0, "espionnage": -1,
-			"artisanat": 0, "diplomatie": -1, "commandement": 2
-		},
-		"equipement": ["Épée à deux mains du Clan Brisé", "Armure de cuir renforcée", "Bouclier fendu"],
-		"competences": ["Frappe Sismique", "Cri de Guerre", "Charge Dévastatrice", "Résistance Démoniaque"],
-	},
-	"mage_du_pacte": {
-		"nom": "Mage du Pacte",
-		"stats_bonus": {
-			"force": -1, "magie": 4, "espionnage": 0,
-			"artisanat": 0, "diplomatie": 1, "commandement": -1
-		},
-		"equipement": ["Bâton de Canalisation Obscur", "Robe de Mage", "Grimoire de Pactes Anciens"],
-		"competences": ["Boule de Feu Démoniaque", "Invocation Mineure", "Barrière Mystique", "Lecture d'Âme"],
-	},
-	"stratege_des_ombres": {
-		"nom": "Stratège des Ombres",
-		"stats_bonus": {
-			"force": -1, "magie": 1, "espionnage": 4,
-			"artisanat": 0, "diplomatie": 2, "commandement": -1
-		},
-		"equipement": ["Lame courte silencieuse", "Cloak de dissimulation", "Carnet de renseignements chiffré"],
-		"competences": ["Invisibilité Partielle", "Lecture de Mémoire", "Manipulation Mentale (faible)", "Réseau d'Espions"],
-	},
-}
+# Les définitions de classes sont désormais centralisées dans `res://mvp/data/classes.json`
+# et accessibles via l'autoload `GameDataLoader`. Les définitions locales ont été retirées
+# pour éviter les doublons de données.
 
 var _classe_choisie: String = ""
 
@@ -216,7 +188,7 @@ var _slide_index: int = 0
 
 
 func _build_grid() -> GridContainer:
-	return get_node_or_null("PanneauCentre/CreationBody/ColGauche/SectionBuild/GrilleBuild") as GridContainer
+	return find_child("GrilleBuild", true, false) as GridContainer
 
 
 # Recherche un OptionButton par nom, où qu'il soit dans l'arbre (grille ou vbox)
@@ -225,35 +197,35 @@ func _find_option(option_name: String) -> OptionButton:
 
 
 func _build_section() -> VBoxContainer:
-	return $PanneauCentre/CreationBody/ColGauche/SectionBuild as VBoxContainer
+	return find_child("SectionBuild", true, false) as VBoxContainer
 
 
 func _cards_container() -> GridContainer:
-	return $PanneauCentre/CreationBody/ColGauche/CartesScroll/CartesClasses as GridContainer
+	return find_child("CartesClasses", true, false) as GridContainer
 
 
 func _class_label() -> Label:
-	return $PanneauCentre/CreationBody/ColGauche/LabelClasseChoisie as Label
+	return find_child("LabelClasseChoisie", true, false) as Label
 
 
 func _error_label() -> Label:
-	return $PanneauCentre/CreationBody/ColGauche/LabelErreur as Label
+	return find_child("LabelErreur", true, false) as Label
 
 
 func _build_resume_label() -> Label:
-	return $PanneauCentre/CreationBody/ColGauche/SectionBuild/LabelBuildResume as Label
+	return find_child("LabelBuildResume", true, false) as Label
 
 
 func _sheet_host() -> MarginContainer:
-	return $PanneauCentre/CreationBody/ColDroite/RightScroll/FicheHostPanel/FicheHost as MarginContainer
+	return find_child("FicheHost", true, false) as MarginContainer
 
 
 func _portrait_preview() -> TextureRect:
-	return $PanneauCentre/CreationBody/ColDroite/PortraitPanel/PortraitContent/PortraitPreview as TextureRect
+	return find_child("PortraitPreview", true, false) as TextureRect
 
 
 func _portrait_path_label() -> Label:
-	return $PanneauCentre/CreationBody/ColDroite/PortraitPanel/PortraitContent/PortraitPathLabel as Label
+	return find_child("PortraitPathLabel", true, false) as Label
 
 
 func _portrait_file_dialog() -> FileDialog:
@@ -368,10 +340,10 @@ func _appliquer_style_creation() -> void:
 		if resume:
 			resume.add_theme_color_override("font_color", CREATION_TEXT_MAIN)
 
-	var portrait_panel := get_node_or_null("PanneauCentre/CreationBody/ColDroite/PortraitPanel") as PanelContainer
+	var portrait_panel := find_child("PortraitPanel", true, false) as PanelContainer
 	if portrait_panel:
 		portrait_panel.add_theme_stylebox_override("panel", _make_panel_style(Color(0.06, 0.01, 0.12, 0.85), Color(0.78, 0.64, 0.29, 0.45)))
-	var fiche_panel := get_node_or_null("PanneauCentre/CreationBody/ColDroite/RightScroll/FicheHostPanel") as PanelContainer
+	var fiche_panel := find_child("FicheHostPanel", true, false) as PanelContainer
 	if fiche_panel:
 		fiche_panel.add_theme_stylebox_override("panel", _make_panel_style(Color(0.05, 0.01, 0.10, 0.85), Color(0.78, 0.64, 0.29, 0.35)))
 
@@ -406,7 +378,7 @@ func _appliquer_style_creation() -> void:
 
 
 func _configurer_flux_par_slides() -> void:
-	var titre_fiche := get_node_or_null("PanneauCentre/CreationBody/ColDroite/LabelFiche") as Label
+	var titre_fiche := find_child("LabelFiche", true, false) as Label
 	if titre_fiche:
 		titre_fiche.text = "Fiche et apercus"
 	var bouton_principal := _primary_button()
@@ -459,26 +431,26 @@ func _refresh_slide_layout() -> void:
 	if ligne_noms:
 		ligne_noms.visible = bool(slide.get("show_names", false))
 
-	var label_classe := get_node_or_null("PanneauCentre/CreationBody/ColGauche/LabelClasse") as Control
+	var label_classe := find_child("LabelClasse", true, false) as Control
 	if label_classe:
 		label_classe.visible = bool(slide.get("show_class_cards", false))
-	var cartes_scroll := get_node_or_null("PanneauCentre/CreationBody/ColGauche/CartesScroll") as Control
+	var cartes_scroll := find_child("CartesScroll", true, false) as Control
 	if cartes_scroll:
 		cartes_scroll.visible = bool(slide.get("show_class_cards", false))
 	var classe_choisie_label := _class_label()
 	if classe_choisie_label:
 		classe_choisie_label.visible = bool(slide.get("show_class_cards", false)) or _slide_index == CREATION_SLIDES.size() - 1
-	var separateur_classe := get_node_or_null("PanneauCentre/CreationBody/ColGauche/Separateur2") as Control
+	var separateur_classe := find_child("Separateur2", true, false) as Control
 	if separateur_classe:
 		separateur_classe.visible = bool(slide.get("show_class_cards", false))
 
-	var portrait_label := get_node_or_null("PanneauCentre/CreationBody/ColDroite/LabelPortrait") as Control
+	var portrait_label := find_child("LabelPortrait", true, false) as Control
 	if portrait_label:
 		portrait_label.visible = bool(slide.get("show_portrait", false))
-	var portrait_panel := get_node_or_null("PanneauCentre/CreationBody/ColDroite/PortraitPanel") as Control
+	var portrait_panel := find_child("PortraitPanel", true, false) as Control
 	if portrait_panel:
 		portrait_panel.visible = bool(slide.get("show_portrait", false))
-	var fiche_label := get_node_or_null("PanneauCentre/CreationBody/ColDroite/LabelFiche") as Label
+	var fiche_label := find_child("LabelFiche", true, false) as Label
 	if fiche_label:
 		fiche_label.visible = bool(slide.get("show_sheet", false))
 		match _slide_index:
@@ -492,14 +464,14 @@ func _refresh_slide_layout() -> void:
 				fiche_label.text = "Apercu final du personnage"
 			_:
 				fiche_label.text = "Fiche et apercus"
-	var fiche_scroll := get_node_or_null("PanneauCentre/CreationBody/ColDroite/RightScroll") as Control
+	var fiche_scroll := find_child("RightScroll", true, false) as Control
 	if fiche_scroll:
 		fiche_scroll.visible = bool(slide.get("show_sheet", false))
 
-	var build_title := get_node_or_null("PanneauCentre/CreationBody/ColGauche/SectionBuild/LabelBuild") as Label
+	var build_title := find_child("LabelBuild", true, false) as Label
 	if build_title:
 		build_title.text = str(slide.get("build_title", "Profil RPG"))
-	var pacte_label := get_node_or_null("PanneauCentre/CreationBody/ColGauche/SectionBuild/LabelPacteFixe") as Label
+	var pacte_label := find_child("LabelPacteFixe", true, false) as Label
 	if pacte_label:
 		pacte_label.visible = _slide_index > 0
 
@@ -573,10 +545,10 @@ func _connecter_boutons() -> void:
 	var btn_commencer_bottom := get_node_or_null("ActionBar/ActionButtons/BtnCommencerBottom")
 	if btn_commencer_bottom:
 		btn_commencer_bottom.pressed.connect(_on_action_principale)
-	var btn_upload_portrait := get_node_or_null("PanneauCentre/CreationBody/ColDroite/PortraitPanel/PortraitContent/PortraitButtons/BtnUploadPortrait") as Button
+	var btn_upload_portrait := find_child("BtnUploadPortrait", true, false) as Button
 	if btn_upload_portrait:
 		btn_upload_portrait.pressed.connect(_ouvrir_selection_portrait)
-	var btn_reset_portrait := get_node_or_null("PanneauCentre/CreationBody/ColDroite/PortraitPanel/PortraitContent/PortraitButtons/BtnResetPortrait") as Button
+	var btn_reset_portrait := find_child("BtnResetPortrait", true, false) as Button
 	if btn_reset_portrait:
 		btn_reset_portrait.pressed.connect(_reinitialiser_portrait)
 	var portrait_dialog := _portrait_file_dialog()
@@ -835,12 +807,10 @@ func _build_class_cards() -> void:
 		# Use immediate free to avoid one-frame duplicates from legacy scene cards.
 		c.free()
 
-	var classes := _read_json_dict("res://data/classes.json")
+	var classes := GameDataLoader.get_classes()
 	if classes.is_empty():
-		# fallback: use local CLASSES constant for the three default entries
-		classes = {}
-		for k in CLASSES.keys():
-			classes[k] = {"name": CLASSES[k].get("nom", k), "description": "", "starting_abilities": CLASSES[k].get("competences", [])}
+		push_warning("creation_personnage: aucune classe chargée — vérifiez res://mvp/data/classes.json ou GameDataLoader.")
+		return
 
 	var keys := classes.keys()
 	keys.sort()
@@ -882,69 +852,8 @@ func _build_class_cards() -> void:
 			v.add_theme_constant_override("separation", 8)
 		panel.add_child(v)
 
-		# Charger l'icône depuis le système de fichiers directement (évite les imports manquants)
-		var tex: Texture2D = null
-		# Prefer an explicit icon path declared in the classes data
-		var proj_root: String = ProjectSettings.globalize_path("res://")
-		var entry_icon := str(entry.get("icon", "")).strip_edges()
-		if entry_icon != "":
-			if entry_icon.begins_with("res://"):
-				if ResourceLoader.exists(entry_icon):
-					var rres = ResourceLoader.load(entry_icon)
-					if rres and rres is Texture2D:
-						tex = rres
-					elif rres and (rres is ImageTexture or rres is Image):
-						tex = rres
-			else:
-				var imgpath = proj_root + entry_icon
-				if FileAccess.file_exists(imgpath):
-					var img_e := Image.load_from_file(imgpath)
-					if img_e != null and not img_e.is_empty():
-						tex = ImageTexture.create_from_image(img_e)
-
-		var icon_dirs: Array = [proj_root + "assets/class_icons/", proj_root + "mvp/assets/class_icons/"]
-		var icon_exts: Array = [".webp", ".png", ".jpg", ".jpeg"]
-		if tex == null:
-			# Special-case: if the class id is exactly 'mage', prefer a mage.png file in class_icons
-			if str(key) == "mage":
-				for icon_dir in icon_dirs:
-					var mage_path: String = str(icon_dir) + "mage.png"
-					if FileAccess.file_exists(mage_path):
-						var mage_img: Image = Image.load_from_file(mage_path)
-						if mage_img != null and not mage_img.is_empty():
-							tex = ImageTexture.create_from_image(mage_img)
-							break
-					# stop early if found
-					if tex:
-						break
-			# If not found (or not mage), fallback to searching by class key and common extensions
-			if tex == null:
-				for icon_dir in icon_dirs:
-					for icon_ext in icon_exts:
-						var fpath: String = icon_dir + str(key) + icon_ext
-						if FileAccess.file_exists(fpath):
-							var img := Image.load_from_file(fpath)
-							if img != null and not img.is_empty():
-								tex = ImageTexture.create_from_image(img)
-								break
-					if tex:
-						break
-
-		# Force a default icon for classes without dedicated asset.
-		if tex == null:
-			var default_candidates: Array = [
-				proj_root + "assets/class_icons/chevalier_sombre.webp",
-				proj_root + "mvp/assets/class_icons/chevalier_sombre.webp",
-				proj_root + "assets/class_icons/chevalier_sombre.png",
-				proj_root + "mvp/assets/class_icons/chevalier_sombre.png",
-			]
-			for df in default_candidates:
-				if FileAccess.file_exists(df):
-					var dimg := Image.load_from_file(df)
-					if dimg != null and not dimg.is_empty():
-						tex = ImageTexture.create_from_image(dimg)
-						break
-
+		# Récupération centralisée de l'icône via GameDataLoader
+		var tex: Texture2D = GameDataLoader.get_class_icon(str(key))
 		if tex:
 			var texr := TextureRect.new()
 			texr.texture = tex
@@ -1087,7 +996,7 @@ func _mettre_a_jour_resume_build() -> void:
 	# calculer les bonus PV/Mana provenant des dons de classe et des dons sélectionnés
 	var total_pv_bonus_preview := 0
 	var total_mana_bonus_preview := 0
-	var feats_defs_preview := _read_json_dict("res://data/feats.json")
+	var feats_defs_preview := GameDataLoader.get_feats()
 	if not _classe_choisie.is_empty():
 		var classe_data_preview := _get_class_data(_classe_choisie)
 		var class_feats_preview := (classe_data_preview.get("competences", []) as Array)
@@ -1122,7 +1031,7 @@ func _mettre_a_jour_resume_build() -> void:
 		mana = int(clan_mgr.ressources.get("mana", 0))
 		# Compute mana bonus from selected feats and class starting feats for preview
 		var total_mana_bonus := 0
-		var feats_defs := _read_json_dict("res://data/feats.json")
+		var feats_defs := GameDataLoader.get_feats()
 		if not _classe_choisie.is_empty():
 			var classe_data := _get_class_data(_classe_choisie)
 			var class_feats := (classe_data.get("competences", []) as Array)
@@ -1267,7 +1176,7 @@ func _on_commencer() -> void:
 	var bonus_archetype := _bonus_archetype(str(profil.get("archetype_pathfinder", "")))
 
 	# Calculer les bonus plats de stats provenant des dons (feats) et des dons de classe
-	var feats_defs := _read_json_dict("res://data/feats.json")
+	var feats_defs := GameDataLoader.get_feats()
 	var feats_bonus: Dictionary = {}
 	# inclure les feats de départ de la classe (si présents)
 	var class_feats := (classe_data.get("competences", []) as Array)
@@ -1438,7 +1347,7 @@ func _stat_modificateur(score: int) -> int:
 func _appliquer_point_buy_classe(classe_id: String) -> void:
 	_fiche_points_restants = POINTS_FICHE_RESTANTS_CIBLE
 	_fiche_stats = StatDefs.make_default_stats(StatDefs.CHARACTER_MIN_STAT)
-	var classes := _read_json_dict("res://data/classes.json")
+	var classes := GameDataLoader.get_classes()
 	if classes.has(classe_id) and classes[classe_id] is Dictionary:
 		var class_def := classes[classe_id] as Dictionary
 		var base_stats := _resolve_base_stats_for_class(class_def)
@@ -1542,12 +1451,8 @@ func _construire_fiche_complete() -> Dictionary:
 
 
 func _get_class_data(classe_id: String) -> Dictionary:
-	# Prefer the CLASSES hardcoded map (contains detailed stats).
-	if CLASSES.has(classe_id):
-		return CLASSES[classe_id] as Dictionary
-
-	# Otherwise, try to read from res://data/classes.json and build a minimal entry.
-	var classes := _read_json_dict("res://data/classes.json")
+	# Récupère la définition depuis GameDataLoader (single source of truth)
+	var classes := GameDataLoader.get_classes()
 	if classes.has(classe_id):
 		var entry := classes[classe_id] as Dictionary
 		var stats_bonus := _derive_stats_bonus_from_base(_resolve_base_stats_for_class(entry))

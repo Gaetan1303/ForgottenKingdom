@@ -91,18 +91,18 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_constants/separation = 18
 
-[node name="ColGauche" type="VBoxContainer" parent="PanneauCentre/CreationBody"]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-size_flags_stretch_ratio = 1.15
-theme_override_constants/separation = 8
-
 [node name="ColDroite" type="VBoxContainer" parent="PanneauCentre/CreationBody"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 size_flags_stretch_ratio = 0.95
+theme_override_constants/separation = 8
+
+[node name="ColGauche" type="VBoxContainer" parent="PanneauCentre/CreationBody"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+size_flags_stretch_ratio = 1.15
 theme_override_constants/separation = 8
 
 [node name="LabelPortrait" type="Label" parent="PanneauCentre/CreationBody/ColDroite"]
@@ -179,80 +179,80 @@ access = 2
 use_native_dialog = true
 filters = PackedStringArray("*.png ; PNG", "*.jpg,*.jpeg ; JPEG", "*.webp ; WEBP")
 
-[node name="SectionBuild" type="VBoxContainer" parent="PanneauCentre/CreationBody/ColGauche"]
+[node name="SectionBuild" type="VBoxContainer" parent="PanneauCentre/CreationBody/ColDroite/PortraitPanel/PortraitContent"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = 8
 
-[node name="LabelBuild" type="Label" parent="PanneauCentre/CreationBody/ColGauche/SectionBuild"]
+[node name="LabelBuild" type="Label" parent="PanneauCentre/CreationBody/ColDroite/PortraitPanel/PortraitContent/SectionBuild"]
 layout_mode = 2
 text = "Profil RPG (inspiré des CRPG)"
 theme_override_font_sizes/font_size = 15
 theme_override_colors/font_color = Color(0.75, 0.55, 1, 1)
 
-[node name="GrilleBuild" type="GridContainer" parent="PanneauCentre/CreationBody/ColGauche/SectionBuild"]
+[node name="GrilleBuild" type="GridContainer" parent="PanneauCentre/CreationBody/ColDroite/PortraitPanel/PortraitContent/SectionBuild"]
 layout_mode = 2
 columns = 2
 theme_override_constants/h_separation = 12
 theme_override_constants/v_separation = 6
 
-[node name="LabelGenre" type="Label" parent="PanneauCentre/CreationBody/ColGauche/SectionBuild/GrilleBuild"]
+[node name="LabelGenre" type="Label" parent="PanneauCentre/CreationBody/ColDroite/PortraitPanel/PortraitContent/SectionBuild/GrilleBuild"]
 layout_mode = 2
 text = "Genre"
 
-[node name="OptionGenre" type="OptionButton" parent="PanneauCentre/CreationBody/ColGauche/SectionBuild/GrilleBuild"]
+[node name="OptionGenre" type="OptionButton" parent="PanneauCentre/CreationBody/ColDroite/PortraitPanel/PortraitContent/SectionBuild/GrilleBuild"]
 layout_mode = 2
 name = "OptionGenre"
 
-[node name="OptionApparence" type="OptionButton" parent="PanneauCentre/CreationBody/ColGauche/SectionBuild/GrilleBuild"]
+[node name="OptionApparence" type="OptionButton" parent="PanneauCentre/CreationBody/ColDroite/PortraitPanel/PortraitContent/SectionBuild/GrilleBuild"]
 layout_mode = 2
 name = "OptionApparence"
 
-[node name="LabelApparence" type="Label" parent="PanneauCentre/CreationBody/ColGauche/SectionBuild/GrilleBuild"]
+[node name="LabelApparence" type="Label" parent="PanneauCentre/CreationBody/ColDroite/PortraitPanel/PortraitContent/SectionBuild/GrilleBuild"]
 layout_mode = 2
 text = "Apparence"
 
-[node name="LabelPouvoir" type="Label" parent="PanneauCentre/CreationBody/ColGauche/SectionBuild/GrilleBuild"]
+[node name="LabelPouvoir" type="Label" parent="PanneauCentre/CreationBody/ColDroite/PortraitPanel/PortraitContent/SectionBuild/GrilleBuild"]
 layout_mode = 2
 text = "Pouvoir magique"
 
-[node name="OptionPouvoir" type="OptionButton" parent="PanneauCentre/CreationBody/ColGauche/SectionBuild/GrilleBuild"]
+[node name="OptionPouvoir" type="OptionButton" parent="PanneauCentre/CreationBody/ColDroite/PortraitPanel/PortraitContent/SectionBuild/GrilleBuild"]
 layout_mode = 2
 name = "OptionPouvoir"
 
-[node name="LabelArchetype" type="Label" parent="PanneauCentre/CreationBody/ColGauche/SectionBuild/GrilleBuild"]
+[node name="LabelArchetype" type="Label" parent="PanneauCentre/CreationBody/ColDroite/PortraitPanel/PortraitContent/SectionBuild/GrilleBuild"]
 layout_mode = 2
 text = "Archétype"
 
-[node name="OptionArchetype" type="OptionButton" parent="PanneauCentre/CreationBody/ColGauche/SectionBuild/GrilleBuild"]
+[node name="OptionArchetype" type="OptionButton" parent="PanneauCentre/CreationBody/ColDroite/PortraitPanel/PortraitContent/SectionBuild/GrilleBuild"]
 layout_mode = 2
 name = "OptionArchetype"
 
-[node name="LabelDon" type="Label" parent="PanneauCentre/CreationBody/ColGauche/SectionBuild/GrilleBuild"]
+[node name="LabelDon" type="Label" parent="PanneauCentre/CreationBody/ColDroite/PortraitPanel/PortraitContent/SectionBuild/GrilleBuild"]
 layout_mode = 2
 text = "Don"
 
-[node name="OptionDon" type="OptionButton" parent="PanneauCentre/CreationBody/ColGauche/SectionBuild/GrilleBuild"]
+[node name="OptionDon" type="OptionButton" parent="PanneauCentre/CreationBody/ColDroite/PortraitPanel/PortraitContent/SectionBuild/GrilleBuild"]
 layout_mode = 2
 name = "OptionDon"
 
-[node name="LabelCompetence" type="Label" parent="PanneauCentre/CreationBody/ColGauche/SectionBuild/GrilleBuild"]
+[node name="LabelCompetence" type="Label" parent="PanneauCentre/CreationBody/ColDroite/PortraitPanel/PortraitContent/SectionBuild/GrilleBuild"]
 layout_mode = 2
 text = "Compétence"
 
-[node name="OptionCompetence" type="OptionButton" parent="PanneauCentre/CreationBody/ColGauche/SectionBuild/GrilleBuild"]
+[node name="OptionCompetence" type="OptionButton" parent="PanneauCentre/CreationBody/ColDroite/PortraitPanel/PortraitContent/SectionBuild/GrilleBuild"]
 layout_mode = 2
 name = "OptionCompetence"
 
-[node name="LabelEquipement" type="Label" parent="PanneauCentre/CreationBody/ColGauche/SectionBuild/GrilleBuild"]
+[node name="LabelEquipement" type="Label" parent="PanneauCentre/CreationBody/ColDroite/PortraitPanel/PortraitContent/SectionBuild/GrilleBuild"]
 layout_mode = 2
 text = "Équipement de départ"
 
-[node name="OptionEquipement" type="OptionButton" parent="PanneauCentre/CreationBody/ColGauche/SectionBuild/GrilleBuild"]
+[node name="OptionEquipement" type="OptionButton" parent="PanneauCentre/CreationBody/ColDroite/PortraitPanel/PortraitContent/SectionBuild/GrilleBuild"]
 layout_mode = 2
 name = "OptionEquipement"
 
-[node name="LabelBuildResume" type="Label" parent="PanneauCentre/CreationBody/ColGauche/SectionBuild"]
+[node name="LabelBuildResume" type="Label" parent="PanneauCentre/CreationBody/ColDroite/PortraitPanel/PortraitContent/SectionBuild"]
 layout_mode = 2
 text = ""
 autowrap_mode = 3
@@ -260,7 +260,7 @@ theme_override_font_sizes/font_size = 11
 theme_override_colors/font_color = Color(0.82, 0.82, 0.92, 0.92)
 name = "LabelBuildResume"
 
-[node name="LabelPacteFixe" type="Label" parent="PanneauCentre/CreationBody/ColGauche/SectionBuild"]
+[node name="LabelPacteFixe" type="Label" parent="PanneauCentre/CreationBody/ColDroite/PortraitPanel/PortraitContent/SectionBuild"]
 layout_mode = 2
 text = "Règle de jeu: Magie des Pactes obligatoire pour recruter des PNJ."
 autowrap_mode = 3

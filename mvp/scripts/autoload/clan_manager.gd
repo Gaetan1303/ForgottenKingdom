@@ -1409,15 +1409,13 @@ func apply_profile_sheet_update(stats_update: Dictionary, points_remaining: int,
 	# Recompute clan-level stats (final values) from class, raw stats and feats
 	var class_stats_bonus: Dictionary = {}
 	if classe != "":
-		# try reading class data from data file
-		var cls_file = FileAccess.open("res://data/classes.json", FileAccess.READ)
-		if cls_file:
-			var parsed = JSON.parse_string(cls_file.get_as_text())
-			if parsed != null and parsed is Dictionary and parsed.has(classe):
-				class_stats_bonus = (parsed as Dictionary).get(classe, {}).get("stats_bonus", {}) as Dictionary
+		# Get class data from centralized GameDataLoader
+		var class_entry := GameDataLoader.get_class_by_id(classe)
+		if class_entry and not class_entry.is_empty():
+			class_stats_bonus = class_entry.get("stats_bonus", {}) as Dictionary
 
 	# aggregate flat stat bonuses from feats
-	var feats_defs = _lire_json("res://data/feats.json")
+	var feats_defs = GameDataLoader.get_feats()
 	var feats_bonus_stats: Dictionary = {}
 	var current_feats = (profil_personnage.get("feats", []) as Array)
 	for f in current_feats:
@@ -1595,7 +1593,7 @@ func _compute_and_apply_profil_effects(profil: Dictionary, do_save: bool = false
 	# Eviter double-application
 	if bool(profil.get("computed_effects_applied", false)):
 		return
-	var feats_data := _lire_json("res://data/feats.json")
+	var feats_data := GameDataLoader.get_feats()
 	var total_pv_bonus := 0
 	var total_mana_bonus := 0
 	if profil.has("feats") and (profil.get("feats") is Array):

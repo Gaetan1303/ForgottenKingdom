@@ -652,7 +652,7 @@ func _construire_panneau_capacites(profil: Dictionary) -> PanelContainer:
 
 	# ── Classe : dons + capacités de départ depuis classes.json ──────
 	var classe_id := ClanManager.classe.to_lower()
-	var classes_data := _read_clan_json("res://data/classes.json")
+	var classes_data := GameDataLoader.get_classes()
 	var class_entry := classes_data.get(classe_id, {}) as Dictionary
 	if class_entry.is_empty():
 		# Cherche par correspondance souple (nom)
@@ -682,7 +682,7 @@ func _construire_panneau_capacites(profil: Dictionary) -> PanelContainer:
 			vbox.add_child(ab_lbl)
 
 		# Dons de départ (starting_feats) avec description
-		var feats_data := _read_clan_json("res://data/feats.json")
+		var feats_data := GameDataLoader.get_feats()
 		var starting_feats := class_entry.get("starting_feats", []) as Array
 		if not starting_feats.is_empty():
 			var ft_title := Label.new()
@@ -716,7 +716,7 @@ func _construire_panneau_capacites(profil: Dictionary) -> PanelContainer:
 		pf_title.text = "Dons choisis"
 		pf_title.add_theme_color_override("font_color", Color(0.80, 0.60, 1.0, 1.0))
 		vbox.add_child(pf_title)
-		var feats_data2 := _read_clan_json("res://data/feats.json")
+		var feats_data2 := GameDataLoader.get_feats()
 		for fk in player_feats:
 			var fd: Dictionary = feats_data2.get(str(fk), {}) as Dictionary
 			var fname := str(fd.get("name", _to_display_name(str(fk))))

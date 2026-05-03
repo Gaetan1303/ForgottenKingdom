@@ -7,6 +7,8 @@ extends Node
 const PATH_CONFIG_TOUR := "res://data/phases/config_tour.json"
 const PATH_CHARACTER_TRAITS := "res://data/character_traits.json"
 const PATH_LIBRARY_ENTRIES := "res://data/library_entries.json"
+const PATH_CLASSES := "res://data/classes.json"
+const PATH_FEATS := "res://data/feats.json"
 
 # ── Caches ───────────────────────────────────────────────────────────
 var _config_tour:  Dictionary = {}
@@ -14,12 +16,16 @@ var _actions:      Dictionary = {}  # id → Dictionary
 var _classes:      Dictionary = {}  # id → Dictionary (chargé depuis creation_personnage.yaml converti)
 var _character_traits: Dictionary = {}
 var _library_entries: Dictionary = {}
+var _feats:         Dictionary = {}
+signal reloaded
 
 
 func _ready() -> void:
 	_charger_config_tour()
 	_charger_character_traits()
 	_charger_library_entries()
+	_charger_classes()
+	_charger_feats()
 
 
 # ─────────────────────────────────────────────────────────────────────
@@ -59,6 +65,24 @@ func _charger_library_entries() -> void:
 		}
 		return
 	_library_entries = data
+
+
+func _charger_classes() -> void:
+	var data := _lire_json(PATH_CLASSES)
+	if data.is_empty():
+		push_warning("GameDataLoader: classes.json introuvable — fallback vide.")
+		_classes = {}
+		return
+	_classes = data
+
+
+func _charger_feats() -> void:
+	var data := _lire_json(PATH_FEATS)
+	if data.is_empty():
+		push_warning("GameDataLoader: feats.json introuvable — fallback vide.")
+		_feats = {}
+		return
+	_feats = data
 
 
 ## Index les actions par leur ID pour un accès O(1).
@@ -185,6 +209,112 @@ func get_character_traits() -> Dictionary:
 
 func get_library_entries() -> Dictionary:
 	return _library_entries.duplicate(true)
+
+
+## Retourne toutes les classes chargées (id -> definition)
+func get_classes() -> Dictionary:
+	return _classes.duplicate(true)
+
+
+## Retourne la définition d'une classe par son id
+func get_class_by_id(id: String) -> Dictionary:
+	return _classes.get(str(id), {}) as Dictionary
+
+
+## Retourne toutes les définitions de feats/dons
+func get_feats() -> Dictionary:
+	return _feats.duplicate(true)
+
+
+## Retourne la définition d'un don par son id
+func get_feat(id: String) -> Dictionary:
+	return _feats.get(str(id), {}) as Dictionary
+
+
+## Recharge dynamiquement toutes les données chargées par le GameDataLoader.
+## Utilisez ceci pour forcer un rechargement lors du développement ou runtime.
+func reload() -> void:
+	_charger_config_tour()
+	_charger_character_traits()
+	_charger_library_entries()
+	_charger_classes()
+	_charger_feats()
+	# Re-indexer les actions au cas où config_tour a changé
+	_indexer_actions(_config_tour.get("actions", []) as Array)
+	print("GameDataLoader: données rechargées.")
+	emit_signal("reloaded")
+
+
+# ── Résolution d'icônes de classes (automatique / chemins relatifs) ───
+## Retourne un chemin `res://...` vers l'icône si trouvée, sinon chaîne vide.
+func get_class_icon_path(class_id: String) -> String:
+	var cid := str(class_id)
+	if cid == "":
+		return ""
+	# Prefer explicit icon declared in class definition
+	var entry := _classes.get(cid, {}) as Dictionary
+	var explicit := str(entry.get("icon", "")).strip_edges()
+	if explicit != "":
+		if explicit.begins_with("res://"):
+			if ResourceLoader.exists(explicit):
+				return explicit
+		else:
+			var cand := "res://" + explicit.strip_edges()
+			if ResourceLoader.exists(cand):
+				return cand
+			var cand2 := "res://mvp/" + explicit.strip_edges()
+			if ResourceLoader.exists(cand2):
+				return cand2
+
+	# Cherche automatiquement dans des dossiers d'assets communs
+	var icon_dirs: Array = [
+		"res://assets/class_icons/",
+		"res://mvp/assets/class_icons/",
+		"res://mvp/assets/class_icons/",
+	]
+	var exts: Array = [".webp", ".png", ".jpg", ".jpeg"]
+	for d in icon_dirs:
+		for e in exts:
+			var p: String = str(d) + str(cid) + str(e)
+			if ResourceLoader.exists(p):
+				return p
+
+	# essayer variantes minuscules et snake_case
+	var low := cid.to_lower()
+	if low != cid:
+		for d in icon_dirs:
+			for e in exts:
+				var p: String = str(d) + str(low) + str(e)
+				if ResourceLoader.exists(p):
+					return p
+	var slug := cid.replace(" ", "_").to_lower()
+	if slug != cid and slug != low:
+		for d in icon_dirs:
+			for e in exts:
+				var p: String = str(d) + str(slug) + str(e)
+				if ResourceLoader.exists(p):
+					return p
+
+	# fallback global (si présent)
+	var fallback := "res://mvp/assets/class_icons/chevalier_sombre.png"
+	if ResourceLoader.exists(fallback):
+		return fallback
+	return ""
+
+
+## Retourne une `Texture2D` pour l'icône de classe, ou null si introuvable.
+func get_class_icon(class_id: String) -> Texture2D:
+	var path := get_class_icon_path(class_id)
+	if path == "":
+		return null
+	var r := ResourceLoader.load(path)
+	if r == null:
+		return null
+	if r is Texture2D:
+		return r as Texture2D
+	if r is Image:
+		return ImageTexture.create_from_image(r)
+	return null
 
 
 # ─────────────────────────────────────────────────────────────────────
