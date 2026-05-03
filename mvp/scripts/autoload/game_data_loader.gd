@@ -17,6 +17,7 @@ var _classes:      Dictionary = {}  # id → Dictionary (chargé depuis creation
 var _character_traits: Dictionary = {}
 var _library_entries: Dictionary = {}
 var _feats:         Dictionary = {}
+var _abilities:     Dictionary = {}
 signal reloaded
 
 
@@ -229,6 +230,83 @@ func get_feats() -> Dictionary:
 ## Retourne la définition d'un don par son id
 func get_feat(id: String) -> Dictionary:
 	return _feats.get(str(id), {}) as Dictionary
+
+
+## Retourne toutes les capacités connues (id -> definition)
+func get_abilities() -> Dictionary:
+	if _abilities.size() > 0:
+		return _abilities.duplicate(true)
+
+	# Si un fichier res://data/abilities.json existe, l'utiliser
+	var path := "res://data/abilities.json"
+	if FileAccess.file_exists(path):
+		var parsed := _lire_json(path)
+		if not parsed.is_empty():
+			_abilities = parsed.duplicate(true)
+			return _abilities.duplicate(true)
+
+	# Sinon dériver des classes (starting_abilities)
+	var out: Dictionary = {}
+	for cid in _classes.keys():
+		var entry := _classes[cid] as Dictionary
+		var arr := entry.get("starting_abilities", []) as Array
+		for a in arr:
+			var name := str(a).strip_edges()
+			var id := _slugify(name)
+			if not out.has(id):
+				out[id] = {
+					"id": id,
+					"name": name,
+					"description": _find_library_entry_description(name),
+					"from_classes": [cid],
+				}
+			else:
+				var fc := out[id].get("from_classes", []) as Array
+				if not fc.has(cid):
+					fc.append(cid)
+					out[id]["from_classes"] = fc
+
+	_abilities = out
+	return _abilities.duplicate(true)
+
+
+func get_ability_by_id(id: String) -> Dictionary:
+	var idn := str(id)
+	var abs := get_abilities()
+	return abs.get(idn, {}) as Dictionary
+
+
+func get_feats_for_ability(ability_id: String) -> Dictionary:
+	# Tentative: retourne les feats dont le nom ou la description contient le nom de la capacité.
+	var abil := get_ability_by_id(ability_id)
+	var aname := str(abil.get("name", "")).to_lower()
+	var out: Dictionary = {}
+	for fid in _feats.keys():
+		var f := _feats[fid] as Dictionary
+		var fname := str(f.get("name", "")).to_lower()
+		var fdesc := str(f.get("description", "")).to_lower()
+		if aname != "" and (fname.find(aname) != -1 or fdesc.find(aname) != -1):
+			out[fid] = f
+
+	if out.size() == 0:
+		return _feats.duplicate(true)
+	return out.duplicate(true)
+
+
+## Helpers internes
+func _slugify(s: String) -> String:
+	return str(s).strip_edges().to_lower().replace(" ", "_").replace("-", "_")
+
+
+func _find_library_entry_description(name: String) -> String:
+	var title := str(name).strip_edges().to_lower()
+	var secs := _library_entries.get("sections", []) as Array
+	for sec in secs:
+		var entries := sec.get("entries", []) as Array
+		for e in entries:
+			if str(e.get("title", "")).to_lower() == title:
+				return str(e.get("text", ""))
+	return ""
 
 
 ## Recharge dynamiquement toutes les données chargées par le GameDataLoader.

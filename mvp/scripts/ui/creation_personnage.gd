@@ -89,7 +89,7 @@ const CREATION_SLIDES := [
 		"title": "Etape 2/5",
 		"subtitle": "Dons et capacites",
 		"build_title": "Dons et capacites",
-		"options": ["OptionArchetype", "OptionDon", "OptionCompetence"],
+		"options": [],
 		"show_names": false,
 		"show_class_cards": false,
 		"show_portrait": false,
@@ -185,6 +185,10 @@ var _fiche_feats: Array = []
 var _embedded_sheet: Node = null
 var _portrait_data: Dictionary = {}
 var _slide_index: int = 0
+var _selected_ability_id: String = ""
+var _selected_feat_id: String = ""
+var _abilities_list_ids: Array = []
+var _feats_list_ids: Array = []
 
 
 func _build_grid() -> GridContainer:
@@ -485,6 +489,44 @@ func _refresh_slide_layout() -> void:
 	var resume := _build_resume_label()
 	if resume:
 		resume.visible = true
+
+	# Slide 2 : ColDroite (gauche visuel) = listes ; ColGauche (droite visuel) = fiche+descriptions
+	if _slide_index == 1:
+		# Masquer RightScroll (FicheHost standard) en slide 2
+		if fiche_scroll:
+			fiche_scroll.visible = false
+		# Libérer l'éventuelle fiche embarquée orpheline
+		if _embedded_sheet != null and is_instance_valid(_embedded_sheet):
+			var _ep := _embedded_sheet.get_parent()
+			if _ep != null:
+				_ep.remove_child(_embedded_sheet)
+			_embedded_sheet.free()
+			_embedded_sheet = null
+		_build_capabilities_panel()
+		_build_slide2_right_pane()
+	else:
+		# Nettoyer les panneaux créés pour le slide 2
+		var col_d := find_child("ColDroite", true, false) as VBoxContainer
+		if col_d:
+			var pane_a := col_d.get_node_or_null("Slide2AbilitiesPane")
+			if pane_a:
+				pane_a.queue_free()
+		var col_g := find_child("ColGauche", true, false) as VBoxContainer
+		if col_g:
+			var pane_s := col_g.get_node_or_null("Slide2SheetPane")
+			if pane_s:
+				pane_s.queue_free()
+		if _embedded_sheet != null and is_instance_valid(_embedded_sheet):
+			var _ep2 := _embedded_sheet.get_parent()
+			if _ep2 != null:
+				_ep2.remove_child(_embedded_sheet)
+			_embedded_sheet.free()
+			_embedded_sheet = null
+		# Réafficher RightScroll pour les autres slides
+		if fiche_scroll:
+			fiche_scroll.visible = bool(slide.get("show_sheet", false))
+		if bool(slide.get("show_sheet", false)):
+			_open_character_sheet()
 
 	_refresh_action_buttons()
 
@@ -807,12 +849,12 @@ func _build_class_cards() -> void:
 		# Use immediate free to avoid one-frame duplicates from legacy scene cards.
 		c.free()
 
-	var classes := GameDataLoader.get_classes()
+	var classes: Dictionary = GameDataLoader.get_classes()
 	if classes.is_empty():
 		push_warning("creation_personnage: aucune classe chargée — vérifiez res://mvp/data/classes.json ou GameDataLoader.")
 		return
 
-	var keys := classes.keys()
+	var keys: Array = classes.keys()
 	keys.sort()
 	for key in keys:
 		var entry := classes[key] as Dictionary
@@ -996,7 +1038,7 @@ func _mettre_a_jour_resume_build() -> void:
 	# calculer les bonus PV/Mana provenant des dons de classe et des dons sélectionnés
 	var total_pv_bonus_preview := 0
 	var total_mana_bonus_preview := 0
-	var feats_defs_preview := GameDataLoader.get_feats()
+	var feats_defs_preview: Dictionary = GameDataLoader.get_feats()
 	if not _classe_choisie.is_empty():
 		var classe_data_preview := _get_class_data(_classe_choisie)
 		var class_feats_preview := (classe_data_preview.get("competences", []) as Array)
@@ -1031,7 +1073,7 @@ func _mettre_a_jour_resume_build() -> void:
 		mana = int(clan_mgr.ressources.get("mana", 0))
 		# Compute mana bonus from selected feats and class starting feats for preview
 		var total_mana_bonus := 0
-		var feats_defs := GameDataLoader.get_feats()
+		var feats_defs: Dictionary = GameDataLoader.get_feats()
 		if not _classe_choisie.is_empty():
 			var classe_data := _get_class_data(_classe_choisie)
 			var class_feats := (classe_data.get("competences", []) as Array)
@@ -1176,7 +1218,7 @@ func _on_commencer() -> void:
 	var bonus_archetype := _bonus_archetype(str(profil.get("archetype_pathfinder", "")))
 
 	# Calculer les bonus plats de stats provenant des dons (feats) et des dons de classe
-	var feats_defs := GameDataLoader.get_feats()
+	var feats_defs: Dictionary = GameDataLoader.get_feats()
 	var feats_bonus: Dictionary = {}
 	# inclure les feats de départ de la classe (si présents)
 	var class_feats := (classe_data.get("competences", []) as Array)
@@ -1347,7 +1389,7 @@ func _stat_modificateur(score: int) -> int:
 func _appliquer_point_buy_classe(classe_id: String) -> void:
 	_fiche_points_restants = POINTS_FICHE_RESTANTS_CIBLE
 	_fiche_stats = StatDefs.make_default_stats(StatDefs.CHARACTER_MIN_STAT)
-	var classes := GameDataLoader.get_classes()
+	var classes: Dictionary = GameDataLoader.get_classes()
 	if classes.has(classe_id) and classes[classe_id] is Dictionary:
 		var class_def := classes[classe_id] as Dictionary
 		var base_stats := _resolve_base_stats_for_class(class_def)
@@ -1452,7 +1494,7 @@ func _construire_fiche_complete() -> Dictionary:
 
 func _get_class_data(classe_id: String) -> Dictionary:
 	# Récupère la définition depuis GameDataLoader (single source of truth)
-	var classes := GameDataLoader.get_classes()
+	var classes: Dictionary = GameDataLoader.get_classes()
 	if classes.has(classe_id):
 		var entry := classes[classe_id] as Dictionary
 		var stats_bonus := _derive_stats_bonus_from_base(_resolve_base_stats_for_class(entry))
@@ -1582,6 +1624,319 @@ func _verifier_saisies(nom_perso: String, nom_clan: String) -> String:
 	if _classe_choisie == "":
 		return "Veuillez choisir une classe avant de continuer."
 	return ""
+
+
+## ── Slide 2 : ColDroite (gauche visuel) = listes capacités+dons
+func _build_capabilities_panel() -> void:
+	var col_d := find_child("ColDroite", true, false) as VBoxContainer
+	if col_d == null:
+		return
+
+	# Supprimer l'ancien panneau si présent
+	var existing := col_d.get_node_or_null("Slide2AbilitiesPane")
+	if existing:
+		existing.queue_free()
+
+	var pane := VBoxContainer.new()
+	pane.name = "Slide2AbilitiesPane"
+	pane.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	pane.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	col_d.add_child(pane)
+
+	var title := Label.new()
+	title.text = "Capacités"
+	title.add_theme_font_size_override("font_size", 14)
+	title.add_theme_color_override("font_color", CREATION_GOLD)
+	pane.add_child(title)
+
+	var abilities_list := ItemList.new()
+	abilities_list.name = "AbilitiesList"
+	abilities_list.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	abilities_list.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	pane.add_child(abilities_list)
+	abilities_list.item_selected.connect(Callable(self, "_on_abilities_list_selected"))
+
+	var feats_label := Label.new()
+	feats_label.text = "Dons disponibles"
+	feats_label.add_theme_color_override("font_color", CREATION_TEXT_MUTED)
+	pane.add_child(feats_label)
+
+	var feats_list := ItemList.new()
+	feats_list.name = "FeatsList"
+	feats_list.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	feats_list.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	pane.add_child(feats_list)
+	feats_list.item_selected.connect(Callable(self, "_on_feats_list_selected"))
+
+	# Peuplage des capacités
+	_abilities_list_ids.clear()
+	_feats_list_ids.clear()
+	var abilities: Dictionary = GameDataLoader.get_abilities()
+	var keys: Array = abilities.keys()
+	keys.sort()
+	for aid in keys:
+		var a := abilities[aid] as Dictionary
+		abilities_list.add_item(str(a.get("name", aid)))
+		_abilities_list_ids.append(str(aid))
+
+	if _abilities_list_ids.size() > 0:
+		_on_abilities_list_selected(0)
+
+
+func _on_abilities_list_selected(index: int) -> void:
+	if index < 0 or index >= _abilities_list_ids.size():
+		return
+	_selected_ability_id = _abilities_list_ids[index]
+	_selected_feat_id = ""
+
+	# Mettre à jour la liste des dons pour la capacité sélectionnée
+	var feats_list := find_child("FeatsList", true, false) as ItemList
+	if feats_list == null:
+		return
+	feats_list.clear()
+	_feats_list_ids = []
+	var feat_defs: Dictionary = GameDataLoader.get_feats_for_ability(_selected_ability_id)
+	var fkeys: Array = feat_defs.keys()
+	fkeys.sort()
+	for fid in fkeys:
+		var f := feat_defs[fid] as Dictionary
+		feats_list.add_item(str(f.get("name", fid)))
+		_feats_list_ids.append(str(fid))
+
+	if _feats_list_ids.size() > 0:
+		_on_feats_list_selected(0)
+	else:
+		_selected_feat_id = ""
+		_refresh_slide2_descriptions()
+
+
+func _on_feats_list_selected(index: int) -> void:
+	if index < 0 or index >= _feats_list_ids.size():
+		return
+	_selected_feat_id = _feats_list_ids[index]
+	_refresh_slide2_descriptions()
+
+	# Mettre à jour le tableau résumé compact s'il existe
+	_update_compact_sheet_summary()
+
+
+## ── Slide 2 : ColGauche (droite visuel) = fiche slide1 + descriptions
+func _build_slide2_right_pane() -> void:
+	var col_g := find_child("ColGauche", true, false) as VBoxContainer
+	if col_g == null:
+		return
+
+	# Supprimer l'ancien panneau si présent
+	var existing := col_g.get_node_or_null("Slide2SheetPane")
+	if existing:
+		existing.queue_free()
+		_embedded_sheet = null
+
+	var pane := VBoxContainer.new()
+	pane.name = "Slide2SheetPane"
+	pane.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	pane.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	col_g.add_child(pane)
+
+	# Fiche compacte : résumé des infos de l'étape 1 (nom, clan, classe, genre, apparence)
+	var fiche := VBoxContainer.new()
+	fiche.name = "CompactSheet"
+	fiche.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	fiche.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+	pane.add_child(fiche)
+
+	var fiche_title := Label.new()
+	fiche_title.text = "Fiche (résumé)"
+	fiche_title.add_theme_font_size_override("font_size", 16)
+	fiche_title.add_theme_color_override("font_color", CREATION_GOLD)
+	fiche.add_child(fiche_title)
+
+	var nom_perso := ($PanneauCentre/LigneNoms/ColNomPerso/NomPersonnage as LineEdit).text.strip_edges()
+	var nom_clan := ($PanneauCentre/LigneNoms/ColNomClan/NomClan as LineEdit).text.strip_edges()
+	var classe_nom := "Aucune"
+	if not _classe_choisie.is_empty():
+		classe_nom = str(_get_class_data(_classe_choisie).get("nom", _classe_choisie))
+	var genre := _texte_option(_find_option("OptionGenre"))
+	var apparence := _texte_option(_find_option("OptionApparence"))
+
+	var fiche_body := RichTextLabel.new()
+	fiche_body.bbcode_enabled = false
+	fiche_body.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	# Tableau récapitulatif (2 colonnes) — réutilisable entre slides
+	var grid := GridContainer.new()
+	grid.columns = 2
+	grid.name = "CompactSummaryGrid"
+	grid.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	fiche.add_child(grid)
+
+	var lbl = Label.new()
+	lbl.text = "Nom:"
+	lbl.add_theme_color_override("font_color", CREATION_TEXT_MUTED)
+	grid.add_child(lbl)
+	var val = Label.new()
+	val.name = "Compact_Name"
+	val.text = nom_perso if not nom_perso.is_empty() else "—"
+	val.add_theme_color_override("font_color", CREATION_TEXT_MAIN)
+	grid.add_child(val)
+
+	lbl = Label.new()
+	lbl.text = "Clan:"
+	lbl.add_theme_color_override("font_color", CREATION_TEXT_MUTED)
+	grid.add_child(lbl)
+	val = Label.new()
+	val.name = "Compact_Clan"
+	val.text = nom_clan if not nom_clan.is_empty() else "—"
+	val.add_theme_color_override("font_color", CREATION_TEXT_MAIN)
+	grid.add_child(val)
+
+	lbl = Label.new()
+	lbl.text = "Classe:"
+	lbl.add_theme_color_override("font_color", CREATION_TEXT_MUTED)
+	grid.add_child(lbl)
+	val = Label.new()
+	val.name = "Compact_Class"
+	val.text = classe_nom
+	val.add_theme_color_override("font_color", CREATION_TEXT_MAIN)
+	grid.add_child(val)
+
+	lbl = Label.new()
+	lbl.text = "Genre:"
+	lbl.add_theme_color_override("font_color", CREATION_TEXT_MUTED)
+	grid.add_child(lbl)
+	val = Label.new()
+	val.name = "Compact_Genre"
+	val.text = genre if not genre.is_empty() else "—"
+	val.add_theme_color_override("font_color", CREATION_TEXT_MAIN)
+	grid.add_child(val)
+
+	lbl = Label.new()
+	lbl.text = "Apparence:"
+	lbl.add_theme_color_override("font_color", CREATION_TEXT_MUTED)
+	grid.add_child(lbl)
+	val = Label.new()
+	val.name = "Compact_Apparence"
+	val.text = apparence if not apparence.is_empty() else "—"
+	val.add_theme_color_override("font_color", CREATION_TEXT_MAIN)
+	grid.add_child(val)
+
+	var portrait_resume := "Image importee" if not _portrait_data.is_empty() else "Aucun portrait"
+	lbl = Label.new()
+	lbl.text = "Portrait:"
+	lbl.add_theme_color_override("font_color", CREATION_TEXT_MUTED)
+	grid.add_child(lbl)
+	val = Label.new()
+	val.name = "Compact_Portrait"
+	val.text = portrait_resume
+	val.add_theme_color_override("font_color", CREATION_TEXT_MAIN)
+	grid.add_child(val)
+
+	pane.add_child(HSeparator.new())
+
+	# Bloc descriptions (labels nommés pour mise à jour rapide sans recréer)
+	var vbox := VBoxContainer.new()
+	vbox.name = "Slide2Descriptions"
+	vbox.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	vbox.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+	vbox.custom_minimum_size = Vector2(0, 160)
+	pane.add_child(vbox)
+
+	var abil_title := Label.new()
+	abil_title.name = "AbilTitleLabel"
+	abil_title.add_theme_font_size_override("font_size", 14)
+	abil_title.add_theme_color_override("font_color", CREATION_GOLD)
+	vbox.add_child(abil_title)
+
+	var abil_desc := RichTextLabel.new()
+	abil_desc.name = "AbilDescLabel"
+	abil_desc.bbcode_enabled = false
+	abil_desc.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	vbox.add_child(abil_desc)
+
+	vbox.add_child(VSeparator.new())
+
+	var feat_title := Label.new()
+	feat_title.name = "FeatTitleLabel"
+	feat_title.add_theme_font_size_override("font_size", 14)
+	feat_title.add_theme_color_override("font_color", CREATION_GOLD)
+	vbox.add_child(feat_title)
+
+	var feat_desc := RichTextLabel.new()
+	feat_desc.name = "FeatDescLabel"
+	feat_desc.bbcode_enabled = false
+	feat_desc.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	vbox.add_child(feat_desc)
+
+	_refresh_slide2_descriptions()
+
+
+func _refresh_slide2_descriptions() -> void:
+	# Met à jour uniquement les labels de description sans recréer la fiche
+	var vbox := find_child("Slide2Descriptions", true, false) as VBoxContainer
+	if vbox == null:
+		return
+
+	var abil_title := vbox.get_node_or_null("AbilTitleLabel") as Label
+	var abil_desc := vbox.get_node_or_null("AbilDescLabel") as RichTextLabel
+	var feat_title := vbox.get_node_or_null("FeatTitleLabel") as Label
+	var feat_desc := vbox.get_node_or_null("FeatDescLabel") as RichTextLabel
+
+	if abil_title != null:
+		if _selected_ability_id != "":
+			var ad: Dictionary = GameDataLoader.get_ability_by_id(_selected_ability_id) as Dictionary
+			abil_title.text = str(ad.get("name", "Capacité"))
+			if abil_desc != null:
+				abil_desc.text = str(ad.get("description", "Aucune description disponible."))
+		else:
+			abil_title.text = "Capacité"
+			if abil_desc != null:
+				abil_desc.text = "Aucune capacité sélectionnée"
+
+	if feat_title != null:
+		if _selected_feat_id != "":
+			var fd: Dictionary = GameDataLoader.get_feats().get(_selected_feat_id, {}) as Dictionary
+			feat_title.text = str(fd.get("name", "Don"))
+			if feat_desc != null:
+				feat_desc.text = str(fd.get("description", "Aucune description disponible."))
+		else:
+			feat_title.text = "Don"
+			if feat_desc != null:
+				feat_desc.text = "Aucun don sélectionné"
+
+
+func _update_compact_sheet_summary() -> void:
+	# Met à jour le tableau résumé (CompactSummaryGrid) s'il est présent
+	var grid := find_child("CompactSummaryGrid", true, false) as GridContainer
+	if grid == null:
+		return
+
+	var name_lbl := grid.get_node_or_null("Compact_Name") as Label
+	var clan_lbl := grid.get_node_or_null("Compact_Clan") as Label
+	var class_lbl := grid.get_node_or_null("Compact_Class") as Label
+	var genre_lbl := grid.get_node_or_null("Compact_Genre") as Label
+	var apparence_lbl := grid.get_node_or_null("Compact_Apparence") as Label
+	var portrait_lbl := grid.get_node_or_null("Compact_Portrait") as Label
+
+	var nom_perso := ($PanneauCentre/LigneNoms/ColNomPerso/NomPersonnage as LineEdit).text.strip_edges()
+	var nom_clan := ($PanneauCentre/LigneNoms/ColNomClan/NomClan as LineEdit).text.strip_edges()
+	var classe_nom := "Aucune"
+	if not _classe_choisie.is_empty():
+		classe_nom = str(_get_class_data(_classe_choisie).get("nom", _classe_choisie))
+	var genre := _texte_option(_find_option("OptionGenre"))
+	var apparence := _texte_option(_find_option("OptionApparence"))
+	var portrait_resume := "Image importee" if not _portrait_data.is_empty() else "Aucun portrait"
+
+	if name_lbl != null:
+		name_lbl.text = nom_perso if not nom_perso.is_empty() else "—"
+	if clan_lbl != null:
+		clan_lbl.text = nom_clan if not nom_clan.is_empty() else "—"
+	if class_lbl != null:
+		class_lbl.text = classe_nom
+	if genre_lbl != null:
+		genre_lbl.text = genre if not genre.is_empty() else "—"
+	if apparence_lbl != null:
+		apparence_lbl.text = apparence if not apparence.is_empty() else "—"
+	if portrait_lbl != null:
+		portrait_lbl.text = portrait_resume
 
 
 func _on_retour() -> void:
