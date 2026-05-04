@@ -66,6 +66,16 @@ func _ready() -> void:
 	var menu_list: VBoxContainer = $Content/ContentCenter/ContentVBox/MenuListHolder/MenuList
 	if menu_list != null:
 		menu_list.add_theme_constant_override("separation", 18)
+		var list_bg := StyleBoxFlat.new()
+		list_bg.bg_color = Color8(22, 10, 34, int(0.78 * 255))
+		list_bg.border_color = Color8(145, 88, 210)
+		list_bg.set_border_width_all(2)
+		list_bg.set_corner_radius_all(18)
+		list_bg.content_margin_left = 16
+		list_bg.content_margin_top = 16
+		list_bg.content_margin_right = 16
+		list_bg.content_margin_bottom = 16
+		menu_list.add_theme_stylebox_override("panel", list_bg)
 
 	_build_menu_cards()
 	_build_sound_button()
@@ -118,24 +128,29 @@ func _create_menu_card(item: Dictionary, emblem: Texture2D) -> Button:
 	button.alignment = HORIZONTAL_ALIGNMENT_LEFT
 	button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 
-	# create panel style matching CSS: translucent purple overlay, 2px border #8759B4, radius 10-12
+	# create panel style matching the menu mockup without using image textures
 	var normal := StyleBoxFlat.new()
-	# card base style tuned to match maquette: subtle translucent purple, light magenta border
-	normal.bg_color = Color8(46,26,52, int(0.18 * 255))
-	normal.border_color = Color8(210,180,240)
+	normal.bg_color = Color8(26, 12, 42, int(0.84 * 255))
+	normal.border_color = Color8(162, 95, 196)
 	normal.set_border_width_all(2)
-	normal.set_corner_radius_all(12)
-	normal.shadow_color = Color8(0,0,0, int(0.32 * 255))
-	normal.shadow_size = 10
+	normal.set_corner_radius_all(14)
+	normal.shadow_color = Color8(24, 8, 34, int(0.28 * 255))
+	normal.shadow_size = 12
 	normal.content_margin_left = 36
 	normal.content_margin_top = 18
 	normal.content_margin_right = 36
 	normal.content_margin_bottom = 14
 	button.add_theme_stylebox_override("normal", normal)
 
-	var hover2 := normal.duplicate()
-	hover2.bg_color = Color8(60,28,88, int(0.30 * 255))
-	hover2.border_color = Color8(220,180,240)
+	var hover2 := StyleBoxFlat.new()
+	hover2.bg_color = Color8(44, 20, 66, int(0.96 * 255))
+	hover2.border_color = Color8(220, 180, 255)
+	hover2.set_border_width_all(2)
+	hover2.set_corner_radius_all(14)
+	hover2.content_margin_left = 36
+	hover2.content_margin_top = 18
+	hover2.content_margin_right = 36
+	hover2.content_margin_bottom = 14
 	button.add_theme_stylebox_override("hover", hover2)
 	button.add_theme_stylebox_override("pressed", hover2)
 	button.add_theme_stylebox_override("focus", hover2)
