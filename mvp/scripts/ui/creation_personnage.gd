@@ -3,6 +3,8 @@
 extends Control
 
 ## Rely on global class_names (StatDefs, CharacterBuildService) in data scripts
+const CharacterCreationRules = preload("res://scripts/services/character_creation_rules_service.gd")
+const CharacterTraitsRules = preload("res://scripts/services/character_traits_service.gd")
 
 func _clan_manager() -> Node:
 	return get_node_or_null("/root/ClanManager")
@@ -1274,34 +1276,14 @@ func _on_commencer() -> void:
 
 	var classe_data_final := _get_class_data(_classe_choisie)
 	var profil := _construire_profil_personnage()
-	var bonus_comp := _bonus_competence(str(profil.get("competence_id", "")))
-	var bonus_archetype := _bonus_archetype(str(profil.get("archetype_pathfinder", "")))
-
-	# Calculer les bonus plats de stats provenant des dons (feats) et des dons de classe
 	var feats_defs: Dictionary = GameDataLoader.get_feats()
-	var feats_bonus: Dictionary = {}
-	# inclure les feats de départ de la classe (si présents)
-	var class_feats := (classe_data_final.get("competences", []) as Array)
-	for cf in class_feats:
-		var cf_def := feats_defs.get(str(cf), {}) as Dictionary
-		var eff := cf_def.get("effects", {}) as Dictionary
-		var stats_eff := eff.get("stats", {}) as Dictionary
-		for sk in stats_eff.keys():
-			feats_bonus[sk] = int(feats_bonus.get(sk, 0)) + int(stats_eff[sk])
-	# inclure les feats sélectionnés dans la fiche
-	for f in _fiche_feats:
-		var fdef := feats_defs.get(str(f), {}) as Dictionary
-		var eff := fdef.get("effects", {}) as Dictionary
-		var stats_eff := eff.get("stats", {}) as Dictionary
-		for sk in stats_eff.keys():
-			feats_bonus[sk] = int(feats_bonus.get(sk, 0)) + int(stats_eff[sk])
-
-	var stats_finales := CharacterBuildService.compute_final_stats(
-		(classe_data_final.get("stats_bonus", {}) as Dictionary),
+	var stats_finales := CharacterCreationRules.compute_final_stats_for_creation(
+		classe_data_final,
 		_fiche_stats,
-		bonus_comp,
-		bonus_archetype,
-		feats_bonus
+		str(profil.get("competence_id", "")),
+		str(profil.get("archetype_pathfinder", "")),
+		feats_defs,
+		_fiche_feats
 	)
 
 	profil["competences_depart"] = _competences_depart(classe_data_final, profil)
@@ -1363,108 +1345,19 @@ func _construire_traits_gameplay() -> Dictionary:
 	var data_loader := _game_data_loader()
 	if data_loader == null:
 		push_warning("GameDataLoader introuvable, traits par défaut utilisés")
-		return {
-			"mana_cost_reduction_pct": 0,
-			"soldats_cost_reduction_attaquer_pct": 0,
-			"bonus_score_actions": {},
-			"night_soul_regen": 0,
-			"night_reputation_gain": 0,
-		}
+		return CharacterTraitsRules.default_traits()
 	var traits_data = data_loader.get_character_traits()
-	var traits := {
-		"mana_cost_reduction_pct": 0,
-		"soldats_cost_reduction_attaquer_pct": 0,
-		"bonus_score_actions": {},
-		"night_soul_regen": 0,
-		"night_reputation_gain": 0,
-	}
 
 	var don_id := _id_option(_find_option("OptionDon"))
 	var pouvoir_id := _id_option(_find_option("OptionPouvoir"))
 	var competence_id := _id_option(_find_option("OptionCompetence"))
-
-	var dons := traits_data.get("dons", {}) as Dictionary
-	var pouvoirs := traits_data.get("pouvoirs", {}) as Dictionary
-	var competences := traits_data.get("competences", {}) as Dictionary
-
-	_fusionner_effets_traits(traits, (dons.get(don_id, {}) as Dictionary).get("effects", {}) as Dictionary)
-	_fusionner_effets_traits(traits, (pouvoirs.get(pouvoir_id, {}) as Dictionary).get("effects", {}) as Dictionary)
-	_fusionner_effets_traits(traits, (competences.get(competence_id, {}) as Dictionary).get("effects", {}) as Dictionary)
-
-	var caps := traits_data.get("caps", {}) as Dictionary
-	return _appliquer_caps_traits(traits, caps)
-
-
-func _fusionner_effets_traits(destination: Dictionary, effets: Dictionary) -> void:
-	if effets.is_empty():
-		return
-
-	for k in effets.keys():
-		if k == "bonus_score_actions":
-			var dest_map := (destination.get("bonus_score_actions", {}) as Dictionary).duplicate(true)
-			var src_map := effets.get("bonus_score_actions", {}) as Dictionary
-			for action_id in src_map.keys():
-				dest_map[action_id] = int(dest_map.get(action_id, 0)) + int(src_map[action_id])
-			destination["bonus_score_actions"] = dest_map
-		else:
-			destination[k] = int(destination.get(k, 0)) + int(effets[k])
-
-
-func _appliquer_caps_traits(traits: Dictionary, caps: Dictionary) -> Dictionary:
-	var out := traits.duplicate(true)
-	out["mana_cost_reduction_pct"] = clampi(
-		int(out.get("mana_cost_reduction_pct", 0)),
-		0,
-		maxi(0, int(caps.get("mana_cost_reduction_pct", 35)))
-	)
-	out["soldats_cost_reduction_attaquer_pct"] = clampi(
-		int(out.get("soldats_cost_reduction_attaquer_pct", 0)),
-		0,
-		maxi(0, int(caps.get("soldats_cost_reduction_attaquer_pct", 20)))
-	)
-	out["night_soul_regen"] = clampi(
-		int(out.get("night_soul_regen", 0)),
-		0,
-		maxi(0, int(caps.get("night_soul_regen", 4)))
-	)
-	out["night_reputation_gain"] = clampi(
-		int(out.get("night_reputation_gain", 0)),
-		0,
-		maxi(0, int(caps.get("night_reputation_gain", 2)))
-	)
-
-	var per_action_cap := maxi(0, int(caps.get("bonus_per_action_max", 3)))
-	var map_bonus := (out.get("bonus_score_actions", {}) as Dictionary).duplicate(true)
-	for action_id in map_bonus.keys():
-		map_bonus[action_id] = clampi(int(map_bonus[action_id]), -per_action_cap, per_action_cap)
-	out["bonus_score_actions"] = map_bonus
-
-	return out
-
-
-func _stat_modificateur(score: int) -> int:
-	return int(floor((score - 10) / 2.0))
+	return CharacterTraitsRules.build_traits(traits_data, don_id, pouvoir_id, competence_id)
 
 
 func _appliquer_point_buy_classe(classe_id: String) -> void:
-	_fiche_points_restants = POINTS_FICHE_RESTANTS_CIBLE
-	_fiche_stats = StatDefs.make_default_stats(StatDefs.CHARACTER_MIN_STAT)
-	var classes: Dictionary = GameDataLoader.get_classes()
-	if classes.has(classe_id) and classes[classe_id] is Dictionary:
-		var class_def := classes[classe_id] as Dictionary
-		var base_stats := _resolve_base_stats_for_class(class_def)
-		_fiche_stats = StatDefs.sanitize_stats(
-			base_stats,
-			StatDefs.CHARACTER_MIN_STAT,
-			StatDefs.CHARACTER_MAX_STAT,
-			StatDefs.CHARACTER_MIN_STAT
-		)
-		_fiche_points_restants = POINTS_FICHE_RESTANTS_CIBLE
-		return
-
-	# Fallback legacy si une classe n'a pas de base_stats
-	_distribuer_points(["force", "magie", "espionnage", "artisanat", "diplomatie", "commandement"], 10)
-	_fiche_points_restants = POINTS_FICHE_RESTANTS_CIBLE
+	var point_buy := CharacterCreationRules.apply_point_buy_for_class(classe_id, POINTS_FICHE_RESTANTS_CIBLE)
+	_fiche_stats = (point_buy.get("stats", StatDefs.make_default_stats(StatDefs.CHARACTER_MIN_STAT)) as Dictionary).duplicate(true)
+	_fiche_points_restants = int(point_buy.get("points_restants", POINTS_FICHE_RESTANTS_CIBLE))
 
 
 	## Debug utilities (temporary)
@@ -1508,133 +1401,16 @@ func _debug_show_names() -> void:
 		nc.modulate = Color(1, 1, 1, 1)
 
 
-func _distribuer_points(priorites: Array, max_spent: int) -> void:
-	var spent := 0
-	var idx := 0
-	while spent < max_spent and _fiche_points_restants > 0 and idx < 48:
-		var stat := str(priorites[idx % priorites.size()])
-		if int(_fiche_stats.get(stat, 8)) < 16:
-			_fiche_stats[stat] = int(_fiche_stats[stat]) + 1
-			_fiche_points_restants -= 1
-			spent += 1
-		idx += 1
-
-
 func _construire_fiche_complete() -> Dictionary:
-	var mods := CharacterBuildService.build_modifiers(_fiche_stats)
-
-	var pv_base := 10
-	if _classe_choisie == "chevalier_sombre":
-		pv_base = 14
-	elif _classe_choisie == "mage_du_pacte":
-		pv_base = 8
-	elif _classe_choisie == "stratege_des_ombres":
-		pv_base = 10
-
-	var points_spent := 0
-	for k in StatDefs.STAT_KEYS:
-		points_spent += max(0, int(_fiche_stats.get(k, StatDefs.CHARACTER_MIN_STAT)) - StatDefs.CHARACTER_MIN_STAT)
-	var points_pool_total := points_spent + _fiche_points_restants
-
-	return {
-		"classe": _classe_choisie,
-		"niveau": 1,
-		"points_a_distribuer_base": points_pool_total,
-		"points_restants": _fiche_points_restants,
-		"stats_brutes": _fiche_stats.duplicate(true),
-		"modificateurs": mods,
-		"pv_max": pv_base + int(mods["commandement"]),
-		"initiative": int(mods["espionnage"]),
-		"defense": 10 + int(mods["espionnage"]),
-		"jet_vigueur": int(mods["force"]),
-		"jet_volonte": int(mods["magie"]),
-		"jet_reflexes": int(mods["espionnage"]),
-	}
+	return CharacterCreationRules.build_complete_sheet(_classe_choisie, _fiche_stats, _fiche_points_restants)
 
 
 func _get_class_data(classe_id: String) -> Dictionary:
-	# Récupère la définition depuis GameDataLoader (single source of truth)
-	var classes: Dictionary = GameDataLoader.get_classes()
-	if classes.has(classe_id):
-		var entry := classes[classe_id] as Dictionary
-		var stats_bonus := _derive_stats_bonus_from_base(_resolve_base_stats_for_class(entry))
-		return {
-			"nom": str(entry.get("name", classe_id)),
-			"stats_bonus": stats_bonus,
-			"equipement": entry.get("starting_abilities", []),
-			"competences": entry.get("starting_feats", []),
-		}
-
-	# fallback minimal
-	return {
-		"nom": classe_id,
-		"stats_bonus": StatDefs.make_default_stats(0),
-		"equipement": [],
-		"competences": [],
-	}
-
-
-func _derive_stats_bonus_from_base(base_stats: Dictionary) -> Dictionary:
-	# Convertit les stats brutes de classe (8..16+) en bonus de clan centrés sur 10.
-	# Exemple: 13 -> +3, 8 -> -2, 10 -> 0
-	var out := StatDefs.make_default_stats(0)
-	if base_stats.is_empty():
-		return out
-	for key in StatDefs.STAT_KEYS:
-		var score := int(base_stats.get(key, 10))
-		out[key] = score - 10
-	return out
-
-
-func _resolve_base_stats_for_class(class_def: Dictionary) -> Dictionary:
-	var explicit_base := class_def.get("base_stats", {}) as Dictionary
-	if not explicit_base.is_empty():
-		return explicit_base
-	return _build_base_stats_from_class_def(class_def)
-
-
-func _build_base_stats_from_class_def(class_def: Dictionary) -> Dictionary:
-	# Génère un pool de départ différent par classe à partir des tags primary/secondary.
-	var out := StatDefs.make_default_stats(StatDefs.CHARACTER_MIN_STAT)
-	var primary := class_def.get("primary", []) as Array
-	var secondary := class_def.get("secondary", []) as Array
-	var hit_die := int(class_def.get("hit_die", 8))
-
-	for stat in primary:
-		var key := str(stat)
-		if out.has(key):
-			out[key] = int(out[key]) + 3
-	for stat in secondary:
-		var key := str(stat)
-		if out.has(key):
-			out[key] = int(out[key]) + 2
-
-	# Petite signature selon la robustesse de classe
-	if hit_die >= 10:
-		out["force"] = int(out.get("force", 8)) + 1
-		out["commandement"] = int(out.get("commandement", 8)) + 1
-	elif hit_die <= 6:
-		out["magie"] = int(out.get("magie", 8)) + 1
-
-	return StatDefs.sanitize_stats(
-		out,
-		StatDefs.CHARACTER_MIN_STAT,
-		StatDefs.CHARACTER_MAX_STAT,
-		StatDefs.CHARACTER_MIN_STAT
-	)
+	return CharacterCreationRules.get_class_data(classe_id)
 
 
 func _bonus_competence(competence_id: String) -> Dictionary:
-	match competence_id:
-		"maitrise_martiale":
-			return {"force": 1, "commandement": 1}
-		"rituel_occulte":
-			return {"magie": 2}
-		"diplomatie_de_guerre":
-			return {"diplomatie": 1, "commandement": 1}
-		"infiltration":
-			return {"espionnage": 2}
-	return {}
+	return CharacterCreationRules.competence_bonus(competence_id)
 
 
 func _id_option(option: OptionButton) -> String:
@@ -1650,20 +1426,7 @@ func _id_option(option: OptionButton) -> String:
 
 
 func _bonus_archetype(archetype: String) -> Dictionary:
-	match archetype:
-		"Lame jurée (inspiration Guerrier)":
-			return {"force": 2}
-		"Ensorceleur abyssal (inspiration Magicien)":
-			return {"magie": 2}
-		"Traqueur des ruines (inspiration Rôdeur)":
-			return {"espionnage": 1, "force": 1}
-		"Prédicateur noir (inspiration Clerc)":
-			return {"diplomatie": 1, "magie": 1}
-		"Ombrelame (inspiration Roublard)":
-			return {"espionnage": 2}
-		"Alchimiste de siège (inspiration Alchimiste)":
-			return {"artisanat": 2}
-	return {}
+	return CharacterCreationRules.archetype_bonus(archetype)
 
 
 func _competences_depart(classe_data: Dictionary, profil: Dictionary) -> Array:

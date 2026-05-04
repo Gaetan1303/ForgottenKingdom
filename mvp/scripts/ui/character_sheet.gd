@@ -4,11 +4,11 @@ extends Control
 signal saved(stats, points_remaining, char_class, feats)
 
 var CharacterClass = preload("res://scripts/data/character.gd")
+const CharacterCreationRules = preload("res://scripts/services/character_creation_rules_service.gd")
 # Use the global classes registered by `class_name` in the data scripts
 # StatDefs and CharacterBuildService are referenced directly.
 var _character = null
 var StatDefsClass = StatDefs
-const FKHelpers = preload("res://scripts/utils/fk_helpers.gd")
 
 var _points_label: Label
 var _stat_labels: Dictionary = {}
@@ -476,66 +476,37 @@ func _update_ui() -> void:
 	else:
 		stats_dict = StatDefsClass.make_default_stats(StatDefsClass.CHARACTER_MIN_STAT)
 
-	_points_label.text = "Points restants: %d   |   Points investis: %d" % [_character.points_remaining(), _character.points_spent()]
+	_points_label.text = CharacterCreationRules.build_points_summary(
+		_character.points_remaining(),
+		_character.points_spent()
+	)
 	for stat in _stat_keys:
 		var key: String = str(stat)
 		var val: int = int(stats_dict.get(key, StatDefsClass.CHARACTER_MIN_STAT))
 		if _stat_labels.has(key) and _stat_labels[key] is Label:
 			(_stat_labels[key] as Label).text = str(val)
 		if _stat_cost_labels.has(key) and _stat_cost_labels[key] is Label:
-			(_stat_cost_labels[key] as Label).text = "coût +%d" % _stat_upgrade_cost(val)
+			(_stat_cost_labels[key] as Label).text = "coût +%d" % CharacterCreationRules.stat_upgrade_cost_preview(val)
 
-	# Update vitals (derived statistics)
-	var mods = CharacterBuildService.build_modifiers(stats_dict)
 	# Compute feats bonuses (flat stat changes and other effects)
 	var feats_bonus = _compute_feats_bonus()
-	var pv_max = 10 + int(mods.get("commandement", 0)) + int(feats_bonus.get("pv_bonus", 0))
-	var mana_max = 20 + int(mods.get("magie", 0)) * 3 + int(feats_bonus.get("mana_bonus", 0))
 	var clan_mgr = get_node_or_null("/root/ClanManager")
 	var ame_pct = 100
 	if clan_mgr != null:
 		ame_pct = int(clan_mgr.barre_ame)
+	var vitals := CharacterCreationRules.compute_sheet_vitals(stats_dict, feats_bonus, ame_pct)
 	if _pv_label:
+		var pv_max := int(vitals.get("pv_max", 10))
 		_pv_label.text = "%d / %d" % [pv_max, pv_max]
 	if _mana_label:
+		var mana_max := int(vitals.get("mana_max", 20))
 		_mana_label.text = "%d / %d" % [mana_max, mana_max]
 	if _ame_label:
-		_ame_label.text = "%d%%" % ame_pct
+		_ame_label.text = "%d%%" % int(vitals.get("ame_pct", ame_pct))
 
 	# Update feats bonus summary label
 	if _feats_bonus_label:
-		var parts: Array = []
-		# show stat bonuses first
-		var fb_stats = feats_bonus.get("stats", {}) as Dictionary
-		for sk in fb_stats.keys():
-			parts.append("%s: %s" % [sk.capitalize(), _format_signed(int(fb_stats[sk]))])
-		# show other flat bonuses
-		if int(feats_bonus.get("pv_bonus", 0)) != 0:
-			parts.append("PV: %s" % _format_signed(int(feats_bonus.get("pv_bonus", 0))))
-		if int(feats_bonus.get("mana_bonus", 0)) != 0:
-			parts.append("Mana: %s" % _format_signed(int(feats_bonus.get("mana_bonus", 0))))
-		_feats_bonus_label.text = FKHelpers.join_array(parts, ", ") if parts.size() > 0 else "—"
-
-
-func _stat_modifier(score: int) -> int:
-	return int(floor((float(score) - 10.0) / 2.0))
-
-
-func _format_signed(value: int) -> String:
-	if value >= 0:
-		return "+%d" % value
-	return str(value)
-
-
-func _stat_upgrade_cost(current_value: int) -> int:
-	# Progressive cost after base threshold to mimic CRPG point-buy feel.
-	if current_value <= 10:
-		return 1
-	if current_value <= 13:
-		return 2
-	if current_value <= 16:
-		return 3
-	return 4
+		_feats_bonus_label.text = CharacterCreationRules.build_feats_bonus_summary(feats_bonus)
 
 
 func _update_feats_disabled() -> void:
@@ -562,20 +533,7 @@ func _on_feat_selected(index: int) -> void:
 		return
 	var key: String = str(_feat_keys[index])
 	var entry: Dictionary = _feat_defs.get(key, {}) as Dictionary
-	var desc: String = str(entry.get("description", ""))
-	var pre: Variant = entry.get("prerequisite", null)
-	if pre != null:
-		var pre_lines: Array[String] = []
-		var pre_d: Dictionary = pre as Dictionary
-		var sreq: Dictionary = pre_d.get("stats", {}) as Dictionary
-		for sk in sreq.keys():
-			pre_lines.append("%s >= %s" % [sk.capitalize(), str(sreq[sk])])
-		var freq: Array = pre_d.get("feats", []) as Array
-		for f in freq:
-			pre_lines.append("Requires feat: %s" % str(f))
-		if pre_lines.size() > 0:
-			desc += "\nPrerequisites: %s" % FKHelpers.join_array(pre_lines, ", ")
-	_feat_desc.text = desc
+	_feat_desc.text = CharacterCreationRules.build_feat_description(entry)
 
 
 func _on_feat_multi_selected(index: int, selected: bool) -> void:
@@ -623,20 +581,7 @@ func _on_feat_toggled(pressed: bool, key: String) -> void:
 	_update_ui()
 	# Update description for the toggled feat
 	var entry = _feat_defs.get(key, {}) as Dictionary
-	var desc = str(entry.get("description", ""))
-	var pre = entry.get("prerequisite", null)
-	if pre != null:
-		var pre_lines: Array[String] = []
-		var pre_d: Dictionary = pre as Dictionary
-		var sreq: Dictionary = pre_d.get("stats", {}) as Dictionary
-		for sk in sreq.keys():
-			pre_lines.append("%s >= %s" % [sk.capitalize(), str(sreq[sk])])
-		var freq: Array = pre_d.get("feats", []) as Array
-		for f in freq:
-			pre_lines.append("Requires feat: %s" % str(f))
-		if pre_lines.size() > 0:
-			desc += "\nPrerequisites: %s" % FKHelpers.join_array(pre_lines, ", ")
-	_feat_desc.text = desc
+	_feat_desc.text = CharacterCreationRules.build_feat_description(entry)
 
 
 func _on_class_selected(index: int) -> void:
@@ -652,7 +597,7 @@ func _on_class_selected(index: int) -> void:
 	_class_desc.text = text
 
 	if _character != null:
-		var base_stats = _resolve_base_stats_for_class(entry)
+		var base_stats = CharacterCreationRules.resolve_base_stats_for_class(entry)
 		_character.stats = StatDefsClass.sanitize_stats(
 			base_stats,
 			StatDefsClass.CHARACTER_MIN_STAT,
@@ -663,41 +608,6 @@ func _on_class_selected(index: int) -> void:
 		_update_ui()
 		_update_feats_disabled()
 
-
-func _resolve_base_stats_for_class(class_def: Dictionary) -> Dictionary:
-	var explicit_base = class_def.get("base_stats", {}) as Dictionary
-	if not explicit_base.is_empty():
-		return explicit_base
-	return _build_base_stats_from_class_def(class_def)
-
-
-func _build_base_stats_from_class_def(class_def: Dictionary) -> Dictionary:
-	var out = StatDefsClass.make_default_stats(StatDefsClass.CHARACTER_MIN_STAT)
-	var primary = class_def.get("primary", []) as Array
-	var secondary = class_def.get("secondary", []) as Array
-	var hit_die = int(class_def.get("hit_die", 8))
-
-	for stat in primary:
-		var key = str(stat)
-		if out.has(key):
-			out[key] = int(out[key]) + 3
-	for stat in secondary:
-		var key = str(stat)
-		if out.has(key):
-			out[key] = int(out[key]) + 2
-
-	if hit_die >= 10:
-		out["force"] = int(out.get("force", 8)) + 1
-		out["commandement"] = int(out.get("commandement", 8)) + 1
-	elif hit_die <= 6:
-		out["magie"] = int(out.get("magie", 8)) + 1
-
-	return StatDefsClass.sanitize_stats(
-		out,
-		StatDefsClass.CHARACTER_MIN_STAT,
-		StatDefsClass.CHARACTER_MAX_STAT,
-		StatDefsClass.CHARACTER_MIN_STAT
-	)
 
 func _on_apply() -> void:
 	var stats_out = {}
@@ -750,27 +660,14 @@ func _read_json_dict(path: String) -> Dictionary:
 
 
 func _compute_feats_bonus() -> Dictionary:
-	var out = {"stats": {}}
+	var out := {"stats": {}}
 	if _character == null:
 		return out
 	# Ensure feat definitions are loaded
 	if _feat_defs == null or _feat_defs.size() == 0:
 		_feat_defs = GameDataLoader.get_feats()
 	var feats_arr: Array = _character.feats if _character.feats != null else []
-	for f in feats_arr:
-		var fkey = str(f)
-		var fdef = _feat_defs.get(fkey, {}) as Dictionary
-		var eff = fdef.get("effects", {}) as Dictionary
-		# stats
-		var stats_eff = eff.get("stats", {}) as Dictionary
-		for sk in stats_eff.keys():
-			out.get("stats")[sk] = int(out.get("stats", {}).get(sk, 0)) + int(stats_eff[sk])
-		# other flat bonuses (pv_bonus, mana_bonus)
-		if eff.has("pv_bonus"):
-			out["pv_bonus"] = int(out.get("pv_bonus", 0)) + int(eff.get("pv_bonus"))
-		if eff.has("mana_bonus"):
-			out["mana_bonus"] = int(out.get("mana_bonus", 0)) + int(eff.get("mana_bonus"))
-	return out
+	return CharacterCreationRules.compute_feats_effects(_feat_defs, feats_arr)
 
 
 func _sync_feats_selection_from_model() -> void:
