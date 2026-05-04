@@ -1464,6 +1464,7 @@ func _build_capabilities_panel() -> void:
 	pane.name = "Slide2AbilitiesPane"
 	pane.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	pane.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	pane.custom_minimum_size = Vector2(0, 520)
 	col_d.add_child(pane)
 
 	var title := Label.new()
@@ -1476,8 +1477,18 @@ func _build_capabilities_panel() -> void:
 	abilities_list.name = "AbilitiesList"
 	abilities_list.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	abilities_list.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	abilities_list.custom_minimum_size = Vector2(0, 190)
 	pane.add_child(abilities_list)
 	abilities_list.item_selected.connect(Callable(self, "_on_abilities_list_selected"))
+
+	var abilities_desc := RichTextLabel.new()
+	abilities_desc.name = "AbilitiesDescLabel"
+	abilities_desc.bbcode_enabled = false
+	abilities_desc.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	abilities_desc.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	abilities_desc.custom_minimum_size = Vector2(0, 110)
+	abilities_desc.add_theme_color_override("font_color", CREATION_TEXT_MAIN)
+	pane.add_child(abilities_desc)
 
 	var feats_label := Label.new()
 	feats_label.text = "Dons disponibles"
@@ -1488,8 +1499,18 @@ func _build_capabilities_panel() -> void:
 	feats_list.name = "FeatsList"
 	feats_list.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	feats_list.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	feats_list.custom_minimum_size = Vector2(0, 190)
 	pane.add_child(feats_list)
 	feats_list.item_selected.connect(Callable(self, "_on_feats_list_selected"))
+
+	var feats_desc := RichTextLabel.new()
+	feats_desc.name = "FeatsDescLabel"
+	feats_desc.bbcode_enabled = false
+	feats_desc.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	feats_desc.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	feats_desc.custom_minimum_size = Vector2(0, 110)
+	feats_desc.add_theme_color_override("font_color", CREATION_TEXT_MAIN)
+	pane.add_child(feats_desc)
 
 	# Peuplage des capacités
 	_abilities_list_ids.clear()
@@ -1533,6 +1554,7 @@ func _on_abilities_list_selected(index: int) -> void:
 
 	# Actualiser les descriptions (capacité + don) pour la slide 2
 	_refresh_slide2_descriptions()
+	_update_slide2_list_descriptions()
 
 	# Mettre à jour aussi le résumé compact (capacité potentiellement sans don)
 	_update_compact_sheet_summary()
@@ -1543,9 +1565,28 @@ func _on_feats_list_selected(index: int) -> void:
 		return
 	_selected_feat_id = _feats_list_ids[index]
 	_refresh_slide2_descriptions()
+	_update_slide2_list_descriptions()
 
 	# Mettre à jour le tableau résumé compact s'il existe
 	_update_compact_sheet_summary()
+
+func _update_slide2_list_descriptions() -> void:
+	var ability_desc := find_child("AbilitiesDescLabel", true, false) as RichTextLabel
+	var feat_desc := find_child("FeatsDescLabel", true, false) as RichTextLabel
+
+	if ability_desc != null:
+		if _selected_ability_id != "":
+			var ad := GameDataLoader.get_ability_by_id(_selected_ability_id) as Dictionary
+			ability_desc.text = str(ad.get("description", "Aucune description disponible."))
+		else:
+			ability_desc.text = "Aucune capacité sélectionnée"
+
+	if feat_desc != null:
+		if _selected_feat_id != "":
+			var fd := GameDataLoader.get_feats().get(_selected_feat_id, {}) as Dictionary
+			feat_desc.text = str(fd.get("description", "Aucun don sélectionné."))
+		else:
+			feat_desc.text = "Aucun don sélectionné"
 
 
 ## ── Slide 2 : ColGauche (droite visuel) = fiche slide1 + descriptions
@@ -1663,42 +1704,7 @@ func _build_slide2_right_pane() -> void:
 		val.set_tooltip(str(_portrait_data.get("file_name", "")))
 	grid.add_child(val)
 
-	# Créer les widgets du résumé compact uniquement s'ils n'existent pas déjà
-	if grid.get_node_or_null("Compact_Ability") == null:
-		# Capacité (nom) — résumé compact
-		lbl = Label.new()
-		lbl.text = "Capacité:"
-		lbl.add_theme_color_override("font_color", CREATION_TEXT_MUTED)
-		grid.add_child(lbl)
-		val = Label.new()
-		val.name = "Compact_Ability"
-		val.text = "—"
-		val.add_theme_color_override("font_color", CREATION_TEXT_MAIN)
-		grid.add_child(val)
-
-		# Don (nom) — résumé compact
-		lbl = Label.new()
-		lbl.text = "Don:"
-		lbl.add_theme_color_override("font_color", CREATION_TEXT_MUTED)
-		grid.add_child(lbl)
-		val = Label.new()
-		val.name = "Compact_Feat"
-		val.text = "—"
-		val.add_theme_color_override("font_color", CREATION_TEXT_MAIN)
-		grid.add_child(val)
-
-	# S'assurer que la description compacte existe (sous 'fiche')
-	if fiche.get_node_or_null("Compact_FeatsDesc") == null:
-		var compact_desc := RichTextLabel.new()
-		compact_desc.name = "Compact_FeatsDesc"
-		compact_desc.bbcode_enabled = false
-		compact_desc.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-		compact_desc.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-		compact_desc.add_theme_color_override("font_color", CREATION_TEXT_MAIN)
-		compact_desc.custom_minimum_size = Vector2(0, 80)
-		fiche.add_child(compact_desc)
-
-	# Créer le bloc des descriptions de la slide 2 uniquement s'il n'existe pas
+	# S'assurer que le bloc des descriptions de la slide 2 existe
 	if fiche.get_node_or_null("Slide2Descriptions") == null:
 		# séparer le tableau et placer les descriptions directement sous le tableau
 		fiche.add_child(HSeparator.new())
@@ -1737,6 +1743,7 @@ func _build_slide2_right_pane() -> void:
 
 	# Met à jour ensuite les descriptions (existant ou nouvellement créées)
 	_refresh_slide2_descriptions()
+	_update_slide2_list_descriptions()
 
 
 func _refresh_slide2_descriptions() -> void:
@@ -1825,41 +1832,6 @@ func _update_compact_sheet_summary() -> void:
 		if portrait_lbl.has_method("set_tooltip"):
 			portrait_lbl.set_tooltip(str(_portrait_data.get("file_name", "")))
 
-	# Mettre à jour nom de capacité / don dans la fiche compacte
-	var ability_lbl := grid.get_node_or_null("Compact_Ability") as Label
-	var feat_lbl := grid.get_node_or_null("Compact_Feat") as Label
-	var compact_desc := find_child("Compact_FeatsDesc", true, false) as RichTextLabel
-
-	var ability_name := "—"
-	var ability_desc := ""
-	if _selected_ability_id != "":
-		var ad := GameDataLoader.get_ability_by_id(_selected_ability_id) as Dictionary
-		ability_name = str(ad.get("name", "—"))
-		ability_desc = str(ad.get("description", ""))
-
-	var feat_name := "—"
-	var feat_desc := ""
-	if _selected_feat_id != "":
-		var fd := GameDataLoader.get_feats().get(_selected_feat_id, {}) as Dictionary
-		feat_name = str(fd.get("name", "—"))
-		feat_desc = str(fd.get("description", ""))
-
-	if ability_lbl != null:
-		ability_lbl.text = ability_name if ability_name != "" else "—"
-	if feat_lbl != null:
-		feat_lbl.text = feat_name if feat_name != "" else "—"
-
-	if compact_desc != null:
-		var short_desc := ""
-		if ability_desc.strip_edges() != "":
-			short_desc += "%s: %s\n" % [ability_name, ability_desc]
-		if feat_desc.strip_edges() != "":
-			if short_desc != "":
-				short_desc += "\n"
-			short_desc += "%s: %s\n" % [feat_name, feat_desc]
-		if short_desc == "":
-			short_desc = "Aucune description disponible."
-		compact_desc.text = short_desc
 
 
 func _on_retour() -> void:

@@ -9,6 +9,7 @@ const PATH_CHARACTER_TRAITS := "res://data/character_traits.json"
 const PATH_LIBRARY_ENTRIES := "res://data/library_entries.json"
 const PATH_CLASSES := "res://data/classes.json"
 const PATH_FEATS := "res://data/feats.json"
+const PATH_ABILITIES := "res://data/abilities.json"
 
 # ── Caches ───────────────────────────────────────────────────────────
 var _config_tour:  Dictionary = {}
@@ -84,6 +85,15 @@ func _charger_feats() -> void:
 		_feats = {}
 		return
 	_feats = data
+
+
+func _charger_abilities() -> void:
+	var data := _lire_json(PATH_ABILITIES)
+	if data.is_empty():
+		push_warning("GameDataLoader: abilities.json introuvable — fallback sur classes.json.")
+		_abilities = {}
+		return
+	_abilities = data
 
 
 ## Index les actions par leur ID pour un accès O(1).
@@ -316,6 +326,7 @@ func reload() -> void:
 	_charger_character_traits()
 	_charger_library_entries()
 	_charger_classes()
+	_charger_abilities()
 	_charger_feats()
 	# Re-indexer les actions au cas où config_tour a changé
 	_indexer_actions(_config_tour.get("actions", []) as Array)
