@@ -90,8 +90,9 @@ func _ready() -> void:
 	var title_label: Label = $Content/ContentCenter/ContentVBox/Header/Title
 	if title_label != null:
 		title_label.text = "CHRONIQUES DES 9 NOBLES DU DEMON REALM"
-		title_label.custom_minimum_size = Vector2(840, 120)
+		title_label.custom_minimum_size = Vector2(0, 80)
 		title_label.horizontal_alignment = 1
+		title_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 
 	var subtitle_label: Label = $Content/ContentCenter/ContentVBox/Header/Subtitle
 	if subtitle_label != null:

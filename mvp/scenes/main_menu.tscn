@@ -26,7 +26,7 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_top = 6.0
+offset_top = 40.0
 grow_horizontal = 2
 grow_vertical = 2
 
@@ -37,12 +37,13 @@ size_flags_vertical = 4
 
 [node name="ContentVBox" type="VBoxContainer" parent="Content/ContentCenter"]
 layout_mode = 2
+size_flags_horizontal = 0
 size_flags_vertical = 4
 theme_override_constants/separation = 16
 alignment = 1
 
 [node name="TopSpacer" type="Control" parent="Content/ContentCenter/ContentVBox"]
-custom_minimum_size = Vector2(1, 0)
+custom_minimum_size = Vector2(1, 16)
 layout_mode = 2
 
 [node name="Header" type="VBoxContainer" parent="Content/ContentCenter/ContentVBox"]
@@ -52,11 +53,11 @@ theme_override_constants/separation = 8
 alignment = 1
 
 [node name="Title" type="Label" parent="Content/ContentCenter/ContentVBox/Header"]
-custom_minimum_size = Vector2(840, 120)
+custom_minimum_size = Vector2(0, 80)
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_colors/font_color = Color(1, 0.980392, 0.988235, 1)
-theme_override_font_sizes/font_size = 48
+theme_override_font_sizes/font_size = 28
 text = "CHRONIQUES DES 9 NOBLES DU DEMON REALM"
 horizontal_alignment = 1
 
@@ -72,11 +73,15 @@ custom_minimum_size = Vector2(1, 16)
 layout_mode = 2
 
 [node name="MenuListHolder" type="MarginContainer" parent="Content/ContentCenter/ContentVBox"]
+custom_minimum_size = Vector2(520, 0)
 layout_mode = 2
-theme_override_constants/margin_left = 440
+size_flags_horizontal = 0
+size_flags_vertical = 4
 
 [node name="MenuList" type="VBoxContainer" parent="Content/ContentCenter/ContentVBox/MenuListHolder"]
+custom_minimum_size = Vector2(520, 0)
 layout_mode = 2
+size_flags_horizontal = 0
 theme_override_constants/separation = 12
 
 [node name="Footer" type="Control" parent="."]

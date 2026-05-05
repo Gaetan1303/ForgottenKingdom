@@ -3,6 +3,7 @@ class_name CharacterCreationScreen
 extends Control
 
 const ManagerType = preload("res://scripts/ui/character_creation/character_creation_manager.gd")
+const CharacterCreationFlowType = preload("res://scripts/ui/character_creation/creation_flow_controller.gd")
 
 @export var slide_scene_paths: Array[String] = [
 	"res://scenes/character_creation/slides/slide_01_basic_info.tscn",
@@ -16,14 +17,19 @@ const ManagerType = preload("res://scripts/ui/character_creation/character_creat
 
 var _manager = ManagerType.new()
 var _active_slide: Control = null
+var _resume_requested: bool = false
 
+func init_data(data: Dictionary) -> void:
+	if data.has("resume") and bool(data["resume"]):
+		_resume_requested = true
 
 func _ready() -> void:
 	add_child(_manager)
 	_manager.slide_changed.connect(_on_slide_changed)
 	_manager.validation_failed.connect(_on_validation_failed)
 	_manager.creation_completed.connect(_on_creation_completed)
-	_manager.load_draft()
+	if _resume_requested:
+		_manager.load_draft()
 	_on_slide_changed(_manager.get_current_step())
 
 
@@ -81,6 +87,9 @@ func _on_slide_next_requested() -> void:
 
 
 func _on_slide_previous_requested() -> void:
+	if _manager.get_current_step() <= CharacterCreationFlowType.Step.BASIC_INFO:
+		GameManager.go_to("main_menu")
+		return
 	_manager.go_previous()
 
 

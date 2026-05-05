@@ -86,14 +86,19 @@ layout_mode = 0
 [node name="Nav" type="HBoxContainer" parent="Content"]
 layout_mode = 2
 alignment = 2
+size_flags_horizontal = 3
 
 [node name="BtnBack" type="Button" parent="Content/Nav"]
 layout_mode = 2
 text = "Retour"
+size_flags_horizontal = 2
+custom_minimum_size = Vector2(120, 42)
 
 [node name="BtnNext" type="Button" parent="Content/Nav"]
 layout_mode = 2
 text = "Suivant"
+size_flags_horizontal = 2
+custom_minimum_size = Vector2(120, 42)
 
 [connection signal="pressed" from="Content/PortraitUploadArea/PortraitPanel/DetailsVBox/Buttons/UploadPortraitButton" to="Content/PortraitUploadArea" method="_on_upload_portrait_pressed"]
 [connection signal="pressed" from="Content/PortraitUploadArea/PortraitPanel/DetailsVBox/Buttons/ResetPortraitButton" to="Content/PortraitUploadArea" method="_on_reset_portrait_pressed"]

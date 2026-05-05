@@ -1,7 +1,7 @@
 ## Slide 1: base identity fields, portrait and racial power.
 class_name Slide01BasicInfo
 extends CreationSlideBase
--
+
 const APPEARANCE_CHOICES := [
 	{"id": "veteran_balafre", "label": "Veteran balafre"},
 	{"id": "noble_exile", "label": "Noble exile"},

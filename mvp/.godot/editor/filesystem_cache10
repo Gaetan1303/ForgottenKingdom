@@ -1,5 +1,5 @@
 ea4bc82a6ad023ab7ee23ee620429895
-::res://::1777973829
+::res://::1777982246
 godot_run.log::TextFile/TextFile::-1::1777899893::0::1::::<><><>0<>0<><>::
 icon.png::CompressedTexture2D/CompressedTexture2D::7693981552901003797::1777899893::1777899893::1::::<><><>0<>0<>a67d4e17d634630f6e0670da3f4b97d6<>res://.godot/imported/icon.png-487276ed1e3a0c39cad0279d744ee560.ctex::
 ::res://assets/::1777899893
@@ -119,7 +119,7 @@ README.md::TextFile/TextFile::-1::1777899893::0::1::::<><><>0<>0<><>::
 theme_demon.tres::Theme/Theme::-1::1777899893::0::1::::<><><>0<>0<><>::
 ::res://resources/chapters/::1777899893
 data.json::JSON/JSON::-1::1777899893::0::1::::<><><>0<>0<><>::
-::res://scenes/::1777973678
+::res://scenes/::1777982221
 chapter_ingrid.tscn::PackedScene/PackedScene::-1::1777899893::0::1::::<><><>0<>0<><>::
 chapter_select.tscn::PackedScene/PackedScene::-1::1777899893::0::1::::<><><>0<>0<><>::res://scripts/ui/chapter_select.gd
 chapter_view.tscn::PackedScene/PackedScene::-1::1777899893::0::1::::<><><>0<>0<><>::res://scripts/ui/chapter_view.gd
@@ -129,8 +129,7 @@ clan_hub.tscn::PackedScene/PackedScene::3994120512988888878::1777899893::0::1:::
 creation_personnage.tscn::PackedScene/PackedScene::-1::1777899893::0::1::::<><><>0<>0<><>::res://scripts/ui/creation_personnage.gd
 dungeon_view.tscn::PackedScene/PackedScene::-1::1777899893::0::1::::<><><>0<>0<><>::res://scripts/ui/dungeon_view.gd
 intro_vn.tscn::PackedScene/PackedScene::-1::1777899893::0::1::::<><><>0<>0<><>::res://scripts/ui/intro_vn.gd
-main_menu.tscn::PackedScene::2208979568939166700::1777973678::0::1::::<><><>0<>0<><>::uid://duxx0d0ccqb3::::res://scripts/ui/main_menu.gd
-main_menu_reworked.tscn::PackedScene/PackedScene::-1::1777899893::0::1::::<><><>0<>0<><>::res://scripts/ui/main_menu_reworked.gd<>res://scripts/ui/menu_item.gd<>res://scripts/ui/colors.gd
+main_menu.tscn::PackedScene::2208979568939166700::1777982221::0::1::::<><><>0<>0<><>::uid://duxx0d0ccqb3::::res://scripts/ui/main_menu.gd
 map_view.tscn::PackedScene/PackedScene::-1::1777899893::0::1::::<><><>0<>0<><>::res://scripts/ui/map_view.gd
 pnj_card.tscn::PackedScene/PackedScene::-1::1777899893::0::1::::<><><>0<>0<><>::res://scripts/ui/pnj_card.gd
 pnj_manager.tscn::PackedScene/PackedScene::-1::1777899893::0::1::::<><><>0<>0<><>::res://scripts/ui/pnj_manager.gd
@@ -138,8 +137,8 @@ resolution_action.tscn::PackedScene/PackedScene::-1::1777899893::0::1::::<><><>0
 slot_select.tscn::PackedScene/PackedScene::-1::1777899893::0::1::::<><><>0<>0<><>::res://scripts/ui/slot_select.gd
 ::res://scenes/character_creation/::1777968573
 character_creation_screen.tscn::PackedScene/PackedScene::-1::1777969000::0::1::::<><><>0<>0<><>::res://scripts/ui/character_creation/character_creation_screen.gd
-::res://scenes/character_creation/slides/::1777968612
-slide_01_basic_info.tscn::PackedScene::-1::1777973766::0::1::::<><><>0<>0<><>::res://scripts/ui/character_creation/slides/slide_01_basic_info.gd<>res://scripts/ui/character_creation/portrait_payload.gd
+::res://scenes/character_creation/slides/::1777981178
+slide_01_basic_info.tscn::PackedScene/PackedScene::-1::1777981178::0::1::::<><><>0<>0<><>::res://scripts/ui/character_creation/slides/slide_01_basic_info.gd<>res://scripts/ui/character_creation/portrait_payload.gd
 slide_02_class_stats.tscn::PackedScene/PackedScene::-1::1777969000::0::1::::<><><>0<>0<><>::res://scripts/ui/character_creation/slides/slide_02_class_stats.gd
 slide_03_feats_abilities.tscn::PackedScene/PackedScene::-1::1777969384::0::1::::<><><>0<>0<><>::res://scripts/ui/character_creation/slides/slide_03_feats_abilities.gd
 slide_04_items_equipment.tscn::PackedScene/PackedScene::-1::1777969384::0::1::::<><><>0<>0<><>::res://scripts/ui/character_creation/slides/slide_04_items_equipment.gd
@@ -206,7 +205,7 @@ test_recruter_pnj_scenario.gd::GDScript/GDScript::3207811576566229612::177789989
 test_xp_level.gd::GDScript/GDScript::6263791979963529023::1777899893::0::1::::<>SceneTree<><>0<>0<><>::
 ::res://scripts/tools/::1777899893
 game_data_helper.gd::GDScript/GDScript::7062781659393158813::1777899893::0::1::::<>EditorScript<><>0<>1<><>::
-::res://scripts/ui/::1777968732
+::res://scripts/ui/::1777982151
 chapter_select.gd::GDScript/GDScript::5974883275991659496::1777899893::0::1::::<>Control<><>0<>0<><>::
 chapter_view.gd::GDScript/GDScript::1877027300515558240::1777899893::0::1::::<>Control<><>0<>0<><>::
 character_sheet.gd::GDScript/GDScript::8430622994024314964::1777902054::0::1::::<>Control<><>0<>0<><>::
@@ -215,7 +214,7 @@ colors.gd::GDScript/GDScript::4034486998800261979::1777899893::0::1::::UIColors<
 creation_personnage.gd::GDScript/GDScript::6084850906881856693::1777969000::0::1::::<>Control<><>0<>0<><>::
 dungeon_view.gd::GDScript/GDScript::7700975743159883213::1777899893::0::1::::<>Control<><>0<>0<><>::
 intro_vn.gd::GDScript/GDScript::8681035273592839328::1777899893::0::1::::<>Control<><>0<>0<><>::
-main_menu.gd::GDScript/GDScript::253292968945556238::1777972898::0::1::::<>Control<><>0<>0<><>::
+main_menu.gd::GDScript::253292968945556238::1777982152::0::1::::<>Control<><>0<>0<><>::
 main_menu_reworked.gd::GDScript/GDScript::897250788366598664::1777899893::0::1::::<>Control<><>0<>0<><>::
 map_view.gd::GDScript/GDScript::921814710578825389::1777899893::0::1::::<>Control<><>0<>0<><>::
 menu_actions.gd::GDScript/GDScript::7703217945384219429::1777899893::0::1::::MenuActions<>Node<><>0<>0<><>::
@@ -228,15 +227,15 @@ resolution_action.gd::GDScript/GDScript::3623150709363916288::1777899893::0::1::
 resolution_animator.gd::GDScript/GDScript::2743976923076936335::1777899893::0::1::::ResolutionAnimator<>Node<><>0<>0<><>::
 slot_select.gd::GDScript/GDScript::2938947524940917962::1777899893::0::1::::<>Control<><>0<>0<><>::
 stop_music_ui.gd::GDScript/GDScript::8082248414743582116::1777899893::0::1::::StopMusicUI<>CanvasLayer<><>0<>0<><>::
-::res://scripts/ui/character_creation/::1777972268
+::res://scripts/ui/character_creation/::1777981178
 character_creation_manager.gd::GDScript/GDScript::5312010471478264977::1777972901::0::1::::CharacterCreationManager<>Node<><>0<>0<><>::
-character_creation_screen.gd::GDScript/GDScript::5904209058891591722::1777972901::0::1::::CharacterCreationScreen<>Control<><>0<>0<><>::
+character_creation_screen.gd::GDScript/GDScript::5904209058891591722::1777981178::0::1::::CharacterCreationScreen<>Control<><>0<>0<><>::
 creation_data.gd::GDScript/GDScript::5343158373329746058::1777972901::0::1::::CharacterCreationData<>Resource<><>0<>0<><>::
 creation_flow_controller.gd::GDScript/GDScript::7751917503569253278::1777968485::0::1::::CharacterCreationFlowController<>RefCounted<><>0<>0<><>::
-portrait_payload.gd::GDScript::3529803960865639590::1777973816::0::1::::PortraitPayload<>Control<><>0<>0<><>::
-::res://scripts/ui/character_creation/slides/::1777972268
+portrait_payload.gd::GDScript/GDScript::3529803960865639590::1777973816::0::1::::PortraitPayload<>Control<><>0<>0<><>::
+::res://scripts/ui/character_creation/slides/::1777981178
 creation_slide_base.gd::GDScript/GDScript::1651168846071699915::1777968485::0::1::::CreationSlideBase<>Control<><>0<>0<><>::
-slide_01_basic_info.gd::GDScript::6562952812812663694::1777973766::0::1::::Slide01BasicInfo<>CreationSlideBase<><>0<>0<><>::
+slide_01_basic_info.gd::GDScript/GDScript::6562952812812663694::1777981178::0::1::::Slide01BasicInfo<>CreationSlideBase<><>0<>0<><>::
 slide_02_class_stats.gd::GDScript/GDScript::1079671422876400639::1777973054::0::1::::Slide02ClassStats<>CreationSlideBase<><>0<>0<><>::
 slide_03_feats_abilities.gd::GDScript/GDScript::3121204056445533625::1777973054::0::1::::Slide03FeatsAbilities<>CreationSlideBase<><>0<>0<><>::
 slide_04_items_equipment.gd::GDScript/GDScript::8620546689724905449::1777973054::0::1::::Slide04ItemsEquipment<>CreationSlideBase<><>0<>0<><>::
