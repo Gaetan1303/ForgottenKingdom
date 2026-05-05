@@ -14,9 +14,15 @@ const MENU_ITEMS = [
 		"action": "new_game",
 	},
 	{
+		"node_name": "BtnCreationPersonnage",
+		"title": "CREATION PERSONNAGE",
+		"description": "Reprendre un brouillon ou commencer une nouvelle creation",
+		"action": "character_creation",
+	},
+	{
 		"node_name": "BtnContinuer",
-		"title": "CONTINUER",
-		"description": "Reprendre votre dernière sauvegarde",
+		"title": "CHAPITRE EN COURS",
+		"description": "Reprendre une progression à partir d'un chapitre",
 		"action": "continue_game",
 	},
 	{
@@ -111,11 +117,23 @@ func _build_menu_cards() -> void:
 		child.queue_free()
 
 	var emblem: Texture2D = load(EMBLEM_PATH) as Texture2D
-	for item in MENU_ITEMS:
+	for item in _get_menu_items():
 		list.add_child(_create_menu_card(item, emblem))
 
 
 
+
+func _get_menu_items() -> Array:
+	var items: Array = []
+	for item in MENU_ITEMS:
+		items.append(item.duplicate(true))
+	var draft_path := "user://saves/creation_draft.json"
+	if FileAccess.file_exists(draft_path):
+		for item in items:
+			if str(item.get("action", "")) == "character_creation":
+				item["description"] = "Reprendre un brouillon existant ou continuer la creation"
+				break
+	return items
 
 func _create_menu_card(item: Dictionary, emblem: Texture2D) -> Button:
 	var button := Button.new()
@@ -289,6 +307,8 @@ func _on_menu_action(action: String) -> void:
 	match action:
 		"new_game":
 			GameManager.open_slot_select()
+		"character_creation":
+			GameManager.start_new_game()
 		"continue_game":
 			# directly open saved chapter to match desired behaviour
 			_open_saved_chapter()

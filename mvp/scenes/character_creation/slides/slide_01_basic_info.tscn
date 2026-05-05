@@ -1,0 +1,101 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/ui/character_creation/slides/slide_01_basic_info.gd" id="1_slide"]
+[ext_resource type="Script" path="res://scripts/ui/character_creation/portrait_payload.gd" id="2_portrait"]
+
+[node name="Slide01BasicInfo" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource("1_slide")
+
+[node name="Content" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 12.0
+offset_top = 12.0
+offset_right = -12.0
+offset_bottom = -12.0
+theme_override_constants/separation = 8
+
+[node name="StepTitle" type="Label" parent="Content"]
+layout_mode = 2
+text = "Slide 1 - Informations de base"
+theme_override_font_sizes/font_size = 18
+
+[node name="CharacterName" type="LineEdit" parent="Content"]
+layout_mode = 2
+placeholder_text = "Nom du personnage"
+
+[node name="ClanName" type="LineEdit" parent="Content"]
+layout_mode = 2
+placeholder_text = "Nom du clan"
+
+[node name="AppearanceOption" type="OptionButton" parent="Content"]
+layout_mode = 2
+
+[node name="RacialPowerOption" type="OptionButton" parent="Content"]
+layout_mode = 2
+
+[node name="PortraitUploadArea" type="Control" parent="Content"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 160)
+script = ExtResource("2_portrait")
+
+[node name="PortraitPanel" type="PanelContainer" parent="Content/PortraitUploadArea"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 140)
+
+[node name="PreviewBox" type="TextureRect" parent="Content/PortraitUploadArea/PortraitPanel"]
+layout_mode = 2
+stretch_mode = 2
+custom_minimum_size = Vector2(140, 140)
+
+[node name="DetailsVBox" type="VBoxContainer" parent="Content/PortraitUploadArea/PortraitPanel"]
+layout_mode = 2
+theme_override_constants/separation = 4
+
+[node name="PortraitLabel" type="Label" parent="Content/PortraitUploadArea/PortraitPanel/DetailsVBox"]
+layout_mode = 2
+text = "Portrait"
+
+[node name="PortraitPathLabel" type="Label" parent="Content/PortraitUploadArea/PortraitPanel/DetailsVBox"]
+layout_mode = 2
+text = "Aucun portrait selectionne"
+
+theme_override_font_size/font_size = 10
+
+[node name="Buttons" type="HBoxContainer" parent="Content/PortraitUploadArea/PortraitPanel/DetailsVBox"]
+layout_mode = 2
+alignment = 2
+
+[node name="UploadPortraitButton" type="Button" parent="Content/PortraitUploadArea/PortraitPanel/DetailsVBox/Buttons"]
+layout_mode = 2
+text = "Importer"
+
+[node name="ResetPortraitButton" type="Button" parent="Content/PortraitUploadArea/PortraitPanel/DetailsVBox/Buttons"]
+layout_mode = 2
+text = "Reinitialiser"
+
+[node name="PortraitFileDialog" type="FileDialog" parent="Content/PortraitUploadArea"]
+layout_mode = 0
+
+[node name="Nav" type="HBoxContainer" parent="Content"]
+layout_mode = 2
+alignment = 2
+
+[node name="BtnBack" type="Button" parent="Content/Nav"]
+layout_mode = 2
+text = "Retour"
+
+[node name="BtnNext" type="Button" parent="Content/Nav"]
+layout_mode = 2
+text = "Suivant"
+
+[connection signal="pressed" from="Content/PortraitUploadArea/PortraitPanel/DetailsVBox/Buttons/UploadPortraitButton" to="Content/PortraitUploadArea" method="_on_upload_portrait_pressed"]
+[connection signal="pressed" from="Content/PortraitUploadArea/PortraitPanel/DetailsVBox/Buttons/ResetPortraitButton" to="Content/PortraitUploadArea" method="_on_reset_portrait_pressed"]
+[connection signal="pressed" from="Content/Nav/BtnBack" to="." method="request_previous"]
+[connection signal="pressed" from="Content/Nav/BtnNext" to="." method="request_next"]

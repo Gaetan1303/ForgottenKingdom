@@ -9,7 +9,7 @@ const SCENES := {
 	"chapter_select":       "res://scenes/chapter_select.tscn",
 	"slot_select":          "res://scenes/slot_select.tscn",
 	"map_view":             "res://scenes/map_view.tscn",
-	"creation_personnage":  "res://scenes/creation_personnage.tscn",
+	"creation_personnage":  "res://scenes/character_creation/character_creation_screen.tscn",
 	"clan_hub":             "res://scenes/clan_hub.tscn",
 	"intro_vn":             "res://scenes/intro_vn.tscn",
 	"resolution_action":    "res://scenes/resolution_action.tscn",
