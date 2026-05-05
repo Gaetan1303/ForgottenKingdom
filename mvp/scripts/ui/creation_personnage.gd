@@ -36,6 +36,48 @@ const CHOIX_POUVOIR := [
 	{"id": "mind_crush", "nom": "Écrasement Mental"},
 	{"id": "earth_tremor", "nom": "Tremblement de Terre"},
 ]
+const RACIAL_POWER_DETAILS := {
+	"pyrokinesis": {
+		"name": "Pyrokynésie",
+		"description": "Maîtrise du feu : inflige des dégâts sur la durée et brûle les adversaires proches.",
+		"effets": "+2 dégâts de feu, +5% chance d'incendie, +1 résistance au froid",
+	},
+	"telekinesis": {
+		"name": "Télékinésie",
+		"description": "Manipule les objets et les ennemis à distance, contrôlant le champ de bataille.",
+		"effets": "+1 précision, possibilité de pousser ou bloquer une cible",
+	},
+	"shadow_step": {
+		"name": "Pas d'Ombre",
+		"description": "Bondit entre les ombres pour surprendre l'ennemi et éviter les attaques.",
+		"effets": "+1 esquive, +1 initiative, attaque surprise possible",
+	},
+	"demon_invocation": {
+		"name": "Invocation Démoniaque",
+		"description": "Fait appel à une créature infernale pour soutenir le combat le temps d'un tour.",
+		"effets": "+2 en attaque, +1 en intimidation, ennemi distrait",
+	},
+	"thunder_chain": {
+		"name": "Chaîne de Foudre",
+		"description": "Projette l'énergie électrique qui rebondit entre plusieurs ennemis.",
+		"effets": "+3 dégâts électriques en zone, chance d'étourdissement",
+	},
+	"blood_shield": {
+		"name": "Bouclier de Sang",
+		"description": "Utilise votre force vitale pour créer une barrière qui absorbe les coups.",
+		"effets": "+4 défense, soigne 2 PV à l'activation",
+	},
+	"mind_crush": {
+		"name": "Écrasement Mental",
+		"description": "Domine l'esprit de l'adversaire et le fragilise avant l'attaque.",
+		"effets": "+2 en contrôle, ralentit la cible",
+	},
+	"earth_tremor": {
+		"name": "Tremblement de Terre",
+		"description": "Fait trembler le sol autour de vous pour déséquilibrer et blesser les ennemis.",
+		"effets": "+3 dégâts physiques, chance de chute",
+	},
+}
 const CHOIX_ARCHETYPE := [
 	"Lame jurée (inspiration Guerrier)",
 	"Ensorceleur abyssal (inspiration Magicien)",
@@ -78,9 +120,9 @@ const CREATION_TEXT_MUTED := Color(0.68, 0.56, 0.44, 1.0)
 const CREATION_SLIDES := [
 	{
 		"title": "Etape 1/5",
-		"subtitle": "Classe, identite et portrait",
-		"build_title": "Identite et apparence",
-		"options": ["OptionGenre", "OptionApparence"],
+		"subtitle": "Pouvoirs raciaux, nom et apparence",
+		"build_title": "Identite, apparence et pouvoir",
+		"options": ["OptionGenre", "OptionApparence", "OptionPouvoir"],
 		"show_names": true,
 		"show_class_cards": true,
 		"show_portrait": true,
@@ -98,13 +140,13 @@ const CREATION_SLIDES := [
 	},
 	{
 		"title": "Etape 3/5",
-		"subtitle": "Stats et pouvoirs raciaux",
-		"build_title": "Stats et pouvoirs raciaux",
-		"options": ["OptionPouvoir"],
+		"subtitle": "Stats et classes de personnages",
+		"build_title": "Stats et classes de personnages",
+		"options": [],
 		"show_names": false,
-		"show_class_cards": false,
+		"show_class_cards": true,
 		"show_portrait": false,
-		"show_sheet": true,
+		"show_sheet": false,
 	},
 	{
 		"title": "Etape 4/5",
@@ -482,7 +524,7 @@ func _refresh_slide_layout() -> void:
 
 	_set_build_labels_defaults()
 	var label_pouvoir := find_child("LabelPouvoir", true, false) as Label
-	if label_pouvoir and _slide_index == 2:
+	if label_pouvoir and _slide_index == 0:
 		label_pouvoir.text = "Pouvoir racial"
 
 	var options := slide.get("options", []) as Array
@@ -503,20 +545,27 @@ func _refresh_slide_layout() -> void:
 				_ep.remove_child(_embedded_sheet)
 			_embedded_sheet.free()
 			_embedded_sheet = null
+		_cleanup_slide3_panels()
 		_build_capabilities_panel()
 		_build_slide2_right_pane()
+	elif _slide_index == 2:
+		# Slide 3 : afficher les stats à gauche et les pouvoirs raciaux à droite
+		if fiche_scroll:
+			fiche_scroll.visible = false
+		if _embedded_sheet != null and is_instance_valid(_embedded_sheet):
+			var _ep := _embedded_sheet.get_parent()
+			if _ep != null:
+				_ep.remove_child(_embedded_sheet)
+			_embedded_sheet.free()
+			_embedded_sheet = null
+		_cleanup_slide2_panels()
+		_cleanup_slide3_panels()
+		_build_slide3_panels()
+		_refresh_slide3_panels()
 	else:
-		# Nettoyer les panneaux créés pour le slide 2
-		var col_d := find_child("ColDroite", true, false) as VBoxContainer
-		if col_d:
-			var pane_a := col_d.get_node_or_null("Slide2AbilitiesPane")
-			if pane_a:
-				pane_a.queue_free()
-		var col_g := find_child("ColGauche", true, false) as VBoxContainer
-		if col_g:
-			var pane_s := col_g.get_node_or_null("Slide2SheetPane")
-			if pane_s:
-				pane_s.queue_free()
+		# Nettoyer les panneaux créés pour les slides 2 et 3
+		_cleanup_slide2_panels()
+		_cleanup_slide3_panels()
 		if _embedded_sheet != null and is_instance_valid(_embedded_sheet):
 			var _ep2 := _embedded_sheet.get_parent()
 			if _ep2 != null:
@@ -1075,6 +1124,8 @@ func _on_character_sheet_saved(stats: Dictionary, points_remaining: int, char_cl
 func _on_selection_build_change(_index: int) -> void:
 	_sync_all_option_button_texts()
 	_mettre_a_jour_resume_build()
+	if _slide_index == 2:
+		_refresh_slide3_panels()
 
 
 func _mettre_a_jour_resume_build() -> void:
@@ -1232,6 +1283,8 @@ func _choisir_classe(classe_id: String) -> void:
 			_embedded_sheet.set_selected_class(classe_id)
 		if _embedded_sheet.has_method("set_class_locked"):
 			_embedded_sheet.set_class_locked(true)
+	if _slide_index == 2:
+		_refresh_slide3_panels()
 	_valider_formulaire()
 	_mettre_a_jour_resume_build()
 
@@ -1256,7 +1309,9 @@ func _on_texte_change(_text: String) -> void:
 func _valider_formulaire() -> void:
 	var nom_perso: String = ($PanneauCentre/LigneNoms/ColNomPerso/NomPersonnage as LineEdit).text.strip_edges()
 	var nom_clan: String  = ($PanneauCentre/LigneNoms/ColNomClan/NomClan as LineEdit).text.strip_edges()
-	var ok: bool = nom_perso.length() >= 2 and nom_clan.length() >= 2 and _classe_choisie != ""
+	var ok: bool = nom_perso.length() >= 2 and nom_clan.length() >= 2
+	if _slide_index >= 2:
+		ok = ok and _classe_choisie != ""
 	$PanneauCentre/LigneBoutons/BtnCommencer.disabled = not ok
 	var btn_bottom := get_node_or_null("ActionBar/ActionButtons/BtnCommencerBottom") as Button
 	if btn_bottom:
@@ -1444,7 +1499,7 @@ func _verifier_saisies(nom_perso: String, nom_clan: String) -> String:
 		return "Le nom du personnage doit contenir au moins 2 caractères."
 	if nom_clan.length() < 2:
 		return "Le nom du clan doit contenir au moins 2 caractères."
-	if _classe_choisie == "":
+	if _slide_index >= 2 and _classe_choisie == "":
 		return "Veuillez choisir une classe avant de continuer."
 	return ""
 
@@ -1587,6 +1642,206 @@ func _update_slide2_list_descriptions() -> void:
 			feat_desc.text = str(fd.get("description", "Aucun don sélectionné."))
 		else:
 			feat_desc.text = "Aucun don sélectionné"
+
+
+func _build_slide3_panels() -> void:
+	var col_g := find_child("ColGauche", true, false) as VBoxContainer
+	var col_d := find_child("ColDroite", true, false) as VBoxContainer
+	if col_g == null or col_d == null:
+		return
+
+	_cleanup_slide3_panels()
+
+	var stats_panel := PanelContainer.new()
+	stats_panel.name = "Slide3StatsPane"
+	stats_panel.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	stats_panel.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	col_d.add_child(stats_panel)
+
+	var stats_box := VBoxContainer.new()
+	stats_box.name = "Slide3StatsBox"
+	stats_box.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	stats_box.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	stats_box.add_theme_constant_override("separation", 6)
+	stats_panel.add_child(stats_box)
+
+	var stats_title := Label.new()
+	stats_title.text = "Stats à distribuer"
+	stats_title.add_theme_font_size_override("font_size", 16)
+	stats_title.add_theme_color_override("font_color", CREATION_GOLD)
+	stats_box.add_child(stats_title)
+
+	var stats_hint := Label.new()
+	stats_hint.name = "Slide3StatsHint"
+	stats_hint.text = "La classe choisie définit les stats de départ et le nombre de points à répartir."
+	stats_hint.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	stats_hint.add_theme_color_override("font_color", CREATION_TEXT_MUTED)
+	stats_box.add_child(stats_hint)
+
+	var stats_grid := GridContainer.new()
+	stats_grid.columns = 2
+	stats_grid.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	stats_box.add_child(stats_grid)
+
+	for stat_key in ["force", "magie", "espionnage", "artisanat", "diplomatie", "commandement"]:
+		var stat_label := Label.new()
+		stat_label.text = str(stat_key).capitalize() + ":"
+		stat_label.add_theme_color_override("font_color", CREATION_TEXT_MUTED)
+		stats_grid.add_child(stat_label)
+
+		var stat_value := Label.new()
+		stat_value.name = "Slide3Stat_%s" % stat_key
+		stat_value.add_theme_color_override("font_color", CREATION_TEXT_MAIN)
+		stats_grid.add_child(stat_value)
+
+	var vitals_title := Label.new()
+	vitals_title.text = "Vitamines & ressources"
+	vitals_title.add_theme_font_size_override("font_size", 14)
+	vitals_title.add_theme_color_override("font_color", CREATION_GOLD_DIM)
+	stats_box.add_child(vitals_title)
+
+	var vitals_label := Label.new()
+	vitals_label.name = "Slide3VitalsLabel"
+	vitals_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	vitals_label.add_theme_color_override("font_color", CREATION_TEXT_MAIN)
+	stats_box.add_child(vitals_label)
+
+	var distribution_label := Label.new()
+	distribution_label.name = "Slide3DistributionLabel"
+	distribution_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	distribution_label.add_theme_color_override("font_color", CREATION_TEXT_MUTED)
+	stats_box.add_child(distribution_label)
+
+	var class_panel := PanelContainer.new()
+	class_panel.name = "Slide3ClassPane"
+	class_panel.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	class_panel.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	col_g.add_child(class_panel)
+
+	var class_box := VBoxContainer.new()
+	class_box.name = "Slide3ClassBox"
+	class_box.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	class_box.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	class_box.add_theme_constant_override("separation", 6)
+	class_panel.add_child(class_box)
+
+	var class_title := Label.new()
+	class_title.text = "Classe choisie"
+	class_title.add_theme_font_size_override("font_size", 16)
+	class_title.add_theme_color_override("font_color", CREATION_GOLD)
+	class_box.add_child(class_title)
+
+	var class_name_label := Label.new()
+	class_name_label.name = "Slide3ClassName"
+	class_name_label.add_theme_color_override("font_color", CREATION_TEXT_MAIN)
+	class_name_label.add_theme_font_size_override("font_size", 14)
+	class_box.add_child(class_name_label)
+
+	var class_desc := RichTextLabel.new()
+	class_desc.name = "Slide3ClassDesc"
+	class_desc.bbcode_enabled = false
+	class_desc.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	class_desc.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	class_desc.custom_minimum_size = Vector2(0, 110)
+	class_desc.add_theme_color_override("font_color", CREATION_TEXT_MAIN)
+	class_box.add_child(class_desc)
+
+	var class_stats := Label.new()
+	class_stats.name = "Slide3ClassStats"
+	class_stats.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	class_stats.add_theme_color_override("font_color", CREATION_TEXT_MUTED)
+	class_box.add_child(class_stats)
+
+
+func _refresh_slide3_panels() -> void:
+	var stats_panel := find_child("Slide3StatsPane", true, false) as PanelContainer
+	var class_box := find_child("Slide3ClassBox", true, false) as VBoxContainer
+	if stats_panel == null or class_box == null:
+		return
+
+	var fiche := _construire_fiche_complete()
+	var pv_max := int(fiche.get("pv_max", 0))
+	var defense := int(fiche.get("defense", 0))
+	var initiative := int(fiche.get("initiative", 0))
+	var mana := int(fiche.get("mana", 0))
+	var ame := int(fiche.get("ame_pct", 0))
+	var points_restants := int(_fiche_points_restants)
+
+	for stat_key in ["force", "magie", "espionnage", "artisanat", "diplomatie", "commandement"]:
+		var stat_value := stats_panel.find_child("Slide3Stat_%s" % stat_key, true, false) as Label
+		if stat_value:
+			stat_value.text = str(int(_fiche_stats.get(stat_key, StatDefs.CHARACTER_MIN_STAT)))
+
+	var vitals_label := stats_panel.find_child("Slide3VitalsLabel", true, false) as Label
+	if vitals_label:
+		vitals_label.text = "PV Max: %d | Défense: %d | Initiative: %d\nMana: %d | Âme: %d%% | Points restants: %d" % [pv_max, defense, initiative, mana, ame, points_restants]
+
+	var class_name_label := class_box.get_node_or_null("Slide3ClassName") as Label
+	var class_desc := class_box.get_node_or_null("Slide3ClassDesc") as RichTextLabel
+	var class_stats := class_box.get_node_or_null("Slide3ClassStats") as Label
+	var class_data := _get_class_data(_classe_choisie)
+	var class_name_text := "Aucune classe choisie"
+	var class_desc_text := "Sélectionnez une classe pour voir ses caractéristiques."
+	var class_stats_text := ""
+	var distribution_text := ""
+	if not _classe_choisie.is_empty():
+		class_name_text = str(class_data.get("nom", _classe_choisie))
+		class_desc_text = str(class_data.get("description", "Pas de description disponible."))
+		var primary := class_data.get("primary", []) as Array
+		class_stats_text = "Principales compétences : %s" % String(", ").join(primary)
+		distribution_text = "Points restants : %d — ces stats sont recalculées à chaque changement de classe." % int(_fiche_points_restants)
+	if class_name_label != null:
+		class_name_label.text = class_name_text
+	if class_desc != null:
+		class_desc.text = class_desc_text
+	if class_stats != null:
+		class_stats.text = class_stats_text
+	var distribution_label := stats_panel.find_child("Slide3DistributionLabel", true, false) as Label
+	if distribution_label != null:
+		distribution_label.text = distribution_text
+
+
+func _racial_power_details(power_id: String) -> Dictionary:
+	var idn := str(power_id)
+	if RACIAL_POWER_DETAILS.has(idn):
+		return RACIAL_POWER_DETAILS[idn] as Dictionary
+	for entry in CHOIX_POUVOIR:
+		if str(entry.get("id", "")) == idn:
+			return {
+				"name": str(entry.get("nom", "")),
+				"description": "Ce pouvoir racial confère des capacités spéciales.",
+				"effets": "Aucun effet détaillé disponible.",
+			}
+	return {
+		"name": "Pouvoir inconnu",
+		"description": "Aucun pouvoir sélectionné.",
+		"effets": "",
+	}
+
+
+func _cleanup_slide2_panels() -> void:
+	var col_d := find_child("ColDroite", true, false) as VBoxContainer
+	if col_d:
+		var pane_a := col_d.get_node_or_null("Slide2AbilitiesPane")
+		if pane_a:
+			pane_a.queue_free()
+	var col_g := find_child("ColGauche", true, false) as VBoxContainer
+	if col_g:
+		var pane_s := col_g.get_node_or_null("Slide2SheetPane")
+		if pane_s:
+			pane_s.queue_free()
+
+func _cleanup_slide3_panels() -> void:
+	var col_d := find_child("ColDroite", true, false) as VBoxContainer
+	if col_d:
+		var pane_s := col_d.get_node_or_null("Slide3StatsPane")
+		if pane_s:
+			pane_s.queue_free()
+	var col_g := find_child("ColGauche", true, false) as VBoxContainer
+	if col_g:
+		var pane_c := col_g.get_node_or_null("Slide3ClassPane")
+		if pane_c:
+			pane_c.queue_free()
 
 
 ## ── Slide 2 : ColGauche (droite visuel) = fiche slide1 + descriptions
@@ -1831,7 +2086,6 @@ func _update_compact_sheet_summary() -> void:
 		portrait_lbl.texture = _texture_portrait_depuis_payload(_portrait_data)
 		if portrait_lbl.has_method("set_tooltip"):
 			portrait_lbl.set_tooltip(str(_portrait_data.get("file_name", "")))
-
 
 
 func _on_retour() -> void:
