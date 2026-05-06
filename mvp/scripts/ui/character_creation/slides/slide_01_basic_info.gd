@@ -9,6 +9,10 @@ const APPEARANCE_CHOICES := [
 	{"id": "mercenaire_masque", "label": "Mercenaire masque"},
 ]
 
+const CARD_COLUMNS := 2
+
+var _selected_racial_power_id: String = ""
+
 
 func enter_slide(data: Resource) -> void:
 	var appearance := find_child("AppearanceOption", true, false) as OptionButton
@@ -20,42 +24,32 @@ func enter_slide(data: Resource) -> void:
 			appearance.add_item(label)
 			appearance.set_item_metadata(idx, value)
 
-	var powers := find_child("RacialPowerOption", true, false) as OptionButton
-	if powers and powers.item_count == 0:
-		var abilities: Dictionary = GameDataLoader.get_abilities()
-		var keys: Array = abilities.keys()
-		keys.sort()
-		for aid in keys:
-			var ability := abilities[aid] as Dictionary
-			var idx := powers.item_count
-			var power_name: String = str(ability["name"]) if ability.has("name") else str(aid)
-			powers.add_item(power_name)
-			powers.set_item_metadata(idx, str(aid))
+	_populate_racial_power_grid()
+	_select_racial_power("")
 
 	if data == null:
 		return
-	var name_line := find_child("CharacterName", true, false) as LineEdit
+	var name_line := find_child("CharacterName", true, false)
 	if name_line:
 		var name_value: String = ""
 		if data.has_method("get"):
 			name_value = str(data.call("get", "character_name"))
-		name_line.text = name_value
-	var clan_line := find_child("ClanName", true, false) as LineEdit
+		_set_text_value(name_line, name_value)
+	var clan_line := find_child("ClanName", true, false)
 	if clan_line:
 		var clan_value: String = ""
 		if data.has_method("get"):
 			clan_value = str(data.call("get", "clan_name"))
-		clan_line.text = clan_value
+		_set_text_value(clan_line, clan_value)
 	if appearance:
 		var appearance_value: String = ""
 		if data.has_method("get"):
 			appearance_value = str(data.call("get", "appearance_id"))
 		_select_by_metadata(appearance, appearance_value)
-	if powers:
-		var racial_value: String = ""
-		if data.has_method("get"):
-			racial_value = str(data.call("get", "racial_power_id"))
-		_select_by_metadata(powers, racial_value)
+	var racial_value: String = ""
+	if data.has_method("get"):
+		racial_value = str(data.call("get", "racial_power_id"))
+	_select_racial_power(racial_value)
 	var portrait_node := find_child("PortraitUploadArea", true, false)
 	if portrait_node and portrait_node.has_method("load_from_dict"):
 		var portrait_payload: Dictionary = {}
@@ -71,16 +65,25 @@ func collect_payload() -> Dictionary:
 		"character_name": _text_from_node("CharacterName"),
 		"clan_name": _text_from_node("ClanName"),
 		"appearance_id": _option_id_from_node("AppearanceOption"),
-		"racial_power_id": _option_id_from_node("RacialPowerOption"),
+		"racial_power_id": _selected_racial_power_id,
 		"portrait_payload": _portrait_payload(),
 	}
 
 
 func _text_from_node(node_name: String) -> String:
-	var line := find_child(node_name, true, false) as LineEdit
-	if line == null:
-		return ""
-	return line.text.strip_edges()
+	var node := find_child(node_name, true, false)
+	if node is LineEdit:
+		return (node as LineEdit).text.strip_edges()
+	if node is TextEdit:
+		return (node as TextEdit).text.strip_edges()
+	return ""
+
+
+func _set_text_value(node: Node, value: String) -> void:
+	if node is LineEdit:
+		(node as LineEdit).text = value
+	elif node is TextEdit:
+		(node as TextEdit).text = value
 
 
 func _option_id_from_node(node_name: String) -> String:
@@ -99,6 +102,105 @@ func _portrait_payload() -> Dictionary:
 	if portrait_node and portrait_node.has_method("to_dict"):
 		return portrait_node.to_dict()
 	return {}
+
+
+func _populate_racial_power_grid() -> void:
+	var grid := find_child("RacialPowerGrid", true, false) as GridContainer
+	if grid == null:
+		return
+	grid.columns = CARD_COLUMNS
+	if grid.get_child_count() > 0:
+		return
+	var traits_data := GameDataLoader.get_character_traits()
+	for category in ["dons", "pouvoirs", "competences"]:
+		var group = traits_data.get(category, {}) as Dictionary
+		var keys = group.keys()
+		keys.sort()
+		for trait_id in keys:
+			var trait_data = group[trait_id]
+			grid.add_child(_build_trait_card(str(trait_id), trait_data as Dictionary, category))
+
+
+func _build_trait_card(trait_id, data, category):
+	var card := PanelContainer.new()
+	card.name = "%s_%s" % [category.capitalize(), trait_id]
+	card.custom_minimum_size = Vector2(0, 132)
+	card.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	card.size_flags_vertical = Control.SIZE_SHRINK_BEGIN
+	card.set_meta("trait_id", trait_id)
+	card.set_meta("trait_category", category)
+	card.add_theme_stylebox_override("panel", _make_card_style(false))
+
+	var is_power: bool = category == "pouvoirs"
+	if is_power:
+		card.mouse_filter = Control.MOUSE_FILTER_STOP
+		card.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
+		card.gui_input.connect(func(event: InputEvent) -> void:
+			if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
+				_select_racial_power(trait_id)
+		)
+
+	var margin := MarginContainer.new()
+	margin.add_theme_constant_override("margin_left", 12)
+	margin.add_theme_constant_override("margin_top", 12)
+	margin.add_theme_constant_override("margin_right", 12)
+	margin.add_theme_constant_override("margin_bottom", 12)
+	card.add_child(margin)
+
+	var content := VBoxContainer.new()
+	content.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	content.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	content.add_theme_constant_override("separation", 8)
+	margin.add_child(content)
+
+	var title := Label.new()
+	title.text = "%s - %s" % [category.capitalize(), str(data.get("label", trait_id))]
+	title.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	title.add_theme_font_size_override("font_size", 16)
+	content.add_child(title)
+
+	var description := Label.new()
+	description.text = str(data.get("description", ""))
+	description.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	description.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	content.add_child(description)
+
+	if not is_power:
+		var hint := Label.new()
+		hint.text = "(non sélectionnable)"
+		hint.add_theme_font_size_override("font_size", 12)
+		hint.add_theme_color_override("font_color", Color(0.7, 0.7, 0.7))
+		content.add_child(hint)
+
+	return card
+
+func _make_card_style(selected: bool) -> StyleBoxFlat:
+	var style := StyleBoxFlat.new()
+	style.bg_color = Color("2d1d1a") if selected else Color("181312")
+	style.border_color = Color("e0ac6f") if selected else Color("5d4943")
+	style.border_width_left = 2
+	style.border_width_top = 2
+	style.border_width_right = 2
+	style.border_width_bottom = 2
+	style.corner_radius_top_left = 10
+	style.corner_radius_top_right = 10
+	style.corner_radius_bottom_right = 10
+	style.corner_radius_bottom_left = 10
+	style.shadow_color = Color(0, 0, 0, 0.2)
+	style.shadow_size = 4
+	return style
+
+
+func _select_racial_power(power_id: String) -> void:
+	_selected_racial_power_id = power_id
+	var grid := find_child("RacialPowerGrid", true, false) as GridContainer
+	if grid == null:
+		return
+	for child in grid.get_children():
+		if child is PanelContainer:
+			var card := child as PanelContainer
+			var card_power_id := str(card.get_meta("power_id", ""))
+			card.add_theme_stylebox_override("panel", _make_card_style(card_power_id == power_id))
 
 
 func _select_by_metadata(option: OptionButton, wanted_id: String) -> void:
