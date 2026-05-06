@@ -17,6 +17,9 @@ func _ready() -> void:
     btn.offset_right = 12 + 48
     btn.offset_bottom = -12
     btn.custom_minimum_size = Vector2(48, 32)
+    btn.flat = true
+    btn.focus_mode = Control.FOCUS_NONE
+    btn.add_theme_color_override("font_color", Color8(136, 46, 46))
 
     var tex := ResourceLoader.load("res://assets/ui/stop_icon.svg")
     if tex and tex is Texture2D:

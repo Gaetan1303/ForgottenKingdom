@@ -1,0 +1,58 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/ui/character_creation/slides/slide_04_items_equipment.gd" id="1_slide"]
+
+[node name="Slide04ItemsEquipment" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource("1_slide")
+
+[node name="Content" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 12.0
+offset_top = 12.0
+offset_right = -12.0
+offset_bottom = -12.0
+theme_override_constants/separation = 8
+
+[node name="StepTitle" type="Label" parent="Content"]
+layout_mode = 2
+text = "Slide 4 - Items et equipement"
+theme_override_font_sizes/font_size = 18
+
+[node name="InventoryOption" type="OptionButton" parent="Content"]
+layout_mode = 2
+
+[node name="WeaponSlotOption" type="OptionButton" parent="Content"]
+layout_mode = 2
+
+[node name="ArmorSlotOption" type="OptionButton" parent="Content"]
+layout_mode = 2
+
+[node name="CompatibilityHint" type="Label" parent="Content"]
+layout_mode = 2
+text = "Selectionnez des objets compatibles entre eux."
+theme_override_font_sizes/font_size = 10
+
+[node name="Nav" type="HBoxContainer" parent="Content"]
+layout_mode = 2
+alignment = 2
+
+[node name="BtnPrev" type="Button" parent="Content/Nav"]
+layout_mode = 2
+text = "Precedent"
+
+[node name="BtnNext" type="Button" parent="Content/Nav"]
+layout_mode = 2
+text = "Suivant"
+
+[connection signal="pressed" from="Content/Nav/BtnPrev" to="." method="request_previous"]
+[connection signal="pressed" from="Content/Nav/BtnNext" to="." method="request_next"]
+[connection signal="item_selected" from="Content/InventoryOption" to="." method="_on_equipment_changed"]
+[connection signal="item_selected" from="Content/WeaponSlotOption" to="." method="_on_equipment_changed"]
+[connection signal="item_selected" from="Content/ArmorSlotOption" to="." method="_on_equipment_changed"]

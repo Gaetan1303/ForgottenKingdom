@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://6qbtn2ld47jc"]
+[gd_scene load_steps=3 format=3 uid="uid://6qbtn2ld47jc"]
 
 [ext_resource type="Script" uid="uid://duxx0d0ccqb3" path="res://scripts/ui/main_menu.gd" id="1_main_menu"]
+[ext_resource type="Texture2D" uid="uid://da0k2e7gxxvk8" path="res://assets/icon/jeu.png" id="2_icon"]
 
 [node name="MainMenu" type="Control"]
 layout_mode = 3
@@ -11,90 +12,258 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_main_menu")
 
-[node name="Background" type="TextureRect" parent="."]
+[node name="Background" type="ColorRect" parent="."]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-expand_mode = 1
-stretch_mode = 4
+color = Color(0.05, 0.02, 0.12, 1)
 
-[node name="Content" type="MarginContainer" parent="."]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_top = 6.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="ContentCenter" type="CenterContainer" parent="Content"]
+[node name="HeaderContainer" type="VBoxContainer" parent="."]
 layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 4
-
-[node name="ContentVBox" type="VBoxContainer" parent="Content/ContentCenter"]
-layout_mode = 2
-size_flags_vertical = 4
-theme_override_constants/separation = 16
-alignment = 1
-
-[node name="TopSpacer" type="Control" parent="Content/ContentCenter/ContentVBox"]
-custom_minimum_size = Vector2(1, 0)
-layout_mode = 2
-
-[node name="Header" type="VBoxContainer" parent="Content/ContentCenter/ContentVBox"]
-layout_mode = 2
+offset_left = 6.0
+offset_top = 3.0
+offset_right = 1277.0
+offset_bottom = 114.0
 size_flags_horizontal = 3
 theme_override_constants/separation = 8
 alignment = 1
 
-[node name="Title" type="Label" parent="Content/ContentCenter/ContentVBox/Header"]
-custom_minimum_size = Vector2(840, 120)
+[node name="Title" type="Label" parent="HeaderContainer"]
+custom_minimum_size = Vector2(0, 100)
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_colors/font_color = Color(1, 0.980392, 0.988235, 1)
+theme_override_colors/font_color = Color(0.95, 0.88, 0.98, 1)
 theme_override_font_sizes/font_size = 48
-text = "CHRONIQUES DES 9 NOBLES DU DEMON REALM"
+text = "Chroniques des 9 Nobles Demon Realm"
 horizontal_alignment = 1
 
-[node name="Subtitle" type="Label" parent="Content/ContentCenter/ContentVBox/Header"]
+[node name="ContentVBox" type="VBoxContainer" parent="."]
+layout_mode = 2
+offset_left = 2.0
+offset_top = 95.0
+offset_right = 1951.0
+offset_bottom = 760.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/separation = 20
+alignment = 1
+
+[node name="BodyCenterContainer" type="CenterContainer" parent="ContentVBox"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_colors/font_color = Color(0.87, 0.78, 1, 1)
-theme_override_font_sizes/font_size = 0
-horizontal_alignment = 1
+size_flags_vertical = 4
 
-[node name="BodySpacer" type="Control" parent="Content/ContentCenter/ContentVBox"]
-custom_minimum_size = Vector2(1, 16)
+[node name="BodyListHolder" type="VBoxContainer" parent="ContentVBox/BodyCenterContainer"]
+custom_minimum_size = Vector2(960, 0)
 layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 0
+theme_override_constants/separation = 16
 
-[node name="MenuListHolder" type="MarginContainer" parent="Content/ContentCenter/ContentVBox"]
+[node name="BtnNouvellePartie" type="Button" parent="ContentVBox/BodyCenterContainer/BodyListHolder"]
+custom_minimum_size = Vector2(960, 110)
 layout_mode = 2
-theme_override_constants/margin_left = 440
+size_flags_horizontal = 3
+flat = true
 
-[node name="MenuList" type="VBoxContainer" parent="Content/ContentCenter/ContentVBox/MenuListHolder"]
+[node name="BtnNouvellePartieContent" type="HBoxContainer" parent="ContentVBox/BodyCenterContainer/BodyListHolder/BtnNouvellePartie"]
 layout_mode = 2
-theme_override_constants/separation = 12
+size_flags_horizontal = 3
+theme_override_constants/separation = 16
 
-[node name="Footer" type="Control" parent="."]
-layout_mode = 1
-anchors_preset = 2
+[node name="Icon" type="TextureRect" parent="ContentVBox/BodyCenterContainer/BodyListHolder/BtnNouvellePartie/BtnNouvellePartieContent"]
+custom_minimum_size = Vector2(48, 48)
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+texture = ExtResource("2_icon")
+expand_mode = 1
+stretch_mode = 4
+
+[node name="Texts" type="VBoxContainer" parent="ContentVBox/BodyCenterContainer/BodyListHolder/BtnNouvellePartie/BtnNouvellePartieContent"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 4
+
+[node name="LabelName" type="Label" parent="ContentVBox/BodyCenterContainer/BodyListHolder/BtnNouvellePartie/BtnNouvellePartieContent/Texts"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 20
+text = "Nouvelle partie"
+
+[node name="LabelDescription" type="Label" parent="ContentVBox/BodyCenterContainer/BodyListHolder/BtnNouvellePartie/BtnNouvellePartieContent/Texts"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 12
+text = "Lancez-vous dans une partie scénarisée"
+
+[node name="BtnContinuer" type="Button" parent="ContentVBox/BodyCenterContainer/BodyListHolder"]
+custom_minimum_size = Vector2(960, 110)
+layout_mode = 2
+size_flags_horizontal = 3
+flat = true
+
+[node name="BtnContinuerContent" type="HBoxContainer" parent="ContentVBox/BodyCenterContainer/BodyListHolder/BtnContinuer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 16
+
+[node name="Icon" type="TextureRect" parent="ContentVBox/BodyCenterContainer/BodyListHolder/BtnContinuer/BtnContinuerContent"]
+custom_minimum_size = Vector2(48, 48)
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+texture = ExtResource("2_icon")
+expand_mode = 1
+stretch_mode = 4
+
+[node name="Texts" type="VBoxContainer" parent="ContentVBox/BodyCenterContainer/BodyListHolder/BtnContinuer/BtnContinuerContent"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 4
+
+[node name="LabelName" type="Label" parent="ContentVBox/BodyCenterContainer/BodyListHolder/BtnContinuer/BtnContinuerContent/Texts"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 20
+text = "Continuer"
+
+[node name="LabelDescription" type="Label" parent="ContentVBox/BodyCenterContainer/BodyListHolder/BtnContinuer/BtnContinuerContent/Texts"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 12
+text = "Reprendre votre dernière sauvegarde"
+
+[node name="BtnParametres" type="Button" parent="ContentVBox/BodyCenterContainer/BodyListHolder"]
+custom_minimum_size = Vector2(960, 110)
+layout_mode = 2
+size_flags_horizontal = 3
+flat = true
+
+[node name="BtnParametresContent" type="HBoxContainer" parent="ContentVBox/BodyCenterContainer/BodyListHolder/BtnParametres"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 16
+
+[node name="Icon" type="TextureRect" parent="ContentVBox/BodyCenterContainer/BodyListHolder/BtnParametres/BtnParametresContent"]
+custom_minimum_size = Vector2(48, 48)
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+texture = ExtResource("2_icon")
+expand_mode = 1
+stretch_mode = 4
+
+[node name="Texts" type="VBoxContainer" parent="ContentVBox/BodyCenterContainer/BodyListHolder/BtnParametres/BtnParametresContent"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 4
+
+[node name="LabelName" type="Label" parent="ContentVBox/BodyCenterContainer/BodyListHolder/BtnParametres/BtnParametresContent/Texts"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 20
+text = "Paramètres"
+
+[node name="LabelDescription" type="Label" parent="ContentVBox/BodyCenterContainer/BodyListHolder/BtnParametres/BtnParametresContent/Texts"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 12
+text = "Options, audio, interface"
+
+[node name="BtnEncyclopedie" type="Button" parent="ContentVBox/BodyCenterContainer/BodyListHolder"]
+custom_minimum_size = Vector2(960, 110)
+layout_mode = 2
+size_flags_horizontal = 3
+flat = true
+
+[node name="BtnEncyclopedieContent" type="HBoxContainer" parent="ContentVBox/BodyCenterContainer/BodyListHolder/BtnEncyclopedie"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 16
+
+[node name="Icon" type="TextureRect" parent="ContentVBox/BodyCenterContainer/BodyListHolder/BtnEncyclopedie/BtnEncyclopedieContent"]
+custom_minimum_size = Vector2(48, 48)
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+texture = ExtResource("2_icon")
+expand_mode = 1
+stretch_mode = 4
+
+[node name="Texts" type="VBoxContainer" parent="ContentVBox/BodyCenterContainer/BodyListHolder/BtnEncyclopedie/BtnEncyclopedieContent"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 4
+
+[node name="LabelName" type="Label" parent="ContentVBox/BodyCenterContainer/BodyListHolder/BtnEncyclopedie/BtnEncyclopedieContent/Texts"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 20
+text = "Encyclopédie"
+
+[node name="LabelDescription" type="Label" parent="ContentVBox/BodyCenterContainer/BodyListHolder/BtnEncyclopedie/BtnEncyclopedieContent/Texts"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 12
+text = "Le lore des 9 maisons démoniaques"
+
+[node name="BtnQuitter" type="Button" parent="ContentVBox/BodyCenterContainer/BodyListHolder"]
+custom_minimum_size = Vector2(960, 110)
+layout_mode = 2
+size_flags_horizontal = 3
+flat = true
+
+[node name="BtnQuitterContent" type="HBoxContainer" parent="ContentVBox/BodyCenterContainer/BodyListHolder/BtnQuitter"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 16
+
+[node name="Icon" type="TextureRect" parent="ContentVBox/BodyCenterContainer/BodyListHolder/BtnQuitter/BtnQuitterContent"]
+custom_minimum_size = Vector2(48, 48)
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+texture = ExtResource("2_icon")
+expand_mode = 1
+stretch_mode = 4
+
+[node name="Texts" type="VBoxContainer" parent="ContentVBox/BodyCenterContainer/BodyListHolder/BtnQuitter/BtnQuitterContent"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 4
+
+[node name="LabelName" type="Label" parent="ContentVBox/BodyCenterContainer/BodyListHolder/BtnQuitter/BtnQuitterContent/Texts"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 20
+text = "Quitter"
+
+[node name="LabelDescription" type="Label" parent="ContentVBox/BodyCenterContainer/BodyListHolder/BtnQuitter/BtnQuitterContent/Texts"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 12
+text = "Quitter le jeu"
+
+[node name="FooterContainer" type="HBoxContainer" parent="."]
+layout_mode = 2
 anchor_top = 1.0
 anchor_bottom = 1.0
-offset_left = 18.0
-offset_top = -42.0
-offset_right = 18.0
-offset_bottom = -18.0
-grow_horizontal = 0
-grow_vertical = 0
+offset_left = 20.0
+offset_top = -80.0
+offset_right = 68.0
+offset_bottom = -20.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+alignment = 2
 
-[node name="SoundButton" type="Button" parent="Footer"]
-layout_mode = 0
-offset_right = 36.0
-offset_bottom = 36.0
-theme_override_colors/font_color = Color(0.94902, 0.352941, 0.329412, 1)
-theme_override_font_sizes/font_size = 24
+[node name="SoundButton" type="Button" parent="FooterContainer"]
+custom_minimum_size = Vector2(56, 56)
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_colors/font_color = Color(0.92, 0.1288, 0.1288, 1)
 flat = true

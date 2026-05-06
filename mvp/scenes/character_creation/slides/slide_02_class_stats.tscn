@@ -1,0 +1,104 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/ui/character_creation/slides/slide_02_class_stats.gd" id="1_slide"]
+
+[node name="Slide02ClassStats" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource("1_slide")
+
+[node name="Content" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 12.0
+offset_top = 12.0
+offset_right = -12.0
+offset_bottom = -12.0
+theme_override_constants/separation = 8
+
+[node name="StepTitle" type="Label" parent="Content"]
+layout_mode = 2
+text = "Slide 2 - Classe et stats"
+theme_override_font_sizes/font_size = 18
+
+[node name="ClassOption" type="OptionButton" parent="Content"]
+layout_mode = 2
+
+[node name="StatsGrid" type="GridContainer" parent="Content"]
+layout_mode = 2
+columns = 2
+theme_override_constants/h_separation = 8
+theme_override_constants/v_separation = 6
+
+[node name="LabelForce" type="Label" parent="Content/StatsGrid"]
+layout_mode = 2
+text = "Force"
+[node name="Stat_force" type="SpinBox" parent="Content/StatsGrid"]
+layout_mode = 2
+min_value = 8.0
+max_value = 18.0
+step = 1.0
+
+[node name="LabelMagie" type="Label" parent="Content/StatsGrid"]
+layout_mode = 2
+text = "Magie"
+[node name="Stat_magie" type="SpinBox" parent="Content/StatsGrid"]
+layout_mode = 2
+min_value = 8.0
+max_value = 18.0
+step = 1.0
+
+[node name="LabelEspionnage" type="Label" parent="Content/StatsGrid"]
+layout_mode = 2
+text = "Espionnage"
+[node name="Stat_espionnage" type="SpinBox" parent="Content/StatsGrid"]
+layout_mode = 2
+min_value = 8.0
+max_value = 18.0
+step = 1.0
+
+[node name="LabelArtisanat" type="Label" parent="Content/StatsGrid"]
+layout_mode = 2
+text = "Artisanat"
+[node name="Stat_artisanat" type="SpinBox" parent="Content/StatsGrid"]
+layout_mode = 2
+min_value = 8.0
+max_value = 18.0
+step = 1.0
+
+[node name="LabelDiplomatie" type="Label" parent="Content/StatsGrid"]
+layout_mode = 2
+text = "Diplomatie"
+[node name="Stat_diplomatie" type="SpinBox" parent="Content/StatsGrid"]
+layout_mode = 2
+min_value = 8.0
+max_value = 18.0
+step = 1.0
+
+[node name="LabelCommandement" type="Label" parent="Content/StatsGrid"]
+layout_mode = 2
+text = "Commandement"
+[node name="Stat_commandement" type="SpinBox" parent="Content/StatsGrid"]
+layout_mode = 2
+min_value = 8.0
+max_value = 18.0
+step = 1.0
+
+[node name="Nav" type="HBoxContainer" parent="Content"]
+layout_mode = 2
+alignment = 2
+
+[node name="BtnPrev" type="Button" parent="Content/Nav"]
+layout_mode = 2
+text = "Precedent"
+
+[node name="BtnNext" type="Button" parent="Content/Nav"]
+layout_mode = 2
+text = "Suivant"
+
+[connection signal="pressed" from="Content/Nav/BtnPrev" to="." method="request_previous"]
+[connection signal="pressed" from="Content/Nav/BtnNext" to="." method="request_next"]
