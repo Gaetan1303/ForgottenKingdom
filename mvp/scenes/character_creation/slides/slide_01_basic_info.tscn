@@ -8,34 +8,19 @@ layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 6.0
-offset_top = -2.0
-offset_right = -532.0
-offset_bottom = -2.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_slide")
-
-[node name="RacialPowerOption" type="OptionButton" parent="."]
-layout_mode = 2
-anchor_left = 1.074
-anchor_top = 0.039
-anchor_right = 1.702
-anchor_bottom = 0.411
-offset_left = -108.908
-offset_top = 293.92
-offset_right = -542.884
-offset_bottom = 68.08
 
 [node name="Content" type="VBoxContainer" parent="."]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 4.0
-offset_top = 19.0
-offset_right = -20.0
-offset_bottom = -5.0
+offset_left = 16.0
+offset_top = 16.0
+offset_right = -16.0
+offset_bottom = -16.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/separation = 8
@@ -45,60 +30,164 @@ layout_mode = 2
 theme_override_font_sizes/font_size = 18
 text = "Slide 1 - Informations de base"
 
-[node name="CharacterName" type="LineEdit" parent="Content"]
+[node name="Body" type="HBoxContainer" parent="Content"]
 layout_mode = 2
-placeholder_text = "Nom du personnage"
+size_flags_vertical = 3
+theme_override_constants/separation = 16
 
-[node name="ClanName" type="LineEdit" parent="Content"]
+[node name="LeftColumn" type="VBoxContainer" parent="Content/Body"]
+custom_minimum_size = Vector2(340, 0)
 layout_mode = 2
-placeholder_text = "Nom du clan"
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/separation = 12
 
-[node name="AppearanceOption" type="OptionButton" parent="Content"]
+[node name="IdentityPanel" type="PanelContainer" parent="Content/Body/LeftColumn"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="IdentityPadding" type="MarginContainer" parent="Content/Body/LeftColumn/IdentityPanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="IdentityFields" type="VBoxContainer" parent="Content/Body/LeftColumn/IdentityPanel/IdentityPadding"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="CharacterNameLabel" type="Label" parent="Content/Body/LeftColumn/IdentityPanel/IdentityPadding/IdentityFields"]
+layout_mode = 2
+text = "Nom du personnage"
+
+[node name="CharacterName" type="TextEdit" parent="Content/Body/LeftColumn/IdentityPanel/IdentityPadding/IdentityFields"]
+custom_minimum_size = Vector2(0, 54)
+layout_mode = 2
+wrap_mode = 1
+
+[node name="ClanNameLabel" type="Label" parent="Content/Body/LeftColumn/IdentityPanel/IdentityPadding/IdentityFields"]
+layout_mode = 2
+text = "Nom du clan"
+
+[node name="ClanName" type="TextEdit" parent="Content/Body/LeftColumn/IdentityPanel/IdentityPadding/IdentityFields"]
+custom_minimum_size = Vector2(0, 54)
+layout_mode = 2
+wrap_mode = 1
+
+[node name="AppearanceLabel" type="Label" parent="Content/Body/LeftColumn/IdentityPanel/IdentityPadding/IdentityFields"]
+layout_mode = 2
+text = "Apparence"
+
+[node name="AppearanceOption" type="OptionButton" parent="Content/Body/LeftColumn/IdentityPanel/IdentityPadding/IdentityFields"]
 layout_mode = 2
 
-[node name="PortraitUploadArea" type="Control" parent="Content"]
+[node name="PortraitUploadArea" type="Control" parent="Content/Body/LeftColumn"]
 custom_minimum_size = Vector2(0, 160)
 layout_mode = 2
+size_flags_horizontal = 3
 script = ExtResource("2_portrait")
 
-[node name="PortraitPanel" type="PanelContainer" parent="Content/PortraitUploadArea"]
-custom_minimum_size = Vector2(0, 140)
-layout_mode = 2
+[node name="PortraitPanel" type="PanelContainer" parent="Content/Body/LeftColumn/PortraitUploadArea"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_bottom = 27.0
+grow_horizontal = 2
+grow_vertical = 2
 
-[node name="PreviewBox" type="TextureRect" parent="Content/PortraitUploadArea/PortraitPanel"]
+[node name="PortraitPadding" type="MarginContainer" parent="Content/Body/LeftColumn/PortraitUploadArea/PortraitPanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="PortraitLayout" type="HBoxContainer" parent="Content/Body/LeftColumn/PortraitUploadArea/PortraitPanel/PortraitPadding"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 12
+
+[node name="PreviewBox" type="TextureRect" parent="Content/Body/LeftColumn/PortraitUploadArea/PortraitPanel/PortraitPadding/PortraitLayout"]
 custom_minimum_size = Vector2(140, 140)
 layout_mode = 2
 stretch_mode = 2
 
-[node name="DetailsVBox" type="VBoxContainer" parent="Content/PortraitUploadArea/PortraitPanel"]
+[node name="DetailsVBox" type="VBoxContainer" parent="Content/Body/LeftColumn/PortraitUploadArea/PortraitPanel/PortraitPadding/PortraitLayout"]
 layout_mode = 2
+size_flags_horizontal = 3
 theme_override_constants/separation = 4
 
-[node name="PortraitLabel" type="Label" parent="Content/PortraitUploadArea/PortraitPanel/DetailsVBox"]
+[node name="PortraitLabel" type="Label" parent="Content/Body/LeftColumn/PortraitUploadArea/PortraitPanel/PortraitPadding/PortraitLayout/DetailsVBox"]
 layout_mode = 2
+theme_override_font_sizes/font_size = 16
 text = "Portrait"
 
-[node name="PortraitPathLabel" type="Label" parent="Content/PortraitUploadArea/PortraitPanel/DetailsVBox"]
+[node name="PortraitPathLabel" type="Label" parent="Content/Body/LeftColumn/PortraitUploadArea/PortraitPanel/PortraitPadding/PortraitLayout/DetailsVBox"]
 layout_mode = 2
 text = "Aucun portrait selectionne"
+autowrap_mode = 2
 
-[node name="Buttons" type="HBoxContainer" parent="Content/PortraitUploadArea/PortraitPanel/DetailsVBox"]
+[node name="Buttons" type="HBoxContainer" parent="Content/Body/LeftColumn/PortraitUploadArea/PortraitPanel/PortraitPadding/PortraitLayout/DetailsVBox"]
 layout_mode = 2
 alignment = 2
 
-[node name="UploadPortraitButton" type="Button" parent="Content/PortraitUploadArea/PortraitPanel/DetailsVBox/Buttons"]
+[node name="UploadPortraitButton" type="Button" parent="Content/Body/LeftColumn/PortraitUploadArea/PortraitPanel/PortraitPadding/PortraitLayout/DetailsVBox/Buttons"]
 layout_mode = 2
 text = "Importer"
 
-[node name="ResetPortraitButton" type="Button" parent="Content/PortraitUploadArea/PortraitPanel/DetailsVBox/Buttons"]
+[node name="ResetPortraitButton" type="Button" parent="Content/Body/LeftColumn/PortraitUploadArea/PortraitPanel/PortraitPadding/PortraitLayout/DetailsVBox/Buttons"]
 layout_mode = 2
 text = "Reinitialiser"
 
-[node name="PortraitFileDialog" type="FileDialog" parent="Content/PortraitUploadArea"]
+[node name="PortraitFileDialog" type="FileDialog" parent="Content/Body/LeftColumn/PortraitUploadArea"]
+
+[node name="RightColumn" type="VBoxContainer" parent="Content/Body"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/separation = 10
+
+[node name="RacialPowerTitle" type="Label" parent="Content/Body/RightColumn"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+text = "Pouvoirs raciaux"
+
+[node name="RacialPowerHint" type="Label" parent="Content/Body/RightColumn"]
+layout_mode = 2
+text = "Choisissez un pouvoir racial. Chaque box affiche le nom et son descriptif."
+autowrap_mode = 2
+
+[node name="RacialPowerPanel" type="PanelContainer" parent="Content/Body/RightColumn"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="RacialPowerPadding" type="MarginContainer" parent="Content/Body/RightColumn/RacialPowerPanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="RacialPowerScroll" type="ScrollContainer" parent="Content/Body/RightColumn/RacialPowerPanel/RacialPowerPadding"]
+custom_minimum_size = Vector2(0, 320)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+
+[node name="RacialPowerGrid" type="GridContainer" parent="Content/Body/RightColumn/RacialPowerPanel/RacialPowerPadding/RacialPowerScroll"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/h_separation = 12
+theme_override_constants/v_separation = 12
+columns = 2
 
 [node name="Nav" type="HBoxContainer" parent="Content"]
 layout_mode = 2
-size_flags_horizontal = 3
 alignment = 2
 
 [node name="BtnBack" type="Button" parent="Content/Nav"]
@@ -113,7 +202,7 @@ layout_mode = 2
 size_flags_horizontal = 2
 text = "Suivant"
 
-[connection signal="pressed" from="Content/PortraitUploadArea/PortraitPanel/DetailsVBox/Buttons/UploadPortraitButton" to="Content/PortraitUploadArea" method="_on_upload_portrait_pressed"]
-[connection signal="pressed" from="Content/PortraitUploadArea/PortraitPanel/DetailsVBox/Buttons/ResetPortraitButton" to="Content/PortraitUploadArea" method="_on_reset_portrait_pressed"]
+[connection signal="pressed" from="Content/Body/LeftColumn/PortraitUploadArea/PortraitPanel/PortraitPadding/PortraitLayout/DetailsVBox/Buttons/UploadPortraitButton" to="Content/Body/LeftColumn/PortraitUploadArea" method="_on_upload_portrait_pressed"]
+[connection signal="pressed" from="Content/Body/LeftColumn/PortraitUploadArea/PortraitPanel/PortraitPadding/PortraitLayout/DetailsVBox/Buttons/ResetPortraitButton" to="Content/Body/LeftColumn/PortraitUploadArea" method="_on_reset_portrait_pressed"]
 [connection signal="pressed" from="Content/Nav/BtnBack" to="." method="request_previous"]
 [connection signal="pressed" from="Content/Nav/BtnNext" to="." method="request_next"]
