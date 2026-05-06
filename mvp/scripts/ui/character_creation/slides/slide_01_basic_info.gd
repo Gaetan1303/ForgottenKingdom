@@ -168,7 +168,7 @@ func _build_trait_card(trait_id, data, category):
 	var title := Label.new()
 	title.text = str(data.get("label", trait_id))
 	title.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	title.add_theme_font_size_override("font_size", 16)
+	title.add_theme_font_size_override("font_size", 11)
 	title.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	title.horizontal_alignment = 0
 	title.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -178,6 +178,7 @@ func _build_trait_card(trait_id, data, category):
 	description.text = str(data.get("description", ""))
 	description.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	description.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	description.add_theme_font_size_override("font_size", 11)
 	description.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	description.horizontal_alignment = 0
 	description.custom_minimum_size = Vector2(0, 48)
