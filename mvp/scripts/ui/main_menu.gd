@@ -77,6 +77,17 @@ func _connect_menu_buttons() -> void:
 		var node_path: String = base_path + name
 		if has_node(node_path):
 			var button: Button = get_node(node_path)
+			button.flat = true
+			button.focus_mode = Control.FOCUS_NONE
+			var sb := StyleBoxFlat.new()
+			sb.bg_color = Color(0, 0, 0, 0)
+			sb.set_border_width_all(0)
+			button.add_theme_stylebox_override("normal", sb)
+			button.add_theme_stylebox_override("hover", sb)
+			button.add_theme_stylebox_override("pressed", sb)
+			button.add_theme_stylebox_override("disabled", sb)
+			button.add_theme_color_override("font_color", Color8(255, 255, 255))
+			button.add_theme_font_size_override("font_size", 20)
 			button.pressed.connect(_on_menu_action.bind(buttons[name]))
 
 
