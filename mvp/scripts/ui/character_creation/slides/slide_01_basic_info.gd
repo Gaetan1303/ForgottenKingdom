@@ -109,6 +109,8 @@ func _populate_racial_power_grid() -> void:
 	if grid == null:
 		return
 	grid.columns = CARD_COLUMNS
+	# allow the grid to expand to available width
+	grid.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	if grid.get_child_count() > 0:
 		return
 	var traits_data := GameDataLoader.get_character_traits()
@@ -120,59 +122,73 @@ func _populate_racial_power_grid() -> void:
 			var trait_data = group[trait_id]
 			grid.add_child(_build_trait_card(str(trait_id), trait_data as Dictionary, category))
 
+	# Ajuste les largeurs des cards une fois le layout calculé
+	call_deferred("_adjust_card_min_width")
+
 
 func _build_trait_card(trait_id, data, category):
-	var card := PanelContainer.new()
-	card.name = "%s_%s" % [category.capitalize(), trait_id]
-	card.custom_minimum_size = Vector2(0, 132)
-	card.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	card.size_flags_vertical = Control.SIZE_SHRINK_BEGIN
-	card.set_meta("trait_id", trait_id)
-	card.set_meta("trait_category", category)
-	card.add_theme_stylebox_override("panel", _make_card_style(false))
-
-	var is_power: bool = category == "pouvoirs"
-	if is_power:
-		card.mouse_filter = Control.MOUSE_FILTER_STOP
-		card.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
-		card.gui_input.connect(func(event: InputEvent) -> void:
-			if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
-				_select_racial_power(trait_id)
-		)
+	# Root panel so content layout is not affected by Button's internal layout
+	var panel := PanelContainer.new()
+	panel.name = "%s_%s" % [category.capitalize(), trait_id]
+	panel.custom_minimum_size = Vector2(260, 132)
+	panel.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	panel.size_flags_vertical = Control.SIZE_SHRINK_BEGIN
+	panel.set_meta("trait_id", trait_id)
+	panel.set_meta("trait_category", category)
+	panel.add_theme_stylebox_override("panel", _make_card_style(false))
 
 	var margin := MarginContainer.new()
 	margin.add_theme_constant_override("margin_left", 12)
 	margin.add_theme_constant_override("margin_top", 12)
 	margin.add_theme_constant_override("margin_right", 12)
 	margin.add_theme_constant_override("margin_bottom", 12)
-	card.add_child(margin)
+	margin.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	margin.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	panel.add_child(margin)
 
 	var content := VBoxContainer.new()
 	content.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	content.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	content.custom_minimum_size = Vector2(0, 0)
 	content.add_theme_constant_override("separation", 8)
 	margin.add_child(content)
 
 	var title := Label.new()
-	title.text = "%s - %s" % [category.capitalize(), str(data.get("label", trait_id))]
+	title.text = str(data.get("label", trait_id))
 	title.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	title.add_theme_font_size_override("font_size", 16)
+	title.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	title.horizontal_alignment = 0
 	content.add_child(title)
 
 	var description := Label.new()
 	description.text = str(data.get("description", ""))
 	description.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	description.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	description.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	description.horizontal_alignment = 0
+	description.custom_minimum_size = Vector2(0, 48)
 	content.add_child(description)
 
-	if not is_power:
-		var hint := Label.new()
-		hint.text = "(non sélectionnable)"
-		hint.add_theme_font_size_override("font_size", 12)
-		hint.add_theme_color_override("font_color", Color(0.7, 0.7, 0.7))
-		content.add_child(hint)
+	# Click overlay button (transparent) to capture presses without changing layout
+	var overlay := Button.new()
+	overlay.name = "ClickOverlay"
+	overlay.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	overlay.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	overlay.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
+	overlay.focus_mode = Control.FOCUS_NONE
+	# remove default button visuals
+	overlay.add_theme_stylebox_override("normal", StyleBoxEmpty.new())
+	overlay.add_theme_stylebox_override("pressed", StyleBoxEmpty.new())
+	overlay.add_theme_stylebox_override("hover", StyleBoxEmpty.new())
 
-	return card
+	var is_power: bool = category == "pouvoirs"
+	if is_power:
+		overlay.connect("pressed", Callable(self, "_select_racial_power").bind(trait_id))
+
+	panel.add_child(overlay)
+
+	return panel
 
 func _make_card_style(selected: bool) -> StyleBoxFlat:
 	var style := StyleBoxFlat.new()
@@ -199,8 +215,10 @@ func _select_racial_power(power_id: String) -> void:
 	for child in grid.get_children():
 		if child is PanelContainer:
 			var card := child as PanelContainer
-			var card_power_id := str(card.get_meta("power_id", ""))
-			card.add_theme_stylebox_override("panel", _make_card_style(card_power_id == power_id))
+			var card_category := str(card.get_meta("trait_category", ""))
+			var card_trait_id := str(card.get_meta("trait_id", ""))
+			var selected := (card_category == "pouvoirs" and card_trait_id == power_id)
+			card.add_theme_stylebox_override("panel", _make_card_style(selected))
 
 
 func _select_by_metadata(option: OptionButton, wanted_id: String) -> void:
@@ -210,3 +228,33 @@ func _select_by_metadata(option: OptionButton, wanted_id: String) -> void:
 		if str(option.get_item_metadata(i)) == wanted_id:
 			option.select(i)
 			return
+
+
+func _adjust_card_min_width() -> void:
+	var grid := find_child("RacialPowerGrid", true, false) as GridContainer
+	if grid == null:
+		return
+	# Si la grille n'a pas encore de taille utile, réessayer plus tard
+	if grid.size.x <= 0:
+		call_deferred("_adjust_card_min_width")
+		return
+
+	var columns: int = max(1, int(grid.columns))
+	var parent := grid.get_parent()
+	var parent_width: float = 0.0
+	if parent and parent is Control:
+		parent_width = float((parent as Control).size.x)
+	var total_width: float = parent_width if parent_width > 0.0 else float(grid.size.x)
+	var spacing: float = 12.0
+	var per: int = int((total_width - spacing * (columns - 1)) / columns) - 16
+	if per < 160:
+		per = 160
+
+	# ensure the grid requests enough width to host columns
+	if parent_width > 0.0:
+		grid.custom_minimum_size = Vector2(parent_width, grid.custom_minimum_size.y)
+
+	for child in grid.get_children():
+		if child is PanelContainer:
+			var pnl := child as PanelContainer
+			pnl.custom_minimum_size = Vector2(per, pnl.custom_minimum_size.y)
