@@ -153,18 +153,11 @@ func _build_class_card(class_id: String, class_data: Dictionary) -> Button:
 	title.text = str(class_data.get("name", class_id))
 	title.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	title.add_theme_font_size_override("font_size", 14)
+	title.add_theme_color_override("font_color", _class_attribute_color(class_data))
 	title.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	title.horizontal_alignment = 1
 	title.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	content.add_child(title)
-
-	var badge := Label.new()
-	badge.text = _class_attribute_label(class_data)
-	badge.add_theme_color_override("font_color", _class_attribute_color(class_data))
-	badge.add_theme_font_size_override("font_size", 12)
-	badge.horizontal_alignment = 1
-	badge.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	content.add_child(badge)
 
 	return card
 
