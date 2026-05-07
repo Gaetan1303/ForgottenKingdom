@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://djwtmplnjgi5s"
-path="res://.godot/imported/mage_du_pacte.webp-31865d2af68d1f88aabd316c490453fd.ctex"
+uid="uid://celsenxae8hyd"
+path="res://.godot/imported/hellcaster.png-0716b01ebf9e9326fa9c7671fc0dbd3c.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/class_icons/mage_du_pacte.webp"
-dest_files=["res://.godot/imported/mage_du_pacte.webp-31865d2af68d1f88aabd316c490453fd.ctex"]
+source_file="res://assets/class_icons/hellcaster.png"
+dest_files=["res://.godot/imported/hellcaster.png-0716b01ebf9e9326fa9c7671fc0dbd3c.ctex"]
 
 [params]
 
