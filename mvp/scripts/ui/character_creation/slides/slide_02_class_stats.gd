@@ -5,7 +5,7 @@ extends CreationSlideBase
 const StatDefs = preload("res://scripts/data/stat_defs.gd")
 const CharacterCreationRules = preload("res://scripts/services/character_creation_rules_service.gd")
 
-const CARD_COLUMNS := 2
+const CARD_COLUMNS := 3
 
 var _selected_class_id: String = ""
 
@@ -82,7 +82,7 @@ func _build_class_card(class_id: String, class_data: Dictionary) -> Button:
 	var card := Button.new()
 	card.name = "ClassCard_%s" % class_id
 	card.text = ""
-	card.custom_minimum_size = Vector2(170, 138)
+	card.custom_minimum_size = Vector2(150, 130)
 	card.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	card.size_flags_vertical = Control.SIZE_SHRINK_BEGIN
 	card.focus_mode = Control.FOCUS_NONE
@@ -117,17 +117,26 @@ func _build_class_card(class_id: String, class_data: Dictionary) -> Button:
 
 	var icon_path := str(class_data.get("icon", ""))
 	if icon_path != "":
+		if icon_path.begins_with("mvp/"):
+			icon_path = icon_path.replace("mvp/", "")
 		if not icon_path.begins_with("res://"):
 			icon_path = "res://%s" % icon_path
-		var texture := load(icon_path)
-		if texture and texture is Texture2D:
+		if not ResourceLoader.exists(icon_path):
+			var fallback_name := "%s.webp" % class_id
+			var fallback_path := "res://assets/class_icons/%s" % fallback_name
+			if ResourceLoader.exists(fallback_path):
+				icon_path = fallback_path
+		var texture: Texture2D = null
+		if ResourceLoader.exists(icon_path):
+			texture = load(icon_path) as Texture2D
+		if texture != null:
 			var icon := TextureRect.new()
 			icon.texture = texture
 			icon.expand = true
 			icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 			icon.custom_minimum_size = Vector2(0, 64)
 			icon.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-			icon.size_flags_vertical = Control.SIZE_FILL
+			icon.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 			icon.mouse_filter = Control.MOUSE_FILTER_IGNORE
 			content.add_child(icon)
 

@@ -1,117 +1,141 @@
 {
-  "fighter": {
-    "name": "Fighter",
-    "description": "Maître des armes et des armures, fiable en première ligne.",
+  "demon_blade": {
+    "name": "Demon Blade",
+    "description": "Guerrier maudit maniant une épée imprégnée d'énergie infernale.",
     "hit_die": 10,
     "primary": ["force"],
-    "starting_feats": ["toughness"],
-    "starting_abilities": ["Second souffle"],
-    "icon": "mvp/assets/class_icons/chevalier_sombre.webp"
+    "starting_feats": ["blood_edge"],
+    "starting_abilities": ["Frappe démoniaque"],
+    "icon": "mvp/assets/class_icons/demon_blade.png"
   },
-  "wizard": {
-    "name": "Wizard",
-    "description": "Erudit des arcanes, puissant mais fragile.",
+
+  "hellcaster": {
+    "name": "Hellcaster",
+    "description": "Mage du sang maîtrisant les arcanes démoniaques et les veines brûlantes.",
     "hit_die": 6,
     "primary": ["magie"],
-    "starting_feats": ["ritual_caster"],
-    "starting_abilities": ["Récupération arcanique"],
-    "icon": "mvp/assets/class_icons/mage_du_pacte.webp"
+    "starting_feats": ["abyss_focus"],
+    "starting_abilities": ["Décharge infernale"],
+    "icon": "mvp/assets/class_icons/hellcaster.png"
   },
-  "rogue": {
-    "name": "Rogue",
-    "description": "Spécialiste de l'infiltration, des pièges et des frappes précises.",
+
+  "shadowfang": {
+    "name": "Shadowfang",
+    "description": "Assassin démoniaque, rapide, silencieux, frappant depuis les ombres.",
     "hit_die": 8,
     "primary": ["espionnage"],
-    "starting_feats": ["sneak_mastery"],
-    "starting_abilities": ["Attaque sournoise"]
+    "starting_feats": ["silent_killer"],
+    "starting_abilities": ["Entaille spectrale"],
+    "icon": "mvp/assets/class_icons/shadowfang.png"
   },
-  "cleric": {
-    "name": "Cleric",
-    "description": "Canalise la foi et les pactes pour soigner et soutenir.",
+
+  "soulwarden": {
+    "name": "Soulwarden",
+    "description": "Canalise l'énergie vitale et les pactes anciens pour protéger et purifier.",
     "hit_die": 8,
     "primary": ["magie"],
-    "starting_feats": ["healer"],
-    "starting_abilities": ["Canalisation divine"]
+    "starting_feats": ["soul_anchor"],
+    "starting_abilities": ["Lumière intérieure"],
+    "icon": "mvp/assets/class_icons/soulwarden.png"
   },
-  "ranger": {
-    "name": "Ranger",
-    "description": "Traqueur polyvalent, efficace en escarmouche et reconnaissance.",
+
+  "hellranger": {
+    "name": "Hellranger",
+    "description": "Traqueur démoniaque, expert en reconnaissance et en chasse surnaturelle.",
     "hit_die": 10,
     "primary": ["force", "espionnage"],
-    "starting_feats": ["quick_reflexes"],
-    "starting_abilities": ["Ennemi favori"]
+    "starting_feats": ["predator_instinct"],
+    "starting_abilities": ["Marque du chasseur"],
+    "icon": "mvp/assets/class_icons/hellranger.png"
   },
-  "paladin": {
-    "name": "Paladin",
-    "description": "Champion discipliné, protecteur et meneur au combat.",
+
+  "abyss_paladin": {
+    "name": "Abyss Paladin",
+    "description": "Chevalier du pacte, protecteur implacable lié à une force infernale.",
     "hit_die": 10,
     "primary": ["force", "commandement"],
-    "starting_feats": ["iron_will"],
-    "starting_abilities": ["Imposition des mains"]
+    "starting_feats": ["unyielding_oath"],
+    "starting_abilities": ["Main du pacte"],
+    "icon": "mvp/assets/class_icons/abyss_paladin.png"
   },
-  "warlock": {
-    "name": "Warlock",
-    "description": "Occultiste lié à une entité, excelle en magie de pacte.",
+
+  "pactbound": {
+    "name": "Pactbound",
+    "description": "Occultiste lié à un seigneur démon, maniant la magie du pacte.",
     "hit_die": 8,
     "primary": ["magie", "diplomatie"],
-    "starting_feats": ["pact_focus"],
-    "starting_abilities": ["Explosion occulte"]
+    "starting_feats": ["void_tongue"],
+    "starting_abilities": ["Explosion du pacte"],
+    "icon": "mvp/assets/class_icons/pactbound.png"
   },
-  "bard": {
-    "name": "Bard",
-    "description": "Inspire les alliés et manipule les foules avec aisance.",
+
+  "echo_bard": {
+    "name": "Echo Bard",
+    "description": "Manipule les émotions et les esprits grâce à des résonances occultes.",
     "hit_die": 8,
     "primary": ["diplomatie", "magie"],
-    "starting_feats": ["silver_tongue"],
-    "starting_abilities": ["Inspiration"]
+    "starting_feats": ["mind_echo"],
+    "starting_abilities": ["Inspiration spectrale"],
+    "icon": "mvp/assets/class_icons/echo_bard.png"
   },
-  "barbarian": {
-    "name": "Barbarian",
-    "description": "Guerrier féroce, dominateur en assaut frontal.",
+
+  "berserker_demon": {
+    "name": "Berserker Demon",
+    "description": "Guerrier frénétique alimenté par la rage infernale.",
     "hit_die": 12,
     "primary": ["force"],
-    "starting_feats": ["power_attack"],
-    "starting_abilities": ["Rage"]
+    "starting_feats": ["blood_fury"],
+    "starting_abilities": ["Rage démoniaque"],
+    "icon": "mvp/assets/class_icons/berserker_demon.png"
   },
-  "monk": {
-    "name": "Monk",
-    "description": "Combattant discipliné, mobilité et précision extrêmes.",
+
+  "void_monk": {
+    "name": "Void Monk",
+    "description": "Maître martial utilisant l'énergie du néant pour frapper avec précision.",
     "hit_die": 8,
     "primary": ["espionnage", "force"],
-    "starting_feats": ["evasion"],
-    "starting_abilities": ["Enchaînement de frappes"]
+    "starting_feats": ["void_step"],
+    "starting_abilities": ["Enchaînement du néant"],
+    "icon": "mvp/assets/class_icons/void_monk.png"
   },
-  "druid": {
-    "name": "Druid",
-    "description": "Gardien des forces naturelles et des métamorphoses.",
+
+  "wild_druid": {
+    "name": "Wild Druid",
+    "description": "Canalise les forces primordiales et les métamorphoses infernales.",
     "hit_die": 8,
     "primary": ["magie", "artisanat"],
-    "starting_feats": ["nature_bond"],
-    "starting_abilities": ["Métamorphose"]
+    "starting_feats": ["feral_bond"],
+    "starting_abilities": ["Forme bestiale"],
+    "icon": "mvp/assets/class_icons/wild_druid.png"
   },
-  "sorcerer": {
-    "name": "Sorcerer",
-    "description": "Magie innée et explosive, orientée puissance brute.",
+
+  "blood_sorcerer": {
+    "name": "Blood Sorcerer",
+    "description": "Magicien inné dont la puissance coule dans ses veines démoniaques.",
     "hit_die": 6,
     "primary": ["magie"],
-    "starting_feats": ["arcane_precision"],
-    "starting_abilities": ["Impulsion métamagique"]
+    "starting_feats": ["crimson_focus"],
+    "starting_abilities": ["Déferlement sanguin"],
+    "icon": "mvp/assets/class_icons/blood_sorcerer.png"
   },
-  "artificer": {
-    "name": "Artificer",
-    "description": "Ingénieur mystique, combine artisanat et arcanes.",
+
+  "infernal_artificer": {
+    "name": "Infernal Artificer",
+    "description": "Forgeron mystique combinant technologie noire et arcanes.",
     "hit_die": 8,
     "primary": ["artisanat", "magie"],
-    "starting_feats": ["battle_engineer"],
-    "starting_abilities": ["Infuser un objet"]
+    "starting_feats": ["hellforge_engineer"],
+    "starting_abilities": ["Infusion démoniaque"],
+    "icon": "mvp/assets/class_icons/infernal_artificer.png"
   },
-  "commander": {
-    "name": "Commander",
-    "description": "Stratège du champ de bataille, optimise l'armée du clan.",
+
+  "warlord": {
+    "name": "Warlord",
+    "description": "Stratège infernal, maître du champ de bataille et des escouades démoniaques.",
     "hit_die": 10,
     "primary": ["commandement", "diplomatie"],
-    "starting_feats": ["battlefield_tactician"],
-    "starting_abilities": ["Ordre tactique"],
-    "icon": "mvp/assets/class_icons/stratege_des_ombres.webp"
+    "starting_feats": ["infernal_tactician"],
+    "starting_abilities": ["Ordre du seigneur de guerre"],
+    "icon": "mvp/assets/class_icons/warlord.png"
   }
 }

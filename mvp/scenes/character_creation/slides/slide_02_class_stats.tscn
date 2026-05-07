@@ -120,9 +120,7 @@ horizontal_scroll_mode = 0
 
 [node name="ClassesGrid" type="GridContainer" parent="Content/MainSplit/ClassesPanel/ClassesScroll"]
 layout_mode = 2
-columns = 2
-theme_override_constants/h_separation = 8
-theme_override_constants/v_separation = 8
+ columns = 3
 size_flags_horizontal = 3
 size_flags_vertical = 0
 

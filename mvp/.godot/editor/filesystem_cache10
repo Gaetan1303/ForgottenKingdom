@@ -1,5 +1,5 @@
 63f7b34db8d8cdea90c76aacccf841ec
-::res://::1778127221
+::res://::1778129769
 godot_run.log::TextFile::-1::1777915293::0::1::::<><><>0<>0<><>::
 icon.png::CompressedTexture2D/CompressedTexture2D::7693981552901003797::1777915293::1778096396::1::::<><><>0<>0<>a67d4e17d634630f6e0670da3f4b97d6<>res://.godot/imported/icon.png-487276ed1e3a0c39cad0279d744ee560.ctex::
 ::res://assets/::1778095358
@@ -64,10 +64,8 @@ swing.ogg::AudioStreamOggVorbis/AudioStreamOggVorbis::3634491232533170458::17779
 whoosh.ogg::AudioStreamOggVorbis/AudioStreamOggVorbis::1708161910609731154::1777915293::1778096396::1::::<><><>0<>0<>d45da16573c4dc897511bcd611d7610a<>res://.godot/imported/whoosh.ogg-a15e302587404768652faeb9bb0d95d7.oggvorbisstr::
 ::res://assets/backgrounds/::1778096397
 background_menu.png::CompressedTexture2D/CompressedTexture2D::708450101431236228::1778095358::1778096397::1::::<><><>0<>0<>07ac1ee6f7300d158262a714b095d153<>res://.godot/imported/background_menu.png-0caba08c7d8aec73e2ce4f02d2dbb764.ctex::
-::res://assets/class_icons/::1778096396
-chevalier_sombre.webp::CompressedTexture2D/CompressedTexture2D::407353034512131252::1777915293::1778096396::1::::<><><>0<>0<>a1dbe671fc822d22bb750b90313987be<>res://.godot/imported/chevalier_sombre.webp-2d041a14d4cba8e4cd0ac8cc26dd4015.ctex::
-mage_du_pacte.webp::CompressedTexture2D/CompressedTexture2D::7837553812246365646::1777915293::1778096396::1::::<><><>0<>0<>bca7cb3593e48d0b30042bf05ce5b54c<>res://.godot/imported/mage_du_pacte.webp-31865d2af68d1f88aabd316c490453fd.ctex::
-stratege_des_ombres.webp::CompressedTexture2D/CompressedTexture2D::2671405503915175249::1777915293::1778096396::1::::<><><>0<>0<>b5ebeebfb7695863225dd90aa9ad0ffb<>res://.godot/imported/stratege_des_ombres.webp-a3f5475d6de008c3179c1364d5e6ed5d.ctex::
+::res://assets/class_icons/::1778129700
+hellcaster.png::CompressedTexture2D::5077405664619109847::1778128415::1778129700::1::::<><><>0<>0<>351a144080883fcee4f1c1b5a35d08c3<>res://.godot/imported/hellcaster.png-0716b01ebf9e9326fa9c7671fc0dbd3c.ctex::
 ::res://assets/icon/::1778096396
 essence.png::CompressedTexture2D/CompressedTexture2D::5179395306545137579::1777915293::1778096396::1::::<><><>0<>0<>62a253e825368f87c6ae95b5f5d78e5c<>res://.godot/imported/essence.png-d907f644edc2b216255a216783ec6984.ctex::
 food.png::CompressedTexture2D/CompressedTexture2D::8401024933709247505::1777915293::1778096396::1::::<><><>0<>0<>04f84296f436a863122bc7c44dbd4be0<>res://.godot/imported/food.png-4f58269720ba7734c753e4a5f0c86c13.ctex::
@@ -101,7 +99,7 @@ stop_icon.png::CompressedTexture2D/CompressedTexture2D::6386462422223963666::177
 ::res://data/::1778095605
 abilities.json::JSON::-1::1777915293::0::1::::<><><>0<>0<><>::
 character_traits.json::JSON::-1::1778095605::0::1::::<><><>0<>0<><>::
-classes.json::JSON::-1::1777915293::0::1::::<><><>0<>0<><>::
+classes.json::JSON::-1::1778129611::0::1::::<><><>0<>0<><>::
 feats.json::JSON::-1::1777915293::0::1::::<><><>0<>0<><>::
 intro_vn.json::JSON::-1::1777915293::0::1::::<><><>0<>0<><>::
 library_entries.json::JSON::-1::1777915293::0::1::::<><><>0<>0<><>::
@@ -139,7 +137,7 @@ slot_select.tscn::PackedScene::-1::1777915293::0::1::::<><><>0<>0<><>::res://scr
 character_creation_screen.tscn::PackedScene::5168029252052578963::1778095358::0::1::::<><><>0<>0<><>::uid://cqebpwo2iwnsc::::res://scripts/ui/character_creation/character_creation_screen.gd
 ::res://scenes/character_creation/slides/::1778095605
 slide_01_basic_info.tscn::PackedScene::3944653406850043424::1778095605::0::1::::<><><>0<>0<><>::uid://c0re4ykonkqos::::res://scripts/ui/character_creation/slides/slide_01_basic_info.gd<>uid://bqj4mc8sm7qiw::::res://scripts/ui/character_creation/portrait_payload.gd
-slide_02_class_stats.tscn::PackedScene::-1::1778127207::0::1::::<><><>0<>0<><>::res://scripts/ui/character_creation/slides/slide_02_class_stats.gd
+slide_02_class_stats.tscn::PackedScene::-1::1778127413::0::1::::<><><>0<>0<><>::res://scripts/ui/character_creation/slides/slide_02_class_stats.gd
 slide_03_feats_abilities.tscn::PackedScene::-1::1778095358::0::1::::<><><>0<>0<><>::res://scripts/ui/character_creation/slides/slide_03_feats_abilities.gd
 slide_04_items_equipment.tscn::PackedScene::-1::1778095358::0::1::::<><><>0<>0<><>::res://scripts/ui/character_creation/slides/slide_04_items_equipment.gd
 slide_05_review_confirm.tscn::PackedScene::-1::1778095358::0::1::::<><><>0<>0<><>::res://scripts/ui/character_creation/slides/slide_05_review_confirm.gd
@@ -236,7 +234,7 @@ portrait_payload.gd::GDScript::3529803960865639590::1778095605::0::1::::Portrait
 ::res://scripts/ui/character_creation/slides/::1778095605
 creation_slide_base.gd::GDScript::1651168846071699915::1778095358::0::1::::CreationSlideBase<>Control<><>0<>0<><>::
 slide_01_basic_info.gd::GDScript::6562952812812663694::1778100404::0::1::::Slide01BasicInfo<>CreationSlideBase<><>0<>0<><>::
-slide_02_class_stats.gd::GDScript::1079671422876400639::1778127207::0::1::::Slide02ClassStats<>CreationSlideBase<><>0<>0<><>::
+slide_02_class_stats.gd::GDScript::1079671422876400639::1778129757::0::1::::Slide02ClassStats<>CreationSlideBase<><>0<>0<><>::
 slide_03_feats_abilities.gd::GDScript::3121204056445533625::1778095358::0::1::::Slide03FeatsAbilities<>CreationSlideBase<><>0<>0<><>::
 slide_04_items_equipment.gd::GDScript::8620546689724905449::1778095358::0::1::::Slide04ItemsEquipment<>CreationSlideBase<><>0<>0<><>::
 slide_05_review_confirm.gd::GDScript::1382428399754942310::1778095358::0::1::::Slide05ReviewConfirm<>CreationSlideBase<><>0<>0<><>::
