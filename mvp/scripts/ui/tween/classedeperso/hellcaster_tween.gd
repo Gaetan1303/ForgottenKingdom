@@ -18,11 +18,28 @@ func _build_placeholders() -> void:
 	if sprite == null:
 		sprite = TextureRect.new()
 		sprite.name = "Sprite2D"
-		sprite.anchor_right = 1.0
-		sprite.anchor_bottom = 1.0
+		sprite.expand = true
+		sprite.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+		sprite.custom_minimum_size = Vector2(0, 52)
 		sprite.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-		sprite.size_flags_vertical = Control.SIZE_FILL
-		add_child(sprite)
+		sprite.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+		sprite.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		var content = find_child("CardContent", true, false) as VBoxContainer
+		if content != null:
+			var sprite_holder = MarginContainer.new()
+			sprite_holder.name = "SpriteHolder"
+			sprite_holder.custom_minimum_size = Vector2(0, 68)
+			sprite_holder.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+			sprite_holder.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+			var spacer = Control.new()
+			spacer.custom_minimum_size = Vector2(0, 8)
+			spacer.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+			spacer.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+			sprite_holder.add_child(spacer)
+			sprite_holder.add_child(sprite)
+			content.add_child(sprite_holder)
+		else:
+			add_child(sprite)
 
 	if flames_left == null:
 		flames_left = TextureRect.new()
