@@ -35,6 +35,30 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 split_offset = 360
 
+[node name="ProgressionPanel" type="VBoxContainer" parent="Content/MainSplit"]
+custom_minimum_size = Vector2(320, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 6
+
+[node name="ProgressionHeader" type="Label" parent="Content/MainSplit/ProgressionPanel"]
+layout_mode = 2
+text = "Progression Niveaux 1 a 10"
+
+[node name="ProgressionSummary" type="ScrollContainer" parent="Content/MainSplit/ProgressionPanel"]
+custom_minimum_size = Vector2(0, 130)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+scroll_active = true
+
+[node name="ProgressionGrid" type="GridContainer" parent="Content/MainSplit/ProgressionPanel/ProgressionSummary"]
+layout_mode = 2
+size_flags_horizontal = 3
+columns = 2
+theme_override_constants/h_separation = 8
+theme_override_constants/v_separation = 12
+
 [node name="StatsPanel" type="VBoxContainer" parent="Content/MainSplit"]
 custom_minimum_size = Vector2(260, 0)
 layout_mode = 2
@@ -110,6 +134,72 @@ layout_mode = 2
 min_value = 8.0
 max_value = 18.0
 value = 8.0
+
+[node name="DerivedHeader" type="Label" parent="Content/MainSplit/StatsPanel"]
+layout_mode = 2
+text = "Scores dérivés"
+
+[node name="DerivedGrid" type="GridContainer" parent="Content/MainSplit/StatsPanel"]
+layout_mode = 2
+theme_override_constants/h_separation = 8
+theme_override_constants/v_separation = 6
+columns = 2
+
+[node name="DerivedAttaqueLabel" type="Label" parent="Content/MainSplit/StatsPanel/DerivedGrid"]
+layout_mode = 2
+text = "Attaque"
+
+[node name="DerivedAttaqueValue" type="Label" parent="Content/MainSplit/StatsPanel/DerivedGrid"]
+layout_mode = 2
+text = "0"
+
+[node name="DerivedDefenseLabel" type="Label" parent="Content/MainSplit/StatsPanel/DerivedGrid"]
+layout_mode = 2
+text = "Défense"
+
+[node name="DerivedDefenseValue" type="Label" parent="Content/MainSplit/StatsPanel/DerivedGrid"]
+layout_mode = 2
+text = "0"
+
+[node name="DerivedResistanceLabel" type="Label" parent="Content/MainSplit/StatsPanel/DerivedGrid"]
+layout_mode = 2
+text = "Résistance"
+
+[node name="DerivedResistanceValue" type="Label" parent="Content/MainSplit/StatsPanel/DerivedGrid"]
+layout_mode = 2
+text = "0"
+
+[node name="DerivedInitiativeLabel" type="Label" parent="Content/MainSplit/StatsPanel/DerivedGrid"]
+layout_mode = 2
+text = "Initiative"
+
+[node name="DerivedInitiativeValue" type="Label" parent="Content/MainSplit/StatsPanel/DerivedGrid"]
+layout_mode = 2
+text = "0"
+
+[node name="DerivedVigueurLabel" type="Label" parent="Content/MainSplit/StatsPanel/DerivedGrid"]
+layout_mode = 2
+text = "Jet de Vigueur"
+
+[node name="DerivedVigueurValue" type="Label" parent="Content/MainSplit/StatsPanel/DerivedGrid"]
+layout_mode = 2
+text = "0"
+
+[node name="DerivedVolonteLabel" type="Label" parent="Content/MainSplit/StatsPanel/DerivedGrid"]
+layout_mode = 2
+text = "Jet de Volonté"
+
+[node name="DerivedVolonteValue" type="Label" parent="Content/MainSplit/StatsPanel/DerivedGrid"]
+layout_mode = 2
+text = "0"
+
+[node name="DerivedReflexesLabel" type="Label" parent="Content/MainSplit/StatsPanel/DerivedGrid"]
+layout_mode = 2
+text = "Jet de Réflexes"
+
+[node name="DerivedReflexesValue" type="Label" parent="Content/MainSplit/StatsPanel/DerivedGrid"]
+layout_mode = 2
+text = "0"
 
 [node name="ClassesPanel" type="VBoxContainer" parent="Content/MainSplit"]
 custom_minimum_size = Vector2(320, 0)

@@ -1,0 +1,11 @@
+﻿Niveau,Force,Magie,Espionnage,Artisanat,Diplomatie,Commandement,Attaque,Défense,Résistance,Initiative,Jet de Vigueur,Jet de Volonté,Jet de Réflexes,Nouveaux Talents,Lore
+1,10,8,8,8,8,10,10,12,10,8,12,10,8,unyielding_oath, Main du pacte,"Ton serment te lie à une puissance ancienne."
+2,11,8,8,8,8,11,11,13,11,8,13,11,8,+1 Commandement, Bénédiction du pacte (+1 Défense),"Ta foi te rend plus résistant."
+3,12,8,8,8,8,12,12,14,12,9,14,12,9,Main du pacte +1,"Ta main droite brille d’une énergie sacrée."
+4,13,8,8,8,9,13,13,15,13,9,15,13,9,Bouclier du pacte (+2 Défense),"Ton bouclier repousse les attaques les plus puissantes."
+5,14,8,8,8,9,14,14,16,14,10,16,14,10,Jugement du pacte (Dégâts +15% contre les démons),"Ta lame punit les impurs."
+6,15,8,8,8,10,15,15,17,15,10,17,15,10,Aura de protection (+1 Résistance à tous),"Ton aura protège tes alliés."
+7,16,9,8,8,10,16,16,18,16,11,18,16,11,Serment éternel (Immunité à la peur),"Aucune terreur ne peut te briser."
+8,17,9,8,8,10,17,17,19,17,11,19,17,11,Frappe sacrée (Dégâts +20% contre les ennemis maléfiques),"Ta lame purifie le mal."
+9,18,10,8,8,10,18,18,20,18,12,20,18,12,Gardien du pacte (+2 Commandement),"Tes alliés se battent avec une ferveur renouvelée."
+10,19,10,8,8,11,19,20,21,19,12,21,19,12,Dernier rempart (Réduit les dégâts de 50% pour toi et tes alliés),"Tu deviens le rempart ultime contre les forces des ténèbres."

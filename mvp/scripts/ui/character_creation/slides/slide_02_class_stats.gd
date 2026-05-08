@@ -3,11 +3,19 @@ class_name Slide02ClassStats
 extends CreationSlideBase
 
 const CharacterCreationRules = preload("res://scripts/services/character_creation_rules_service.gd")
+const CharacterBuildService = preload("res://scripts/data/character_build_service.gd")
 
 const CARD_COLUMNS := 3
 
 var _selected_class_id: String = ""
 
+
+func _ready() -> void:
+	for key in StatDefs.STAT_KEYS:
+		var node := find_child("Stat_%s" % key, true, false) as SpinBox
+		if node:
+			node.value_changed.connect(Callable(self, "_on_stat_value_changed").bind(key))
+	_update_derived_stats()
 
 func enter_slide(data: Resource) -> void:
 	_populate_class_cards()
@@ -33,6 +41,7 @@ func enter_slide(data: Resource) -> void:
 			_select_class_card(str(keys[0]))
 
 	if incoming_stats.is_empty():
+		_update_derived_stats()
 		return
 	for key in StatDefs.STAT_KEYS:
 		var node := find_child("Stat_%s" % key, true, false) as SpinBox
@@ -40,6 +49,7 @@ func enter_slide(data: Resource) -> void:
 			var default_stat := StatDefs.CHARACTER_MIN_STAT
 			var stat_value := int(incoming_stats[key]) if incoming_stats.has(key) else default_stat
 			node.value = float(stat_value)
+	_update_derived_stats()
 
 
 func collect_payload() -> Dictionary:
@@ -125,6 +135,16 @@ func _build_class_card(class_id: String, class_data: Dictionary) -> Button:
 	title.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	content.add_child(title)
 
+	var progression_rows := GameDataLoader.get_class_progression(class_id)
+	if progression_rows.size() > 0:
+		var lvl_info := Label.new()
+		lvl_info.text = "Niveaux: %d" % progression_rows.size()
+		lvl_info.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		lvl_info.modulate = Color(0.85, 0.82, 0.72, 0.95)
+		lvl_info.add_theme_font_size_override("font_size", 12)
+		lvl_info.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		content.add_child(lvl_info)
+
 	return card
 
 
@@ -154,6 +174,7 @@ func _select_class_card(class_id: String) -> void:
 	_selected_class_id = class_id
 	_apply_class_stats(class_id)
 	_refresh_class_selection()
+	_refresh_progression_summary(class_id)
 
 
 func _apply_class_stats(class_id: String) -> void:
@@ -169,6 +190,7 @@ func _apply_class_stats(class_id: String) -> void:
 			var default_stat := StatDefs.CHARACTER_MIN_STAT
 			var stat_value := int(stats[key]) if stats.has(key) else default_stat
 			node.value = float(stat_value)
+	_update_derived_stats()
 
 
 func _refresh_class_selection() -> void:
@@ -185,6 +207,121 @@ func _refresh_class_selection() -> void:
 			card.add_theme_stylebox_override("hover", style)
 			card.add_theme_stylebox_override("pressed", style)
 			card.add_theme_stylebox_override("focus", style)
+
+func _on_stat_value_changed(value: float, stat_key: String) -> void:
+	_update_derived_stats()
+
+func _update_derived_stats() -> void:
+	var stats := _collect_stats()
+	var mods := CharacterBuildService.build_modifiers(stats)
+	var derived := CharacterBuildService.build_derived_stats(mods)
+
+	_set_derived_label("DerivedAttaqueValue", int(derived.get("attaque", 0)))
+	_set_derived_label("DerivedDefenseValue", int(derived.get("defense", 0)))
+	_set_derived_label("DerivedResistanceValue", int(derived.get("resistance", 0)))
+	_set_derived_label("DerivedInitiativeValue", int(derived.get("initiative", 0)))
+	_set_derived_label("DerivedVigueurValue", int(derived.get("jet_vigueur", 0)))
+	_set_derived_label("DerivedVolonteValue", int(derived.get("jet_volonte", 0)))
+	_set_derived_label("DerivedReflexesValue", int(derived.get("jet_reflexes", 0)))
+
+func _set_derived_label(node_name: String, value: int) -> void:
+	var node := find_child(node_name, true, false) as Label
+	if node:
+		node.text = str(value)
+
+
+func _refresh_progression_summary(class_id: String) -> void:
+	var summary := find_child("ProgressionSummary", true, false) as ScrollContainer
+	if summary == null:
+		return
+	var grid := summary.get_node("ProgressionGrid") as GridContainer
+	if grid == null:
+		return
+	_clear_progression_grid(grid)
+
+	if class_id == "":
+		_add_progression_message(grid, "Selectionnez une classe pour afficher sa progression.")
+		return
+
+	var rows := GameDataLoader.get_class_progression(class_id)
+	if rows.is_empty():
+		_add_progression_message(grid, "Aucune progression disponible pour cette classe.")
+		return
+
+	var headers := ["Stats", "Talents"]
+	for header in headers:
+		_add_progression_grid_cell(grid, header, true)
+
+	for row in rows:
+		var d := row as Dictionary
+		var stats_text := "ATK %d  DEF %d  RES %d" % [
+			int(d.get("attaque", 0)),
+			int(d.get("defense", 0)),
+			int(d.get("resistance", 0)),
+		]
+		_add_progression_grid_cell(grid, stats_text, false)
+		_add_progression_grid_cell(grid, str(d.get("talents", "")), false)
+
+
+func _clear_progression_grid(grid: GridContainer) -> void:
+	for child in grid.get_children():
+		child.queue_free()
+
+
+func _add_progression_message(grid: GridContainer, message: String) -> void:
+	_clear_progression_grid(grid)
+	var panel := PanelContainer.new()
+	panel.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	panel.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	panel.add_theme_stylebox_override("panel", _make_progression_cell_style(false))
+
+	var label := Label.new()
+	label.text = message
+	label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	label.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	label.valign = VERTICAL_ALIGNMENT_CENTER
+	label.horizontal_alignment = HORIZONTAL_ALIGNMENT_LEFT
+	label.add_theme_font_size_override("font_size", 13)
+	panel.add_child(label)
+	grid.add_child(panel)
+
+
+func _add_progression_grid_cell(grid: GridContainer, text: String, heading: bool) -> void:
+	var panel := PanelContainer.new()
+	panel.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	panel.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	panel.add_theme_stylebox_override("panel", _make_progression_cell_style(heading))
+
+	var label := Label.new()
+	label.text = text
+	label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	label.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	label.valign = VERTICAL_ALIGNMENT_CENTER
+	label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER if heading else HORIZONTAL_ALIGNMENT_LEFT
+	if heading:
+		label.add_theme_color_override("font_color", Color8(230, 210, 170))
+		label.add_theme_font_size_override("font_size", 13)
+	else:
+		label.add_theme_font_size_override("font_size", 12)
+	panel.add_child(label)
+	grid.add_child(panel)
+
+
+func _make_progression_cell_style(heading: bool) -> StyleBoxFlat:
+	var style := StyleBoxFlat.new()
+	style.bg_color = Color(0.08, 0.06, 0.03, 0.18 if heading else 0.12)
+	style.border_color = Color("5d4943")
+	style.border_width_left = 1
+	style.border_width_top = 1
+	style.border_width_right = 1
+	style.border_width_bottom = 1
+	style.corner_radius_top_left = 6
+	style.corner_radius_top_right = 6
+	style.corner_radius_bottom_right = 6
+	style.corner_radius_bottom_left = 6
+	return style
 
 
 func _make_card_style(selected: bool) -> StyleBoxFlat:
