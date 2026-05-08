@@ -1,1 +1,16 @@
-res://scripts/ui/tween/classedeperso/hellcaster_tween.gd
+res://scripts/ui/tween/classedeperso/abyss_paladin_card.gd
+res://scripts/ui/tween/classedeperso/base_class_card.gd
+res://scripts/ui/tween/classedeperso/berserker_demon_card.gd
+res://scripts/ui/tween/classedeperso/blood_sorcerer_card.gd
+res://scripts/ui/tween/classedeperso/demon_blade_card.gd
+res://scripts/ui/tween/classedeperso/echo_bard_card.gd
+res://scripts/ui/tween/classedeperso/hellcaster_card.gd
+res://scripts/ui/tween/classedeperso/hellranger_card.gd
+res://scripts/ui/tween/classedeperso/infernal_artificer_card.gd
+res://scripts/ui/tween/classedeperso/pactbound_card.gd
+res://scripts/ui/tween/classedeperso/shadowfang_card.gd
+res://scripts/ui/tween/classedeperso/soulwarden_card.gd
+res://scripts/ui/tween/classedeperso/void_monk_card.gd
+res://scripts/ui/tween/classedeperso/warlord_card.gd
+res://scripts/ui/tween/classedeperso/wild_druid_card.gd
+res://scripts/ui/character_creation/slides/slide_02_class_stats.gd
