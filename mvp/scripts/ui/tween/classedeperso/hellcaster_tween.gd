@@ -64,7 +64,7 @@ func _build_placeholders() -> void:
 		flames_left.expand = true
 		flames_left.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 		flames_left.custom_minimum_size = Vector2(22, 28)
-		flames_left.position = Vector2(16, 8)
+		flames_left.position = Vector2(20, 8)
 		flames_left.z_index = 10
 		flames_left.visible = true
 		flames_left.mouse_filter = Control.MOUSE_FILTER_IGNORE
