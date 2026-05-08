@@ -1,0 +1,11 @@
+﻿Niveau,Force,Magie,Espionnage,Artisanat,Diplomatie,Commandement,Attaque,Défense,Résistance,Initiative,Jet de Vigueur,Jet de Volonté,Jet de Réflexes,Nouveaux Talents,Lore
+1,10,8,8,8,8,10,10,10,8,8,10,10,8,infernal_tactician, Ordre du seigneur de guerre,"Tes soldats te suivent sans hésiter."
+2,10,8,8,8,9,11,10,10,8,9,11,10,9,+1 Commandement, Stratège né (+1 Attaque pour tous les alliés),"Tes ordres sont clairs et précis."
+3,11,8,8,8,9,12,11,11,9,9,12,11,9,Ordre du seigneur de guerre +1,"Tes soldats exécutent tes plans à la perfection."
+4,11,8,8,8,10,13,11,11,9,10,12,12,10,Tactique infernale (+20% dégâts pour les alliés),"Tes tactiques sont implacables."
+5,12,8,8,8,10,14,12,12,10,10,13,13,10,Inspiration martiale (+1 Défense pour tous les alliés),"Tes soldats se battent comme des démons."
+6,12,8,8,8,11,15,12,13,10,11,13,14,11,Maîtrise tactique (+1 Commandement),"Tes plans sont toujours un coup d’avance."
+7,13,8,8,8,11,16,13,13,11,11,14,15,11,Appel aux armes (Invoque 2 soldats temporaires),"Tes renforts arrivent toujours au bon moment."
+8,13,8,8,8,12,17,13,14,11,12,14,16,12,Général infernal (+2 Commandement),"Tes soldats te vénèrent comme un dieu de la guerre."
+9,14,8,8,8,12,18,14,14,12,12,15,17,12,Stratagème ultime (Désactive les capacités ennemies pour 1 tour),"Tes ennemis ne savent pas ce qui les attend."
+10,15,8,8,8,13,19,15,15,13,13,16,18,13,Conquérant des enfers (Tous les alliés gagnent +3 Attaque/Défense),"Avec toi à leur tête, tes soldats sont invincibles."

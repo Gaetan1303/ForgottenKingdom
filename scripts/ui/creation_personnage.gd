@@ -1555,6 +1555,7 @@ func _distribuer_points(priorites: Array, max_spent: int) -> void:
 
 func _construire_fiche_complete() -> Dictionary:
 	var mods := CharacterBuildService.build_modifiers(_fiche_stats)
+	var derived := CharacterBuildService.build_derived_stats(mods)
 
 	var pv_base := 10
 	if _classe_choisie == "chevalier_sombre":
@@ -1577,11 +1578,13 @@ func _construire_fiche_complete() -> Dictionary:
 		"stats_brutes": _fiche_stats.duplicate(true),
 		"modificateurs": mods,
 		"pv_max": pv_base + int(mods["commandement"]),
-		"initiative": int(mods["espionnage"]),
-		"defense": 10 + int(mods["espionnage"]),
-		"jet_vigueur": int(mods["force"]),
-		"jet_volonte": int(mods["magie"]),
-		"jet_reflexes": int(mods["espionnage"]),
+		"initiative": int(derived["initiative"]),
+		"defense": int(derived["defense"]),
+		"attaque": int(derived["attaque"]),
+		"resistance": int(derived["resistance"]),
+		"jet_vigueur": int(derived["jet_vigueur"]),
+		"jet_volonte": int(derived["jet_volonte"]),
+		"jet_reflexes": int(derived["jet_reflexes"]),
 	}
 
 

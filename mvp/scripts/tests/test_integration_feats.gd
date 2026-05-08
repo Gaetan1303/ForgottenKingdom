@@ -50,6 +50,10 @@ func _initialize() -> void:
 		if int(computed.get(k, -999)) != int(expected.get(k, -999)):
 			failures.append("Integration: mismatch for %s: got %s expected %s" % [k, str(computed.get(k)), str(expected.get(k))])
 
+	for derived_key in ["attaque", "defense", "resistance", "initiative", "jet_vigueur", "jet_volonte", "jet_reflexes"]:
+		if not computed.has(derived_key):
+			failures.append("Integration: missing derived stat %s" % derived_key)
+
 	# Now test save/load roundtrip
 	var ch := CharacterClass.new()
 	ch.name = "Test"
