@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dsjjk3yaqw0qv"
-path="res://.godot/imported/flame.png-ab5738fc4e93c7b6ba0b19c8640297c3.ctex"
+uid="uid://qpgbkdmq05as"
+path="res://.godot/imported/wilddruid.png-855f50dbb5d6904485da3a8c2a3e7b35.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/class_icons/flame.png"
-dest_files=["res://.godot/imported/flame.png-ab5738fc4e93c7b6ba0b19c8640297c3.ctex"]
+source_file="res://assets/class_icons/wilddruid.png"
+dest_files=["res://.godot/imported/wilddruid.png-855f50dbb5d6904485da3a8c2a3e7b35.ctex"]
 
 [params]
 

@@ -135,6 +135,10 @@ func _build_class_card(class_id: String, class_data: Dictionary) -> Button:
 				var fallback_path := "res://assets/class_icons/%s" % fallback_name
 				if ResourceLoader.exists(fallback_path):
 					icon_path = fallback_path
+				else:
+					var png_fallback := "res://assets/class_icons/%s.png" % class_id
+					if ResourceLoader.exists(png_fallback):
+						icon_path = png_fallback
 			var texture: Texture2D = null
 			if ResourceLoader.exists(icon_path):
 				texture = load(icon_path) as Texture2D
