@@ -2,8 +2,6 @@
 class_name CharacterCreationData
 extends Resource
 
-const StatDefs = preload("res://scripts/data/stat_defs.gd")
-
 @export var character_name: String = ""
 @export var clan_name: String = ""
 @export var portrait_payload: Dictionary = {}

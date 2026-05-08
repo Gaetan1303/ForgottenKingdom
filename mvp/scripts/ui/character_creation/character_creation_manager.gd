@@ -2,8 +2,6 @@
 class_name CharacterCreationManager
 extends Node
 
-const StatDefs = preload("res://scripts/data/stat_defs.gd")
-const JsonPersistenceService = preload("res://scripts/services/json_persistence_service.gd")
 const CharacterCreationRules = preload("res://scripts/services/character_creation_rules_service.gd")
 const CharacterCreationDataType = preload("res://scripts/ui/character_creation/creation_data.gd")
 const CharacterCreationFlowType = preload("res://scripts/ui/character_creation/creation_flow_controller.gd")

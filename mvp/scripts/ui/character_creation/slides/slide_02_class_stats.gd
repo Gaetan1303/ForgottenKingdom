@@ -2,7 +2,6 @@
 class_name Slide02ClassStats
 extends CreationSlideBase
 
-const StatDefs = preload("res://scripts/data/stat_defs.gd")
 const CharacterCreationRules = preload("res://scripts/services/character_creation_rules_service.gd")
 
 const CARD_COLUMNS := 3
@@ -122,7 +121,7 @@ func _build_class_card(class_id: String, class_data: Dictionary) -> Button:
 	title.add_theme_font_size_override("font_size", 14)
 	title.add_theme_color_override("font_color", _class_attribute_color(class_data))
 	title.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	title.horizontal_alignment = 1
+	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	title.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	content.add_child(title)
 

@@ -68,13 +68,13 @@ func _new_idle_tween() -> Tween:
 	return _card_tween
 
 
-func _idle_pulse(color: Color, scale: Vector2, duration: float, interval: float) -> void:
+func _idle_pulse(color: Color, target_scale: Vector2, duration: float, interval: float) -> void:
 	if _icon_rect == null:
 		return
 	_new_idle_tween()
 	_card_tween.tween_property(_icon_rect, "modulate", color, duration) \
 		.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
-	_card_tween.parallel().tween_property(_icon_rect, "scale", scale, duration) \
+	_card_tween.parallel().tween_property(_icon_rect, "scale", target_scale, duration) \
 		.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
 	_card_tween.tween_property(_icon_rect, "modulate", Color.WHITE, duration) \
 		.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
@@ -83,11 +83,11 @@ func _idle_pulse(color: Color, scale: Vector2, duration: float, interval: float)
 	_card_tween.tween_interval(interval)
 
 
-func _idle_rotation(color: Color, rotation: float, duration: float, interval: float) -> void:
+func _idle_rotation(color: Color, rotation_degrees_value: float, duration: float, interval: float) -> void:
 	if _icon_rect == null:
 		return
 	_new_idle_tween()
-	_card_tween.tween_property(_icon_rect, "rotation_degrees", rotation, duration) \
+	_card_tween.tween_property(_icon_rect, "rotation_degrees", rotation_degrees_value, duration) \
 		.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
 	_card_tween.parallel().tween_property(_icon_rect, "modulate", color, duration) \
 		.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
