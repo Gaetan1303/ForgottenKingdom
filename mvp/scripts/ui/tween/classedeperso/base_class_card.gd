@@ -59,12 +59,58 @@ func _load_icon_texture() -> Texture2D:
 func _play_idle_animation() -> void:
 	if _icon_rect == null:
 		return
+	_idle_pulse(Color(1, 1, 1, 1), Vector2.ONE, 1.1, 0.4)
+
+
+func _new_idle_tween() -> Tween:
 	_kill_tween()
 	_card_tween = create_tween().set_loops()
-	_card_tween.tween_property(_icon_rect, "position:y", -4.0, 1.1) \
+	return _card_tween
+
+
+func _idle_pulse(color: Color, scale: Vector2, duration: float, interval: float) -> void:
+	if _icon_rect == null:
+		return
+	_new_idle_tween()
+	_card_tween.tween_property(_icon_rect, "modulate", color, duration) \
 		.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
-	_card_tween.tween_property(_icon_rect, "position:y", 0.0, 1.1) \
+	_card_tween.parallel().tween_property(_icon_rect, "scale", scale, duration) \
 		.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+	_card_tween.tween_property(_icon_rect, "modulate", Color.WHITE, duration) \
+		.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+	_card_tween.parallel().tween_property(_icon_rect, "scale", Vector2.ONE, duration) \
+		.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+	_card_tween.tween_interval(interval)
+
+
+func _idle_rotation(color: Color, rotation: float, duration: float, interval: float) -> void:
+	if _icon_rect == null:
+		return
+	_new_idle_tween()
+	_card_tween.tween_property(_icon_rect, "rotation_degrees", rotation, duration) \
+		.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+	_card_tween.parallel().tween_property(_icon_rect, "modulate", color, duration) \
+		.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+	_card_tween.tween_property(_icon_rect, "rotation_degrees", 0.0, duration) \
+		.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+	_card_tween.parallel().tween_property(_icon_rect, "modulate", Color.WHITE, duration) \
+		.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+	_card_tween.tween_interval(interval)
+
+
+func _idle_position(color: Color, offset: Vector2, duration: float, interval: float) -> void:
+	if _icon_rect == null:
+		return
+	_new_idle_tween()
+	_card_tween.tween_property(_icon_rect, "position", _icon_rect.position + offset, duration) \
+		.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+	_card_tween.parallel().tween_property(_icon_rect, "modulate", color, duration) \
+		.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+	_card_tween.tween_property(_icon_rect, "position", _icon_rect.position, duration) \
+		.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+	_card_tween.parallel().tween_property(_icon_rect, "modulate", Color.WHITE, duration) \
+		.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+	_card_tween.tween_interval(interval)
 
 
 func _kill_tween() -> void:

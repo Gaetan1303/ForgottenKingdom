@@ -4,7 +4,6 @@ extends CreationSlideBase
 
 const StatDefs = preload("res://scripts/data/stat_defs.gd")
 const CharacterCreationRules = preload("res://scripts/services/character_creation_rules_service.gd")
-const HellcasterTween = preload("res://scripts/ui/tween/classedeperso/hellcaster_tween.gd")
 
 const CARD_COLUMNS := 3
 
@@ -80,12 +79,7 @@ func _populate_class_cards() -> void:
 
 
 func _build_class_card(class_id: String, class_data: Dictionary) -> Button:
-	var card: Button
-	if class_id == "hellcaster":
-		card = HellcasterTween.new()
-		(card as HellcasterTween).icon_path = str(class_data.get("icon", ""))
-	else:
-		card = ClassCardFactory.create(class_id, str(class_data.get("icon", "")))
+	var card: Button = ClassCardFactory.create(class_id, str(class_data.get("icon", "")))
 	card.name = "ClassCard_%s" % class_id
 	card.text = ""
 	card.custom_minimum_size = Vector2(150, 130)
