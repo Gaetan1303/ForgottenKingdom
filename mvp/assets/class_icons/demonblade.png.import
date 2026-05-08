@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dsjjk3yaqw0qv"
-path="res://.godot/imported/flame.png-ab5738fc4e93c7b6ba0b19c8640297c3.ctex"
+uid="uid://2wbqhxqg2gl"
+path="res://.godot/imported/demonblade.png-08ddd3543831e2dd4940f081f8b9b735.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/class_icons/flame.png"
-dest_files=["res://.godot/imported/flame.png-ab5738fc4e93c7b6ba0b19c8640297c3.ctex"]
+source_file="res://assets/class_icons/demonblade.png"
+dest_files=["res://.godot/imported/demonblade.png-08ddd3543831e2dd4940f081f8b9b735.ctex"]
 
 [params]
 

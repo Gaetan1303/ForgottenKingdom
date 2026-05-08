@@ -1,3 +1,1 @@
-res://scenes/character_creation/slides/slide_01_basic_info.tscn
-res://scenes/main_menu.tscn
-res://scenes/character_creation/slides/slide_02_class_stats.tscn
+res://scripts/ui/character_creation/slides/slide_02_class_stats.gd

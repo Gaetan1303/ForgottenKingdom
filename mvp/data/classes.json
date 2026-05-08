@@ -6,7 +6,7 @@
     "primary": ["force"],
     "starting_feats": ["blood_edge"],
     "starting_abilities": ["Frappe démoniaque"],
-    "icon": "mvp/assets/class_icons/demon_blade.png"
+    "icon": "mvp/assets/class_icons/demonblade.png"
   },
 
   "hellcaster": {
@@ -56,7 +56,7 @@
     "primary": ["force", "commandement"],
     "starting_feats": ["unyielding_oath"],
     "starting_abilities": ["Main du pacte"],
-    "icon": "mvp/assets/class_icons/abyss_paladin.png"
+    "icon": "mvp/assets/class_icons/abysspaladin.png"
   },
 
   "pactbound": {
@@ -76,7 +76,7 @@
     "primary": ["diplomatie", "magie"],
     "starting_feats": ["mind_echo"],
     "starting_abilities": ["Inspiration spectrale"],
-    "icon": "mvp/assets/class_icons/echo_bard.png"
+    "icon": "mvp/assets/class_icons/echobard.png"
   },
 
   "berserker_demon": {
@@ -86,7 +86,7 @@
     "primary": ["force"],
     "starting_feats": ["blood_fury"],
     "starting_abilities": ["Rage démoniaque"],
-    "icon": "mvp/assets/class_icons/berserker_demon.png"
+    "icon": "mvp/assets/class_icons/berserkdemon.png"
   },
 
   "void_monk": {
@@ -96,7 +96,7 @@
     "primary": ["espionnage", "force"],
     "starting_feats": ["void_step"],
     "starting_abilities": ["Enchaînement du néant"],
-    "icon": "mvp/assets/class_icons/void_monk.png"
+    "icon": "mvp/assets/class_icons/voidmonk.png"
   },
 
   "wild_druid": {
@@ -106,7 +106,7 @@
     "primary": ["magie", "artisanat"],
     "starting_feats": ["feral_bond"],
     "starting_abilities": ["Forme bestiale"],
-    "icon": "mvp/assets/class_icons/wild_druid.png"
+    "icon": "mvp/assets/class_icons/wilddruid.png"
   },
 
   "blood_sorcerer": {
@@ -116,7 +116,7 @@
     "primary": ["magie"],
     "starting_feats": ["crimson_focus"],
     "starting_abilities": ["Déferlement sanguin"],
-    "icon": "mvp/assets/class_icons/blood_sorcerer.png"
+    "icon": "mvp/assets/class_icons/bloodsorcerer.png"
   },
 
   "infernal_artificer": {
@@ -126,7 +126,7 @@
     "primary": ["artisanat", "magie"],
     "starting_feats": ["hellforge_engineer"],
     "starting_abilities": ["Infusion démoniaque"],
-    "icon": "mvp/assets/class_icons/infernal_artificer.png"
+    "icon": "mvp/assets/class_icons/infernalartificer.png"
   },
 
   "warlord": {
