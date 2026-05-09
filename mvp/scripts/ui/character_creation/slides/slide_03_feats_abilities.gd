@@ -71,7 +71,7 @@ func _create_card(kind: String, id: String, data: Dictionary) -> Button:
 	button.text = ""
 	button.name = "%sCard_%s" % [kind, id]
 	button.focus_mode = Control.FOCUS_NONE
-	button.custom_minimum_size = Vector2(300, 300)
+	button.custom_minimum_size = Vector2(420, 300)
 	button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	button.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	button.connect("toggled", Callable(self, "_on_card_toggled").bind(kind, id))
@@ -89,49 +89,56 @@ func _create_card(kind: String, id: String, data: Dictionary) -> Button:
 
 	var title = Label.new()
 	title.text = _get_entry_name(data, id)
-	title.add_theme_font_size_override("font_size", 15)
+	title.add_theme_font_size_override("font_size", 16)
 	var title_color = Color("e2a964") if kind == "don" else Color("7cc59f")
 	title.add_theme_color_override("font_color", title_color)
 	title.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	title.custom_minimum_size = Vector2(0, 28)
+	title.clip_text = true
 	layout.add_child(title)
 
 	var info_box = HBoxContainer.new()
 	info_box.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	info_box.size_flags_vertical = Control.SIZE_SHRINK_BEGIN
+	info_box.custom_minimum_size = Vector2(0, 28)
 	info_box.add_theme_constant_override("separation", 8)
 	layout.add_child(info_box)
 
 	var type_badge = Label.new()
 	type_badge.text = "Don" if kind == "don" else "Capacité"
 	type_badge.add_theme_color_override("font_color", Color(1, 1, 1))
-	type_badge.add_theme_font_size_override("font_size", 12)
+	type_badge.add_theme_font_size_override("font_size", 13)
 	type_badge.add_theme_stylebox_override("panel", _make_type_badge_style(kind))
 	type_badge.clip_text = true
 	type_badge.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
 	type_badge.size_flags_vertical = Control.SIZE_SHRINK_BEGIN
+	type_badge.custom_minimum_size = Vector2(100, 24)
 	info_box.add_child(type_badge)
 
 	var prereq_label = Label.new()
 	prereq_label.text = "Pré-requis : %s" % _get_prerequis_text(data)
 	prereq_label.add_theme_color_override("font_color", Color(0.82, 0.82, 0.82))
-	prereq_label.add_theme_font_size_override("font_size", 12)
+	prereq_label.add_theme_font_size_override("font_size", 13)
 	prereq_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	prereq_label.size_flags_vertical = Control.SIZE_SHRINK_BEGIN
+	prereq_label.custom_minimum_size = Vector2(0, 24)
+	prereq_label.clip_text = true
 	info_box.add_child(prereq_label)
 
 	var effect = Label.new()
 	effect.text = "Effet: %s" % _get_effects_text(data)
 	effect.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	effect.add_theme_color_override("font_color", Color(0.95, 0.95, 0.95))
-	effect.add_theme_font_size_override("font_size", 12)
+	effect.add_theme_font_size_override("font_size", 13)
 	effect.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	effect.size_flags_vertical = Control.SIZE_SHRINK_BEGIN
+	effect.custom_minimum_size = Vector2(0, 28)
 	layout.add_child(effect)
 
 	var description_box = Control.new()
-	description_box.custom_minimum_size = Vector2(0, 120)
+	description_box.custom_minimum_size = Vector2(0, 180)
 	description_box.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	description_box.size_flags_vertical = Control.SIZE_SHRINK_BEGIN
+	description_box.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	description_box.clip_contents = true
 	layout.add_child(description_box)
 
@@ -139,9 +146,10 @@ func _create_card(kind: String, id: String, data: Dictionary) -> Button:
 	description.text = "Description: %s" % str(data.get("description", "Aucune description disponible."))
 	description.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	description.add_theme_color_override("font_color", Color(0.88, 0.88, 0.88))
-	description.add_theme_font_size_override("font_size", 10)
+	description.add_theme_font_size_override("font_size", 12)
 	description.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	description.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	description.clip_text = true
 	description.set_anchors_preset(Control.PRESET_FULL_RECT)
 	description.offset_left = 0
 	description.offset_top = 0
