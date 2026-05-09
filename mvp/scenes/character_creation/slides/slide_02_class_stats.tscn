@@ -69,6 +69,11 @@ theme_override_constants/separation = 6
 layout_mode = 2
 text = "Statistiques"
 
+[node name="PointsPoolLabel" type="Label" parent="Content/MainSplit/StatsPanel" unique_id=2000000001]
+layout_mode = 2
+text = "Points restants: 18 / 18"
+add_theme_color_override/font_color = Color(0.85, 0.82, 0.72, 0.95)
+
 [node name="StatsGrid" type="GridContainer" parent="Content/MainSplit/StatsPanel" unique_id=742487701]
 layout_mode = 2
 theme_override_constants/h_separation = 8
