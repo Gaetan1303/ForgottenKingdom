@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://becbwnb422vxh"
-path="res://.godot/imported/stratege_des_ombres.webp-a3f5475d6de008c3179c1364d5e6ed5d.ctex"
+uid="uid://k50x4bwi0iow"
+path="res://.godot/imported/warlord.png-95d68434e6214f0ba18e50ee6c1f3f38.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/class_icons/stratege_des_ombres.webp"
-dest_files=["res://.godot/imported/stratege_des_ombres.webp-a3f5475d6de008c3179c1364d5e6ed5d.ctex"]
+source_file="res://assets/class_icons/warlord.png"
+dest_files=["res://.godot/imported/warlord.png-95d68434e6214f0ba18e50ee6c1f3f38.ctex"]
 
 [params]
 

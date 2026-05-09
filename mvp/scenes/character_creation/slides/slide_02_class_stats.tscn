@@ -1,12 +1,14 @@
-[gd_scene load_steps=2 format=3]
+[gd_scene load_steps=2 format=3 uid="uid://cnrcqaxrjp3so"]
 
-[ext_resource type="Script" path="res://scripts/ui/character_creation/slides/slide_02_class_stats.gd" id="1_slide"]
+[ext_resource type="Script" uid="uid://pnabbmojcynf" path="res://scripts/ui/character_creation/slides/slide_02_class_stats.gd" id="1_slide"]
 
 [node name="Slide02ClassStats" type="Control"]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 script = ExtResource("1_slide")
 
 [node name="Content" type="VBoxContainer" parent="."]
@@ -18,75 +20,118 @@ offset_left = 12.0
 offset_top = 12.0
 offset_right = -12.0
 offset_bottom = -12.0
+grow_horizontal = 2
+grow_vertical = 2
 theme_override_constants/separation = 8
 
 [node name="StepTitle" type="Label" parent="Content"]
 layout_mode = 2
-text = "Slide 2 - Classe et stats"
 theme_override_font_sizes/font_size = 18
+text = "Slide 2 - Classe et stats"
 
-[node name="ClassOption" type="OptionButton" parent="Content"]
+[node name="MainSplit" type="HSplitContainer" parent="Content"]
 layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+split_offset = 360
 
-[node name="StatsGrid" type="GridContainer" parent="Content"]
+[node name="StatsPanel" type="VBoxContainer" parent="Content/MainSplit"]
+custom_minimum_size = Vector2(260, 0)
 layout_mode = 2
-columns = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 6
+
+[node name="StatsHeader" type="Label" parent="Content/MainSplit/StatsPanel"]
+layout_mode = 2
+text = "Statistiques"
+
+[node name="StatsGrid" type="GridContainer" parent="Content/MainSplit/StatsPanel"]
+layout_mode = 2
 theme_override_constants/h_separation = 8
 theme_override_constants/v_separation = 6
+columns = 2
 
-[node name="LabelForce" type="Label" parent="Content/StatsGrid"]
+[node name="LabelForce" type="Label" parent="Content/MainSplit/StatsPanel/StatsGrid"]
 layout_mode = 2
 text = "Force"
-[node name="Stat_force" type="SpinBox" parent="Content/StatsGrid"]
+
+[node name="Stat_force" type="SpinBox" parent="Content/MainSplit/StatsPanel/StatsGrid"]
 layout_mode = 2
 min_value = 8.0
 max_value = 18.0
-step = 1.0
+value = 8.0
 
-[node name="LabelMagie" type="Label" parent="Content/StatsGrid"]
+[node name="LabelMagie" type="Label" parent="Content/MainSplit/StatsPanel/StatsGrid"]
 layout_mode = 2
 text = "Magie"
-[node name="Stat_magie" type="SpinBox" parent="Content/StatsGrid"]
+
+[node name="Stat_magie" type="SpinBox" parent="Content/MainSplit/StatsPanel/StatsGrid"]
 layout_mode = 2
 min_value = 8.0
 max_value = 18.0
-step = 1.0
+value = 8.0
 
-[node name="LabelEspionnage" type="Label" parent="Content/StatsGrid"]
+[node name="LabelEspionnage" type="Label" parent="Content/MainSplit/StatsPanel/StatsGrid"]
 layout_mode = 2
 text = "Espionnage"
-[node name="Stat_espionnage" type="SpinBox" parent="Content/StatsGrid"]
+
+[node name="Stat_espionnage" type="SpinBox" parent="Content/MainSplit/StatsPanel/StatsGrid"]
 layout_mode = 2
 min_value = 8.0
 max_value = 18.0
-step = 1.0
+value = 8.0
 
-[node name="LabelArtisanat" type="Label" parent="Content/StatsGrid"]
+[node name="LabelArtisanat" type="Label" parent="Content/MainSplit/StatsPanel/StatsGrid"]
 layout_mode = 2
 text = "Artisanat"
-[node name="Stat_artisanat" type="SpinBox" parent="Content/StatsGrid"]
+
+[node name="Stat_artisanat" type="SpinBox" parent="Content/MainSplit/StatsPanel/StatsGrid"]
 layout_mode = 2
 min_value = 8.0
 max_value = 18.0
-step = 1.0
+value = 8.0
 
-[node name="LabelDiplomatie" type="Label" parent="Content/StatsGrid"]
+[node name="LabelDiplomatie" type="Label" parent="Content/MainSplit/StatsPanel/StatsGrid"]
 layout_mode = 2
 text = "Diplomatie"
-[node name="Stat_diplomatie" type="SpinBox" parent="Content/StatsGrid"]
+
+[node name="Stat_diplomatie" type="SpinBox" parent="Content/MainSplit/StatsPanel/StatsGrid"]
 layout_mode = 2
 min_value = 8.0
 max_value = 18.0
-step = 1.0
+value = 8.0
 
-[node name="LabelCommandement" type="Label" parent="Content/StatsGrid"]
+[node name="LabelCommandement" type="Label" parent="Content/MainSplit/StatsPanel/StatsGrid"]
 layout_mode = 2
 text = "Commandement"
-[node name="Stat_commandement" type="SpinBox" parent="Content/StatsGrid"]
+
+[node name="Stat_commandement" type="SpinBox" parent="Content/MainSplit/StatsPanel/StatsGrid"]
 layout_mode = 2
 min_value = 8.0
 max_value = 18.0
-step = 1.0
+value = 8.0
+
+[node name="ClassesPanel" type="VBoxContainer" parent="Content/MainSplit"]
+custom_minimum_size = Vector2(320, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 6
+
+[node name="ClassesHeader" type="Label" parent="Content/MainSplit/ClassesPanel"]
+layout_mode = 2
+text = "Choisissez une classe"
+
+[node name="ClassesScroll" type="ScrollContainer" parent="Content/MainSplit/ClassesPanel"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+
+[node name="ClassesGrid" type="GridContainer" parent="Content/MainSplit/ClassesPanel/ClassesScroll"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 0
+columns = 3
 
 [node name="Nav" type="HBoxContainer" parent="Content"]
 layout_mode = 2
