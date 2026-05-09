@@ -1,0 +1,19 @@
+[remap]
+
+importer="csv_translation"
+type="Translation"
+uid="uid://bk2ub0a1kwvei"
+
+[deps]
+
+files=["res://data/progression/pactbound.Force.translation", "res://data/progression/pactbound.Magie.translation", "res://data/progression/pactbound.Espionnage.translation", "res://data/progression/pactbound.Artisanat.translation", "res://data/progression/pactbound.Diplomatie.translation", "res://data/progression/pactbound.Commandement.translation", "res://data/progression/pactbound.Attaque.translation", "res://data/progression/pactbound.Défense.translation", "res://data/progression/pactbound.Résistance.translation", "res://data/progression/pactbound.Initiative.translation", "res://data/progression/pactbound.Jet de Vigueur.translation", "res://data/progression/pactbound.Jet de Volonté.translation", "res://data/progression/pactbound.Jet de Réflexes.translation", "res://data/progression/pactbound.Nouveaux Talents.translation", "res://data/progression/pactbound.Lore.translation"]
+
+source_file="res://data/progression/pactbound.csv"
+dest_files=["res://data/progression/pactbound.Force.translation", "res://data/progression/pactbound.Magie.translation", "res://data/progression/pactbound.Espionnage.translation", "res://data/progression/pactbound.Artisanat.translation", "res://data/progression/pactbound.Diplomatie.translation", "res://data/progression/pactbound.Commandement.translation", "res://data/progression/pactbound.Attaque.translation", "res://data/progression/pactbound.Défense.translation", "res://data/progression/pactbound.Résistance.translation", "res://data/progression/pactbound.Initiative.translation", "res://data/progression/pactbound.Jet de Vigueur.translation", "res://data/progression/pactbound.Jet de Volonté.translation", "res://data/progression/pactbound.Jet de Réflexes.translation", "res://data/progression/pactbound.Nouveaux Talents.translation", "res://data/progression/pactbound.Lore.translation"]
+
+[params]
+
+compress=1
+delimiter=0
+unescape_keys=false
+unescape_translations=true

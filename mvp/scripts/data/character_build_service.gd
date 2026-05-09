@@ -28,8 +28,26 @@ static func compute_final_stats(
 	base = StatDefs.merge_stats(base, competence_bonus)
 	base = StatDefs.merge_stats(base, archetype_bonus)
 
-	return StatDefs.sanitize_stats(base, StatDefs.CLAN_MIN_STAT, StatDefs.CLAN_MAX_STAT, 0)
+	var final_stats := StatDefs.sanitize_stats(base, StatDefs.CLAN_MIN_STAT, StatDefs.CLAN_MAX_STAT, 0)
+	var derived_stats := build_derived_stats(final_stats)
+	for key in derived_stats.keys():
+		final_stats[key] = derived_stats[key]
+
+	return final_stats
 
 
 static func build_modifiers(raw_stats: Dictionary) -> Dictionary:
 	return StatDefs.build_modifiers(raw_stats)
+
+
+static func build_derived_stats(final_stats: Dictionary) -> Dictionary:
+	var result := {
+		"attaque": 10 + int(final_stats.get("force", 0)) + int(final_stats.get("commandement", 0)),
+		"defense": 10 + int(final_stats.get("espionnage", 0)),
+		"resistance": 10 + int(final_stats.get("magie", 0)),
+		"initiative": int(final_stats.get("espionnage", 0)),
+		"jet_vigueur": int(final_stats.get("force", 0)),
+		"jet_volonte": int(final_stats.get("magie", 0)),
+		"jet_reflexes": int(final_stats.get("espionnage", 0)),
+	}
+	return result
