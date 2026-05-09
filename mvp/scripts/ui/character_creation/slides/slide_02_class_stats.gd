@@ -254,13 +254,16 @@ func _refresh_progression_summary(class_id: String) -> void:
 
 	for row in rows:
 		var d := row as Dictionary
-		var stats_text := "ATK %d  DEF %d  RES %d" % [
+		var stats_text := "Niv %d\nATK %d\nDEF %d\nRES %d" % [
+			int(d.get("niveau", 0)),
 			int(d.get("attaque", 0)),
 			int(d.get("defense", 0)),
 			int(d.get("resistance", 0)),
 		]
+		var talents_text := str(d.get("talents", ""))
+
 		_add_progression_grid_cell(grid, stats_text, false)
-		_add_progression_grid_cell(grid, str(d.get("talents", "")), false)
+		_add_progression_grid_cell(grid, talents_text, false)
 
 
 func _clear_progression_grid(grid: GridContainer) -> void:
