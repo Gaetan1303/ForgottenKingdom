@@ -8,7 +8,7 @@ const CharacterBuildService = preload("res://scripts/data/character_build_servic
 const CARD_COLUMNS := 3
 
 var _selected_class_id: String = ""
-
+const POINTS_POOL_TOTAL: int = 18
 
 func _ready() -> void:
 	for key in StatDefs.STAT_KEYS:
@@ -16,6 +16,7 @@ func _ready() -> void:
 		if node:
 			node.value_changed.connect(Callable(self, "_on_stat_value_changed").bind(key))
 	_update_derived_stats()
+	_update_points_pool()
 
 func enter_slide(data: Resource) -> void:
 	_populate_class_cards()
@@ -223,12 +224,23 @@ func _update_derived_stats() -> void:
 	_set_derived_label("DerivedVigueurValue", int(derived.get("jet_vigueur", 0)))
 	_set_derived_label("DerivedVolonteValue", int(derived.get("jet_volonte", 0)))
 	_set_derived_label("DerivedReflexesValue", int(derived.get("jet_reflexes", 0)))
+	_update_points_pool()
 
 func _set_derived_label(node_name: String, value: int) -> void:
 	var node := find_child(node_name, true, false) as Label
 	if node:
 		node.text = str(value)
 
+func _update_points_pool() -> void:
+	var stats: Dictionary = _collect_stats()
+	var spent: int = 0
+	for key in StatDefs.STAT_KEYS:
+		var value: int = int(stats.get(key, StatDefs.CHARACTER_MIN_STAT))
+		spent += max(0, value - StatDefs.CHARACTER_MIN_STAT)
+	var remaining: int = max(0, POINTS_POOL_TOTAL - spent)
+	var label: Label = find_child("PointsPoolLabel", true, false) as Label
+	if label:
+		label.text = "Points restants: %d / %d" % [remaining, POINTS_POOL_TOTAL]
 
 func _refresh_progression_summary(class_id: String) -> void:
 	var summary := find_child("ProgressionSummary", true, false) as ScrollContainer
