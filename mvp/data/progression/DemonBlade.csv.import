@@ -1,0 +1,19 @@
+[remap]
+
+importer="csv_translation"
+type="Translation"
+uid="uid://f5cvt2fudx8b"
+
+[deps]
+
+files=["res://data/progression/DemonBlade.Force.translation", "res://data/progression/DemonBlade.Magie.translation", "res://data/progression/DemonBlade.Espionnage.translation", "res://data/progression/DemonBlade.Artisanat.translation", "res://data/progression/DemonBlade.Diplomatie.translation", "res://data/progression/DemonBlade.Commandement.translation", "res://data/progression/DemonBlade.Attaque.translation", "res://data/progression/DemonBlade.Défense.translation", "res://data/progression/DemonBlade.Résistance.translation", "res://data/progression/DemonBlade.Initiative.translation", "res://data/progression/DemonBlade.Jet de Vigueur.translation", "res://data/progression/DemonBlade.Jet de Volonté.translation", "res://data/progression/DemonBlade.Jet de Réflexes.translation", "res://data/progression/DemonBlade.Nouveaux Talents.translation", "res://data/progression/DemonBlade.Lore.translation"]
+
+source_file="res://data/progression/DemonBlade.csv"
+dest_files=["res://data/progression/DemonBlade.Force.translation", "res://data/progression/DemonBlade.Magie.translation", "res://data/progression/DemonBlade.Espionnage.translation", "res://data/progression/DemonBlade.Artisanat.translation", "res://data/progression/DemonBlade.Diplomatie.translation", "res://data/progression/DemonBlade.Commandement.translation", "res://data/progression/DemonBlade.Attaque.translation", "res://data/progression/DemonBlade.Défense.translation", "res://data/progression/DemonBlade.Résistance.translation", "res://data/progression/DemonBlade.Initiative.translation", "res://data/progression/DemonBlade.Jet de Vigueur.translation", "res://data/progression/DemonBlade.Jet de Volonté.translation", "res://data/progression/DemonBlade.Jet de Réflexes.translation", "res://data/progression/DemonBlade.Nouveaux Talents.translation", "res://data/progression/DemonBlade.Lore.translation"]
+
+[params]
+
+compress=1
+delimiter=0
+unescape_keys=false
+unescape_translations=true

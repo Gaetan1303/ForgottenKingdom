@@ -1,0 +1,29 @@
+res://scripts/data/character_build_service.gd
+res://scripts/services/character_creation_rules_service.gd
+res://scripts/tests/test_integration_feats.gd
+res://scripts/ui/character_creation/slides/slide_02_class_stats.gd
+res://scripts/autoload/game_data_loader.gd
+res://data/progression/hellranger.Force.translation
+res://data/progression/bloodsorcerer.Force.translation
+res://data/progression/echobard.Force.translation
+res://data/progression/infernalartificier.Force.translation
+res://data/progression/DemonBlade.Force.translation
+res://data/progression/berserkdemon.Force.translation
+res://data/progression/hellcaster.Force.translation
+res://data/progression/abyss paladin.Force.translation
+res://data/progression/pactbound.Force.translation
+res://data/progression/voidmonk.Force.translation
+res://data/progression/shadowfang.Force.translation
+res://data/progression/warlord.Force.translation
+res://data/progression/wilddruid.Force.translation
+res://data/progression/soulwarden.Force.translation
+res://data/progression/hellranger.Magie.translation
+res://data/progression/echobard.Magie.translation
+res://data/progression/bloodsorcerer.Magie.translation
+res://data/progression/infernalartificier.Magie.translation
+res://data/progression/berserkdemon.Magie.translation
+res://data/progression/DemonBlade.Magie.translation
+res://data/progression/abyss paladin.Magie.translation
+res://data/progression/soulwarden.Magie.translation
+res://data/progression/warlord.Magie.translation
+res://data/progression/infernalartificier.Espionnage.translation

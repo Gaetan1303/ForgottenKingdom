@@ -1,5 +1,5 @@
 63f7b34db8d8cdea90c76aacccf841ec
-::res://::1778267346
+::res://::1778300854
 godot_run.log::TextFile::-1::1777915293::0::1::::<><><>0<>0<><>::
 icon.png::CompressedTexture2D/CompressedTexture2D::7693981552901003797::1777915293::1778096396::1::::<><><>0<>0<>a67d4e17d634630f6e0670da3f4b97d6<>res://.godot/imported/icon.png-487276ed1e3a0c39cad0279d744ee560.ctex::
 ::res://assets/::1778095358
@@ -110,7 +110,7 @@ Menu principal.png::CompressedTexture2D/CompressedTexture2D::3199954789847507945
 Perso_slot.png::CompressedTexture2D/CompressedTexture2D::1344318190404703756::1777915293::1778096396::1::::<><><>0<>0<>fd34f367e47bb1a08fbb1a4ee890f5ad<>res://.godot/imported/Perso_slot.png-1aae908ebfe470e864270b8c7074632a.ctex::
 ::res://assets/ui/::1778096396
 stop_icon.png::CompressedTexture2D/CompressedTexture2D::6386462422223963666::1778095358::1778096396::1::::<><><>0<>0<>375ac99bb8eeb25c996964e724286c24<>res://.godot/imported/stop_icon.png-867ac0fb0a547b3ff0f4cbf0cefe7134.ctex::
-::res://data/::1778095605
+::res://data/::1778270114
 abilities.json::JSON::-1::1777915293::0::1::::<><><>0<>0<><>::
 character_traits.json::JSON::-1::1778095605::0::1::::<><><>0<>0<><>::
 classes.json::JSON::-1::1778257642::0::1::::<><><>0<>0<><>::
@@ -124,6 +124,231 @@ etat_clan_defaut.json::JSON::-1::1777915293::0::1::::<><><>0<>0<><>::
 evenements_jour_nuit.json::JSON::-1::1777915293::0::1::::<><><>0<>0<><>::
 ::res://data/phases/::1777915293
 config_tour.json::JSON::-1::1777915293::0::1::::<><><>0<>0<><>::
+::res://data/progression/::1778270576
+abyss paladin.Artisanat.translation::OptimizedTranslation::743734190926790337::1778270572::0::1::::<><><>0<>0<><>::
+abyss paladin.Attaque.translation::OptimizedTranslation::3625497116924426929::1778270572::0::1::::<><><>0<>0<><>::
+abyss paladin.Commandement.translation::OptimizedTranslation::6719325783423552208::1778270572::0::1::::<><><>0<>0<><>::
+abyss paladin.csv::Translation::568051413010048430::1778270567::1778270574::1::::<><><>0<>0<>47afc8548f90915865ea52a87b66cb56<>res://data/progression/abyss paladin.Force.translation<*>res://data/progression/abyss paladin.Magie.translation<*>res://data/progression/abyss paladin.Espionnage.translation<*>res://data/progression/abyss paladin.Artisanat.translation<*>res://data/progression/abyss paladin.Diplomatie.translation<*>res://data/progression/abyss paladin.Commandement.translation<*>res://data/progression/abyss paladin.Attaque.translation<*>res://data/progression/abyss paladin.Défense.translation<*>res://data/progression/abyss paladin.Résistance.translation<*>res://data/progression/abyss paladin.Initiative.translation<*>res://data/progression/abyss paladin.Jet de Vigueur.translation<*>res://data/progression/abyss paladin.Jet de Volonté.translation<*>res://data/progression/abyss paladin.Jet de Réflexes.translation<*>res://data/progression/abyss paladin.Nouveaux Talents.translation<*>res://data/progression/abyss paladin.Lore.translation::
+abyss paladin.Diplomatie.translation::OptimizedTranslation::3414435627939772163::1778270572::0::1::::<><><>0<>0<><>::
+abyss paladin.Défense.translation::OptimizedTranslation::7815043612340089043::1778270572::0::1::::<><><>0<>0<><>::
+abyss paladin.Espionnage.translation::OptimizedTranslation::4481452894965049644::1778270572::0::1::::<><><>0<>0<><>::
+abyss paladin.Force.translation::OptimizedTranslation::3324404167015418238::1778270572::0::1::::<><><>0<>0<><>::
+abyss paladin.Initiative.translation::OptimizedTranslation::1006165923829833106::1778270573::0::1::::<><><>0<>0<><>::
+abyss paladin.Jet de Réflexes.translation::OptimizedTranslation::5903529274098194634::1778270573::0::1::::<><><>0<>0<><>::
+abyss paladin.Jet de Vigueur.translation::OptimizedTranslation::2289115909049625223::1778270573::0::1::::<><><>0<>0<><>::
+abyss paladin.Jet de Volonté.translation::OptimizedTranslation::9173093838912163258::1778270573::0::1::::<><><>0<>0<><>::
+abyss paladin.Lore.translation::OptimizedTranslation::6191270534850815075::1778270574::0::1::::<><><>0<>0<><>::
+abyss paladin.Magie.translation::OptimizedTranslation::1125055753963650325::1778270572::0::1::::<><><>0<>0<><>::
+abyss paladin.Nouveaux Talents.translation::OptimizedTranslation::4779464073956273527::1778270574::0::1::::<><><>0<>0<><>::
+abyss paladin.Résistance.translation::OptimizedTranslation::6768376779804179750::1778270572::0::1::::<><><>0<>0<><>::
+berserkdemon.Artisanat.translation::OptimizedTranslation::6325054986215919465::1778270572::0::1::::<><><>0<>0<><>::
+berserkdemon.Attaque.translation::OptimizedTranslation::870563978653568482::1778270573::0::1::::<><><>0<>0<><>::
+berserkdemon.Commandement.translation::OptimizedTranslation::1517044842696276206::1778270572::0::1::::<><><>0<>0<><>::
+berserkdemon.csv::Translation::362666009558036631::1778270567::1778270574::1::::<><><>0<>0<>c8984125da3f0d766c8cc4f1c46419f1<>res://data/progression/berserkdemon.Force.translation<*>res://data/progression/berserkdemon.Magie.translation<*>res://data/progression/berserkdemon.Espionnage.translation<*>res://data/progression/berserkdemon.Artisanat.translation<*>res://data/progression/berserkdemon.Diplomatie.translation<*>res://data/progression/berserkdemon.Commandement.translation<*>res://data/progression/berserkdemon.Attaque.translation<*>res://data/progression/berserkdemon.Défense.translation<*>res://data/progression/berserkdemon.Résistance.translation<*>res://data/progression/berserkdemon.Initiative.translation<*>res://data/progression/berserkdemon.Jet de Vigueur.translation<*>res://data/progression/berserkdemon.Jet de Volonté.translation<*>res://data/progression/berserkdemon.Jet de Réflexes.translation<*>res://data/progression/berserkdemon.Nouveaux Talents.translation<*>res://data/progression/berserkdemon.Lore.translation::
+berserkdemon.Diplomatie.translation::OptimizedTranslation::2128913269518141996::1778270572::0::1::::<><><>0<>0<><>::
+berserkdemon.Défense.translation::OptimizedTranslation::3682487188887673874::1778270573::0::1::::<><><>0<>0<><>::
+berserkdemon.Espionnage.translation::OptimizedTranslation::2786367213131529980::1778270572::0::1::::<><><>0<>0<><>::
+berserkdemon.Force.translation::OptimizedTranslation::8507917558830420417::1778270572::0::1::::<><><>0<>0<><>::
+berserkdemon.Initiative.translation::OptimizedTranslation::8089920534725960609::1778270573::0::1::::<><><>0<>0<><>::
+berserkdemon.Jet de Réflexes.translation::OptimizedTranslation::7995818371792512557::1778270574::0::1::::<><><>0<>0<><>::
+berserkdemon.Jet de Vigueur.translation::OptimizedTranslation::7945962585113261873::1778270574::0::1::::<><><>0<>0<><>::
+berserkdemon.Jet de Volonté.translation::OptimizedTranslation::3074154834641731058::1778270574::0::1::::<><><>0<>0<><>::
+berserkdemon.Lore.translation::OptimizedTranslation::264688506851814187::1778270574::0::1::::<><><>0<>0<><>::
+berserkdemon.Magie.translation::OptimizedTranslation::6428659874823775107::1778270572::0::1::::<><><>0<>0<><>::
+berserkdemon.Nouveaux Talents.translation::OptimizedTranslation::4936427691072728312::1778270574::0::1::::<><><>0<>0<><>::
+berserkdemon.Résistance.translation::OptimizedTranslation::1552338238322037450::1778270573::0::1::::<><><>0<>0<><>::
+bloodsorcerer.Artisanat.translation::OptimizedTranslation::2693845349051368580::1778270572::0::1::::<><><>0<>0<><>::
+bloodsorcerer.Attaque.translation::OptimizedTranslation::8030121051706250495::1778270572::0::1::::<><><>0<>0<><>::
+bloodsorcerer.Commandement.translation::OptimizedTranslation::6901185405597425171::1778270572::0::1::::<><><>0<>0<><>::
+bloodsorcerer.csv::Translation::8203019440377373114::1778270567::1778270574::1::::<><><>0<>0<>8e42adebbdc2a7427768f0565d2c296d<>res://data/progression/bloodsorcerer.Force.translation<*>res://data/progression/bloodsorcerer.Magie.translation<*>res://data/progression/bloodsorcerer.Espionnage.translation<*>res://data/progression/bloodsorcerer.Artisanat.translation<*>res://data/progression/bloodsorcerer.Diplomatie.translation<*>res://data/progression/bloodsorcerer.Commandement.translation<*>res://data/progression/bloodsorcerer.Attaque.translation<*>res://data/progression/bloodsorcerer.Défense.translation<*>res://data/progression/bloodsorcerer.Résistance.translation<*>res://data/progression/bloodsorcerer.Initiative.translation<*>res://data/progression/bloodsorcerer.Jet de Vigueur.translation<*>res://data/progression/bloodsorcerer.Jet de Volonté.translation<*>res://data/progression/bloodsorcerer.Jet de Réflexes.translation<*>res://data/progression/bloodsorcerer.Nouveaux Talents.translation<*>res://data/progression/bloodsorcerer.Lore.translation::
+bloodsorcerer.Diplomatie.translation::OptimizedTranslation::166593785417677308::1778270572::0::1::::<><><>0<>0<><>::
+bloodsorcerer.Défense.translation::OptimizedTranslation::2196902746972211945::1778270573::0::1::::<><><>0<>0<><>::
+bloodsorcerer.Espionnage.translation::OptimizedTranslation::3236184455644109880::1778270572::0::1::::<><><>0<>0<><>::
+bloodsorcerer.Force.translation::OptimizedTranslation::6142680192447713969::1778270572::0::1::::<><><>0<>0<><>::
+bloodsorcerer.Initiative.translation::OptimizedTranslation::7614669251728466830::1778270573::0::1::::<><><>0<>0<><>::
+bloodsorcerer.Jet de Réflexes.translation::OptimizedTranslation::8382299325012085439::1778270574::0::1::::<><><>0<>0<><>::
+bloodsorcerer.Jet de Vigueur.translation::OptimizedTranslation::5147589789473757374::1778270573::0::1::::<><><>0<>0<><>::
+bloodsorcerer.Jet de Volonté.translation::OptimizedTranslation::6479170710708641749::1778270573::0::1::::<><><>0<>0<><>::
+bloodsorcerer.Lore.translation::OptimizedTranslation::4982868859601982042::1778270574::0::1::::<><><>0<>0<><>::
+bloodsorcerer.Magie.translation::OptimizedTranslation::1748525628836413324::1778270572::0::1::::<><><>0<>0<><>::
+bloodsorcerer.Nouveaux Talents.translation::OptimizedTranslation::3004699835757131563::1778270574::0::1::::<><><>0<>0<><>::
+bloodsorcerer.Résistance.translation::OptimizedTranslation::8349903178425486795::1778270573::0::1::::<><><>0<>0<><>::
+DemonBlade.Artisanat.translation::OptimizedTranslation::72672660321119060::1778270573::0::1::::<><><>0<>0<><>::
+DemonBlade.Attaque.translation::OptimizedTranslation::1814860897173247807::1778270574::0::1::::<><><>0<>0<><>::
+DemonBlade.Commandement.translation::OptimizedTranslation::2689588794947543156::1778270574::0::1::::<><><>0<>0<><>::
+DemonBlade.csv::Translation::413035526376912375::1778270567::1778270576::1::::<><><>0<>0<>208e51d3b34a05e0586f561d5fb8a7fa<>res://data/progression/DemonBlade.Force.translation<*>res://data/progression/DemonBlade.Magie.translation<*>res://data/progression/DemonBlade.Espionnage.translation<*>res://data/progression/DemonBlade.Artisanat.translation<*>res://data/progression/DemonBlade.Diplomatie.translation<*>res://data/progression/DemonBlade.Commandement.translation<*>res://data/progression/DemonBlade.Attaque.translation<*>res://data/progression/DemonBlade.Défense.translation<*>res://data/progression/DemonBlade.Résistance.translation<*>res://data/progression/DemonBlade.Initiative.translation<*>res://data/progression/DemonBlade.Jet de Vigueur.translation<*>res://data/progression/DemonBlade.Jet de Volonté.translation<*>res://data/progression/DemonBlade.Jet de Réflexes.translation<*>res://data/progression/DemonBlade.Nouveaux Talents.translation<*>res://data/progression/DemonBlade.Lore.translation::
+DemonBlade.Diplomatie.translation::OptimizedTranslation::1927644534430399056::1778270574::0::1::::<><><>0<>0<><>::
+DemonBlade.Défense.translation::OptimizedTranslation::4845695885981678118::1778270575::0::1::::<><><>0<>0<><>::
+DemonBlade.Espionnage.translation::OptimizedTranslation::6409388480196185778::1778270573::0::1::::<><><>0<>0<><>::
+DemonBlade.Force.translation::OptimizedTranslation::9211165513579102934::1778270572::0::1::::<><><>0<>0<><>::
+DemonBlade.Initiative.translation::OptimizedTranslation::4669681720176795935::1778270575::0::1::::<><><>0<>0<><>::
+DemonBlade.Jet de Réflexes.translation::OptimizedTranslation::4770114826594837146::1778270576::0::1::::<><><>0<>0<><>::
+DemonBlade.Jet de Vigueur.translation::OptimizedTranslation::1587761527559687066::1778270575::0::1::::<><><>0<>0<><>::
+DemonBlade.Jet de Volonté.translation::OptimizedTranslation::2605748179444096344::1778270575::0::1::::<><><>0<>0<><>::
+DemonBlade.Lore.translation::OptimizedTranslation::4019523733333387313::1778270576::0::1::::<><><>0<>0<><>::
+DemonBlade.Magie.translation::OptimizedTranslation::509110101612047517::1778270573::0::1::::<><><>0<>0<><>::
+DemonBlade.Nouveaux Talents.translation::OptimizedTranslation::7068152286405560351::1778270576::0::1::::<><><>0<>0<><>::
+DemonBlade.Résistance.translation::OptimizedTranslation::283166123676331151::1778270575::0::1::::<><><>0<>0<><>::
+echobard.Artisanat.translation::OptimizedTranslation::3182052392273090977::1778270572::0::1::::<><><>0<>0<><>::
+echobard.Attaque.translation::OptimizedTranslation::8216832419247352553::1778270573::0::1::::<><><>0<>0<><>::
+echobard.Commandement.translation::OptimizedTranslation::436521074143112803::1778270573::0::1::::<><><>0<>0<><>::
+echobard.csv::Translation::385950624799973974::1778270567::1778270575::1::::<><><>0<>0<>f857bf8075c7efbdd487c6bbf14a4f97<>res://data/progression/echobard.Force.translation<*>res://data/progression/echobard.Magie.translation<*>res://data/progression/echobard.Espionnage.translation<*>res://data/progression/echobard.Artisanat.translation<*>res://data/progression/echobard.Diplomatie.translation<*>res://data/progression/echobard.Commandement.translation<*>res://data/progression/echobard.Attaque.translation<*>res://data/progression/echobard.Défense.translation<*>res://data/progression/echobard.Résistance.translation<*>res://data/progression/echobard.Initiative.translation<*>res://data/progression/echobard.Jet de Vigueur.translation<*>res://data/progression/echobard.Jet de Volonté.translation<*>res://data/progression/echobard.Jet de Réflexes.translation<*>res://data/progression/echobard.Nouveaux Talents.translation<*>res://data/progression/echobard.Lore.translation::
+echobard.Diplomatie.translation::OptimizedTranslation::2639115298836101293::1778270573::0::1::::<><><>0<>0<><>::
+echobard.Défense.translation::OptimizedTranslation::1585276968043406588::1778270574::0::1::::<><><>0<>0<><>::
+echobard.Espionnage.translation::OptimizedTranslation::8872816389121462803::1778270572::0::1::::<><><>0<>0<><>::
+echobard.Force.translation::OptimizedTranslation::8125280148281123722::1778270572::0::1::::<><><>0<>0<><>::
+echobard.Initiative.translation::OptimizedTranslation::202340797885840013::1778270574::0::1::::<><><>0<>0<><>::
+echobard.Jet de Réflexes.translation::OptimizedTranslation::4168635610873853064::1778270575::0::1::::<><><>0<>0<><>::
+echobard.Jet de Vigueur.translation::OptimizedTranslation::365600276021052037::1778270574::0::1::::<><><>0<>0<><>::
+echobard.Jet de Volonté.translation::OptimizedTranslation::6087122733784636349::1778270574::0::1::::<><><>0<>0<><>::
+echobard.Lore.translation::OptimizedTranslation::774882968349575114::1778270575::0::1::::<><><>0<>0<><>::
+echobard.Magie.translation::OptimizedTranslation::1311022676797177262::1778270572::0::1::::<><><>0<>0<><>::
+echobard.Nouveaux Talents.translation::OptimizedTranslation::2992851858141509645::1778270575::0::1::::<><><>0<>0<><>::
+echobard.Résistance.translation::OptimizedTranslation::1407212825340331049::1778270574::0::1::::<><><>0<>0<><>::
+hellcaster.Artisanat.translation::OptimizedTranslation::2523184025770012961::1778270572::0::1::::<><><>0<>0<><>::
+hellcaster.Attaque.translation::OptimizedTranslation::7512398147331024022::1778270573::0::1::::<><><>0<>0<><>::
+hellcaster.Commandement.translation::OptimizedTranslation::1360872459674755782::1778270573::0::1::::<><><>0<>0<><>::
+hellcaster.csv::Translation::3261777291603200839::1778270567::1778270575::1::::<><><>0<>0<>f0c2a3927e5aaddd93e56f24fb4d3d6b<>res://data/progression/hellcaster.Force.translation<*>res://data/progression/hellcaster.Magie.translation<*>res://data/progression/hellcaster.Espionnage.translation<*>res://data/progression/hellcaster.Artisanat.translation<*>res://data/progression/hellcaster.Diplomatie.translation<*>res://data/progression/hellcaster.Commandement.translation<*>res://data/progression/hellcaster.Attaque.translation<*>res://data/progression/hellcaster.Défense.translation<*>res://data/progression/hellcaster.Résistance.translation<*>res://data/progression/hellcaster.Initiative.translation<*>res://data/progression/hellcaster.Jet de Vigueur.translation<*>res://data/progression/hellcaster.Jet de Volonté.translation<*>res://data/progression/hellcaster.Jet de Réflexes.translation<*>res://data/progression/hellcaster.Nouveaux Talents.translation<*>res://data/progression/hellcaster.Lore.translation::
+hellcaster.Diplomatie.translation::OptimizedTranslation::6239175033732344149::1778270573::0::1::::<><><>0<>0<><>::
+hellcaster.Défense.translation::OptimizedTranslation::5827287933668638275::1778270574::0::1::::<><><>0<>0<><>::
+hellcaster.Espionnage.translation::OptimizedTranslation::3064368432793310864::1778270572::0::1::::<><><>0<>0<><>::
+hellcaster.Force.translation::OptimizedTranslation::3288909878607445512::1778270572::0::1::::<><><>0<>0<><>::
+hellcaster.Initiative.translation::OptimizedTranslation::4944743655651998831::1778270574::0::1::::<><><>0<>0<><>::
+hellcaster.Jet de Réflexes.translation::OptimizedTranslation::6152841442775737362::1778270575::0::1::::<><><>0<>0<><>::
+hellcaster.Jet de Vigueur.translation::OptimizedTranslation::6443968985957578626::1778270574::0::1::::<><><>0<>0<><>::
+hellcaster.Jet de Volonté.translation::OptimizedTranslation::5377706164331123457::1778270575::0::1::::<><><>0<>0<><>::
+hellcaster.Lore.translation::OptimizedTranslation::2342770863764104267::1778270575::0::1::::<><><>0<>0<><>::
+hellcaster.Magie.translation::OptimizedTranslation::6216294497824015362::1778270572::0::1::::<><><>0<>0<><>::
+hellcaster.Nouveaux Talents.translation::OptimizedTranslation::8514035563496380493::1778270575::0::1::::<><><>0<>0<><>::
+hellcaster.Résistance.translation::OptimizedTranslation::4144549031952562305::1778270574::0::1::::<><><>0<>0<><>::
+hellranger.Artisanat.translation::OptimizedTranslation::6993413598783981354::1778270572::0::1::::<><><>0<>0<><>::
+hellranger.Attaque.translation::OptimizedTranslation::8822511360433894953::1778270572::0::1::::<><><>0<>0<><>::
+hellranger.Commandement.translation::OptimizedTranslation::8145128469029410009::1778270572::0::1::::<><><>0<>0<><>::
+hellranger.csv::Translation::7040964513780769937::1778270567::1778270574::1::::<><><>0<>0<>a8e2dc428388f2ff8a9d27c7c4d58613<>res://data/progression/hellranger.Force.translation<*>res://data/progression/hellranger.Magie.translation<*>res://data/progression/hellranger.Espionnage.translation<*>res://data/progression/hellranger.Artisanat.translation<*>res://data/progression/hellranger.Diplomatie.translation<*>res://data/progression/hellranger.Commandement.translation<*>res://data/progression/hellranger.Attaque.translation<*>res://data/progression/hellranger.Défense.translation<*>res://data/progression/hellranger.Résistance.translation<*>res://data/progression/hellranger.Initiative.translation<*>res://data/progression/hellranger.Jet de Vigueur.translation<*>res://data/progression/hellranger.Jet de Volonté.translation<*>res://data/progression/hellranger.Jet de Réflexes.translation<*>res://data/progression/hellranger.Nouveaux Talents.translation<*>res://data/progression/hellranger.Lore.translation::
+hellranger.Diplomatie.translation::OptimizedTranslation::7980153625297982696::1778270572::0::1::::<><><>0<>0<><>::
+hellranger.Défense.translation::OptimizedTranslation::4563893006323075903::1778270573::0::1::::<><><>0<>0<><>::
+hellranger.Espionnage.translation::OptimizedTranslation::8916065256095958786::1778270572::0::1::::<><><>0<>0<><>::
+hellranger.Force.translation::OptimizedTranslation::7056962538678136928::1778270572::0::1::::<><><>0<>0<><>::
+hellranger.Initiative.translation::OptimizedTranslation::5052633882790408411::1778270573::0::1::::<><><>0<>0<><>::
+hellranger.Jet de Réflexes.translation::OptimizedTranslation::7959001205073745651::1778270574::0::1::::<><><>0<>0<><>::
+hellranger.Jet de Vigueur.translation::OptimizedTranslation::4984650260630198367::1778270573::0::1::::<><><>0<>0<><>::
+hellranger.Jet de Volonté.translation::OptimizedTranslation::3787272145067072866::1778270573::0::1::::<><><>0<>0<><>::
+hellranger.Lore.translation::OptimizedTranslation::3914581640606114654::1778270574::0::1::::<><><>0<>0<><>::
+hellranger.Magie.translation::OptimizedTranslation::5750947400022338866::1778270572::0::1::::<><><>0<>0<><>::
+hellranger.Nouveaux Talents.translation::OptimizedTranslation::5266296885092294652::1778270574::0::1::::<><><>0<>0<><>::
+hellranger.Résistance.translation::OptimizedTranslation::8196242226735914433::1778270573::0::1::::<><><>0<>0<><>::
+infernalartificier.Artisanat.translation::OptimizedTranslation::1050375975363240910::1778270572::0::1::::<><><>0<>0<><>::
+infernalartificier.Attaque.translation::OptimizedTranslation::8770140248259483359::1778270573::0::1::::<><><>0<>0<><>::
+infernalartificier.Commandement.translation::OptimizedTranslation::3535051517317169407::1778270573::0::1::::<><><>0<>0<><>::
+infernalartificier.csv::Translation::5969284361387724009::1778270567::1778270575::1::::<><><>0<>0<>ad3c5fe0bd48d01222d51e9e68e60b23<>res://data/progression/infernalartificier.Force.translation<*>res://data/progression/infernalartificier.Magie.translation<*>res://data/progression/infernalartificier.Espionnage.translation<*>res://data/progression/infernalartificier.Artisanat.translation<*>res://data/progression/infernalartificier.Diplomatie.translation<*>res://data/progression/infernalartificier.Commandement.translation<*>res://data/progression/infernalartificier.Attaque.translation<*>res://data/progression/infernalartificier.Défense.translation<*>res://data/progression/infernalartificier.Résistance.translation<*>res://data/progression/infernalartificier.Initiative.translation<*>res://data/progression/infernalartificier.Jet de Vigueur.translation<*>res://data/progression/infernalartificier.Jet de Volonté.translation<*>res://data/progression/infernalartificier.Jet de Réflexes.translation<*>res://data/progression/infernalartificier.Nouveaux Talents.translation<*>res://data/progression/infernalartificier.Lore.translation::
+infernalartificier.Diplomatie.translation::OptimizedTranslation::8733882099675046259::1778270573::0::1::::<><><>0<>0<><>::
+infernalartificier.Défense.translation::OptimizedTranslation::3880249453496156552::1778270574::0::1::::<><><>0<>0<><>::
+infernalartificier.Espionnage.translation::OptimizedTranslation::8309573634636952968::1778270572::0::1::::<><><>0<>0<><>::
+infernalartificier.Force.translation::OptimizedTranslation::7087291711472007654::1778270572::0::1::::<><><>0<>0<><>::
+infernalartificier.Initiative.translation::OptimizedTranslation::1504713151185021177::1778270574::0::1::::<><><>0<>0<><>::
+infernalartificier.Jet de Réflexes.translation::OptimizedTranslation::1282682234938622890::1778270575::0::1::::<><><>0<>0<><>::
+infernalartificier.Jet de Vigueur.translation::OptimizedTranslation::2292184241845319110::1778270574::0::1::::<><><>0<>0<><>::
+infernalartificier.Jet de Volonté.translation::OptimizedTranslation::689506040712984542::1778270574::0::1::::<><><>0<>0<><>::
+infernalartificier.Lore.translation::OptimizedTranslation::7442487158076813459::1778270575::0::1::::<><><>0<>0<><>::
+infernalartificier.Magie.translation::OptimizedTranslation::46750007612024512::1778270572::0::1::::<><><>0<>0<><>::
+infernalartificier.Nouveaux Talents.translation::OptimizedTranslation::2967968411608935046::1778270575::0::1::::<><><>0<>0<><>::
+infernalartificier.Résistance.translation::OptimizedTranslation::7511560890559955314::1778270574::0::1::::<><><>0<>0<><>::
+pactbound.Artisanat.translation::OptimizedTranslation::3543982437541986164::1778270573::0::1::::<><><>0<>0<><>::
+pactbound.Attaque.translation::OptimizedTranslation::5719111421266268194::1778270573::0::1::::<><><>0<>0<><>::
+pactbound.Commandement.translation::OptimizedTranslation::4598570292028244093::1778270573::0::1::::<><><>0<>0<><>::
+pactbound.csv::Translation::3145264759361600116::1778270567::1778270575::1::::<><><>0<>0<>645a4e679404631791526f9555ba8ca9<>res://data/progression/pactbound.Force.translation<*>res://data/progression/pactbound.Magie.translation<*>res://data/progression/pactbound.Espionnage.translation<*>res://data/progression/pactbound.Artisanat.translation<*>res://data/progression/pactbound.Diplomatie.translation<*>res://data/progression/pactbound.Commandement.translation<*>res://data/progression/pactbound.Attaque.translation<*>res://data/progression/pactbound.Défense.translation<*>res://data/progression/pactbound.Résistance.translation<*>res://data/progression/pactbound.Initiative.translation<*>res://data/progression/pactbound.Jet de Vigueur.translation<*>res://data/progression/pactbound.Jet de Volonté.translation<*>res://data/progression/pactbound.Jet de Réflexes.translation<*>res://data/progression/pactbound.Nouveaux Talents.translation<*>res://data/progression/pactbound.Lore.translation::
+pactbound.Diplomatie.translation::OptimizedTranslation::4556979813951521638::1778270573::0::1::::<><><>0<>0<><>::
+pactbound.Défense.translation::OptimizedTranslation::3341777855635386882::1778270574::0::1::::<><><>0<>0<><>::
+pactbound.Espionnage.translation::OptimizedTranslation::3737196697045915520::1778270572::0::1::::<><><>0<>0<><>::
+pactbound.Force.translation::OptimizedTranslation::517676637016015087::1778270572::0::1::::<><><>0<>0<><>::
+pactbound.Initiative.translation::OptimizedTranslation::8128440759972028786::1778270574::0::1::::<><><>0<>0<><>::
+pactbound.Jet de Réflexes.translation::OptimizedTranslation::2986285208790169873::1778270575::0::1::::<><><>0<>0<><>::
+pactbound.Jet de Vigueur.translation::OptimizedTranslation::2127445922020649270::1778270574::0::1::::<><><>0<>0<><>::
+pactbound.Jet de Volonté.translation::OptimizedTranslation::6469023040781903184::1778270574::0::1::::<><><>0<>0<><>::
+pactbound.Lore.translation::OptimizedTranslation::1985698601249001873::1778270575::0::1::::<><><>0<>0<><>::
+pactbound.Magie.translation::OptimizedTranslation::6424283708061330669::1778270572::0::1::::<><><>0<>0<><>::
+pactbound.Nouveaux Talents.translation::OptimizedTranslation::1917550695564618966::1778270575::0::1::::<><><>0<>0<><>::
+pactbound.Résistance.translation::OptimizedTranslation::6886322763634488772::1778270574::0::1::::<><><>0<>0<><>::
+shadowfang.Artisanat.translation::OptimizedTranslation::1946075826445008507::1778270573::0::1::::<><><>0<>0<><>::
+shadowfang.Attaque.translation::OptimizedTranslation::5651720764313799641::1778270574::0::1::::<><><>0<>0<><>::
+shadowfang.Commandement.translation::OptimizedTranslation::6445977114529983330::1778270574::0::1::::<><><>0<>0<><>::
+shadowfang.csv::Translation::422978597747832850::1778270567::1778270576::1::::<><><>0<>0<>e9f7020a3cd17a220f8aefe26c8ec8b1<>res://data/progression/shadowfang.Force.translation<*>res://data/progression/shadowfang.Magie.translation<*>res://data/progression/shadowfang.Espionnage.translation<*>res://data/progression/shadowfang.Artisanat.translation<*>res://data/progression/shadowfang.Diplomatie.translation<*>res://data/progression/shadowfang.Commandement.translation<*>res://data/progression/shadowfang.Attaque.translation<*>res://data/progression/shadowfang.Défense.translation<*>res://data/progression/shadowfang.Résistance.translation<*>res://data/progression/shadowfang.Initiative.translation<*>res://data/progression/shadowfang.Jet de Vigueur.translation<*>res://data/progression/shadowfang.Jet de Volonté.translation<*>res://data/progression/shadowfang.Jet de Réflexes.translation<*>res://data/progression/shadowfang.Nouveaux Talents.translation<*>res://data/progression/shadowfang.Lore.translation::
+shadowfang.Diplomatie.translation::OptimizedTranslation::6841525287935531479::1778270573::0::1::::<><><>0<>0<><>::
+shadowfang.Défense.translation::OptimizedTranslation::3505918996206817801::1778270574::0::1::::<><><>0<>0<><>::
+shadowfang.Espionnage.translation::OptimizedTranslation::6582706604475715414::1778270572::0::1::::<><><>0<>0<><>::
+shadowfang.Force.translation::OptimizedTranslation::3698496629672018141::1778270572::0::1::::<><><>0<>0<><>::
+shadowfang.Initiative.translation::OptimizedTranslation::2284689130430748325::1778270575::0::1::::<><><>0<>0<><>::
+shadowfang.Jet de Réflexes.translation::OptimizedTranslation::7906284172395463978::1778270575::0::1::::<><><>0<>0<><>::
+shadowfang.Jet de Vigueur.translation::OptimizedTranslation::7797096969012108734::1778270575::0::1::::<><><>0<>0<><>::
+shadowfang.Jet de Volonté.translation::OptimizedTranslation::1231072634466567419::1778270575::0::1::::<><><>0<>0<><>::
+shadowfang.Lore.translation::OptimizedTranslation::3301975410260223412::1778270576::0::1::::<><><>0<>0<><>::
+shadowfang.Magie.translation::OptimizedTranslation::4248201057268648944::1778270572::0::1::::<><><>0<>0<><>::
+shadowfang.Nouveaux Talents.translation::OptimizedTranslation::7441299948855659988::1778270575::0::1::::<><><>0<>0<><>::
+shadowfang.Résistance.translation::OptimizedTranslation::50916229183808353::1778270575::0::1::::<><><>0<>0<><>::
+soulwarden.Artisanat.translation::OptimizedTranslation::770759945200758037::1778270573::0::1::::<><><>0<>0<><>::
+soulwarden.Attaque.translation::OptimizedTranslation::1557505828574006083::1778270573::0::1::::<><><>0<>0<><>::
+soulwarden.Commandement.translation::OptimizedTranslation::574799388197001700::1778270573::0::1::::<><><>0<>0<><>::
+soulwarden.csv::Translation::1773366786456007200::1778270567::1778270575::1::::<><><>0<>0<>02a83aa58cce2f4f1da632b8e58e5956<>res://data/progression/soulwarden.Force.translation<*>res://data/progression/soulwarden.Magie.translation<*>res://data/progression/soulwarden.Espionnage.translation<*>res://data/progression/soulwarden.Artisanat.translation<*>res://data/progression/soulwarden.Diplomatie.translation<*>res://data/progression/soulwarden.Commandement.translation<*>res://data/progression/soulwarden.Attaque.translation<*>res://data/progression/soulwarden.Défense.translation<*>res://data/progression/soulwarden.Résistance.translation<*>res://data/progression/soulwarden.Initiative.translation<*>res://data/progression/soulwarden.Jet de Vigueur.translation<*>res://data/progression/soulwarden.Jet de Volonté.translation<*>res://data/progression/soulwarden.Jet de Réflexes.translation<*>res://data/progression/soulwarden.Nouveaux Talents.translation<*>res://data/progression/soulwarden.Lore.translation::
+soulwarden.Diplomatie.translation::OptimizedTranslation::2409632783273961607::1778270573::0::1::::<><><>0<>0<><>::
+soulwarden.Défense.translation::OptimizedTranslation::4545401176830615681::1778270574::0::1::::<><><>0<>0<><>::
+soulwarden.Espionnage.translation::OptimizedTranslation::6993437242108797553::1778270573::0::1::::<><><>0<>0<><>::
+soulwarden.Force.translation::OptimizedTranslation::2833860806139116351::1778270572::0::1::::<><><>0<>0<><>::
+soulwarden.Initiative.translation::OptimizedTranslation::4595168562752405972::1778270574::0::1::::<><><>0<>0<><>::
+soulwarden.Jet de Réflexes.translation::OptimizedTranslation::4178873660705434636::1778270575::0::1::::<><><>0<>0<><>::
+soulwarden.Jet de Vigueur.translation::OptimizedTranslation::9026861478410774817::1778270574::0::1::::<><><>0<>0<><>::
+soulwarden.Jet de Volonté.translation::OptimizedTranslation::7281663159177334587::1778270574::0::1::::<><><>0<>0<><>::
+soulwarden.Lore.translation::OptimizedTranslation::1322105976759899752::1778270575::0::1::::<><><>0<>0<><>::
+soulwarden.Magie.translation::OptimizedTranslation::7553217493161240074::1778270573::0::1::::<><><>0<>0<><>::
+soulwarden.Nouveaux Talents.translation::OptimizedTranslation::1472439189198900603::1778270575::0::1::::<><><>0<>0<><>::
+soulwarden.Résistance.translation::OptimizedTranslation::1066594896030731473::1778270574::0::1::::<><><>0<>0<><>::
+voidmonk.Artisanat.translation::OptimizedTranslation::2242776011506807009::1778270572::0::1::::<><><>0<>0<><>::
+voidmonk.Attaque.translation::OptimizedTranslation::3100502893475151290::1778270573::0::1::::<><><>0<>0<><>::
+voidmonk.Commandement.translation::OptimizedTranslation::358082494447750662::1778270573::0::1::::<><><>0<>0<><>::
+voidmonk.csv::Translation::8118103907471873538::1778270567::1778270574::1::::<><><>0<>0<>8f9bd61a71e8fa0211b3c7444399d030<>res://data/progression/voidmonk.Force.translation<*>res://data/progression/voidmonk.Magie.translation<*>res://data/progression/voidmonk.Espionnage.translation<*>res://data/progression/voidmonk.Artisanat.translation<*>res://data/progression/voidmonk.Diplomatie.translation<*>res://data/progression/voidmonk.Commandement.translation<*>res://data/progression/voidmonk.Attaque.translation<*>res://data/progression/voidmonk.Défense.translation<*>res://data/progression/voidmonk.Résistance.translation<*>res://data/progression/voidmonk.Initiative.translation<*>res://data/progression/voidmonk.Jet de Vigueur.translation<*>res://data/progression/voidmonk.Jet de Volonté.translation<*>res://data/progression/voidmonk.Jet de Réflexes.translation<*>res://data/progression/voidmonk.Nouveaux Talents.translation<*>res://data/progression/voidmonk.Lore.translation::
+voidmonk.Diplomatie.translation::OptimizedTranslation::2549924745595909136::1778270573::0::1::::<><><>0<>0<><>::
+voidmonk.Défense.translation::OptimizedTranslation::7274274556912645753::1778270573::0::1::::<><><>0<>0<><>::
+voidmonk.Espionnage.translation::OptimizedTranslation::4942044246541623383::1778270572::0::1::::<><><>0<>0<><>::
+voidmonk.Force.translation::OptimizedTranslation::8082909222574165919::1778270572::0::1::::<><><>0<>0<><>::
+voidmonk.Initiative.translation::OptimizedTranslation::2762259547438380416::1778270574::0::1::::<><><>0<>0<><>::
+voidmonk.Jet de Réflexes.translation::OptimizedTranslation::4666636254222846338::1778270574::0::1::::<><><>0<>0<><>::
+voidmonk.Jet de Vigueur.translation::OptimizedTranslation::4590830210667378817::1778270574::0::1::::<><><>0<>0<><>::
+voidmonk.Jet de Volonté.translation::OptimizedTranslation::2060425352156106138::1778270574::0::1::::<><><>0<>0<><>::
+voidmonk.Lore.translation::OptimizedTranslation::827939124061568540::1778270574::0::1::::<><><>0<>0<><>::
+voidmonk.Magie.translation::OptimizedTranslation::1147087765353381565::1778270572::0::1::::<><><>0<>0<><>::
+voidmonk.Nouveaux Talents.translation::OptimizedTranslation::27992371698610439::1778270574::0::1::::<><><>0<>0<><>::
+voidmonk.Résistance.translation::OptimizedTranslation::8369571570474964480::1778270573::0::1::::<><><>0<>0<><>::
+warlord.Artisanat.translation::OptimizedTranslation::5893822595229010592::1778270573::0::1::::<><><>0<>0<><>::
+warlord.Attaque.translation::OptimizedTranslation::4110867825150939857::1778270574::0::1::::<><><>0<>0<><>::
+warlord.Commandement.translation::OptimizedTranslation::817592291187139424::1778270574::0::1::::<><><>0<>0<><>::
+warlord.csv::Translation::3693113225280103392::1778270567::1778270576::1::::<><><>0<>0<>4936afaa8e90fca192c54b8063f8e183<>res://data/progression/warlord.Force.translation<*>res://data/progression/warlord.Magie.translation<*>res://data/progression/warlord.Espionnage.translation<*>res://data/progression/warlord.Artisanat.translation<*>res://data/progression/warlord.Diplomatie.translation<*>res://data/progression/warlord.Commandement.translation<*>res://data/progression/warlord.Attaque.translation<*>res://data/progression/warlord.Défense.translation<*>res://data/progression/warlord.Résistance.translation<*>res://data/progression/warlord.Initiative.translation<*>res://data/progression/warlord.Jet de Vigueur.translation<*>res://data/progression/warlord.Jet de Volonté.translation<*>res://data/progression/warlord.Jet de Réflexes.translation<*>res://data/progression/warlord.Nouveaux Talents.translation<*>res://data/progression/warlord.Lore.translation::
+warlord.Diplomatie.translation::OptimizedTranslation::6500590526395980012::1778270574::0::1::::<><><>0<>0<><>::
+warlord.Défense.translation::OptimizedTranslation::4306030469508938095::1778270574::0::1::::<><><>0<>0<><>::
+warlord.Espionnage.translation::OptimizedTranslation::814867064692393670::1778270573::0::1::::<><><>0<>0<><>::
+warlord.Force.translation::OptimizedTranslation::5292684881743114293::1778270572::0::1::::<><><>0<>0<><>::
+warlord.Initiative.translation::OptimizedTranslation::7179733727961745680::1778270575::0::1::::<><><>0<>0<><>::
+warlord.Jet de Réflexes.translation::OptimizedTranslation::1360406675102812699::1778270575::0::1::::<><><>0<>0<><>::
+warlord.Jet de Vigueur.translation::OptimizedTranslation::617549043453343714::1778270575::0::1::::<><><>0<>0<><>::
+warlord.Jet de Volonté.translation::OptimizedTranslation::2578932384130948951::1778270575::0::1::::<><><>0<>0<><>::
+warlord.Lore.translation::OptimizedTranslation::8984838480344146083::1778270576::0::1::::<><><>0<>0<><>::
+warlord.Magie.translation::OptimizedTranslation::8791232297419618401::1778270573::0::1::::<><><>0<>0<><>::
+warlord.Nouveaux Talents.translation::OptimizedTranslation::2242648771850246204::1778270576::0::1::::<><><>0<>0<><>::
+warlord.Résistance.translation::OptimizedTranslation::3618886015572748652::1778270574::0::1::::<><><>0<>0<><>::
+wilddruid.Artisanat.translation::OptimizedTranslation::7691026997517294232::1778270573::0::1::::<><><>0<>0<><>::
+wilddruid.Attaque.translation::OptimizedTranslation::3566326997182140001::1778270573::0::1::::<><><>0<>0<><>::
+wilddruid.Commandement.translation::OptimizedTranslation::6056306605401132255::1778270573::0::1::::<><><>0<>0<><>::
+wilddruid.csv::Translation::1906412987786976247::1778270567::1778270575::1::::<><><>0<>0<>825c5a5fce5a9c137d8c6a19e0955363<>res://data/progression/wilddruid.Force.translation<*>res://data/progression/wilddruid.Magie.translation<*>res://data/progression/wilddruid.Espionnage.translation<*>res://data/progression/wilddruid.Artisanat.translation<*>res://data/progression/wilddruid.Diplomatie.translation<*>res://data/progression/wilddruid.Commandement.translation<*>res://data/progression/wilddruid.Attaque.translation<*>res://data/progression/wilddruid.Défense.translation<*>res://data/progression/wilddruid.Résistance.translation<*>res://data/progression/wilddruid.Initiative.translation<*>res://data/progression/wilddruid.Jet de Vigueur.translation<*>res://data/progression/wilddruid.Jet de Volonté.translation<*>res://data/progression/wilddruid.Jet de Réflexes.translation<*>res://data/progression/wilddruid.Nouveaux Talents.translation<*>res://data/progression/wilddruid.Lore.translation::
+wilddruid.Diplomatie.translation::OptimizedTranslation::2439015259346077344::1778270573::0::1::::<><><>0<>0<><>::
+wilddruid.Défense.translation::OptimizedTranslation::8337041611583650782::1778270573::0::1::::<><><>0<>0<><>::
+wilddruid.Espionnage.translation::OptimizedTranslation::7229123851706675849::1778270572::0::1::::<><><>0<>0<><>::
+wilddruid.Force.translation::OptimizedTranslation::2809686184320595368::1778270572::0::1::::<><><>0<>0<><>::
+wilddruid.Initiative.translation::OptimizedTranslation::3562191845305066682::1778270574::0::1::::<><><>0<>0<><>::
+wilddruid.Jet de Réflexes.translation::OptimizedTranslation::7286967900703469222::1778270574::0::1::::<><><>0<>0<><>::
+wilddruid.Jet de Vigueur.translation::OptimizedTranslation::8045008093715333880::1778270574::0::1::::<><><>0<>0<><>::
+wilddruid.Jet de Volonté.translation::OptimizedTranslation::6221399709191040130::1778270574::0::1::::<><><>0<>0<><>::
+wilddruid.Lore.translation::OptimizedTranslation::3175271414718146428::1778270575::0::1::::<><><>0<>0<><>::
+wilddruid.Magie.translation::OptimizedTranslation::3359292154741252118::1778270572::0::1::::<><><>0<>0<><>::
+wilddruid.Nouveaux Talents.translation::OptimizedTranslation::2001336125265456726::1778270575::0::1::::<><><>0<>0<><>::
+wilddruid.Résistance.translation::OptimizedTranslation::8972154017136483590::1778270573::0::1::::<><><>0<>0<><>::
 ::res://godot_presets/::1777915293
 export_presets.cfg::TextFile::-1::1777915293::0::1::::<><><>0<>0<><>::
 README.md::TextFile::-1::1777915293::0::1::::<><><>0<>0<><>::
@@ -151,7 +376,7 @@ slot_select.tscn::PackedScene::-1::1777915293::0::1::::<><><>0<>0<><>::res://scr
 character_creation_screen.tscn::PackedScene::5168029252052578963::1778095358::0::1::::<><><>0<>0<><>::uid://cqebpwo2iwnsc::::res://scripts/ui/character_creation/character_creation_screen.gd
 ::res://scenes/character_creation/slides/::1778256352
 slide_01_basic_info.tscn::PackedScene::3944653406850043424::1778095605::0::1::::<><><>0<>0<><>::uid://c0re4ykonkqos::::res://scripts/ui/character_creation/slides/slide_01_basic_info.gd<>uid://bqj4mc8sm7qiw::::res://scripts/ui/character_creation/portrait_payload.gd
-slide_02_class_stats.tscn::PackedScene::5720540799503203914::1778256352::0::1::::<><><>0<>0<><>::uid://pnabbmojcynf::::res://scripts/ui/character_creation/slides/slide_02_class_stats.gd
+slide_02_class_stats.tscn::PackedScene::5720540799503203914::1778274312::0::1::::<><><>0<>0<><>::uid://pnabbmojcynf::::res://scripts/ui/character_creation/slides/slide_02_class_stats.gd
 slide_03_feats_abilities.tscn::PackedScene::-1::1778095358::0::1::::<><><>0<>0<><>::res://scripts/ui/character_creation/slides/slide_03_feats_abilities.gd
 slide_04_items_equipment.tscn::PackedScene::-1::1778095358::0::1::::<><><>0<>0<><>::res://scripts/ui/character_creation/slides/slide_04_items_equipment.gd
 slide_05_review_confirm.tscn::PackedScene::-1::1778095358::0::1::::<><><>0<>0<><>::res://scripts/ui/character_creation/slides/slide_05_review_confirm.gd
@@ -165,13 +390,13 @@ audio_manager.gd::GDScript::6671541829785670071::1777915293::0::1::::<>Node<><>0
 chapter_loader.gd::GDScript::3887905452162635738::1777915293::0::1::::<>Node<><>0<>0<><>::
 clan_manager.gd::GDScript::3295896170733529252::1777915293::0::1::::<>Node<><>0<>0<><>::
 dungeon_generator.gd::GDScript::5211921604465914368::1777915293::0::1::::<>Node<><>0<>0<><>::
-game_data_loader.gd::GDScript::4147440705837778110::1777915293::0::1::::<>Node<><>0<>0<><>::
+game_data_loader.gd::GDScript::4147440705837778110::1778271532::0::1::::<>Node<><>0<>0<><>::
 game_manager.gd::GDScript::6006168523582782734::1778095358::0::1::::<>Node<><>0<>0<><>::
 save_system.gd::GDScript::5567531196030503482::1777915293::0::1::::<>Node<><>0<>0<><>::
 tutorial_director.gd::GDScript::3814134237011601126::1777915293::0::1::::<>Node<><>0<>0<><>::
 ::res://scripts/data/::1777915293
 character.gd::GDScript::3683439515373597975::1777915293::0::1::::Character<>RefCounted<><>0<>0<><>::
-character_build_service.gd::GDScript::8806387336582622703::1777915293::0::1::::CharacterBuildService<>RefCounted<><>0<>0<><>::
+character_build_service.gd::GDScript::8806387336582622703::1778268391::0::1::::CharacterBuildService<>RefCounted<><>0<>0<><>::
 stat_defs.gd::GDScript::1256800416473449640::1777915293::0::1::::StatDefs<>RefCounted<><>0<>0<><>::
 yaml_to_json_builder.gd::GDScript::8471270710098018884::1777915293::0::1::::<>EditorScript<><>0<>1<><>::
 ::res://scripts/factory/::1777915293
@@ -184,7 +409,7 @@ soir_state.gd::GDScript::8128513532824515246::1777915293::0::1::::SoirState<>Sta
 ::res://scripts/services/::1778095358
 character_creation_application_service.gd::GDScript::2941499715739155977::1778095358::0::1::::CharacterCreationApplicationService<>RefCounted<><>0<>0<><>::
 character_creation_context.gd::GDScript::9148686013786720808::1778095358::0::1::::CharacterCreationContext<>RefCounted<><>0<>0<><>::
-character_creation_rules_service.gd::GDScript::6087170081565841879::1777915293::0::1::::CharacterCreationRulesService<>RefCounted<><>0<>0<><>::
+character_creation_rules_service.gd::GDScript::6087170081565841879::1778268391::0::1::::CharacterCreationRulesService<>RefCounted<><>0<>0<><>::
 character_traits_service.gd::GDScript::665885035851855300::1777915293::0::1::::CharacterTraitsService<>RefCounted<><>0<>0<><>::
 date_time_formatter.gd::GDScript::730031214146468889::1777915293::0::1::::DateTimeFormatter<>RefCounted<><>0<>0<><>::
 json_persistence_service.gd::GDScript::4850053080026888670::1777915293::0::1::::JsonPersistenceService<>RefCounted<><>0<>0<><>::
@@ -210,7 +435,7 @@ smoke_pnj_management.gd::GDScript::5344171052264304155::1777915293::0::1::::<>Sc
 smoke_stats.gd::GDScript::6069461924964678048::1777915293::0::1::::<>SceneTree<><>0<>0<><>::
 test_creation_headless.gd::GDScript::7956957754479064155::1777915293::0::1::::<>SceneTree<><>0<>0<><>::
 test_feats_bonus.gd::GDScript::2760795756392489409::1777915293::0::1::::<>SceneTree<><>0<>0<><>::
-test_integration_feats.gd::GDScript::3462551697261200473::1777915293::0::1::::<>SceneTree<><>0<>0<><>::
+test_integration_feats.gd::GDScript::3462551697261200473::1778268391::0::1::::<>SceneTree<><>0<>0<><>::
 test_persistence_effects.gd::GDScript::8480730694514999253::1777915293::0::1::::<>SceneTree<><>0<>0<><>::
 test_portrait_signature_loader.gd::GDScript::3648537201542311114::1777915293::0::1::::<>SceneTree<><>0<>0<><>::
 test_recruter_pnj_scenario.gd::GDScript::3207811576566229612::1777915293::0::1::::<>SceneTree<><>0<>0<><>::
@@ -248,7 +473,7 @@ portrait_payload.gd::GDScript::3529803960865639590::1778095605::0::1::::Portrait
 ::res://scripts/ui/character_creation/slides/::1778256352
 creation_slide_base.gd::GDScript::1651168846071699915::1778095358::0::1::::CreationSlideBase<>Control<><>0<>0<><>::
 slide_01_basic_info.gd::GDScript::6562952812812663694::1778100404::0::1::::Slide01BasicInfo<>CreationSlideBase<><>0<>0<><>::
-slide_02_class_stats.gd::GDScript::1079671422876400639::1778267285::0::1::::Slide02ClassStats<>CreationSlideBase<><>0<>0<><>::
+slide_02_class_stats.gd::GDScript::1079671422876400639::1778274314::0::1::::Slide02ClassStats<>CreationSlideBase<><>0<>0<><>::
 slide_03_feats_abilities.gd::GDScript::3121204056445533625::1778095358::0::1::::Slide03FeatsAbilities<>CreationSlideBase<><>0<>0<><>::
 slide_04_items_equipment.gd::GDScript::8620546689724905449::1778095358::0::1::::Slide04ItemsEquipment<>CreationSlideBase<><>0<>0<><>::
 slide_05_review_confirm.gd::GDScript::1382428399754942310::1778095358::0::1::::Slide05ReviewConfirm<>CreationSlideBase<><>0<>0<><>::

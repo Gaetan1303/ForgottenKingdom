@@ -1,0 +1,19 @@
+[remap]
+
+importer="csv_translation"
+type="Translation"
+uid="uid://2fqlw7e7qg4f"
+
+[deps]
+
+files=["res://data/progression/wilddruid.Force.translation", "res://data/progression/wilddruid.Magie.translation", "res://data/progression/wilddruid.Espionnage.translation", "res://data/progression/wilddruid.Artisanat.translation", "res://data/progression/wilddruid.Diplomatie.translation", "res://data/progression/wilddruid.Commandement.translation", "res://data/progression/wilddruid.Attaque.translation", "res://data/progression/wilddruid.Défense.translation", "res://data/progression/wilddruid.Résistance.translation", "res://data/progression/wilddruid.Initiative.translation", "res://data/progression/wilddruid.Jet de Vigueur.translation", "res://data/progression/wilddruid.Jet de Volonté.translation", "res://data/progression/wilddruid.Jet de Réflexes.translation", "res://data/progression/wilddruid.Nouveaux Talents.translation", "res://data/progression/wilddruid.Lore.translation"]
+
+source_file="res://data/progression/wilddruid.csv"
+dest_files=["res://data/progression/wilddruid.Force.translation", "res://data/progression/wilddruid.Magie.translation", "res://data/progression/wilddruid.Espionnage.translation", "res://data/progression/wilddruid.Artisanat.translation", "res://data/progression/wilddruid.Diplomatie.translation", "res://data/progression/wilddruid.Commandement.translation", "res://data/progression/wilddruid.Attaque.translation", "res://data/progression/wilddruid.Défense.translation", "res://data/progression/wilddruid.Résistance.translation", "res://data/progression/wilddruid.Initiative.translation", "res://data/progression/wilddruid.Jet de Vigueur.translation", "res://data/progression/wilddruid.Jet de Volonté.translation", "res://data/progression/wilddruid.Jet de Réflexes.translation", "res://data/progression/wilddruid.Nouveaux Talents.translation", "res://data/progression/wilddruid.Lore.translation"]
+
+[params]
+
+compress=1
+delimiter=0
+unescape_keys=false
+unescape_translations=true

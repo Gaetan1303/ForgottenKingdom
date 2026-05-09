@@ -1,0 +1,11 @@
+﻿Niveau,Force,Magie,Espionnage,Artisanat,Diplomatie,Commandement,Attaque,Défense,Résistance,Initiative,Jet de Vigueur,Jet de Volonté,Jet de Réflexes,Nouveaux Talents,Lore
+1,10,8,10,8,8,8,10,10,8,10,10,10,10,void_step, Enchaînement du néant,"Tu te déplaces comme si le temps n’avait pas de prise sur toi."
+2,11,8,11,8,8,8,11,10,8,11,11,10,11,+1 Espionnage, Coup du vide (+1 Attaque),"Tes attaques traversent les défenses comme si elles n’existaient pas."
+3,12,8,12,8,8,8,12,11,9,12,12,11,12,Enchaînement du néant +1,"Tes enchaînements deviennent plus fluides."
+4,13,8,13,8,8,8,13,11,9,13,13,11,13,Équilibre parfait (+1 Défense),"Tu es aussi solide que le vide lui-même."
+5,14,8,14,8,8,8,14,12,10,14,14,12,14,Frappe du néant (Ignore 30% de la défense),"Tes coups frappent là où il n’y a rien."
+6,15,9,15,8,8,8,15,12,10,15,15,12,15,Maîtrise du vide (+1 Initiative),"Tu vois les failles dans les défenses ennemies."
+7,16,9,16,8,8,9,16,13,11,16,16,13,16,Pas du vide (Esquive automatique 1x/combat),"Tu disparais et réapparaît comme une ombre."
+8,17,10,17,8,8,9,17,13,11,17,17,13,17,Attaque foudroyante (2 attaques par tour),"Tu frappes plus vite que l’œil ne peut suivre."
+9,18,10,18,8,8,10,18,14,12,18,18,14,18,Harmonie du néant (+2 Espionnage),"Tu deviens un avec le vide."
+10,19,11,19,9,8,10,20,15,13,19,19,15,19,Maître du vide (Immunité aux effets de zone),"Le vide ne peut plus te toucher."
