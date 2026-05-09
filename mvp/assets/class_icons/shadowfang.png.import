@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://f2lbr8ig07ga"
-path="res://.godot/imported/chevalier_sombre.webp-2d041a14d4cba8e4cd0ac8cc26dd4015.ctex"
+uid="uid://dvtq8oddx88p7"
+path="res://.godot/imported/shadowfang.png-0b0be62c598afe79b1d2166f2ed001a3.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/class_icons/chevalier_sombre.webp"
-dest_files=["res://.godot/imported/chevalier_sombre.webp-2d041a14d4cba8e4cd0ac8cc26dd4015.ctex"]
+source_file="res://assets/class_icons/shadowfang.png"
+dest_files=["res://.godot/imported/shadowfang.png-0b0be62c598afe79b1d2166f2ed001a3.ctex"]
 
 [params]
 
