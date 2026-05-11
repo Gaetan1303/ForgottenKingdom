@@ -1,15 +1,17 @@
-[gd_scene load_steps=2 format=3]
+[gd_scene format=3 uid="uid://ctnuhnh8sl06b"]
 
-[ext_resource type="Script" path="res://scripts/ui/character_creation/slides/slide_03_feats_abilities.gd" id="1_slide"]
+[ext_resource type="Script" uid="uid://bkp61lwt3ro0h" path="res://scripts/ui/character_creation/slides/slide_03_feats_abilities.gd" id="1_slide"]
 
-[node name="Slide03FeatsAbilities" type="Control"]
+[node name="Slide03FeatsAbilities" type="Control" unique_id=571907629]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 script = ExtResource("1_slide")
 
-[node name="Content" type="VBoxContainer" parent="."]
+[node name="Content" type="VBoxContainer" parent="." unique_id=420669808]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -18,43 +20,54 @@ offset_left = 12.0
 offset_top = 12.0
 offset_right = -12.0
 offset_bottom = -12.0
+grow_horizontal = 2
+grow_vertical = 2
 theme_override_constants/separation = 8
 
-[node name="StepTitle" type="Label" parent="Content"]
+[node name="StepTitle" type="Label" parent="Content" unique_id=1452183111]
 layout_mode = 2
-text = "Slide 3 - Dons et capacites"
 theme_override_font_sizes/font_size = 18
+text = "Slide 3 - Dons et capacites"
 
-[node name="FeatLabel" type="Label" parent="Content"]
+[node name="CardScroll" type="ScrollContainer" parent="Content" unique_id=812345678]
 layout_mode = 2
-text = "Selectionnez jusqu'a 2 dons"
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_minimum_size = Vector2(0, 240)
+scroll_horizontal_enabled = false
+scroll_vertical_enabled = true
 
-[node name="FeatList" type="ItemList" parent="Content"]
+[node name="CardScrollContent" type="VBoxContainer" parent="Content/CardScroll" unique_id=812345679]
 layout_mode = 2
-select_mode = 2
-custom_minimum_size = Vector2(0, 160)
+size_flags_horizontal = 3
+size_flags_vertical = 0
+theme_override_constants/separation = 8
 
-[node name="AbilityLabel" type="Label" parent="Content"]
+[node name="FeatCardGrid" type="GridContainer" parent="Content/CardScroll/CardScrollContent" unique_id=686439571]
+custom_minimum_size = Vector2(0, 220)
 layout_mode = 2
-text = "Selectionnez une competence principale"
+size_flags_horizontal = 3
+size_flags_vertical = 0
+columns = 2
 
-[node name="AbilityList" type="ItemList" parent="Content"]
+[node name="AbilityCardGrid" type="GridContainer" parent="Content/CardScroll/CardScrollContent" unique_id=1690334784]
+custom_minimum_size = Vector2(0, 220)
 layout_mode = 2
-select_mode = 0
-custom_minimum_size = Vector2(0, 120)
+size_flags_horizontal = 3
+size_flags_vertical = 0
+columns = 2
 
-[node name="Nav" type="HBoxContainer" parent="Content"]
+[node name="Nav" type="HBoxContainer" parent="Content" unique_id=1604090609]
 layout_mode = 2
 alignment = 2
 
-[node name="BtnPrev" type="Button" parent="Content/Nav"]
+[node name="BtnPrev" type="Button" parent="Content/Nav" unique_id=310657000]
 layout_mode = 2
 text = "Precedent"
 
-[node name="BtnNext" type="Button" parent="Content/Nav"]
+[node name="BtnNext" type="Button" parent="Content/Nav" unique_id=185586417]
 layout_mode = 2
 text = "Suivant"
 
 [connection signal="pressed" from="Content/Nav/BtnPrev" to="." method="request_previous"]
 [connection signal="pressed" from="Content/Nav/BtnNext" to="." method="request_next"]
-[connection signal="item_selected" from="Content/AbilityList" to="." method="_on_ability_selected"]
