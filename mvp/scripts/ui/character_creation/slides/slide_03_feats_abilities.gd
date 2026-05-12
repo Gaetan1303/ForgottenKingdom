@@ -71,7 +71,8 @@ func _create_card(kind: String, id: String, data: Dictionary) -> Button:
 	button.text = ""
 	button.name = "%sCard_%s" % [kind, id]
 	button.focus_mode = Control.FOCUS_NONE
-	button.custom_minimum_size = Vector2(420, 300)
+	# reduce card width so more cards fit per row (3 columns)
+	button.custom_minimum_size = Vector2(260, 280)
 	button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	button.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	button.connect("toggled", Callable(self, "_on_card_toggled").bind(kind, id))
@@ -85,7 +86,8 @@ func _create_card(kind: String, id: String, data: Dictionary) -> Button:
 	layout.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	layout.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	# ensure inner layout reserves enough horizontal room for card content
-	layout.custom_minimum_size = Vector2(360, 0)
+	# use a smaller minimum to allow multiple cards per row
+	layout.custom_minimum_size = Vector2(240, 0)
 	layout.add_theme_constant_override("separation", 6)
 	button.add_child(layout)
 
@@ -103,7 +105,7 @@ func _create_card(kind: String, id: String, data: Dictionary) -> Button:
 	info_box.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	info_box.size_flags_vertical = Control.SIZE_SHRINK_BEGIN
 	# give the info row a sensible minimum width so labels don't pack to the left
-	info_box.custom_minimum_size = Vector2(360, 28)
+	info_box.custom_minimum_size = Vector2(240, 28)
 	info_box.add_theme_constant_override("separation", 8)
 	layout.add_child(info_box)
 
@@ -139,8 +141,8 @@ func _create_card(kind: String, id: String, data: Dictionary) -> Button:
 	layout.add_child(effect)
 
 	var description_box = Control.new()
-	# make the description area wider so text wraps across the card width
-	description_box.custom_minimum_size = Vector2(360, 180)
+	# make the description area wide enough for the reduced card width
+	description_box.custom_minimum_size = Vector2(240, 150)
 	description_box.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	description_box.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	description_box.clip_contents = true
