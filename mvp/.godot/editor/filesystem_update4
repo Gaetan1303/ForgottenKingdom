@@ -1,2 +1,4 @@
 res://scripts/ui/character_creation/slides/slide_02_class_stats.gd
 res://scripts/ui/character_creation/slides/slide_03_feats_abilities.gd
+res://scripts/data/stat_defs.gd
+res://scripts/services/character_creation_rules_service.gd
