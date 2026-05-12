@@ -14,6 +14,11 @@ func _ready() -> void:
 	for key in StatDefs.STAT_KEYS:
 		var node := find_child("Stat_%s" % key, true, false) as SpinBox
 		if node:
+			# ensure spinbox has sane min/step/max so allocation is constrained
+			node.min_value = StatDefs.CHARACTER_MIN_STAT
+			node.step = 1
+			# give a generous initial max; will be tightened by _update_points_pool()
+			node.max_value = StatDefs.CHARACTER_MIN_STAT + POINTS_POOL_TOTAL
 			node.value_changed.connect(Callable(self, "_on_stat_value_changed").bind(key))
 	_update_derived_stats()
 	_update_points_pool()
@@ -241,6 +246,14 @@ func _update_points_pool() -> void:
 	var label: Label = find_child("PointsPoolLabel", true, false) as Label
 	if label:
 		label.text = "Points restants: %d / %d" % [remaining, POINTS_POOL_TOTAL]
+
+	# Update each stat SpinBox max so the total allocated can't exceed the pool.
+	# When remaining == 0, this will set max_value == current value, preventing increments.
+	for key in StatDefs.STAT_KEYS:
+		var node := find_child("Stat_%s" % key, true, false) as SpinBox
+		if node:
+			# allow increasing the current stat by at most `remaining`
+			node.max_value = float(node.value + remaining)
 
 func _refresh_progression_summary(class_id: String) -> void:
 	var summary := find_child("ProgressionSummary", true, false) as ScrollContainer
