@@ -7,8 +7,7 @@
       "taima": "Maîtrise des Particules Taima et de la magie infernale/démoniaque.",
       "ninjutsu": "Furtivité, infiltration, réflexes et arts ninjas défensifs.",
       "commandement": "Leadership des escouades Taimanin et résistance mentale.",
-      "diplomatie": "Influence politique, négociation avec les clans ou les démons.",
-      "technologie": "Maîtrise des équipements cybernétiques et gadgets de combat UFS."
+      "diplomatie": "Influence politique, négociation avec les clans ou les démons."
     },
     "energie_mystique": "Ressource consommée par les capacités actives. Régénérée entre les missions ou via certains dons."
   },
@@ -130,10 +129,10 @@
       "nom": "Lien avec la Nature",
       "categorie": "Magie",
       "description": "Affinité avec les forces naturelles et les esprits yokai.",
-      "prerequis": { "stats": { "technologie": 12, "taima": 12 } },
+      "prerequis": { "stats": { "taima": 12 } },
       "effets": {
-        "texte": "Votre Technologie augmente de 1, renforçant votre lien avec les forces naturelles.",
-        "stats": { "technologie": 1 }
+        "texte": "Votre Taima augmente de 1, renforçant votre lien avec les forces naturelles.",
+        "stats": { "taima": 1 }
       }
     },
 
@@ -152,7 +151,7 @@
       "nom": "Ingénieur de Bataille",
       "categorie": "Technologie",
       "description": "Optimisation des équipements cybernétiques en conditions réelles.",
-      "prerequis": { "stats": { "technologie": 13 } },
+      "prerequis": { "stats": { "techno": 13 } },
       "effets": {
         "texte": "Votre Technologie augmente de 1, améliorant votre maîtrise des équipements UFS.",
         "stats": { "technologie": 1 }
@@ -224,7 +223,7 @@
       "categorie": "Magie",
       "description": "Réduction de la dépense en Particules Taima lors des rituels.",
       "prerequis": {
-        "stats": { "taima": 13, "technologie": 11 }
+        "stats": { "taima": 13 }
       },
       "effets": {
         "texte": "Votre Taima augmente de 1 et vous gagnez 5 points d'énergie mystique supplémentaires.",
@@ -238,7 +237,7 @@
       "categorie": "Commandement",
       "description": "Optimise la logistique des missions longues.",
       "prerequis": {
-        "stats": { "commandement": 12, "technologie": 12 }
+        "stats": { "commandement": 12 }
       },
       "effets": {
         "texte": "Votre Commandement augmente de 1, améliorant votre gestion du ravitaillement.",
