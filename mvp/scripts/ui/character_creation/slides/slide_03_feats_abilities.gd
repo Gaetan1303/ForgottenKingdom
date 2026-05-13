@@ -4,10 +4,12 @@ extends CreationSlideBase
 
 var _selected_feats: Array = []
 var _selected_ability: String = ""
+var _current_stats: Dictionary = {}
 
 func enter_slide(data: Resource) -> void:
 	_selected_feats = []
 	_selected_ability = ""
+	_current_stats = {}
 	if data != null and data.has_method("get"):
 		var tmp_feats = data.get("selected_feats")
 		if tmp_feats != null:
@@ -17,6 +19,9 @@ func enter_slide(data: Resource) -> void:
 			var ability_array = tmp_abilities as Array
 			if ability_array.size() > 0:
 				_selected_ability = str(ability_array[0])
+		var tmp_stats = data.get("stats")
+		if tmp_stats != null and tmp_stats is Dictionary:
+			_current_stats = (tmp_stats as Dictionary).duplicate(true)
 
 	_build_feat_cards()
 	_build_ability_cards()
@@ -71,7 +76,8 @@ func _create_card(kind: String, id: String, data: Dictionary) -> Button:
 	button.text = ""
 	button.name = "%sCard_%s" % [kind, id]
 	button.focus_mode = Control.FOCUS_NONE
-	button.custom_minimum_size = Vector2(420, 300)
+	# reduce card width so more cards fit per row (3 columns)
+	button.custom_minimum_size = Vector2(260, 280)
 	button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	button.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	button.connect("toggled", Callable(self, "_on_card_toggled").bind(kind, id))
@@ -84,6 +90,9 @@ func _create_card(kind: String, id: String, data: Dictionary) -> Button:
 	var layout = VBoxContainer.new()
 	layout.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	layout.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	# ensure inner layout reserves enough horizontal room for card content
+	# use a smaller minimum to allow multiple cards per row
+	layout.custom_minimum_size = Vector2(240, 0)
 	layout.add_theme_constant_override("separation", 6)
 	button.add_child(layout)
 
@@ -100,7 +109,8 @@ func _create_card(kind: String, id: String, data: Dictionary) -> Button:
 	var info_box = HBoxContainer.new()
 	info_box.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	info_box.size_flags_vertical = Control.SIZE_SHRINK_BEGIN
-	info_box.custom_minimum_size = Vector2(0, 28)
+	# give the info row a sensible minimum width so labels don't pack to the left
+	info_box.custom_minimum_size = Vector2(240, 28)
 	info_box.add_theme_constant_override("separation", 8)
 	layout.add_child(info_box)
 
@@ -116,17 +126,22 @@ func _create_card(kind: String, id: String, data: Dictionary) -> Button:
 	info_box.add_child(type_badge)
 
 	var prereq_label = Label.new()
-	prereq_label.text = "Pré-requis : %s" % _get_prerequis_text(data)
-	prereq_label.add_theme_color_override("font_color", Color(0.82, 0.82, 0.82))
-	prereq_label.add_theme_font_size_override("font_size", 13)
+	var prereq_text = _get_prerequis_text(data)
+	prereq_label.text = prereq_text
+	prereq_label.visible = prereq_text != ""
+	if prereq_text != "":
+		var prereq_color = Color(0.65, 0.90, 0.65) if _is_prereq_met(data) else Color(0.95, 0.55, 0.55)
+		prereq_label.add_theme_color_override("font_color", prereq_color)
+		prereq_label.add_theme_font_size_override("font_size", 9)
 	prereq_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	prereq_label.size_flags_vertical = Control.SIZE_SHRINK_BEGIN
 	prereq_label.custom_minimum_size = Vector2(0, 24)
 	prereq_label.clip_text = true
 	info_box.add_child(prereq_label)
 
+	var effect_text = _get_effects_text(data)
 	var effect = Label.new()
-	effect.text = "Effet: %s" % _get_effects_text(data)
+	effect.text = "" if effect_text == "" else "Effet: %s" % effect_text
 	effect.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	effect.add_theme_color_override("font_color", Color(0.95, 0.95, 0.95))
 	effect.add_theme_font_size_override("font_size", 13)
@@ -136,7 +151,8 @@ func _create_card(kind: String, id: String, data: Dictionary) -> Button:
 	layout.add_child(effect)
 
 	var description_box = Control.new()
-	description_box.custom_minimum_size = Vector2(0, 180)
+	# make the description area wide enough for the reduced card width
+	description_box.custom_minimum_size = Vector2(240, 150)
 	description_box.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	description_box.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	description_box.clip_contents = true
@@ -265,12 +281,23 @@ func _get_effects_text(data: Dictionary) -> String:
 		return _format_effects(effects)
 	if effects is String and str(effects).strip_edges() != "":
 		return str(effects)
-	return "Aucun effet défini"
+	return ""
 
 func _format_effects(effects: Dictionary) -> String:
 	var parts: Array = []
 	for key in effects.keys():
-		parts.append("%s: %s" % [str(key).capitalize(), str(effects[key])])
+		if key == "stats":
+			continue
+		var value = effects[key]
+		if value == null:
+			continue
+		if value is String:
+			var text_value := str(value).strip_edges()
+			if text_value == "" or text_value.to_lower() == "null":
+				continue
+			parts.append("%s: %s" % [str(key).capitalize(), text_value])
+		else:
+			parts.append("%s: %s" % [str(key).capitalize(), str(value)])
 	return _join_parts(parts, ", ")
 
 func _get_prerequis_text(data: Dictionary) -> String:
@@ -292,7 +319,17 @@ func _get_prerequis_text(data: Dictionary) -> String:
 func _format_prereq_dict(prereq: Dictionary) -> String:
 	var parts: Array = []
 	for key in prereq.keys():
-		parts.append("%s: %s" % [str(key).capitalize(), str(prereq[key])])
+		var value = prereq[key]
+		if key == "stats" and value is Dictionary:
+			for stat_key in value.keys():
+				parts.append("%s >= %s" % [_stat_abbrev(stat_key), str(value[stat_key])])
+			continue
+		if value is Dictionary:
+			parts.append("%s: %s" % [str(key).capitalize(), _format_prereq_dict(value)])
+		elif value is Array:
+			parts.append("%s: %s" % [str(key).capitalize(), _format_string_list(value)])
+		else:
+			parts.append("%s: %s" % [str(key).capitalize(), str(value)])
 	return _join_parts(parts, ", ")
 
 func _format_string_list(values: Array) -> String:
@@ -308,6 +345,35 @@ func _join_parts(parts: Array, separator: String) -> String:
 			text += separator
 		text += str(parts[i])
 	return text
+
+func _is_prereq_met(data: Dictionary) -> bool:
+	if not data.has("prerequis"):
+		return true
+	var prereq = data.get("prerequis")
+	match typeof(prereq):
+		TYPE_DICTIONARY:
+			return _is_prereq_dict_met(prereq as Dictionary)
+		TYPE_STRING:
+			return true
+		TYPE_ARRAY:
+			return true
+		_:
+			return true
+
+func _is_prereq_dict_met(prereq: Dictionary) -> bool:
+	for key in prereq.keys():
+		var value = prereq[key]
+		if key == "stats" and value is Dictionary:
+			for stat_key in value.keys():
+				var required_value = int(value[stat_key])
+				var actual_value = int(_current_stats.get(str(stat_key), StatDefs.CHARACTER_MIN_STAT))
+				if actual_value < required_value:
+					return false
+			continue
+		if value is Dictionary:
+			if not _is_prereq_dict_met(value as Dictionary):
+				return false
+	return true
 
 func _entry_has_level_prereq(data: Dictionary) -> bool:
 	if data.has("disponible_des"):
@@ -356,6 +422,29 @@ func _get_abilities_source() -> Dictionary:
 		if out.size() > 0:
 			return out
 	return GameDataLoader.get_abilities()
+
+func _stat_abbrev(stat_key: String) -> String:
+	match stat_key.to_lower():
+		"force":
+			return "FOR"
+		"magie":
+			return "MAG"
+		"espionnage":
+			return "ESP"
+		"artisanat":
+			return "ART"
+		"diplomatie":
+			return "DIP"
+		"commandement":
+			return "COM"
+		"taima":
+			return "TAI"
+		"ninjutsu":
+			return "NIN"
+		"divin":
+			return "DIV"
+		_:
+			return str(stat_key).to_upper()
 
 func _slugify(text: String) -> String:
 	var s := text.to_lower().strip_edges()

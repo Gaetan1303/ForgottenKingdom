@@ -7,683 +7,527 @@
       "taima": "Maîtrise des Particules Taima et de la magie infernale/démoniaque.",
       "ninjutsu": "Furtivité, infiltration, réflexes et arts ninjas défensifs.",
       "commandement": "Leadership des escouades Taimanin et résistance mentale.",
-      "diplomatie": "Influence politique, négociation avec les clans ou les démons.",
-      "technologie": "Maîtrise des équipements cybernétiques et gadgets de combat UFS."
+      "diplomatie": "Influence politique, négociation avec les clans ou les démons."
     },
     "energie_mystique": "Ressource consommée par les capacités actives. Régénérée entre les missions ou via certains dons."
   },
+
   "dons": {
+
     "robustesse": {
       "nom": "Robustesse",
       "categorie": "Corps",
-      "description": "L'entraînement intensif à Gosha Academy a forgé ton corps pour encaisser les assauts démoniaques. +3 PV au niveau 1 et endurance accrue en mission prolongée.",
+      "description": "L'entraînement intensif à Gosha Academy a forgé ton corps pour encaisser les assauts démoniaques.",
       "prerequis": null,
       "effets": {
-        "stats": {
-          "force": 1
-        },
+        "texte": "Cette aptitude augmente votre Force de 1 et vous confère immédiatement 3 points de vie supplémentaires.",
+        "stats": { "force": 1 },
         "pv_bonus": 3
       }
     },
+
     "attaque_puissante": {
       "nom": "Attaque Puissante",
       "categorie": "Combat",
-      "description": "Technique shinobi qui sacrifie la précision pour une frappe dévastatrice, capable de briser les défenses démoniaques les plus solides.",
-      "prerequis": {
-        "stats": {
-          "force": 13
-        }
-      },
+      "description": "Technique shinobi qui sacrifie la précision pour une frappe dévastatrice.",
+      "prerequis": { "stats": { "force": 13 } },
       "effets": {
-        "stats": {
-          "force": 1
-        }
+        "texte": "Votre Force augmente de 1, renforçant la puissance de vos attaques.",
+        "stats": { "force": 1 }
       }
     },
+
     "reflexes_rapides": {
       "nom": "Réflexes Rapides",
       "categorie": "Ninjutsu",
-      "description": "Vitesse de réaction affinée pour anticiper les attaques démoniaques et prendre l'avantage sur l'initiative au combat.",
-      "prerequis": {
-        "stats": {
-          "ninjutsu": 12
-        }
-      },
+      "description": "Vitesse de réaction affinée pour anticiper les attaques démoniaques.",
+      "prerequis": { "stats": { "ninjutsu": 12 } },
       "effets": {
-        "stats": {
-          "ninjutsu": 1
-        }
+        "texte": "Votre Ninjutsu augmente de 1, améliorant votre capacité à réagir rapidement.",
+        "stats": { "ninjutsu": 1 }
       }
     },
+
     "lanceur_de_rituels": {
       "nom": "Lanceur de Rituels",
-      "categorie": "Taima",
-      "description": "Canalise les Particules Taima pour activer des rituels avancés de scellement ou d'invocation avec moins de contraintes énergétiques.",
-      "prerequis": {
-        "stats": {
-          "taima": 13
-        }
-      },
+      "categorie": "Magie",
+      "description": "Canalise les Particules Taima pour activer des rituels avancés.",
+      "prerequis": { "stats": { "taima": 13 } },
       "effets": {
-        "stats": {
-          "taima": 1
-        }
+        "texte": "Votre Taima augmente de 1, facilitant l'utilisation des rituels complexes.",
+        "stats": { "taima": 1 }
       }
     },
+
     "maitrise_furtive": {
       "nom": "Maîtrise Furtive",
       "categorie": "Ninjutsu",
-      "description": "L'art de l'approche silencieuse poussé à son apogée : infiltration des quartiers démoniaques de Tokyo Kingdom sans éveiller les détecteurs de Nomad.",
-      "prerequis": {
-        "stats": {
-          "ninjutsu": 13
-        }
-      },
+      "description": "L'art de l'approche silencieuse poussé à son apogée.",
+      "prerequis": { "stats": { "ninjutsu": 13 } },
       "effets": {
-        "stats": {
-          "ninjutsu": 1
-        }
+        "texte": "Votre Ninjutsu augmente de 1, améliorant votre capacité à vous déplacer sans être détecté.",
+        "stats": { "ninjutsu": 1 }
       }
     },
+
     "soigneur": {
       "nom": "Soigneur",
-      "categorie": "Taima",
-      "description": "Maîtrise des herbes et des ondes Taima pour accélérer la régénération des alliés après un engagement contre des démons du Makai.",
-      "prerequis": {
-        "stats": {
-          "taima": 12
-        }
-      },
+      "categorie": "Magie",
+      "description": "Maîtrise des herbes et des ondes Taima pour soigner les alliés.",
+      "prerequis": { "stats": { "taima": 12 } },
       "effets": {
-        "stats": {
-          "taima": 1
-        }
+        "texte": "Votre Taima augmente de 1, renforçant vos capacités de soin.",
+        "stats": { "taima": 1 }
       }
     },
+
     "volonte_de_fer": {
       "nom": "Volonté de Fer",
       "categorie": "Commandement",
-      "description": "Résistance psychique aux arts de manipulation démoniaques et aux charmes des vampires Aion. Aucune peur ne brise ton escouade.",
-      "prerequis": {
-        "stats": {
-          "commandement": 12
-        }
-      },
+      "description": "Résistance psychique aux arts de manipulation démoniaques.",
+      "prerequis": { "stats": { "commandement": 12 } },
       "effets": {
-        "stats": {
-          "commandement": 1
-        }
+        "texte": "Votre Commandement augmente de 1, renforçant votre résistance mentale.",
+        "stats": { "commandement": 1 }
       }
     },
+
     "focalisation_de_pacte": {
       "nom": "Focalisation de Pacte",
-      "categorie": "Taima",
-      "description": "Renforce la stabilité des pactes conclus avec des entités du Makai. Réduit le risque de retournement et amplifie la puissance des accords scellés.",
-      "prerequis": {
-        "stats": {
-          "taima": 14
-        }
-      },
+      "categorie": "Magie",
+      "description": "Renforce la stabilité des pactes conclus avec des entités du Makai.",
+      "prerequis": { "stats": { "taima": 14 } },
       "effets": {
-        "stats": {
-          "taima": 1
-        }
+        "texte": "Votre Taima augmente de 1, stabilisant vos pactes démoniaques.",
+        "stats": { "taima": 1 }
       }
     },
+
     "langue_d_argent": {
       "nom": "Langue d'Argent",
       "categorie": "Diplomatie",
-      "description": "Influence rhétorique redoutable dans les négociations avec les clans ninjas rivaux ou les seigneurs démons dissidents prêts à quitter Nomad.",
-      "prerequis": {
-        "stats": {
-          "diplomatie": 13
-        }
-      },
+      "description": "Influence rhétorique redoutable dans les négociations.",
+      "prerequis": { "stats": { "diplomatie": 13 } },
       "effets": {
-        "stats": {
-          "diplomatie": 1
-        }
+        "texte": "Votre Diplomatie augmente de 1, améliorant votre capacité à convaincre.",
+        "stats": { "diplomatie": 1 }
       }
     },
+
     "evasion": {
       "nom": "Évasion",
       "categorie": "Ninjutsu",
-      "description": "Capacité à minimiser les dégâts des jutsu de zone et des pièges technologiques déployés par les agents de l'UFS ou de Nomad.",
-      "prerequis": {
-        "stats": {
-          "ninjutsu": 13
-        }
-      },
+      "description": "Capacité à minimiser les dégâts des jutsu de zone et des pièges.",
+      "prerequis": { "stats": { "ninjutsu": 13 } },
       "effets": {
-        "stats": {
-          "ninjutsu": 1
-        }
+        "texte": "Votre Ninjutsu augmente de 1, réduisant les dégâts des attaques de zone.",
+        "stats": { "ninjutsu": 1 }
       }
     },
+
     "lien_avec_la_nature": {
       "nom": "Lien avec la Nature",
-      "categorie": "Hybride",
-      "description": "Affinité avec les forces naturelles et les esprits (yokai alliés). Utile pour la survie en territoire hostile hors de la protection de Gosha Village.",
-      "prerequis": {
-        "stats": {
-          "technologie": 12,
-          "taima": 12
-        }
-      },
+      "categorie": "Magie",
+      "description": "Affinité avec les forces naturelles et les esprits yokai.",
+      "prerequis": { "stats": { "taima": 12 } },
       "effets": {
-        "stats": {
-          "technologie": 1
-        }
+        "texte": "Votre Taima augmente de 1, renforçant votre lien avec les forces naturelles.",
+        "stats": { "taima": 1 }
       }
     },
+
     "precision_arcane": {
       "nom": "Précision Arcane",
-      "categorie": "Taima",
-      "description": "Canalisation ultra-précise des Particules Taima pour éliminer les risques de surcharge ou de dommages collatéraux lors des jutsu offensifs.",
-      "prerequis": {
-        "stats": {
-          "taima": 14
-        }
-      },
+      "categorie": "Magie",
+      "description": "Canalisation ultra-précise des Particules Taima.",
+      "prerequis": { "stats": { "taima": 14 } },
       "effets": {
-        "stats": {
-          "taima": 1
-        }
+        "texte": "Votre Taima augmente de 1, améliorant la précision de vos sorts.",
+        "stats": { "taima": 1 }
       }
     },
+
     "ingenieur_de_bataille": {
       "nom": "Ingénieur de Bataille",
       "categorie": "Technologie",
-      "description": "Optimisation des équipements cybernétiques et des gadgets de combat UFS en conditions réelles. Maintien opérationnel même sur le terrain.",
-      "prerequis": {
-        "stats": {
-          "technologie": 13
-        }
-      },
+      "description": "Optimisation des équipements cybernétiques en conditions réelles.",
+      "prerequis": { "stats": { "techno": 13 } },
       "effets": {
-        "stats": {
-          "technologie": 1
-        }
+        "texte": "Votre Technologie augmente de 1, améliorant votre maîtrise des équipements UFS.",
+        "stats": { "technologie": 1 }
       }
     },
+
     "tacticien_de_champ_de_bataille": {
       "nom": "Tacticien de Champ de Bataille",
       "categorie": "Commandement",
-      "description": "Coordination supérieure d'une escouade Taimanin lors d'assauts contre des bastions de Nomad ou lors de défenses de Gosha Village.",
-      "prerequis": {
-        "stats": {
-          "commandement": 14
-        }
-      },
+      "description": "Coordination supérieure d'une escouade Taimanin.",
+      "prerequis": { "stats": { "commandement": 14 } },
       "effets": {
-        "stats": {
-          "commandement": 1
-        }
+        "texte": "Votre Commandement augmente de 1, renforçant votre capacité à diriger une escouade.",
+        "stats": { "commandement": 1 }
       }
     },
+
     "maitrise_des_armes": {
       "nom": "Maîtrise des Armes",
       "categorie": "Combat",
-      "description": "Spécialisation poussée dans une arme shinobi (katana ninja, lance, bazooka Meido…). Fiabilité maximale et létalité accrue contre les démons.",
-      "prerequis": {
-        "stats": {
-          "force": 14
-        }
-      },
+      "description": "Spécialisation poussée dans une arme shinobi.",
+      "prerequis": { "stats": { "force": 14 } },
       "effets": {
-        "stats": {
-          "force": 1
-        }
+        "texte": "Votre Force augmente de 1, améliorant votre maîtrise des armes spécialisées.",
+        "stats": { "force": 1 }
       }
     },
+
     "mur_de_boucliers": {
       "nom": "Mur de Boucliers",
       "categorie": "Commandement",
-      "description": "Formation défensive héritée des techniques de Gosha : réduit les pertes d'une escouade lors d'assauts de vagues démoniaques ou de la Taima Corps.",
+      "description": "Formation défensive héritée des techniques de Gosha.",
       "prerequis": {
-        "stats": {
-          "commandement": 13
-        },
-        "dons": [
-          "robustesse"
-        ]
+        "stats": { "commandement": 13 },
+        "dons": ["robustesse"]
       },
       "effets": {
-        "stats": {
-          "commandement": 1
-        }
+        "texte": "Votre Commandement augmente de 1, renforçant la défense collective de votre groupe.",
+        "stats": { "commandement": 1 }
       }
     },
+
     "presence_intimidante": {
       "nom": "Présence Intimidante",
-      "categorie": "Hybride",
-      "description": "Aura menaçante qui sape le moral des démons inférieurs (orques, gobelins) et fragilise psychologiquement les agents humains de Nomad.",
+      "categorie": "Corps",
+      "description": "Aura menaçante qui sape le moral des démons inférieurs.",
       "prerequis": {
-        "stats": {
-          "force": 12,
-          "diplomatie": 11
-        }
+        "stats": { "force": 12, "diplomatie": 11 }
       },
       "effets": {
-        "stats": {
-          "force": 1
-        }
+        "texte": "Votre Force augmente de 1, renforçant votre aura intimidante.",
+        "stats": { "force": 1 }
       }
     },
+
     "reseau_d_eclaireurs": {
       "nom": "Réseau d'Éclaireurs",
       "categorie": "Ninjutsu",
-      "description": "Réseau d'informateurs infiltrés dans Tokyo Kingdom et les districts démoniaques pour anticiper les mouvements de Nomad.",
-      "prerequis": {
-        "stats": {
-          "ninjutsu": 14
-        }
-      },
+      "description": "Réseau d'informateurs infiltrés dans Tokyo Kingdom.",
+      "prerequis": { "stats": { "ninjutsu": 14 } },
       "effets": {
-        "stats": {
-          "ninjutsu": 1
-        }
+        "texte": "Votre Ninjutsu augmente de 1, améliorant votre capacité à anticiper les mouvements ennemis.",
+        "stats": { "ninjutsu": 1 }
       }
     },
+
     "efficacite_du_taima": {
       "nom": "Efficacité du Taima",
-      "categorie": "Taima",
-      "description": "Réduction de la dépense en Particules Taima lors des rituels de scellement ou d'invocation. Conservation d'énergie pour les missions longues.",
+      "categorie": "Magie",
+      "description": "Réduction de la dépense en Particules Taima lors des rituels.",
       "prerequis": {
-        "stats": {
-          "taima": 13,
-          "technologie": 11
-        }
+        "stats": { "taima": 13 }
       },
       "effets": {
-        "stats": {
-          "taima": 1
-        },
+        "texte": "Votre Taima augmente de 1 et vous gagnez 5 points d'énergie mystique supplémentaires.",
+        "stats": { "taima": 1 },
         "energie_mystique_bonus": 5
       }
     },
+
     "intendant": {
       "nom": "Intendant",
       "categorie": "Commandement",
-      "description": "Optimise la logistique des missions longues de Gosha : ravitaillement, équipements de rechange et réduction des pertes par attrition dans les zones démoniaques.",
+      "description": "Optimise la logistique des missions longues.",
       "prerequis": {
-        "stats": {
-          "commandement": 12,
-          "technologie": 12
-        }
+        "stats": { "commandement": 12 }
       },
       "effets": {
-        "stats": {
-          "commandement": 1
-        }
+        "texte": "Votre Commandement augmente de 1, améliorant votre gestion du ravitaillement.",
+        "stats": { "commandement": 1 }
       }
     },
+
     "immunite_diplomatique": {
       "nom": "Immunité Diplomatique",
       "categorie": "Diplomatie",
-      "description": "Statut reconnu par les clans rivaux et certaines factions démoniaques : réduit les répercussions en cas d'échec diplomatique lors de négociations sensibles.",
-      "prerequis": {
-        "stats": {
-          "diplomatie": 14
-        }
-      },
+      "description": "Statut reconnu par les clans rivaux et certaines factions démoniaques.",
+      "prerequis": { "stats": { "diplomatie": 14 } },
       "effets": {
-        "stats": {
-          "diplomatie": 1
-        }
+        "texte": "Votre Diplomatie augmente de 1, réduisant les conséquences d'un échec diplomatique.",
+        "stats": { "diplomatie": 1 }
       }
     },
+
     "dernier_rempart": {
       "nom": "Dernier Rempart",
-      "categorie": "Hybride",
-      "description": "Capacité à tenir une ligne de défense même en sous-effectif critique. Référencée dans les annales de Gosha comme technique des guerriers liés à la lignée des Aion.",
+      "categorie": "Corps",
+      "description": "Capacité à tenir une ligne de défense même en sous-effectif critique.",
       "prerequis": {
-        "stats": {
-          "force": 13,
-          "commandement": 13
-        }
+        "stats": { "force": 13, "commandement": 13 }
       },
       "effets": {
-        "stats": {
-          "force": 1
-        }
+        "texte": "Votre Force augmente de 1, renforçant votre capacité à tenir une position.",
+        "stats": { "force": 1 }
       }
     },
+
     "esquive": {
       "nom": "Esquive",
       "categorie": "Défense",
-      "disponible_des": "niveau 1",
-      "description": "Technique evasive enseignée en première année à Gosha Academy : lire les intentions d'un adversaire et se décaler avant même que l'attaque parte. Désigne mentalement une cible — tu es plus difficile à toucher de sa part.",
-      "prerequis": {
-        "stats": {
-          "ninjutsu": 10
-        }
-      },
+      "description": "Technique evasive enseignée en première année à Gosha Academy.",
+      "prerequis": { "stats": { "ninjutsu": 10 } },
       "effets": {
-        "stats": {
-          "ninjutsu": 1
-        },
-        "bonus_esquive": "+2 Défense contre la cible désignée (peut changer à chaque tour)."
+        "texte": "Votre Ninjutsu augmente de 1 et vous gagnez un bonus de +2 en Défense contre la cible désignée.",
+        "stats": { "ninjutsu": 1 },
+        "bonus_esquive": "+2 Défense contre la cible désignée."
       }
     },
+
     "mobilite": {
       "nom": "Mobilité",
       "categorie": "Défense",
-      "disponible_des": "niveau 1",
-      "description": "Art du déplacement ninja poussé à l'extrême. Tu glisses entre les adversaires sans déclencher leurs réflexes de contre-attaque — une danse apprise sur les toits de Tokyo Kingdom.",
+      "description": "Art du déplacement ninja poussé à l'extrême.",
       "prerequis": {
-        "stats": {
-          "ninjutsu": 10
-        },
-        "dons": [
-          "esquive"
-        ]
+        "stats": { "ninjutsu": 10 },
+        "dons": ["esquive"]
       },
       "effets": {
-        "stats": {
-          "ninjutsu": 1
-        },
-        "special": "Tes déplacements à travers une zone de contrôle ennemie ne déclenchent pas d'attaque d'opportunité."
+        "texte": "Votre Ninjutsu augmente de 1 et vous traversez les zones de contrôle ennemies sans déclencher d'attaques d'opportunité.",
+        "stats": { "ninjutsu": 1 },
+        "special": "Ignore les attaques d'opportunité lors des déplacements."
       }
     },
+
     "expertise_de_combat": {
       "nom": "Expertise de Combat",
       "categorie": "Combat",
-      "disponible_des": "niveau 1",
-      "description": "Technique des capitaines Taimanin aguerris : sacrifier volontairement la puissance d'une frappe pour adopter une posture défensive quasi impénétrable. Utilisée pour tenir face aux commandants de Nomad.",
+      "description": "Technique des capitaines Taimanin aguerris.",
       "prerequis": {
-        "stats": {
-          "force": 11,
-          "ninjutsu": 11
-        }
+        "stats": { "force": 11, "ninjutsu": 11 }
       },
       "effets": {
-        "stats": {
-          "force": 1
-        },
-        "special": "Tu peux accepter -2 en jets d'attaque pour gagner +2 en Défense jusqu'à ton prochain tour."
+        "texte": "Votre Force augmente de 1 et vous pouvez sacrifier 2 points d'attaque pour gagner +2 en Défense jusqu'à votre prochain tour.",
+        "stats": { "force": 1 },
+        "special": "Accepter -2 attaque pour +2 Défense."
       }
     },
+
     "reflexes_de_combat": {
       "nom": "Réflexes de Combat",
       "categorie": "Combat",
-      "disponible_des": "niveau 1",
-      "description": "Instinct combatif forgé lors de centaines d'embuscades dans les rues démoniaques de Tokyo. Tu surveilles plusieurs angles simultanément, prêt à frapper quiconque tente de fuir ou de s'approcher.",
-      "prerequis": {
-        "stats": {
-          "ninjutsu": 11
-        }
-      },
+      "description": "Instinct combatif forgé lors de centaines d'embuscades.",
+      "prerequis": { "stats": { "ninjutsu": 11 } },
       "effets": {
-        "stats": {
-          "ninjutsu": 1
-        },
-        "special": "Tu peux effectuer jusqu'à 2 attaques d'opportunité par round au lieu de 1."
+        "texte": "Votre Ninjutsu augmente de 1 et vous pouvez effectuer jusqu'à deux attaques d'opportunité par round.",
+        "stats": { "ninjutsu": 1 },
+        "special": "2 attaques d'opportunité par round."
       }
     },
+
     "combat_a_deux_armes": {
       "nom": "Combat à Deux Armes",
       "categorie": "Combat",
-      "disponible_des": "niveau 1",
-      "description": "Style de combat dual enseigné par certains clans minoritaires de Gosha : manier deux lames ou une lame et un outil technologique de manière fluide et coordonnée.",
+      "description": "Style de combat dual enseigné par certains clans.",
       "prerequis": {
-        "stats": {
-          "force": 11,
-          "ninjutsu": 10
-        }
+        "stats": { "force": 11, "ninjutsu": 10 }
       },
       "effets": {
-        "stats": {
-          "force": 1
-        },
-        "special": "Réduit la pénalité d'attaque avec deux armes de -4/-8 à -2/-2. Bonus : +1 Défense si les deux armes sont tenues."
+        "texte": "Votre Force augmente de 1 et vous réduisez les pénalités d'attaque en combat à deux armes.",
+        "stats": { "force": 1 },
+        "special": "Pénalité réduite à -2/-2."
       }
     },
+
     "combat_aveugle": {
       "nom": "Combat Aveugle",
       "categorie": "Combat",
-      "disponible_des": "niveau 1",
-      "description": "Technique développée pour les missions dans les égouts de Tokyo ou les dimensions du Makai, où la visibilité est nulle. Tu te bats en te fiant à tes autres sens, affinés par les Particules Taima.",
-      "prerequis": {
-        "stats": {
-          "ninjutsu": 12
-        }
-      },
+      "description": "Technique développée pour les missions sans visibilité.",
+      "prerequis": { "stats": { "ninjutsu": 12 } },
       "effets": {
-        "stats": {
-          "ninjutsu": 1
-        },
-        "special": "Ignore les désavantages aux jets d'attaque dûs à l'obscurité ou à l'invisibilité. Relance une fois les ratés contre des ennemis non-localisés."
+        "texte": "Votre Ninjutsu augmente de 1 et vous ignorez les malus liés à l'obscurité ou à l'invisibilité.",
+        "stats": { "ninjutsu": 1 },
+        "special": "Ignore les malus d'obscurité."
       }
     },
+
     "fente_devastatrice": {
       "nom": "Fente Dévastatrice",
       "categorie": "Combat",
-      "disponible_des": "niveau 1",
-      "description": "Après avoir abattu un démon, l'élan de ta frappe se prolonge vers la cible suivante. Redoutable lors des assauts de vagues d'orcs ou de gobelins démoniaques.",
-      "prerequis": {
-        "stats": {
-          "force": 13
-        }
-      },
+      "description": "L'élan de votre frappe se prolonge vers la cible suivante.",
+      "prerequis": { "stats": { "force": 13 } },
       "effets": {
-        "stats": {
-          "force": 1
-        },
-        "special": "Si tu mets hors combat un ennemi avec une attaque de mêlée, tu peux immédiatement effectuer une attaque bonus contre un ennemi adjacent."
+        "texte": "Votre Force augmente de 1 et vous pouvez effectuer une attaque bonus après avoir vaincu un ennemi.",
+        "stats": { "force": 1 },
+        "special": "Attaque bonus après élimination."
       }
     },
+
     "grande_resistance": {
       "nom": "Grande Résistance",
       "categorie": "Corps",
-      "disponible_des": "niveau 1",
-      "description": "Ton organisme, partiellement démonique, résiste naturellement aux poisons du Makai et aux maladies bio-technologiques développées par les laboratoires de Nomad.",
+      "description": "Résistance naturelle aux poisons et maladies du Makai.",
       "prerequis": null,
       "effets": {
-        "stats": {
-          "force": 1
-        },
-        "special": "+3 aux jets de sauvegarde contre les poisons, maladies et états debilitants physiques."
+        "texte": "Votre Force augmente de 1 et vous gagnez +3 aux jets de sauvegarde contre les poisons et maladies.",
+        "stats": { "force": 1 },
+        "special": "+3 sauvegardes contre poisons et maladies."
       }
     },
+
     "endurance": {
       "nom": "Endurance",
       "categorie": "Corps",
-      "disponible_des": "niveau 1",
-      "description": "Missions longues, marches forcées, privations : l'entraînement à Gosha conditionne ton corps à fonctionner bien au-delà des limites humaines normales.",
+      "description": "Votre corps fonctionne au-delà des limites humaines.",
       "prerequis": null,
       "effets": {
-        "stats": {
-          "force": 1
-        },
+        "texte": "Votre Force augmente de 1, vous gagnez 2 PV et vous ignorez les pénalités de fatigue.",
+        "stats": { "force": 1 },
         "pv_bonus": 2,
-        "special": "Ignore les pénalités de fatigue lors des missions longues. Dort en armure sans malus."
+        "special": "Ignore la fatigue."
       }
     },
-    "dur_a_cuire": {
+
+       "dur_a_cuire": {
       "nom": "Dur à Cuire",
       "categorie": "Corps",
-      "disponible_des": "niveau 1",
-      "description": "Même à l'agonie, tu continues de combattre. Les archives de Gosha mentionnent plusieurs Taimanin ayant survécu à des blessures mortelles par pure détermination — et lignée démonique.",
+      "description": "Même à l'agonie, tu continues de combattre grâce à ta détermination et ta lignée démonique.",
       "prerequis": {
-        "dons": [
-          "endurance"
-        ]
+        "dons": ["endurance"]
       },
       "effets": {
-        "stats": {
-          "force": 1
-        },
-        "special": "Une fois par mission, lorsque tu tombes à 0 PV, tu restes conscient et actif à 1 PV. Tu es automatiquement stabilisé."
+        "texte": "Votre Force augmente de 1 et, une fois par mission, vous restez conscient à 1 PV lorsque vous devriez tomber à 0.",
+        "stats": { "force": 1 },
+        "special": "Reste à 1 PV une fois par mission au lieu de tomber à 0."
       }
     },
+
     "vigilance_aiguisee": {
       "nom": "Vigilance Aiguisée",
       "categorie": "Ninjutsu",
-      "disponible_des": "niveau 1",
-      "description": "Les Particules Taima aiguisent les perceptions au-delà du spectre humain. Tu détectes les présences démoniaques camouflées, les pièges technologiques et les agents infiltrés de Nomad avant qu'ils frappent.",
-      "prerequis": {
-        "stats": {
-          "ninjutsu": 10
-        }
-      },
+      "description": "Les Particules Taima aiguisent vos perceptions au-delà du spectre humain.",
+      "prerequis": { "stats": { "ninjutsu": 10 } },
       "effets": {
-        "stats": {
-          "ninjutsu": 1
-        },
-        "special": "+2 aux jets de Perception et d'Initiative. Tu ne peux pas être surpris si un allié est conscient."
+        "texte": "Votre Ninjutsu augmente de 1, vous gagnez +2 en Perception et Initiative, et vous ne pouvez pas être surpris si un allié est conscient.",
+        "stats": { "ninjutsu": 1 },
+        "special": "+2 Perception et Initiative, immunité à la surprise si un allié est conscient."
       }
     },
+
     "initiative_aiguisee": {
       "nom": "Initiative Aiguisée",
       "categorie": "Ninjutsu",
-      "disponible_des": "niveau 1",
-      "description": "La première seconde d'un combat détermine souvent son issue. Entraînement spécialisé pour frapper avant que l'ennemi — démon ou humain — n'ait eu le temps de réagir.",
+      "description": "La première seconde d'un combat détermine souvent son issue.",
       "prerequis": null,
       "effets": {
-        "stats": {
-          "ninjutsu": 1
-        },
-        "special": "+4 aux jets d'Initiative."
+        "texte": "Votre Ninjutsu augmente de 1 et vous gagnez un bonus de +4 à vos jets d'Initiative.",
+        "stats": { "ninjutsu": 1 },
+        "special": "+4 Initiative."
       }
     },
+
     "degainage_rapide": {
       "nom": "Dégainage Rapide",
       "categorie": "Combat",
-      "disponible_des": "niveau 1",
-      "description": "Technique de dégainage éclair héritée des traditions du clan Igawa : sortir son arme fait partie intégrante du premier mouvement d'attaque, sans ralentir l'assaut.",
-      "prerequis": {
-        "stats": {
-          "ninjutsu": 10
-        }
-      },
+      "description": "Sortir son arme fait partie intégrante du premier mouvement d'attaque.",
+      "prerequis": { "stats": { "ninjutsu": 10 } },
       "effets": {
-        "stats": {
-          "ninjutsu": 1
-        },
-        "special": "Dégainer ou ranger une arme est une action libre (ne coûte pas d'action). +1 dé de dégâts lors d'une attaque par surprise avec une arme dégainée ce tour."
+        "texte": "Votre Ninjutsu augmente de 1 et dégainer ou ranger une arme devient une action libre.",
+        "stats": { "ninjutsu": 1 },
+        "special": "Dégainer/ranger une arme est une action libre."
       }
     },
+
     "tir_a_bout_portant": {
       "nom": "Tir à Bout Portant",
       "categorie": "Combat",
-      "disponible_des": "niveau 1",
-      "description": "Maîtrise des armes à distance (shuriken, pistolet Taima, lance-grenade) à courte portée. Utilisé lors des courses-poursuites dans les ruelles de Tokyo Kingdom.",
+      "description": "Maîtrise des armes à distance à courte portée.",
       "prerequis": null,
       "effets": {
-        "stats": {
-          "ninjutsu": 1
-        },
-        "special": "+2 aux jets d'attaque et de dégâts avec les armes à distance contre des cibles à moins de 10 mètres."
+        "texte": "Votre Ninjutsu augmente de 1 et vous gagnez +2 aux jets d'attaque et de dégâts contre les cibles à moins de 10 mètres.",
+        "stats": { "ninjutsu": 1 },
+        "special": "+2 attaque et dégâts à moins de 10 m."
       }
     },
+
     "tir_precis": {
       "nom": "Tir Précis",
       "categorie": "Combat",
-      "disponible_des": "niveau 1",
-      "description": "Capacité à viser et toucher un ennemi en mêlée sans risquer de blesser ses alliés. Technique indispensable pour les missions d'escorte ou de sauvetage en zone urbaine hostile.",
+      "description": "Capacité à viser un ennemi en mêlée sans risquer de blesser un allié.",
       "prerequis": {
-        "dons": [
-          "tir_a_bout_portant"
-        ]
+        "dons": ["tir_a_bout_portant"]
       },
       "effets": {
-        "stats": {
-          "ninjutsu": 1
-        },
-        "special": "Annule la pénalité de -4 pour tirer dans une mêlée. Ignore le demi-couvert des cibles."
+        "texte": "Votre Ninjutsu augmente de 1 et vous ignorez la pénalité de -4 pour tirer dans une mêlée.",
+        "stats": { "ninjutsu": 1 },
+        "special": "Ignore la pénalité de tir dans une mêlée."
       }
     },
+
     "focalisation_taima": {
       "nom": "Focalisation Taima",
-      "categorie": "Taima",
-      "disponible_des": "niveau 1",
-      "description": "Concentration sur une école de magie Taima spécifique (feu démoniaque, ombre, foudre) qui rend tes sorts de cette école bien plus difficiles à résister pour les ennemis.",
-      "prerequis": {
-        "stats": {
-          "taima": 11
-        }
-      },
+      "categorie": "Magie",
+      "description": "Concentration sur une école de magie Taima spécifique.",
+      "prerequis": { "stats": { "taima": 11 } },
       "effets": {
-        "stats": {
-          "taima": 1
-        },
-        "special": "Choisis une école Taima (Feu, Ombre, Foudre, Glace, Soin). +2 au DD de résistance de tous tes sorts de cette école."
+        "texte": "Votre Taima augmente de 1 et vous gagnez +2 au DD de résistance de l'école Taima choisie.",
+        "stats": { "taima": 1 },
+        "special": "+2 DD pour l'école choisie."
       }
     },
+
     "frappe_arcane": {
       "nom": "Frappe Arcane",
-      "categorie": "Hybride",
-      "disponible_des": "niveau 1",
-      "description": "Canalise les Particules Taima directement dans ta lame lors d'une frappe pour des dégâts magiques supplémentaires — une fusion de ninjutsu et d'art démoniaque caractéristique des Taimanin à sang mêlé.",
+      "categorie": "Magie",
+      "description": "Canalise les Particules Taima directement dans votre lame.",
       "prerequis": {
-        "stats": {
-          "force": 10,
-          "taima": 11
-        }
+        "stats": { "force": 10, "taima": 11 }
       },
       "effets": {
-        "stats": {
-          "taima": 1
-        },
-        "special": "En dépensant 3 énergie mystique avant une attaque de mêlée, ajoute 1d6 dégâts Taima à l'attaque. Ces dégâts contournent les résistances physiques démoniaques."
+        "texte": "Votre Taima augmente de 1 et vous pouvez dépenser 3 énergie mystique pour ajouter 1d6 dégâts Taima à une attaque de mêlée.",
+        "stats": { "taima": 1 },
+        "special": "Ajoute 1d6 dégâts Taima pour 3 énergie mystique."
       }
     },
+
     "combat_a_mains_nues": {
       "nom": "Combat à Mains Nues",
       "categorie": "Combat",
-      "disponible_des": "niveau 1",
-      "description": "Maîtrise des techniques de corps à corps à mains nues issues des arts martiaux japonais pratiqués à Gosha Academy. Tes poings sont des armes létales contre les démons.",
-      "prerequis": {
-        "stats": {
-          "force": 10
-        }
-      },
+      "description": "Maîtrise des techniques de corps à corps à mains nues.",
+      "prerequis": { "stats": { "force": 10 } },
       "effets": {
-        "stats": {
-          "force": 1
-        },
-        "special": "Tes attaques à mains nues infligent 1d6 + modificateur de Force. Tu ne déclenches pas d'attaques d'opportunité en attaquant à mains nues."
+        "texte": "Votre Force augmente de 1 et vos attaques à mains nues infligent 1d6 + modificateur de Force.",
+        "stats": { "force": 1 },
+        "special": "Attaques à mains nues : 1d6 + Force."
       }
     },
+
     "tactique_d_escouade": {
       "nom": "Tactique d'Escouade",
       "categorie": "Commandement",
-      "disponible_des": "niveau 1",
-      "description": "Entraînement en binôme intensif de Gosha Academy : tu exploites naturellement les ouvertures créées par tes alliés, à la manière des équipes de deux Taimanin qui partent en mission ensemble.",
-      "prerequis": {
-        "stats": {
-          "commandement": 10
-        }
-      },
+      "description": "Entraînement en binôme intensif de Gosha Academy.",
+      "prerequis": { "stats": { "commandement": 10 } },
       "effets": {
-        "stats": {
-          "commandement": 1
-        },
-        "special": "Avantage sur les jets d'attaque contre une cible si un allié conscient est adjacent à elle et au combat. +1d4 dégâts en cas de flanquement."
+        "texte": "Votre Commandement augmente de 1 et vous bénéficiez d'un avantage en attaque si un allié est adjacent à la cible.",
+        "stats": { "commandement": 1 },
+        "special": "Avantage en attaque si un allié est adjacent à la cible."
       }
     },
+
     "pas_chasse": {
       "nom": "Pas Chassé",
       "categorie": "Combat",
-      "disponible_des": "niveau 1",
-      "description": "Quand une cible tente de se désengager du combat, tu la colles immédiatement — une technique essentielle pour empêcher les agents de Nomad de fuir avec des informations classifiées.",
+      "description": "Vous collez immédiatement une cible qui tente de se désengager.",
       "prerequis": {
-        "stats": {
-          "ninjutsu": 10,
-          "force": 10
-        }
+        "stats": { "ninjutsu": 10, "force": 10 }
       },
       "effets": {
-        "stats": {
-          "ninjutsu": 1
-        },
-        "special": "Quand un ennemi adjacent tente de se déplacer hors de ta portée, tu peux te déplacer de 1,5 m pour le suivre sans dépenser d'action. Il ne peut pas utiliser Désengagement pour éviter ton attaque d'opportunité."
+        "texte": "Votre Ninjutsu augmente de 1 et vous pouvez suivre un ennemi qui tente de se désengager sans dépenser d'action.",
+        "stats": { "ninjutsu": 1 },
+        "special": "Suivi gratuit d'un ennemi qui se désengage."
       }
     }
   },
   "capacites": {
     "description_globale": "Les capacités sont des techniques de combat débloquées au fil de la progression d'un Taimanin. Elles exploitent soit l'art de l'épée infernale (voie Blood Edge), soit les arts arcanes démoniaques (voie Abyss Focus).",
+
     "voie_blood_edge": {
       "description": "Voie du guerrier Taimanin ayant éveillé une lame infusée d'énergie infernale. Orientée combat rapproché et puissance brute.",
       "capacites": [
@@ -691,9 +535,12 @@
           "niveau": 1,
           "nom": "Blood Edge",
           "type": "Passif",
-          "description": "Ta lame est naturellement imprégnée d'énergie infernale issue de ton sang démoniaque — une caractéristique héritée de la lignée Aion. Tes dégâts en mêlée sont augmentés de façon permanente.",
+          "description": "Ta lame est naturellement imprégnée d'énergie infernale issue de ton sang démoniaque — une caractéristique héritée de la lignée Aion.",
           "prerequis": null,
-          "effets": "+2 Dégâts sur toutes les attaques de mêlée."
+          "effets": {
+            "texte": "Toutes tes attaques de mêlée infligent en permanence 2 points de dégâts supplémentaires grâce à l'énergie infernale de ta lame.",
+            "details": "+2 dégâts sur toutes les attaques de mêlée."
+          }
         },
         {
           "niveau": 1,
@@ -701,7 +548,11 @@
           "type": "Actif",
           "description": "Une frappe concentrant toute ton énergie infernale en un seul coup dévastateur, capable de briser les défenses des démons de rang intermédiaire.",
           "prerequis": "Niveau 1",
-          "effets": "Dégâts = Force × 1.5 (1 tour). Coût : 10 énergie mystique."
+          "effets": {
+            "texte": "Pendant un tour, ta prochaine attaque de mêlée inflige des dégâts équivalents à 1,5 fois ta Force. Cette technique consomme de l'énergie mystique.",
+            "details": "Dégâts = Force × 1,5 pour une attaque ce tour.",
+            "cout_energie_mystique": 10
+          }
         },
         {
           "niveau": 2,
@@ -709,7 +560,10 @@
           "type": "Passif",
           "description": "Ta technique de coupe infernale ignore une partie de l'armure naturelle des démons et des protections cybernétiques des agents de Nomad.",
           "prerequis": "Niveau 2",
-          "effets": "+10% de pénétration d'armure."
+          "effets": {
+            "texte": "Tes attaques de mêlée ignorent une partie de l'armure de la cible, rendant tes frappes plus efficaces contre les ennemis protégés.",
+            "details": "+10 % de pénétration d'armure."
+          }
         },
         {
           "niveau": 3,
@@ -717,7 +571,10 @@
           "type": "Passif",
           "description": "L'expérience acquise sur le terrain renforce ta Frappe Démoniaque, qui atteint désormais une puissance comparable aux jutsu des capitaines de Gosha.",
           "prerequis": "Niveau 3",
-          "effets": "Dégâts = Force × 1.7 (remplace le multiplicateur de 1.5)."
+          "effets": {
+            "texte": "Ta capacité Frappe Démoniaque est améliorée : elle inflige désormais des dégâts équivalents à 1,7 fois ta Force au lieu de 1,5.",
+            "details": "Dégâts = Force × 1,7 (remplace 1,5)."
+          }
         },
         {
           "niveau": 4,
@@ -725,7 +582,10 @@
           "type": "Passif",
           "description": "Ton énergie infernale corrompt les plaies infligées, rongeant les cellules démoniaques de l'intérieur à la manière d'une toxine du Makai.",
           "prerequis": "Niveau 4",
-          "effets": "Dégâts supplémentaires = 10% des PV max de la cible sur 3 tours."
+          "effets": {
+            "texte": "Les ennemis que tu blesses subissent des dégâts supplémentaires sur la durée, comme s'ils étaient empoisonnés par ton énergie infernale.",
+            "details": "Inflige 10 % des PV max de la cible en dégâts sur 3 tours."
+          }
         },
         {
           "niveau": 5,
@@ -733,7 +593,11 @@
           "type": "Actif",
           "description": "Tu laisses libre cours à la part sombre de ton héritage démoniaque, entrant dans une rage temporaire qui décuple ta puissance au détriment de ta défense.",
           "prerequis": "Niveau 5",
-          "effets": "+20% Dégâts, -10% Défense pendant 3 tours. Coût : 15 énergie mystique."
+          "effets": {
+            "texte": "Tu entres dans un état de rage démoniaque, augmentant tes dégâts mais réduisant ta défense pendant une courte durée.",
+            "details": "+20 % dégâts, -10 % Défense pendant 3 tours.",
+            "cout_energie_mystique": 15
+          }
         },
         {
           "niveau": 6,
@@ -741,7 +605,10 @@
           "type": "Passif",
           "description": "Ton corps Taimanin, durci par des années de confrontations avec le Makai, développe une résistance naturelle aux attaques magiques et physiques des démons.",
           "prerequis": "Niveau 6",
-          "effets": "+1 Résistance à tous les types de dégâts."
+          "effets": {
+            "texte": "Tu deviens plus résistant à tous les types de dégâts, qu'ils soient physiques ou magiques.",
+            "details": "+1 Résistance à tous les types de dégâts."
+          }
         },
         {
           "niveau": 7,
@@ -749,7 +616,10 @@
           "type": "Passif",
           "description": "Ta lame infernale absorbe l'essence vitale de tes ennemis vaincus pour alimenter ta propre régénération — une technique controversée à Gosha Academy.",
           "prerequis": "Niveau 7",
-          "effets": "Récupère 5 PV par ennemi vaincu."
+          "effets": {
+            "texte": "Chaque fois que tu vaincs un ennemi, tu récupères une partie de tes points de vie grâce à l'essence qu'absorbe ta lame.",
+            "details": "Récupère 5 PV par ennemi vaincu."
+          }
         },
         {
           "niveau": 8,
@@ -757,7 +627,11 @@
           "type": "Actif",
           "description": "Une frappe d'une précision chirurgicale visant les points vitaux démoniaques. Maîtrisée par les plus grands capitaines Taimanin pour achever les démons affaiblis.",
           "prerequis": "Niveau 8",
-          "effets": "20% de chance d'élimination instantanée sur une cible à moins de 30% de ses PV. Coût : 20 énergie mystique."
+          "effets": {
+            "texte": "Tu portes une attaque visant les points vitaux d'un ennemi affaibli, avec une chance de l'éliminer instantanément.",
+            "details": "20 % de chance d'élimination instantanée sur une cible à moins de 30 % de ses PV.",
+            "cout_energie_mystique": 20
+          }
         },
         {
           "niveau": 9,
@@ -765,18 +639,25 @@
           "type": "Passif",
           "description": "Tu as atteint le niveau de maîtrise des légendes de Gosha Village. Chaque frappe avec une arme de type épée touche avec une précision et une létalité redoutables.",
           "prerequis": "Niveau 9",
-          "effets": "+15% Dégâts avec toutes les armes de type épée."
+          "effets": {
+            "texte": "Tes attaques avec des armes de type épée deviennent nettement plus meurtrières.",
+            "details": "+15 % dégâts avec toutes les armes de type épée."
+          }
         },
         {
           "niveau": 10,
           "nom": "Légende Noire",
           "type": "Passif",
-          "description": "Ton nom est murmuré avec crainte dans les rangs de Nomad et les cercles démoniaques de Tokyo Kingdom. Ton aura de guerrier implacable paralyse tes adversaires.",
+          "description": "Ton nom est murmuré avec crainte dans les rangs de Nomad et les cercles démoniaques de Tokyo Kingdom.",
           "prerequis": "Niveau 10",
-          "effets": "Immunité à la peur. -10% de précision ennemie sur toutes les attaques te ciblant."
+          "effets": {
+            "texte": "Tu deviens insensible à la peur et tes ennemis ont plus de mal à te toucher en combat.",
+            "details": "Immunité à la peur et -10 % de précision sur toutes les attaques ennemies te ciblant."
+          }
         }
       ]
     },
+
     "voie_abyss_focus": {
       "description": "Voie du mage-ninja Taimanin ayant canalisé les Particules Taima vers les arts arcaniques démoniaques. Orientée sorts offensifs et vampirisme magique.",
       "capacites": [
@@ -786,23 +667,22 @@
           "type": "Passif",
           "description": "Ta concentration sur les arcanes démoniaques affine ta maîtrise des Particules Taima, augmentant la précision de tes sorts et réduisant les risques de déviation.",
           "prerequis": null,
-          "effets": "+10% de précision pour tous les sorts."
+          "effets": {
+            "texte": "Tous tes sorts gagnent 10 % de précision supplémentaire, ce qui réduit les risques d'échec ou de déviation.",
+            "details": "+10 % de précision pour tous les sorts."
+          }
         },
         {
           "niveau": 1,
           "nom": "Décharge Infernale",
           "type": "Actif",
-          "description": "Une vague de magie noire puisée dans les profondeurs du Makai, conçue pour brûler les cellules démoniaques et déstabiliser les formations ennemies.",
+          "description": "Tu libères une décharge d'énergie infernale concentrée, projetant une vague de puissance Taima contre ta cible.",
           "prerequis": "Niveau 1",
-          "effets": "Dégâts = Taima × 1.8 sur une zone de 2 cases. Coût : 15 énergie mystique."
-        },
-        {
-          "niveau": 2,
-          "nom": "Sortilège de Sang",
-          "type": "Actif",
-          "description": "Un sort ancestral draîne l'essence vitale démoniaque de ta cible pour alimenter ta propre énergie — héritage direct du sang Aion qui coule dans tes veines.",
-          "prerequis": "Niveau 2",
-          "effets": "Dégâts = Taima × 1.2. Récupère 50% des dégâts infligés sous forme de PV. Coût : 10 énergie mystique."
+          "effets": {
+            "texte": "Tu lances un sort offensif de type décharge d'énergie infernale contre une cible unique. Les dégâts exacts sont à définir selon ton système (par exemple basés sur ta Taima).",
+            "details": "Sort offensif à cible unique. Dégâts à définir.",
+            "cout_energie_mystique": 10
+          }
         }
       ]
     }

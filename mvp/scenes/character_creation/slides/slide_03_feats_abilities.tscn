@@ -48,14 +48,14 @@ custom_minimum_size = Vector2(0, 220)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 0
-columns = 2
+columns = 4
 
 [node name="AbilityCardGrid" type="GridContainer" parent="Content/CardScroll/CardScrollContent" unique_id=1690334784]
 custom_minimum_size = Vector2(0, 220)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 0
-columns = 2
+columns = 4
 
 [node name="Nav" type="HBoxContainer" parent="Content" unique_id=1604090609]
 layout_mode = 2
