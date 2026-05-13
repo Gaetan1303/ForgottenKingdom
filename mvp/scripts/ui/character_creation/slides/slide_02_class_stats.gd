@@ -9,14 +9,22 @@ const CARD_COLUMNS := 3
 
 var _selected_class_id: String = ""
 const POINTS_POOL_TOTAL: int = 18
+var _class_base_stats: Dictionary = {}
 
 func _ready() -> void:
 	for key in StatDefs.STAT_KEYS:
 		var node := find_child("Stat_%s" % key, true, false) as SpinBox
 		if node:
+			# ensure spinbox has sane min/step/max so allocation is constrained
+			node.min_value = StatDefs.CHARACTER_MIN_STAT
+			node.step = 1
+			# give a generous initial max; will be tightened by _update_points_pool()
+			node.max_value = StatDefs.CHARACTER_MIN_STAT + POINTS_POOL_TOTAL
 			node.value_changed.connect(Callable(self, "_on_stat_value_changed").bind(key))
 	_update_derived_stats()
 	_update_points_pool()
+	# initialize class base stats to the default min so point calculations work
+	_class_base_stats = StatDefs.make_default_stats(StatDefs.CHARACTER_MIN_STAT)
 
 func enter_slide(data: Resource) -> void:
 	_populate_class_cards()
@@ -173,6 +181,7 @@ func _on_class_card_pressed(class_id: String) -> void:
 
 func _select_class_card(class_id: String) -> void:
 	_selected_class_id = class_id
+	_reset_stat_spinboxes()
 	_apply_class_stats(class_id)
 	_refresh_class_selection()
 	_refresh_progression_summary(class_id)
@@ -184,14 +193,29 @@ func _apply_class_stats(class_id: String) -> void:
 		var point_buy := CharacterCreationRules.apply_point_buy_for_class(class_id, 10)
 		if point_buy.has("stats"):
 			stats = point_buy["stats"] as Dictionary
+			# remember class base stats so allocated points are computed relative to them
+			_class_base_stats = stats.duplicate(true)
 
 	for key in StatDefs.STAT_KEYS:
 		var node := find_child("Stat_%s" % key, true, false) as SpinBox
 		if node:
 			var default_stat := StatDefs.CHARACTER_MIN_STAT
 			var stat_value := int(stats[key]) if stats.has(key) else default_stat
+			# set bounds before value so the value is clamped to the class base if needed
+			node.min_value = float(stat_value)
+			node.step = 1
+			node.max_value = float(stat_value + POINTS_POOL_TOTAL)
 			node.value = float(stat_value)
 	_update_derived_stats()
+
+func _reset_stat_spinboxes() -> void:
+	for key in StatDefs.STAT_KEYS:
+		var node := find_child("Stat_%s" % key, true, false) as SpinBox
+		if node:
+			node.min_value = StatDefs.CHARACTER_MIN_STAT
+			node.step = 1
+			node.max_value = StatDefs.CHARACTER_MIN_STAT + POINTS_POOL_TOTAL
+			node.value = float(StatDefs.CHARACTER_MIN_STAT)
 
 
 func _refresh_class_selection() -> void:
@@ -234,13 +258,40 @@ func _set_derived_label(node_name: String, value: int) -> void:
 func _update_points_pool() -> void:
 	var stats: Dictionary = _collect_stats()
 	var spent: int = 0
+	# compute spent using the same stat cost curve as the rest of the UI
 	for key in StatDefs.STAT_KEYS:
 		var value: int = int(stats.get(key, StatDefs.CHARACTER_MIN_STAT))
-		spent += max(0, value - StatDefs.CHARACTER_MIN_STAT)
+		var base_val: int = int(_class_base_stats.get(key, StatDefs.CHARACTER_MIN_STAT))
+		if value > base_val:
+			spent += _compute_stat_cost(base_val, value)
 	var remaining: int = max(0, POINTS_POOL_TOTAL - spent)
 	var label: Label = find_child("PointsPoolLabel", true, false) as Label
 	if label:
 		label.text = "Points restants: %d / %d" % [remaining, POINTS_POOL_TOTAL]
+
+	for key in StatDefs.STAT_KEYS:
+		var node := find_child("Stat_%s" % key, true, false) as SpinBox
+		if node:
+			var value: int = int(node.value)
+			node.max_value = float(_calculate_max_stat_value(value, remaining))
+
+func _calculate_max_stat_value(current_value: int, remaining_points: int) -> int:
+	var max_value := current_value
+	while max_value < StatDefs.CHARACTER_MAX_STAT:
+		var next_cost := CharacterCreationRules.stat_upgrade_cost_preview(max_value)
+		if next_cost > remaining_points:
+			break
+		remaining_points -= next_cost
+		max_value += 1
+	return max_value
+
+
+func _compute_stat_cost(from_value: int, to_value: int) -> int:
+	var cost := 0
+	for value in range(from_value, to_value):
+		cost += CharacterCreationRules.stat_upgrade_cost_preview(value)
+	return cost
+
 
 func _refresh_progression_summary(class_id: String) -> void:
 	var summary := find_child("ProgressionSummary", true, false) as ScrollContainer
