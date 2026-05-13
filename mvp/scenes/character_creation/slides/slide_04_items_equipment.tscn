@@ -1,6 +1,10 @@
-[gd_scene load_steps=2 format=3]
+[gd_scene load_steps=6 format=3]
 
 [ext_resource type="Script" path="res://scripts/ui/character_creation/slides/slide_04_items_equipment.gd" id="1_slide"]
+[ext_resource type="Script" path="res://scripts/ui/character_creation/components/inventory_item_grid.gd" id="2_inventory_grid"]
+[ext_resource type="Script" path="res://scripts/ui/character_creation/components/equipment_slot_card.gd" id="3_slot_card"]
+[ext_resource type="Texture2D" path="res://assets/maquette/Container_itembag.png" id="4_itembag"]
+[ext_resource type="Texture2D" path="res://assets/images/PNJ/defaut/male.png" id="5_portrait_male"]
 
 [node name="Slide04ItemsEquipment" type="Control"]
 layout_mode = 3
@@ -18,25 +22,318 @@ offset_left = 12.0
 offset_top = 12.0
 offset_right = -12.0
 offset_bottom = -12.0
-theme_override_constants/separation = 8
+theme_override_constants/separation = 10
 
 [node name="StepTitle" type="Label" parent="Content"]
 layout_mode = 2
-text = "Slide 4 - Items et equipement"
+text = "Slide 4 - Equipement"
 theme_override_font_sizes/font_size = 18
 
-[node name="InventoryOption" type="OptionButton" parent="Content"]
+[node name="Body" type="HBoxContainer" parent="Content"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 14
+
+[node name="InventoryPanel" type="PanelContainer" parent="Content/Body"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="InventoryBg" type="TextureRect" parent="Content/Body/InventoryPanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+texture = ExtResource("4_itembag")
+expand_mode = 1
+stretch_mode = 6
+mouse_filter = 2
+
+[node name="InventoryMargin" type="MarginContainer" parent="Content/Body/InventoryPanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 18.0
+offset_top = 18.0
+offset_right = -18.0
+offset_bottom = -18.0
+
+[node name="InventoryVBox" type="VBoxContainer" parent="Content/Body/InventoryPanel/InventoryMargin"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/separation = 8
+
+[node name="InventoryTitle" type="Label" parent="Content/Body/InventoryPanel/InventoryMargin/InventoryVBox"]
+layout_mode = 2
+text = "Sac du personnage"
+theme_override_font_sizes/font_size = 16
+
+[node name="InventoryHelp" type="Label" parent="Content/Body/InventoryPanel/InventoryMargin/InventoryVBox"]
+layout_mode = 2
+text = "Glisser/deposer depuis la grille vers les slots d'equipement"
+autowrap_mode = 3
+theme_override_font_sizes/font_size = 10
+
+[node name="InventoryGrid" type="GridContainer" parent="Content/Body/InventoryPanel/InventoryMargin/InventoryVBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+columns = 4
+theme_override_constants/h_separation = 8
+theme_override_constants/v_separation = 8
+script = ExtResource("2_inventory_grid")
+
+[node name="EquipmentPanel" type="PanelContainer" parent="Content/Body"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="EquipmentMargin" type="MarginContainer" parent="Content/Body/EquipmentPanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 14.0
+offset_top = 14.0
+offset_right = -14.0
+offset_bottom = -14.0
+
+[node name="EquipmentLayout" type="HBoxContainer" parent="Content/Body/EquipmentPanel/EquipmentMargin"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/separation = 10
+
+[node name="LeftColumn" type="VBoxContainer" parent="Content/Body/EquipmentPanel/EquipmentMargin/EquipmentLayout"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 8
+
+[node name="SlotHead" type="PanelContainer" parent="Content/Body/EquipmentPanel/EquipmentMargin/EquipmentLayout/LeftColumn"]
+custom_minimum_size = Vector2(132, 70)
+layout_mode = 2
+script = ExtResource("3_slot_card")
+slot_id = "head"
+slot_label = "Tete"
+accepted_types = PackedStringArray("head")
+
+[node name="Body" type="VBoxContainer" parent="Content/Body/EquipmentPanel/EquipmentMargin/EquipmentLayout/LeftColumn/SlotHead"]
 layout_mode = 2
 
-[node name="WeaponSlotOption" type="OptionButton" parent="Content"]
+[node name="Title" type="Label" parent="Content/Body/EquipmentPanel/EquipmentMargin/EquipmentLayout/LeftColumn/SlotHead/Body"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 10
+
+[node name="Item" type="Label" parent="Content/Body/EquipmentPanel/EquipmentMargin/EquipmentLayout/LeftColumn/SlotHead/Body"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 11
+
+[node name="SlotShoulders" type="PanelContainer" parent="Content/Body/EquipmentPanel/EquipmentMargin/EquipmentLayout/LeftColumn"]
+custom_minimum_size = Vector2(132, 70)
+layout_mode = 2
+script = ExtResource("3_slot_card")
+slot_id = "shoulders"
+slot_label = "Epaules"
+accepted_types = PackedStringArray("shoulders")
+
+[node name="Body" type="VBoxContainer" parent="Content/Body/EquipmentPanel/EquipmentMargin/EquipmentLayout/LeftColumn/SlotShoulders"]
 layout_mode = 2
 
-[node name="ArmorSlotOption" type="OptionButton" parent="Content"]
+[node name="Title" type="Label" parent="Content/Body/EquipmentPanel/EquipmentMargin/EquipmentLayout/LeftColumn/SlotShoulders/Body"]
 layout_mode = 2
+theme_override_font_sizes/font_size = 10
+
+[node name="Item" type="Label" parent="Content/Body/EquipmentPanel/EquipmentMargin/EquipmentLayout/LeftColumn/SlotShoulders/Body"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 11
+
+[node name="SlotHands" type="PanelContainer" parent="Content/Body/EquipmentPanel/EquipmentMargin/EquipmentLayout/LeftColumn"]
+custom_minimum_size = Vector2(132, 70)
+layout_mode = 2
+script = ExtResource("3_slot_card")
+slot_id = "hands"
+slot_label = "Mains"
+accepted_types = PackedStringArray("hands")
+
+[node name="Body" type="VBoxContainer" parent="Content/Body/EquipmentPanel/EquipmentMargin/EquipmentLayout/LeftColumn/SlotHands"]
+layout_mode = 2
+
+[node name="Title" type="Label" parent="Content/Body/EquipmentPanel/EquipmentMargin/EquipmentLayout/LeftColumn/SlotHands/Body"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 10
+
+[node name="Item" type="Label" parent="Content/Body/EquipmentPanel/EquipmentMargin/EquipmentLayout/LeftColumn/SlotHands/Body"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 11
+
+[node name="SlotRingLeft" type="PanelContainer" parent="Content/Body/EquipmentPanel/EquipmentMargin/EquipmentLayout/LeftColumn"]
+custom_minimum_size = Vector2(132, 70)
+layout_mode = 2
+script = ExtResource("3_slot_card")
+slot_id = "ring_left"
+slot_label = "Anneau G"
+accepted_types = PackedStringArray("ring")
+
+[node name="Body" type="VBoxContainer" parent="Content/Body/EquipmentPanel/EquipmentMargin/EquipmentLayout/LeftColumn/SlotRingLeft"]
+layout_mode = 2
+
+[node name="Title" type="Label" parent="Content/Body/EquipmentPanel/EquipmentMargin/EquipmentLayout/LeftColumn/SlotRingLeft/Body"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 10
+
+[node name="Item" type="Label" parent="Content/Body/EquipmentPanel/EquipmentMargin/EquipmentLayout/LeftColumn/SlotRingLeft/Body"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 11
+
+[node name="SlotBoots" type="PanelContainer" parent="Content/Body/EquipmentPanel/EquipmentMargin/EquipmentLayout/LeftColumn"]
+custom_minimum_size = Vector2(132, 70)
+layout_mode = 2
+script = ExtResource("3_slot_card")
+slot_id = "boots"
+slot_label = "Bottes"
+accepted_types = PackedStringArray("boots")
+
+[node name="Body" type="VBoxContainer" parent="Content/Body/EquipmentPanel/EquipmentMargin/EquipmentLayout/LeftColumn/SlotBoots"]
+layout_mode = 2
+
+[node name="Title" type="Label" parent="Content/Body/EquipmentPanel/EquipmentMargin/EquipmentLayout/LeftColumn/SlotBoots/Body"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 10
+
+[node name="Item" type="Label" parent="Content/Body/EquipmentPanel/EquipmentMargin/EquipmentLayout/LeftColumn/SlotBoots/Body"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 11
+
+[node name="CenterColumn" type="VBoxContainer" parent="Content/Body/EquipmentPanel/EquipmentMargin/EquipmentLayout"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+alignment = 1
+theme_override_constants/separation = 10
+
+[node name="PortraitFrame" type="PanelContainer" parent="Content/Body/EquipmentPanel/EquipmentMargin/EquipmentLayout/CenterColumn"]
+custom_minimum_size = Vector2(220, 280)
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="CharacterPortrait" type="TextureRect" parent="Content/Body/EquipmentPanel/EquipmentMargin/EquipmentLayout/CenterColumn/PortraitFrame"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource("5_portrait_male")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="BottomSlots" type="HBoxContainer" parent="Content/Body/EquipmentPanel/EquipmentMargin/EquipmentLayout/CenterColumn"]
+layout_mode = 2
+alignment = 1
+theme_override_constants/separation = 8
+
+[node name="SlotMainHand" type="PanelContainer" parent="Content/Body/EquipmentPanel/EquipmentMargin/EquipmentLayout/CenterColumn/BottomSlots"]
+custom_minimum_size = Vector2(132, 70)
+layout_mode = 2
+script = ExtResource("3_slot_card")
+slot_id = "main_hand"
+slot_label = "Main D"
+accepted_types = PackedStringArray("weapon")
+
+[node name="Body" type="VBoxContainer" parent="Content/Body/EquipmentPanel/EquipmentMargin/EquipmentLayout/CenterColumn/BottomSlots/SlotMainHand"]
+layout_mode = 2
+
+[node name="Title" type="Label" parent="Content/Body/EquipmentPanel/EquipmentMargin/EquipmentLayout/CenterColumn/BottomSlots/SlotMainHand/Body"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 10
+
+[node name="Item" type="Label" parent="Content/Body/EquipmentPanel/EquipmentMargin/EquipmentLayout/CenterColumn/BottomSlots/SlotMainHand/Body"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 11
+
+[node name="SlotOffHand" type="PanelContainer" parent="Content/Body/EquipmentPanel/EquipmentMargin/EquipmentLayout/CenterColumn/BottomSlots"]
+custom_minimum_size = Vector2(132, 70)
+layout_mode = 2
+script = ExtResource("3_slot_card")
+slot_id = "off_hand"
+slot_label = "Main G"
+accepted_types = PackedStringArray("offhand")
+
+[node name="Body" type="VBoxContainer" parent="Content/Body/EquipmentPanel/EquipmentMargin/EquipmentLayout/CenterColumn/BottomSlots/SlotOffHand"]
+layout_mode = 2
+
+[node name="Title" type="Label" parent="Content/Body/EquipmentPanel/EquipmentMargin/EquipmentLayout/CenterColumn/BottomSlots/SlotOffHand/Body"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 10
+
+[node name="Item" type="Label" parent="Content/Body/EquipmentPanel/EquipmentMargin/EquipmentLayout/CenterColumn/BottomSlots/SlotOffHand/Body"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 11
+
+[node name="RightColumn" type="VBoxContainer" parent="Content/Body/EquipmentPanel/EquipmentMargin/EquipmentLayout"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 8
+
+[node name="SlotChest" type="PanelContainer" parent="Content/Body/EquipmentPanel/EquipmentMargin/EquipmentLayout/RightColumn"]
+custom_minimum_size = Vector2(132, 70)
+layout_mode = 2
+script = ExtResource("3_slot_card")
+slot_id = "chest"
+slot_label = "Torse"
+accepted_types = PackedStringArray("armor")
+
+[node name="Body" type="VBoxContainer" parent="Content/Body/EquipmentPanel/EquipmentMargin/EquipmentLayout/RightColumn/SlotChest"]
+layout_mode = 2
+
+[node name="Title" type="Label" parent="Content/Body/EquipmentPanel/EquipmentMargin/EquipmentLayout/RightColumn/SlotChest/Body"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 10
+
+[node name="Item" type="Label" parent="Content/Body/EquipmentPanel/EquipmentMargin/EquipmentLayout/RightColumn/SlotChest/Body"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 11
+
+[node name="SlotLegs" type="PanelContainer" parent="Content/Body/EquipmentPanel/EquipmentMargin/EquipmentLayout/RightColumn"]
+custom_minimum_size = Vector2(132, 70)
+layout_mode = 2
+script = ExtResource("3_slot_card")
+slot_id = "legs"
+slot_label = "Jambes"
+accepted_types = PackedStringArray("legs")
+
+[node name="Body" type="VBoxContainer" parent="Content/Body/EquipmentPanel/EquipmentMargin/EquipmentLayout/RightColumn/SlotLegs"]
+layout_mode = 2
+
+[node name="Title" type="Label" parent="Content/Body/EquipmentPanel/EquipmentMargin/EquipmentLayout/RightColumn/SlotLegs/Body"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 10
+
+[node name="Item" type="Label" parent="Content/Body/EquipmentPanel/EquipmentMargin/EquipmentLayout/RightColumn/SlotLegs/Body"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 11
+
+[node name="SlotRingRight" type="PanelContainer" parent="Content/Body/EquipmentPanel/EquipmentMargin/EquipmentLayout/RightColumn"]
+custom_minimum_size = Vector2(132, 70)
+layout_mode = 2
+script = ExtResource("3_slot_card")
+slot_id = "ring_right"
+slot_label = "Anneau D"
+accepted_types = PackedStringArray("ring")
+
+[node name="Body" type="VBoxContainer" parent="Content/Body/EquipmentPanel/EquipmentMargin/EquipmentLayout/RightColumn/SlotRingRight"]
+layout_mode = 2
+
+[node name="Title" type="Label" parent="Content/Body/EquipmentPanel/EquipmentMargin/EquipmentLayout/RightColumn/SlotRingRight/Body"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 10
+
+[node name="Item" type="Label" parent="Content/Body/EquipmentPanel/EquipmentMargin/EquipmentLayout/RightColumn/SlotRingRight/Body"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 11
 
 [node name="CompatibilityHint" type="Label" parent="Content"]
 layout_mode = 2
-text = "Selectionnez des objets compatibles entre eux."
+text = "Equipe tes objets en glisser/deposer."
 theme_override_font_sizes/font_size = 10
 
 [node name="Nav" type="HBoxContainer" parent="Content"]
@@ -53,6 +350,3 @@ text = "Suivant"
 
 [connection signal="pressed" from="Content/Nav/BtnPrev" to="." method="request_previous"]
 [connection signal="pressed" from="Content/Nav/BtnNext" to="." method="request_next"]
-[connection signal="item_selected" from="Content/InventoryOption" to="." method="_on_equipment_changed"]
-[connection signal="item_selected" from="Content/WeaponSlotOption" to="." method="_on_equipment_changed"]
-[connection signal="item_selected" from="Content/ArmorSlotOption" to="." method="_on_equipment_changed"]

@@ -1,0 +1,4 @@
+res://scripts/ui/character_creation/components/equipment_slot_card.gd
+res://scripts/ui/character_creation/components/inventory_item_card.gd
+res://scripts/ui/character_creation/components/inventory_item_grid.gd
+res://scripts/ui/character_creation/slides/slide_04_items_equipment.gd
