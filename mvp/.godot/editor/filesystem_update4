@@ -1,0 +1,3 @@
+res://scenes/character_creation/slides/slide_01_basic_info.tscn
+res://scripts/ui/character_creation/slides/slide_01_basic_info.gd
+res://scripts/ui/character_creation/slides/slide_04_items_equipment.gd

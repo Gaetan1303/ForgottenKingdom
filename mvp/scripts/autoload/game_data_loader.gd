@@ -10,6 +10,7 @@ const PATH_LIBRARY_ENTRIES := "res://data/library_entries.json"
 const PATH_CLASSES := "res://data/classes.json"
 const PATH_FEATS := "res://data/feats.json"
 const PATH_ABILITIES := "res://data/abilities.json"
+const PATH_EQUIPMENT := "res://data/equipment.json"
 const PATH_PROGRESSION_DIR := "res://data/progression"
 
 # ── Caches ───────────────────────────────────────────────────────────
@@ -20,6 +21,7 @@ var _character_traits: Dictionary = {}
 var _library_entries: Dictionary = {}
 var _feats:         Dictionary = {}
 var _abilities:     Dictionary = {}
+var _equipment:     Dictionary = {}
 var _class_progressions: Dictionary = {}
 signal reloaded
 
@@ -31,6 +33,7 @@ func _ready() -> void:
 	_charger_classes()
 	_charger_class_progressions()
 	_charger_feats()
+	_charger_equipment()
 
 
 # ─────────────────────────────────────────────────────────────────────
@@ -211,6 +214,15 @@ func _charger_abilities() -> void:
 		_abilities = {}
 		return
 	_abilities = data
+
+
+func _charger_equipment() -> void:
+	var data := _lire_json(PATH_EQUIPMENT)
+	if data.is_empty():
+		push_warning("GameDataLoader: equipment.json introuvable — fallback vide.")
+		_equipment = {"items": []}
+		return
+	_equipment = data
 
 
 ## Index les actions par leur ID pour un accès O(1).
@@ -411,6 +423,19 @@ func get_ability_by_id(id: String) -> Dictionary:
 	return abilities_map.get(idn, {}) as Dictionary
 
 
+func get_equipment() -> Dictionary:
+	if _equipment.is_empty():
+		_charger_equipment()
+	return _equipment.duplicate(true)
+
+
+func get_equipment_items() -> Array:
+	var equipment_map := get_equipment()
+	if not equipment_map.has("items"):
+		return []
+	return (equipment_map["items"] as Array).duplicate(true)
+
+
 func get_feats_for_ability(ability_id: String) -> Dictionary:
 	# Tentative: retourne les feats dont le nom ou la description contient le nom de la capacité.
 	var abil := get_ability_by_id(ability_id)
@@ -454,6 +479,7 @@ func reload() -> void:
 	_charger_class_progressions()
 	_charger_abilities()
 	_charger_feats()
+	_charger_equipment()
 	# Re-indexer les actions au cas où config_tour a changé
 	_indexer_actions(_config_tour.get("actions", []) as Array)
 	print("GameDataLoader: données rechargées.")
