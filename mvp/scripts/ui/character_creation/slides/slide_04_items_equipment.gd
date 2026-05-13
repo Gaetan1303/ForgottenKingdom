@@ -323,10 +323,13 @@ func _refresh_portrait(data: Resource) -> void:
 	if portrait == null:
 		return
 	var texture: Texture2D = MALE_PORTRAIT
+	var appearance_id: String = ""
 	if data != null and data.has_method("get"):
-		var appearance_id := str(data.get("appearance_id"))
-		if appearance_id.contains("noble") or appearance_id.contains("arcaniste"):
-			texture = FEMALE_PORTRAIT
+		appearance_id = str(data.get("appearance_id")).to_lower()
+	if appearance_id.find("femme") != -1:
+		texture = FEMALE_PORTRAIT
+	elif appearance_id.find("homme") != -1:
+		texture = MALE_PORTRAIT
 	portrait.texture = texture
 
 

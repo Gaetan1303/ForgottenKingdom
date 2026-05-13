@@ -3,10 +3,10 @@ class_name Slide01BasicInfo
 extends CreationSlideBase
 
 const APPEARANCE_CHOICES := [
-	{"id": "veteran_balafre", "label": "Veteran balafre"},
-	{"id": "noble_exile", "label": "Noble exile"},
-	{"id": "arcaniste_tatoue", "label": "Arcaniste tatoue"},
-	{"id": "mercenaire_masque", "label": "Mercenaire masque"},
+	{"id": "homme_balafre", "label": "Homme balafre"},
+	{"id": "homme_exile", "label": "Homme exile"},
+	{"id": "femme_taimanin", "label": "Femme Taimanin"},
+	{"id": "femme_demonne", "label": "Femme demon"},
 ]
 
 const CARD_COLUMNS := 2

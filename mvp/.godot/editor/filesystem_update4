@@ -1,5 +1,3 @@
-res://scripts/ui/character_creation/components/equipment_slot_card.gd
-res://scripts/ui/character_creation/components/inventory_item_card.gd
-res://scripts/ui/character_creation/components/inventory_item_grid.gd
+res://scenes/character_creation/slides/slide_01_basic_info.tscn
+res://scripts/ui/character_creation/slides/slide_01_basic_info.gd
 res://scripts/ui/character_creation/slides/slide_04_items_equipment.gd
-res://scripts/autoload/game_data_loader.gd
