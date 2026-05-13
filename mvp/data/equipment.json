@@ -1,7 +1,7 @@
 {
   "items": [
     {"id": "war_helm", "label": "Casque de guerre", "slot_type": "head"},
-    {"id": "obsidian_spaulders", "label": "Epaulieres d'obsidienne", "slot_type": "shoulders"},
+    {"id": "obsidian_spaulders", "label": "Armure d'obsidienne", "slot_type": "armor"},
     {"id": "demon_gauntlets", "label": "Gantelets demoniaques", "slot_type": "hands"},
     {"id": "war_boots", "label": "Bottes du front", "slot_type": "boots"},
     {"id": "blood_ring", "label": "Anneau de sang", "slot_type": "ring"},

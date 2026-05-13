@@ -2,7 +2,6 @@
 class_name Slide04ItemsEquipment
 extends CreationSlideBase
 
-const InventoryItemCardScript = preload("res://scripts/ui/character_creation/components/inventory_item_card.gd")
 const MALE_PORTRAIT = preload("res://assets/images/PNJ/defaut/male.png")
 const FEMALE_PORTRAIT = preload("res://assets/images/PNJ/defaut/female.png")
 
@@ -19,9 +18,22 @@ const SLOT_IDS := [
 	"ring_left",
 ]
 
+const SLOT_NODE_NAMES := {
+	"head": "SlotHead",
+	"torso": "SlotShoulders",
+	"hands": "SlotHands",
+	"legs": "SlotRingLeft",
+	"boots": "SlotBoots",
+	"main_hand": "SlotMainHand",
+	"off_hand": "SlotOffHand",
+	"amulet": "SlotChest",
+	"ring_right": "SlotLegs",
+	"ring_left": "SlotRingRight",
+}
+
 const DEFAULT_ITEMS := [
 	{"id": "war_helm", "label": "Casque de guerre", "slot_type": "head"},
-	{"id": "obsidian_spaulders", "label": "Epaulieres d'obsidienne", "slot_type": "armor"},
+	{"id": "obsidian_spaulders", "label": "Armure d'obsidienne", "slot_type": "armor"},
 	{"id": "demon_gauntlets", "label": "Gantelets demoniaques", "slot_type": "hands"},
 	{"id": "war_boots", "label": "Bottes du front", "slot_type": "boots"},
 	{"id": "blood_ring", "label": "Anneau de sang", "slot_type": "ring"},
@@ -103,7 +115,7 @@ func _default_inventory_items() -> Array:
 func _cache_slot_nodes() -> void:
 	_slot_nodes.clear()
 	for slot_id in SLOT_IDS:
-		var node_name := "Slot%s" % _to_pascal_case(slot_id)
+		var node_name := str(SLOT_NODE_NAMES.get(slot_id, ""))
 		var slot_node := find_child(node_name, true, false)
 		if slot_node != null:
 			_slot_nodes[slot_id] = slot_node
@@ -132,29 +144,11 @@ func _rebuild_inventory_grid() -> void:
 
 
 func _build_inventory_card(item: Dictionary) -> Control:
-	var card := PanelContainer.new()
+	var card_scene := load("res://scenes/ui/character_creation/components/inventory_item_card.tscn")
+	var card := card_scene.instantiate() as Control
+	if card == null:
+		return PanelContainer.new()
 	card.custom_minimum_size = Vector2(148, 76)
-	card.set_script(InventoryItemCardScript)
-
-	var body := VBoxContainer.new()
-	body.name = "Body"
-	body.layout_mode = 2
-	body.add_theme_constant_override("separation", 3)
-	card.add_child(body)
-
-	var name := Label.new()
-	name.name = "Name"
-	name.layout_mode = 2
-	name.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	name.add_theme_font_size_override("font_size", 11)
-	body.add_child(name)
-
-	var slot := Label.new()
-	slot.name = "Slot"
-	slot.layout_mode = 2
-	slot.add_theme_font_size_override("font_size", 10)
-	body.add_child(slot)
-
 	if card.has_method("set_item_data"):
 		card.set_item_data(item)
 	return card
