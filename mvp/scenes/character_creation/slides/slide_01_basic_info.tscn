@@ -1,9 +1,9 @@
-[gd_scene load_steps=3 format=3 uid="uid://bwg24ojl3o537"]
+[gd_scene format=3 uid="uid://bwg24ojl3o537"]
 
 [ext_resource type="Script" uid="uid://c0re4ykonkqos" path="res://scripts/ui/character_creation/slides/slide_01_basic_info.gd" id="1_slide"]
 [ext_resource type="Script" uid="uid://bqj4mc8sm7qiw" path="res://scripts/ui/character_creation/portrait_payload.gd" id="2_portrait"]
 
-[node name="Slide01BasicInfo" type="Control"]
+[node name="Slide01BasicInfo" type="Control" unique_id=991764818]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -12,7 +12,7 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_slide")
 
-[node name="Content" type="VBoxContainer" parent="."]
+[node name="Content" type="VBoxContainer" parent="." unique_id=1443589614]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -25,70 +25,70 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/separation = 8
 
-[node name="StepTitle" type="Label" parent="Content"]
+[node name="StepTitle" type="Label" parent="Content" unique_id=960296232]
 layout_mode = 2
 theme_override_font_sizes/font_size = 18
 text = "Slide 1 - Informations de base"
 
-[node name="Body" type="HBoxContainer" parent="Content"]
+[node name="Body" type="HBoxContainer" parent="Content" unique_id=1651485275]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_constants/separation = 16
 
-[node name="LeftColumn" type="VBoxContainer" parent="Content/Body"]
+[node name="LeftColumn" type="VBoxContainer" parent="Content/Body" unique_id=1455280392]
 custom_minimum_size = Vector2(340, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_constants/separation = 12
 
-[node name="IdentityPanel" type="PanelContainer" parent="Content/Body/LeftColumn"]
+[node name="IdentityPanel" type="PanelContainer" parent="Content/Body/LeftColumn" unique_id=63244699]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="IdentityPadding" type="MarginContainer" parent="Content/Body/LeftColumn/IdentityPanel"]
+[node name="IdentityPadding" type="MarginContainer" parent="Content/Body/LeftColumn/IdentityPanel" unique_id=919356490]
 layout_mode = 2
 theme_override_constants/margin_left = 12
 theme_override_constants/margin_top = 12
 theme_override_constants/margin_right = 12
 theme_override_constants/margin_bottom = 12
 
-[node name="IdentityFields" type="VBoxContainer" parent="Content/Body/LeftColumn/IdentityPanel/IdentityPadding"]
+[node name="IdentityFields" type="VBoxContainer" parent="Content/Body/LeftColumn/IdentityPanel/IdentityPadding" unique_id=475431924]
 layout_mode = 2
 theme_override_constants/separation = 10
 
-[node name="CharacterNameLabel" type="Label" parent="Content/Body/LeftColumn/IdentityPanel/IdentityPadding/IdentityFields"]
+[node name="CharacterNameLabel" type="Label" parent="Content/Body/LeftColumn/IdentityPanel/IdentityPadding/IdentityFields" unique_id=1331719869]
 layout_mode = 2
 text = "Nom du personnage"
 
-[node name="CharacterName" type="TextEdit" parent="Content/Body/LeftColumn/IdentityPanel/IdentityPadding/IdentityFields"]
+[node name="CharacterName" type="TextEdit" parent="Content/Body/LeftColumn/IdentityPanel/IdentityPadding/IdentityFields" unique_id=609929986]
 custom_minimum_size = Vector2(0, 54)
 layout_mode = 2
 wrap_mode = 1
 
-[node name="ClanNameLabel" type="Label" parent="Content/Body/LeftColumn/IdentityPanel/IdentityPadding/IdentityFields"]
+[node name="ClanNameLabel" type="Label" parent="Content/Body/LeftColumn/IdentityPanel/IdentityPadding/IdentityFields" unique_id=1472602759]
 layout_mode = 2
 text = "Nom du clan"
 
-[node name="ClanName" type="TextEdit" parent="Content/Body/LeftColumn/IdentityPanel/IdentityPadding/IdentityFields"]
+[node name="ClanName" type="TextEdit" parent="Content/Body/LeftColumn/IdentityPanel/IdentityPadding/IdentityFields" unique_id=203155249]
 custom_minimum_size = Vector2(0, 54)
 layout_mode = 2
 wrap_mode = 1
 
-[node name="AppearanceLabel" type="Label" parent="Content/Body/LeftColumn/IdentityPanel/IdentityPadding/IdentityFields"]
+[node name="AppearanceLabel" type="Label" parent="Content/Body/LeftColumn/IdentityPanel/IdentityPadding/IdentityFields" unique_id=418500152]
 layout_mode = 2
 text = "Apparence"
 
-[node name="AppearanceOption" type="OptionButton" parent="Content/Body/LeftColumn/IdentityPanel/IdentityPadding/IdentityFields"]
+[node name="AppearanceOption" type="OptionButton" parent="Content/Body/LeftColumn/IdentityPanel/IdentityPadding/IdentityFields" unique_id=1423691576]
 layout_mode = 2
 
-[node name="PortraitUploadArea" type="Control" parent="Content/Body/LeftColumn"]
+[node name="PortraitUploadArea" type="Control" parent="Content/Body/LeftColumn" unique_id=1328367064]
 custom_minimum_size = Vector2(0, 160)
 layout_mode = 2
 size_flags_horizontal = 3
 script = ExtResource("2_portrait")
 
-[node name="PortraitPanel" type="PanelContainer" parent="Content/Body/LeftColumn/PortraitUploadArea"]
+[node name="PortraitPanel" type="PanelContainer" parent="Content/Body/LeftColumn/PortraitUploadArea" unique_id=137453416]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -97,88 +97,88 @@ offset_bottom = 27.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="PortraitPadding" type="MarginContainer" parent="Content/Body/LeftColumn/PortraitUploadArea/PortraitPanel"]
+[node name="PortraitPadding" type="MarginContainer" parent="Content/Body/LeftColumn/PortraitUploadArea/PortraitPanel" unique_id=1459534349]
 layout_mode = 2
 theme_override_constants/margin_left = 12
 theme_override_constants/margin_top = 12
 theme_override_constants/margin_right = 12
 theme_override_constants/margin_bottom = 12
 
-[node name="PortraitLayout" type="HBoxContainer" parent="Content/Body/LeftColumn/PortraitUploadArea/PortraitPanel/PortraitPadding"]
+[node name="PortraitLayout" type="HBoxContainer" parent="Content/Body/LeftColumn/PortraitUploadArea/PortraitPanel/PortraitPadding" unique_id=2070292902]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = 12
 
-[node name="PreviewBox" type="TextureRect" parent="Content/Body/LeftColumn/PortraitUploadArea/PortraitPanel/PortraitPadding/PortraitLayout"]
+[node name="PreviewBox" type="TextureRect" parent="Content/Body/LeftColumn/PortraitUploadArea/PortraitPanel/PortraitPadding/PortraitLayout" unique_id=237417235]
 custom_minimum_size = Vector2(140, 140)
 layout_mode = 2
 stretch_mode = 2
 
-[node name="DetailsVBox" type="VBoxContainer" parent="Content/Body/LeftColumn/PortraitUploadArea/PortraitPanel/PortraitPadding/PortraitLayout"]
+[node name="DetailsVBox" type="VBoxContainer" parent="Content/Body/LeftColumn/PortraitUploadArea/PortraitPanel/PortraitPadding/PortraitLayout" unique_id=1864636144]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = 4
 
-[node name="PortraitLabel" type="Label" parent="Content/Body/LeftColumn/PortraitUploadArea/PortraitPanel/PortraitPadding/PortraitLayout/DetailsVBox"]
+[node name="PortraitLabel" type="Label" parent="Content/Body/LeftColumn/PortraitUploadArea/PortraitPanel/PortraitPadding/PortraitLayout/DetailsVBox" unique_id=614580867]
 layout_mode = 2
 theme_override_font_sizes/font_size = 16
 text = "Portrait"
 
-[node name="PortraitPathLabel" type="Label" parent="Content/Body/LeftColumn/PortraitUploadArea/PortraitPanel/PortraitPadding/PortraitLayout/DetailsVBox"]
+[node name="PortraitPathLabel" type="Label" parent="Content/Body/LeftColumn/PortraitUploadArea/PortraitPanel/PortraitPadding/PortraitLayout/DetailsVBox" unique_id=1246773938]
 layout_mode = 2
 text = "Aucun portrait selectionne"
 autowrap_mode = 2
 
-[node name="Buttons" type="HBoxContainer" parent="Content/Body/LeftColumn/PortraitUploadArea/PortraitPanel/PortraitPadding/PortraitLayout/DetailsVBox"]
+[node name="Buttons" type="HBoxContainer" parent="Content/Body/LeftColumn/PortraitUploadArea/PortraitPanel/PortraitPadding/PortraitLayout/DetailsVBox" unique_id=1403642821]
 layout_mode = 2
 alignment = 2
 
-[node name="UploadPortraitButton" type="Button" parent="Content/Body/LeftColumn/PortraitUploadArea/PortraitPanel/PortraitPadding/PortraitLayout/DetailsVBox/Buttons"]
+[node name="UploadPortraitButton" type="Button" parent="Content/Body/LeftColumn/PortraitUploadArea/PortraitPanel/PortraitPadding/PortraitLayout/DetailsVBox/Buttons" unique_id=412748052]
 layout_mode = 2
 text = "Importer"
 
-[node name="ResetPortraitButton" type="Button" parent="Content/Body/LeftColumn/PortraitUploadArea/PortraitPanel/PortraitPadding/PortraitLayout/DetailsVBox/Buttons"]
+[node name="ResetPortraitButton" type="Button" parent="Content/Body/LeftColumn/PortraitUploadArea/PortraitPanel/PortraitPadding/PortraitLayout/DetailsVBox/Buttons" unique_id=909527040]
 layout_mode = 2
 text = "Reinitialiser"
 
-[node name="PortraitFileDialog" type="FileDialog" parent="Content/Body/LeftColumn/PortraitUploadArea"]
+[node name="PortraitFileDialog" type="FileDialog" parent="Content/Body/LeftColumn/PortraitUploadArea" unique_id=783597937]
 
-[node name="RightColumn" type="VBoxContainer" parent="Content/Body"]
+[node name="RightColumn" type="VBoxContainer" parent="Content/Body" unique_id=1135887900]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_constants/separation = 10
 
-[node name="RacialPowerTitle" type="Label" parent="Content/Body/RightColumn"]
+[node name="RacialPowerTitle" type="Label" parent="Content/Body/RightColumn" unique_id=623147220]
 layout_mode = 2
 theme_override_font_sizes/font_size = 16
 text = "Pouvoirs raciaux"
 
-[node name="RacialPowerHint" type="Label" parent="Content/Body/RightColumn"]
+[node name="RacialPowerHint" type="Label" parent="Content/Body/RightColumn" unique_id=905654302]
 layout_mode = 2
 text = "Choisissez un pouvoir racial. Chaque box affiche le nom et son descriptif."
 autowrap_mode = 2
 
-[node name="RacialPowerPanel" type="PanelContainer" parent="Content/Body/RightColumn"]
+[node name="RacialPowerPanel" type="PanelContainer" parent="Content/Body/RightColumn" unique_id=1851623853]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="RacialPowerPadding" type="MarginContainer" parent="Content/Body/RightColumn/RacialPowerPanel"]
+[node name="RacialPowerPadding" type="MarginContainer" parent="Content/Body/RightColumn/RacialPowerPanel" unique_id=965055733]
 layout_mode = 2
 theme_override_constants/margin_left = 12
 theme_override_constants/margin_top = 12
 theme_override_constants/margin_right = 12
 theme_override_constants/margin_bottom = 12
 
-[node name="RacialPowerScroll" type="ScrollContainer" parent="Content/Body/RightColumn/RacialPowerPanel/RacialPowerPadding"]
+[node name="RacialPowerScroll" type="ScrollContainer" parent="Content/Body/RightColumn/RacialPowerPanel/RacialPowerPadding" unique_id=1522603196]
 custom_minimum_size = Vector2(0, 320)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 horizontal_scroll_mode = 0
 
-[node name="RacialPowerGrid" type="GridContainer" parent="Content/Body/RightColumn/RacialPowerPanel/RacialPowerPadding/RacialPowerScroll"]
+[node name="RacialPowerGrid" type="GridContainer" parent="Content/Body/RightColumn/RacialPowerPanel/RacialPowerPadding/RacialPowerScroll" unique_id=1744694264]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -186,17 +186,17 @@ theme_override_constants/h_separation = 12
 theme_override_constants/v_separation = 12
 columns = 2
 
-[node name="Nav" type="HBoxContainer" parent="Content"]
+[node name="Nav" type="HBoxContainer" parent="Content" unique_id=1175671670]
 layout_mode = 2
 alignment = 2
 
-[node name="BtnBack" type="Button" parent="Content/Nav"]
+[node name="BtnBack" type="Button" parent="Content/Nav" unique_id=106271610]
 custom_minimum_size = Vector2(120, 42)
 layout_mode = 2
 size_flags_horizontal = 2
 text = "Retour"
 
-[node name="BtnNext" type="Button" parent="Content/Nav"]
+[node name="BtnNext" type="Button" parent="Content/Nav" unique_id=1434396508]
 custom_minimum_size = Vector2(120, 42)
 layout_mode = 2
 size_flags_horizontal = 2
