@@ -1,9 +1,8 @@
-[gd_scene load_steps=6 format=3]
+[gd_scene load_steps=7 format=3]
 
 [ext_resource type="Script" path="res://scripts/ui/character_creation/slides/slide_04_items_equipment.gd" id="1_slide"]
 [ext_resource type="Script" path="res://scripts/ui/character_creation/components/inventory_item_grid.gd" id="2_inventory_grid"]
 [ext_resource type="Script" path="res://scripts/ui/character_creation/components/equipment_slot_card.gd" id="3_slot_card"]
-[ext_resource type="Texture2D" path="res://assets/maquette/Container_itembag.png" id="4_itembag"]
 [ext_resource type="Texture2D" path="res://assets/images/PNJ/defaut/male.png" id="5_portrait_male"]
 
 [node name="Slide04ItemsEquipment" type="Control"]
@@ -44,7 +43,6 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-texture = ExtResource("4_itembag")
 expand_mode = 1
 stretch_mode = 6
 mouse_filter = 2
@@ -134,9 +132,9 @@ theme_override_font_sizes/font_size = 11
 custom_minimum_size = Vector2(132, 70)
 layout_mode = 2
 script = ExtResource("3_slot_card")
-slot_id = "shoulders"
-slot_label = "Epaules"
-accepted_types = PackedStringArray("shoulders")
+slot_id = "torso"
+slot_label = "Torse"
+accepted_types = PackedStringArray("armor")
 
 [node name="Body" type="VBoxContainer" parent="Content/Body/EquipmentPanel/EquipmentMargin/EquipmentLayout/LeftColumn/SlotShoulders"]
 layout_mode = 2
@@ -154,7 +152,7 @@ custom_minimum_size = Vector2(132, 70)
 layout_mode = 2
 script = ExtResource("3_slot_card")
 slot_id = "hands"
-slot_label = "Mains"
+slot_label = "Gants"
 accepted_types = PackedStringArray("hands")
 
 [node name="Body" type="VBoxContainer" parent="Content/Body/EquipmentPanel/EquipmentMargin/EquipmentLayout/LeftColumn/SlotHands"]
@@ -172,9 +170,9 @@ theme_override_font_sizes/font_size = 11
 custom_minimum_size = Vector2(132, 70)
 layout_mode = 2
 script = ExtResource("3_slot_card")
-slot_id = "ring_left"
-slot_label = "Anneau G"
-accepted_types = PackedStringArray("ring")
+slot_id = "legs"
+slot_label = "Jambieres"
+accepted_types = PackedStringArray("legs")
 
 [node name="Body" type="VBoxContainer" parent="Content/Body/EquipmentPanel/EquipmentMargin/EquipmentLayout/LeftColumn/SlotRingLeft"]
 layout_mode = 2
@@ -278,9 +276,9 @@ theme_override_constants/separation = 8
 custom_minimum_size = Vector2(132, 70)
 layout_mode = 2
 script = ExtResource("3_slot_card")
-slot_id = "chest"
-slot_label = "Torse"
-accepted_types = PackedStringArray("armor")
+slot_id = "amulet"
+slot_label = "Amulette"
+accepted_types = PackedStringArray("amulet")
 
 [node name="Body" type="VBoxContainer" parent="Content/Body/EquipmentPanel/EquipmentMargin/EquipmentLayout/RightColumn/SlotChest"]
 layout_mode = 2
@@ -297,9 +295,9 @@ theme_override_font_sizes/font_size = 11
 custom_minimum_size = Vector2(132, 70)
 layout_mode = 2
 script = ExtResource("3_slot_card")
-slot_id = "legs"
-slot_label = "Jambes"
-accepted_types = PackedStringArray("legs")
+slot_id = "ring_right"
+slot_label = "Anneau D"
+accepted_types = PackedStringArray("ring")
 
 [node name="Body" type="VBoxContainer" parent="Content/Body/EquipmentPanel/EquipmentMargin/EquipmentLayout/RightColumn/SlotLegs"]
 layout_mode = 2
@@ -316,8 +314,8 @@ theme_override_font_sizes/font_size = 11
 custom_minimum_size = Vector2(132, 70)
 layout_mode = 2
 script = ExtResource("3_slot_card")
-slot_id = "ring_right"
-slot_label = "Anneau D"
+slot_id = "ring_left"
+slot_label = "Anneau G"
 accepted_types = PackedStringArray("ring")
 
 [node name="Body" type="VBoxContainer" parent="Content/Body/EquipmentPanel/EquipmentMargin/EquipmentLayout/RightColumn/SlotRingRight"]
@@ -330,6 +328,7 @@ theme_override_font_sizes/font_size = 10
 [node name="Item" type="Label" parent="Content/Body/EquipmentPanel/EquipmentMargin/EquipmentLayout/RightColumn/SlotRingRight/Body"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 11
+
 
 [node name="CompatibilityHint" type="Label" parent="Content"]
 layout_mode = 2
