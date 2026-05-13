@@ -2,25 +2,26 @@
 class_name Slide04ItemsEquipment
 extends CreationSlideBase
 
+const InventoryItemCardScript = preload("res://scripts/ui/character_creation/components/inventory_item_card.gd")
 const MALE_PORTRAIT = preload("res://assets/images/PNJ/defaut/male.png")
 const FEMALE_PORTRAIT = preload("res://assets/images/PNJ/defaut/female.png")
 
 const SLOT_IDS := [
 	"head",
-	"shoulders",
+	"torso",
 	"hands",
-	"ring_left",
+	"legs",
 	"boots",
 	"main_hand",
 	"off_hand",
-	"chest",
-	"legs",
+	"amulet",
 	"ring_right",
+	"ring_left",
 ]
 
 const DEFAULT_ITEMS := [
 	{"id": "war_helm", "label": "Casque de guerre", "slot_type": "head"},
-	{"id": "obsidian_spaulders", "label": "Epaulieres d'obsidienne", "slot_type": "shoulders"},
+	{"id": "obsidian_spaulders", "label": "Epaulieres d'obsidienne", "slot_type": "armor"},
 	{"id": "demon_gauntlets", "label": "Gantelets demoniaques", "slot_type": "hands"},
 	{"id": "war_boots", "label": "Bottes du front", "slot_type": "boots"},
 	{"id": "blood_ring", "label": "Anneau de sang", "slot_type": "ring"},
@@ -34,6 +35,7 @@ const DEFAULT_ITEMS := [
 	{"id": "light_armor", "label": "Armure legere", "slot_type": "armor"},
 	{"id": "runic_robe", "label": "Robe runique", "slot_type": "armor"},
 	{"id": "war_legs", "label": "Jambieres de guerre", "slot_type": "legs"},
+	{"id": "obsidian_amulet", "label": "Amulette d'obsidienne", "slot_type": "amulet"},
 ]
 
 var _inventory_items: Array = []
@@ -81,6 +83,17 @@ func collect_payload() -> Dictionary:
 
 
 func _default_inventory_items() -> Array:
+	var external_items: Array = []
+	if GameDataLoader != null and GameDataLoader.has_method("get_equipment_items"):
+		external_items = GameDataLoader.get_equipment_items()
+	if external_items.size() > 0:
+		var from_data: Array = []
+		for item in external_items:
+			if item is Dictionary:
+				from_data.append((item as Dictionary).duplicate(true))
+		if from_data.size() > 0:
+			return from_data
+
 	var out: Array = []
 	for item in DEFAULT_ITEMS:
 		out.append((item as Dictionary).duplicate(true))
@@ -121,6 +134,7 @@ func _rebuild_inventory_grid() -> void:
 func _build_inventory_card(item: Dictionary) -> Control:
 	var card := PanelContainer.new()
 	card.custom_minimum_size = Vector2(148, 76)
+	card.set_script(InventoryItemCardScript)
 
 	var body := VBoxContainer.new()
 	body.name = "Body"
@@ -238,9 +252,9 @@ func _extract_weapon_name() -> String:
 
 
 func _extract_armor_name() -> String:
-	if not _equipped_by_slot.has("chest"):
+	if not _equipped_by_slot.has("torso"):
 		return "Aucun"
-	return str((_equipped_by_slot["chest"] as Dictionary).get("label", "Aucun"))
+	return str((_equipped_by_slot["torso"] as Dictionary).get("label", "Aucun"))
 
 
 func _starter_loadout_from_weapon(weapon_name: String) -> String:
@@ -295,8 +309,8 @@ func _restore_from_data(data: Resource) -> void:
 				_equipped_by_slot["main_hand"] = weapon_item
 		if equipped_legacy.has("armor"):
 			var armor_item := _pull_item_by_label(str(equipped_legacy["armor"]))
-			if not armor_item.is_empty() and _slot_accepts("chest", armor_item):
-				_equipped_by_slot["chest"] = armor_item
+			if not armor_item.is_empty() and _slot_accepts("torso", armor_item):
+				_equipped_by_slot["torso"] = armor_item
 
 
 func _pull_item_by_label(label: String) -> Dictionary:
