@@ -11,7 +11,7 @@ var item_data: Dictionary = {}
 
 
 func _ready() -> void:
-	mouse_filter = Control.MOUSE_FILTER_PASS
+	mouse_filter = Control.MOUSE_FILTER_STOP
 	if not has_theme_stylebox_override("panel"):
 		add_theme_stylebox_override("panel", _make_style())
 	_update_view()

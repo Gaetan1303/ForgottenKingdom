@@ -3,6 +3,9 @@ extends GridContainer
 
 signal item_dropped_in_grid(payload: Dictionary)
 
+func _ready() -> void:
+	mouse_filter = Control.MOUSE_FILTER_PASS
+
 
 func _can_drop_data(_at_position: Vector2, data: Variant) -> bool:
 	if not (data is Dictionary):
