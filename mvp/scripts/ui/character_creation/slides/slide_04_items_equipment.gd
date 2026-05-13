@@ -2,8 +2,8 @@
 class_name Slide04ItemsEquipment
 extends CreationSlideBase
 
-const MALE_PORTRAIT = preload("res://assets/images/PNJ/defaut/male.png")
-const FEMALE_PORTRAIT = preload("res://assets/images/PNJ/defaut/female.png")
+const MALE_PORTRAIT = preload("res://assets/images/hero/homme/male.png")
+const FEMALE_PORTRAIT = preload("res://assets/images/hero/femme/female.png")
 
 const SLOT_IDS := [
 	"head",

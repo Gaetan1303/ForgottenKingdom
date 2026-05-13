@@ -3,7 +3,7 @@
 [ext_resource type="Script" path="res://scripts/ui/character_creation/slides/slide_04_items_equipment.gd" id="1_slide"]
 [ext_resource type="Script" path="res://scripts/ui/character_creation/components/inventory_item_grid.gd" id="2_inventory_grid"]
 [ext_resource type="Script" path="res://scripts/ui/character_creation/components/equipment_slot_card.gd" id="3_slot_card"]
-[ext_resource type="Texture2D" path="res://assets/images/PNJ/defaut/male.png" id="5_portrait_male"]
+[ext_resource type="Texture2D" path="res://assets/images/hero/defaut.png" id="5_portrait_male"]
 
 [node name="Slide04ItemsEquipment" type="Control"]
 layout_mode = 3
