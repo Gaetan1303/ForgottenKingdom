@@ -435,6 +435,19 @@ func get_equipment_items() -> Array:
 		return []
 	return (equipment_map["items"] as Array).duplicate(true)
 
+func get_equipment_item_by_id(id: String) -> Dictionary:
+	var target := str(id).strip_edges().to_lower()
+	for item in get_equipment_items():
+		if item is Dictionary and str(item.get("id", "")).strip_edges().to_lower() == target:
+			return (item as Dictionary).duplicate(true)
+	return {}
+
+func get_equipment_item_by_label(label: String) -> Dictionary:
+	var target := str(label).strip_edges().to_lower()
+	for item in get_equipment_items():
+		if item is Dictionary and str(item.get("label", "")).strip_edges().to_lower() == target:
+			return (item as Dictionary).duplicate(true)
+	return {}
 
 func get_feats_for_ability(ability_id: String) -> Dictionary:
 	# Tentative: retourne les feats dont le nom ou la description contient le nom de la capacité.
