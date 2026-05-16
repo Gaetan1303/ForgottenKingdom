@@ -33,7 +33,7 @@ const SLOT_NODE_NAMES := {
 
 const DEFAULT_ITEMS := [
 	{"id": "war_helm", "label": "Casque de guerre", "slot_type": "head"},
-	{"id": "obsidian_spaulders", "label": "Armure d'obsidienne", "slot_type": "armor"},
+	{"id": "obsidian_spaulders", "label": "Armure d'obsidienne", "slot_type": "armor", "armor_category": "heavy"},
 	{"id": "demon_gauntlets", "label": "Gantelets demoniaques", "slot_type": "hands"},
 	{"id": "war_boots", "label": "Bottes du front", "slot_type": "boots"},
 	{"id": "blood_ring", "label": "Anneau de sang", "slot_type": "ring"},
@@ -43,9 +43,11 @@ const DEFAULT_ITEMS := [
 	{"id": "war_spear", "label": "Lance", "slot_type": "weapon"},
 	{"id": "runic_catalyst", "label": "Catalyseur runique", "slot_type": "weapon"},
 	{"id": "kite_shield", "label": "Bouclier cerf-volant", "slot_type": "offhand"},
-	{"id": "heavy_armor", "label": "Armure lourde", "slot_type": "armor"},
-	{"id": "light_armor", "label": "Armure legere", "slot_type": "armor"},
-	{"id": "runic_robe", "label": "Robe runique", "slot_type": "armor"},
+	{"id": "heavy_armor", "label": "Armure lourde", "slot_type": "armor", "armor_category": "heavy"},
+	{"id": "light_armor", "label": "Armure legere", "slot_type": "armor", "armor_category": "light"},
+	{"id": "runic_robe", "label": "Robe runique", "slot_type": "armor", "armor_category": "light"},
+	{"id": "simple_tunic", "label": "Tunique simple", "slot_type": "armor", "armor_category": "clothing"},
+	{"id": "apprentice_robes", "label": "Robes d'apprenti", "slot_type": "armor", "armor_category": "clothing"},
 	{"id": "war_legs", "label": "Jambieres de guerre", "slot_type": "legs"},
 	{"id": "obsidian_amulet", "label": "Amulette d'obsidienne", "slot_type": "amulet"},
 ]
@@ -53,11 +55,15 @@ const DEFAULT_ITEMS := [
 var _inventory_items: Array = []
 var _equipped_by_slot: Dictionary = {}
 var _slot_nodes: Dictionary = {}
+var _current_class_id: String = ""
 
 
 func enter_slide(data: Resource) -> void:
 	_inventory_items = _default_inventory_items()
 	_equipped_by_slot = {}
+	_current_class_id = ""
+	if data != null and data.has_method("get"):
+		_current_class_id = str(data.get("class_id")).strip_edges()
 	_cache_slot_nodes()
 	_connect_drag_drop_signals()
 	_restore_from_data(data)
@@ -88,6 +94,7 @@ func collect_payload() -> Dictionary:
 		if label != starter_loadout:
 			inventory_payload.append(label)
 
+	print("DEBUG slide_04 payload: weapon='%s', armor='%s', equipped=%s" % [weapon_name, armor_name, equipment_labels])
 	return {
 		"inventory_items": inventory_payload,
 		"equipped_items_by_slot": equipment_labels,
@@ -170,6 +177,8 @@ func _on_slot_item_dropped(slot_id: String, payload: Dictionary) -> void:
 		return
 	var incoming_item := (payload["item"] as Dictionary).duplicate(true)
 	if not _slot_accepts(slot_id, incoming_item):
+		if slot_id == "torso":
+			_show_torso_restriction_hint(incoming_item)
 		return
 
 	var source := str(payload.get("source", ""))
@@ -217,11 +226,39 @@ func _on_inventory_drop(payload: Dictionary) -> void:
 func _slot_accepts(slot_id: String, item: Dictionary) -> bool:
 	if not _slot_nodes.has(slot_id):
 		return false
+	if slot_id == "torso" and not _class_allows_armor_item(item):
+		return false
 	var slot_node = _slot_nodes[slot_id]
 	var accepted = slot_node.accepted_types as PackedStringArray
 	if accepted.is_empty():
 		return true
 	return accepted.has(str(item.get("slot_type", "")))
+
+
+func _class_allows_armor_item(item: Dictionary) -> bool:
+	if str(item.get("slot_type", "")) != "armor":
+		return true
+	if _current_class_id.is_empty() or GameDataLoader == null:
+		return true
+	if not GameDataLoader.has_method("get_class_by_id"):
+		return true
+	var class_def := GameDataLoader.get_class_by_id(_current_class_id)
+	if class_def.is_empty() or not class_def.has("armor_proficiencies"):
+		return true
+	var armor_category := str(item.get("armor_category", "")).strip_edges().to_lower()
+	if armor_category.is_empty():
+		return false
+	var allowed_categories := class_def["armor_proficiencies"] as Array
+	return allowed_categories.has(armor_category)
+
+
+func _show_torso_restriction_hint(item: Dictionary) -> void:
+	var hint := find_child("CompatibilityHint", true, false) as Label
+	if hint == null:
+		return
+	var armor_label := str(item.get("label", "cette armure"))
+	hint.text = "Attention: %s n'est pas autorisee pour votre classe." % armor_label
+	hint.add_theme_color_override("font_color", Color8(255, 140, 110))
 
 
 func _remove_inventory_item(item_id: String) -> void:
@@ -347,24 +384,18 @@ func _check_compatibility(inventory_choice: Array, equipment: Dictionary) -> Str
 		return ""
 	var inventory := str(inventory_choice[0])
 	var map := {
-		"Arme lourde + bouclier": {"weapon": ["Arme lourde"], "armor": ["Armure lourde"]},
-		"Catalyseur runique": {"weapon": ["Catalyseur runique"], "armor": ["Robe runique", "Armure legere"]},
-		"Lames jumelles": {"weapon": ["Lames jumelles"], "armor": ["Armure legere", "Aucun"]},
-		"Lance de guerre": {"weapon": ["Lance"], "armor": ["Armure lourde", "Armure legere"]},
+		"Arme lourde + bouclier": {"weapon": ["Arme lourde"]},
+		"Catalyseur runique": {"weapon": ["Catalyseur runique"]},
+		"Lames jumelles": {"weapon": ["Lames jumelles"]},
+		"Lance de guerre": {"weapon": ["Lance"]},
 	}
 	if not map.has(inventory):
 		return ""
 	var expected := map[inventory] as Dictionary
 	var weapon = str(equipment["weapon"]) if equipment.has("weapon") else "Aucun"
-	var armor = str(equipment["armor"]) if equipment.has("armor") else "Aucun"
 	var allowed_weapon: Array = []
 	if expected.has("weapon"):
 		allowed_weapon = expected["weapon"] as Array
 	if weapon != "Aucun" and not allowed_weapon.has(weapon):
 		return "Attention: selection de l'arme incompatible avec l'objet principal."
-	var allowed_armor: Array = []
-	if expected.has("armor"):
-		allowed_armor = expected["armor"] as Array
-	if armor != "Aucun" and not allowed_armor.has(armor):
-		return "Attention: selection de l'armure incompatible avec l'objet principal."
 	return ""
