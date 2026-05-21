@@ -1,0 +1,19 @@
+[remap]
+
+importer="csv_translation"
+type="Translation"
+uid="uid://idfyuxn3mfmc"
+
+[deps]
+
+files=["res://data/progression/abyss paladin.Force.translation", "res://data/progression/abyss paladin.Magie.translation", "res://data/progression/abyss paladin.Espionnage.translation", "res://data/progression/abyss paladin.Artisanat.translation", "res://data/progression/abyss paladin.Diplomatie.translation", "res://data/progression/abyss paladin.Commandement.translation", "res://data/progression/abyss paladin.Attaque.translation", "res://data/progression/abyss paladin.Défense.translation", "res://data/progression/abyss paladin.Résistance.translation", "res://data/progression/abyss paladin.Initiative.translation", "res://data/progression/abyss paladin.Jet de Vigueur.translation", "res://data/progression/abyss paladin.Jet de Volonté.translation", "res://data/progression/abyss paladin.Jet de Réflexes.translation", "res://data/progression/abyss paladin.Nouveaux Talents.translation", "res://data/progression/abyss paladin.Lore.translation"]
+
+source_file="res://data/progression/abyss paladin.csv"
+dest_files=["res://data/progression/abyss paladin.Force.translation", "res://data/progression/abyss paladin.Magie.translation", "res://data/progression/abyss paladin.Espionnage.translation", "res://data/progression/abyss paladin.Artisanat.translation", "res://data/progression/abyss paladin.Diplomatie.translation", "res://data/progression/abyss paladin.Commandement.translation", "res://data/progression/abyss paladin.Attaque.translation", "res://data/progression/abyss paladin.Défense.translation", "res://data/progression/abyss paladin.Résistance.translation", "res://data/progression/abyss paladin.Initiative.translation", "res://data/progression/abyss paladin.Jet de Vigueur.translation", "res://data/progression/abyss paladin.Jet de Volonté.translation", "res://data/progression/abyss paladin.Jet de Réflexes.translation", "res://data/progression/abyss paladin.Nouveaux Talents.translation", "res://data/progression/abyss paladin.Lore.translation"]
+
+[params]
+
+compress=1
+delimiter=0
+unescape_keys=false
+unescape_translations=true

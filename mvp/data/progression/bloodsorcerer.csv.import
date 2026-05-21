@@ -1,0 +1,19 @@
+[remap]
+
+importer="csv_translation"
+type="Translation"
+uid="uid://do4uscwhbmku1"
+
+[deps]
+
+files=["res://data/progression/bloodsorcerer.Force.translation", "res://data/progression/bloodsorcerer.Magie.translation", "res://data/progression/bloodsorcerer.Espionnage.translation", "res://data/progression/bloodsorcerer.Artisanat.translation", "res://data/progression/bloodsorcerer.Diplomatie.translation", "res://data/progression/bloodsorcerer.Commandement.translation", "res://data/progression/bloodsorcerer.Attaque.translation", "res://data/progression/bloodsorcerer.Défense.translation", "res://data/progression/bloodsorcerer.Résistance.translation", "res://data/progression/bloodsorcerer.Initiative.translation", "res://data/progression/bloodsorcerer.Jet de Vigueur.translation", "res://data/progression/bloodsorcerer.Jet de Volonté.translation", "res://data/progression/bloodsorcerer.Jet de Réflexes.translation", "res://data/progression/bloodsorcerer.Nouveaux Talents.translation", "res://data/progression/bloodsorcerer.Lore.translation"]
+
+source_file="res://data/progression/bloodsorcerer.csv"
+dest_files=["res://data/progression/bloodsorcerer.Force.translation", "res://data/progression/bloodsorcerer.Magie.translation", "res://data/progression/bloodsorcerer.Espionnage.translation", "res://data/progression/bloodsorcerer.Artisanat.translation", "res://data/progression/bloodsorcerer.Diplomatie.translation", "res://data/progression/bloodsorcerer.Commandement.translation", "res://data/progression/bloodsorcerer.Attaque.translation", "res://data/progression/bloodsorcerer.Défense.translation", "res://data/progression/bloodsorcerer.Résistance.translation", "res://data/progression/bloodsorcerer.Initiative.translation", "res://data/progression/bloodsorcerer.Jet de Vigueur.translation", "res://data/progression/bloodsorcerer.Jet de Volonté.translation", "res://data/progression/bloodsorcerer.Jet de Réflexes.translation", "res://data/progression/bloodsorcerer.Nouveaux Talents.translation", "res://data/progression/bloodsorcerer.Lore.translation"]
+
+[params]
+
+compress=1
+delimiter=0
+unescape_keys=false
+unescape_translations=true

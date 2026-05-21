@@ -10,7 +10,7 @@ const CharacterCreationFlowType = preload("res://scripts/ui/character_creation/c
 	"res://scenes/character_creation/slides/slide_02_class_stats.tscn",
 	"res://scenes/character_creation/slides/slide_03_feats_abilities.tscn",
 	"res://scenes/character_creation/slides/slide_04_items_equipment.tscn",
-	"res://scenes/character_creation/slides/slide_05_review_confirm.tscn",
+	"res://scenes/character_creation/slides/slide_06_character_sheet.tscn",
 ]
 
 @onready var _slide_host := get_node_or_null("Main/SlideHost") as Control
@@ -18,12 +18,19 @@ const CharacterCreationFlowType = preload("res://scripts/ui/character_creation/c
 var _manager = ManagerType.new()
 var _active_slide: Control = null
 var _resume_requested: bool = false
+var _error_timer: Timer = null
 
 func init_data(data: Dictionary) -> void:
 	if data.has("resume") and bool(data["resume"]):
 		_resume_requested = true
 
 func _ready() -> void:
+	_error_timer = Timer.new()
+	_error_timer.one_shot = true
+	_error_timer.wait_time = 5.0
+	_error_timer.connect("timeout", Callable(self, "_clear_error_label"))
+	add_child(_error_timer)
+
 	add_child(_manager)
 	_manager.slide_changed.connect(_on_slide_changed)
 	_manager.validation_failed.connect(_on_validation_failed)
@@ -97,6 +104,15 @@ func _on_validation_failed(_step_index: int, message: String) -> void:
 	var error_label := get_node_or_null("Main/ErrorLabel") as Label
 	if error_label:
 		error_label.text = message
+		if _error_timer != null:
+			_error_timer.stop()
+		_error_timer.start()
+
+
+func _clear_error_label() -> void:
+	var error_label := get_node_or_null("Main/ErrorLabel") as Label
+	if error_label:
+		error_label.text = ""
 
 
 func _on_creation_completed(final_payload: Dictionary) -> void:

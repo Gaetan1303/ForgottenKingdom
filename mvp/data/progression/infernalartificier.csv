@@ -1,0 +1,11 @@
+﻿Niveau,Force,Magie,Espionnage,Artisanat,Diplomatie,Commandement,Attaque,Défense,Résistance,Initiative,Jet de Vigueur,Jet de Volonté,Jet de Réflexes,Nouveaux Talents,Lore
+1,8,10,8,10,8,8,8,10,8,8,8,10,10,hellforge_engineer, Infusion démoniaque,"Tes inventions sont alimentées par les arcanes des enfers."
+2,8,11,8,11,8,8,8,10,8,9,9,11,10,+1 Artisanat, Amélioration infernale (+1 Attaque pour une arme),"Tes armes deviennent plus mortelles."
+3,8,12,8,12,8,8,8,11,9,9,9,12,11,Infusion démoniaque +1,"Tes créations sont imprégnées de magie noire."
+4,8,13,8,13,8,8,9,11,9,10,10,13,11,Automate infernal (Invoque un automate de combat),"Tes automates obéissent à ta volonté."
+5,8,14,8,14,8,9,9,12,10,10,10,14,12,Forge mobile (Peut forger en combat),"Tu peux réparer et améliorer tes armes n’importe où."
+6,8,15,8,15,8,9,9,12,10,11,11,15,12,Maîtrise de la forge infernale (+2 Artisanat),"Tes créations sont désormais légendaires."
+7,9,16,8,16,8,10,10,13,11,11,11,16,13,Arme vivante (Arme inflige des dégâts magiques),"Tes armes deviennent des êtres vivants."
+8,9,17,8,17,8,10,10,13,11,12,12,17,13,Invention démoniaque (Crée un objet unique),"Tes inventions défient les lois de la physique."
+9,10,18,8,18,8,11,11,14,12,12,12,18,14,Maître artificier (+3 Artisanat),"Tu es désormais capable de forger des artefacts légendaires."
+10,10,19,8,19,9,12,12,15,13,13,13,19,14,Forge éternelle (Peut forger des objets uniques sans coût),"Tes créations sont désormais parfaites, imprégnées de magie éternelle."

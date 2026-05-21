@@ -9,9 +9,9 @@ extends Control
 var portrait_data: Dictionary = {}
 
 func _ready() -> void:
-	_preview = get_node_or_null("PortraitPanel/PreviewBox") as TextureRect
-	_path_label = get_node_or_null("PortraitPanel/DetailsVBox/PortraitPathLabel") as Label
-	_file_dialog = get_node_or_null("PortraitFileDialog") as FileDialog
+	_preview = find_child("PreviewBox", true, false) as TextureRect
+	_path_label = find_child("PortraitPathLabel", true, false) as Label
+	_file_dialog = find_child("PortraitFileDialog", true, false) as FileDialog
 	if _file_dialog != null:
 		_file_dialog.access = FileDialog.ACCESS_FILESYSTEM
 		_file_dialog.clear_filters()
@@ -48,8 +48,8 @@ func _load_payload(payload: Dictionary) -> void:
 				return
 	var file_path := str(payload["image_path"]) if payload.has("image_path") else ""
 	if file_path != "" and FileAccess.file_exists(file_path):
-		var file_image := Image.new()
-		if file_image.load(file_path) == OK:
+		var file_image := _open_image_file(file_path)
+		if file_image != null:
 			if _preview != null:
 				_preview.texture = ImageTexture.create_from_image(file_image)
 			if _path_label != null and payload.has("file_name"):
@@ -66,8 +66,8 @@ func _clear_preview() -> void:
 		_path_label.text = "Aucun portrait selectionne"
 
 func _on_file_selected(path: String) -> void:
-	var image := Image.new()
-	if image.load(path) != OK:
+	var image := _open_image_file(path)
+	if image == null:
 		return
 	var texture := ImageTexture.create_from_image(image)
 	if texture:
@@ -87,3 +87,18 @@ func _on_upload_portrait_pressed() -> void:
 
 func _on_reset_portrait_pressed() -> void:
 	reset()
+
+func _open_image_file(path: String) -> Image:
+	var file := FileAccess.open(path, FileAccess.READ)
+	if file == null:
+		return null
+	var bytes := file.get_buffer(file.get_length())
+	file.close()
+	var image := Image.new()
+	if image.load_png_from_buffer(bytes) == OK:
+		return image
+	if image.load_jpg_from_buffer(bytes) == OK:
+		return image
+	if image.load_webp_from_buffer(bytes) == OK:
+		return image
+	return null

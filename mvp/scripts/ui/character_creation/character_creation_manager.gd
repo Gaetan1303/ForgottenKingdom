@@ -2,8 +2,6 @@
 class_name CharacterCreationManager
 extends Node
 
-const StatDefs = preload("res://scripts/data/stat_defs.gd")
-const JsonPersistenceService = preload("res://scripts/services/json_persistence_service.gd")
 const CharacterCreationRules = preload("res://scripts/services/character_creation_rules_service.gd")
 const CharacterCreationDataType = preload("res://scripts/ui/character_creation/creation_data.gd")
 const CharacterCreationFlowType = preload("res://scripts/ui/character_creation/creation_flow_controller.gd")
@@ -17,10 +15,10 @@ const FEAT_CONFLICT_MAP := {
 }
 
 const EQUIPMENT_COMPATIBILITY := {
-	"Arme lourde + bouclier": {"weapon": ["Arme lourde"], "armor": ["Armure lourde"]},
-	"Catalyseur runique": {"weapon": ["Catalyseur runique"], "armor": ["Robe runique", "Armure legere"]},
-	"Lames jumelles": {"weapon": ["Lames jumelles"], "armor": ["Armure legere", "Aucun"]},
-	"Lance de guerre": {"weapon": ["Lance"], "armor": ["Armure lourde", "Armure legere"]},
+	"Arme lourde + bouclier": {"weapon": ["Arme lourde"], "armor": ["Armure lourde", "Tunique simple", "Robes d'apprenti"]},
+	"Catalyseur runique": {"weapon": ["Catalyseur runique"], "armor": ["Robe runique", "Armure legere", "Tunique simple", "Robes d'apprenti"]},
+	"Lames jumelles": {"weapon": ["Lames jumelles"], "armor": ["Armure legere", "Aucun", "Tunique simple", "Robes d'apprenti"]},
+	"Lance de guerre": {"weapon": ["Lance"], "armor": ["Armure lourde", "Armure legere", "Tunique simple", "Robes d'apprenti"]},
 }
 
 signal slide_changed(step_index)
@@ -182,7 +180,7 @@ func _validate_step(step_index: int) -> String:
 				return equip_msg
 		CharacterCreationFlowType.Step.REVIEW_AND_CONFIRM:
 			if not data.confirmation_accepted:
-				return "Confirmez la creation pour terminer."
+				return "Confirmez la fiche finale pour terminer."
 	return ""
 
 
@@ -235,21 +233,43 @@ func _validate_equipment_slots() -> String:
 	var inventory_item := ""
 	if data.inventory_items.size() > 0:
 		inventory_item = str(data.inventory_items[0])
+	# Déclarer selected_armor ici pour qu'il soit accessible hors du bloc suivant
+	var selected_armor: String = "Aucun"
+	if data.equipped_items_by_slot.has("armor"):
+		selected_armor = str(data.equipped_items_by_slot["armor"])
+	if selected_armor == "Aucun" and data.equipped_items_by_slot.has("torso"):
+		selected_armor = str(data.equipped_items_by_slot["torso"])
 	if inventory_item != "" and EQUIPMENT_COMPATIBILITY.has(inventory_item):
 		var rules := EQUIPMENT_COMPATIBILITY[inventory_item] as Dictionary
-		var selected_weapon = str(data.equipped_items_by_slot["weapon"]) if data.equipped_items_by_slot.has("weapon") else "Aucun"
+		var selected_weapon: String = "Aucun"
+		if data.equipped_items_by_slot.has("weapon"):
+			selected_weapon = str(data.equipped_items_by_slot["weapon"])
 		var allowed_weapon: Array = []
 		if rules.has("weapon"):
 			allowed_weapon = rules["weapon"] as Array
 		if selected_weapon != "Aucun" and not allowed_weapon.has(selected_weapon):
 			return "Le choix d'arme est incompatible avec l'objet de depart."
-		var selected_armor = str(data.equipped_items_by_slot["armor"]) if data.equipped_items_by_slot.has("armor") else "Aucun"
-		var allowed_armor: Array = []
-		if rules.has("armor"):
-			allowed_armor = rules["armor"] as Array
-		if selected_armor != "Aucun" and not allowed_armor.has(selected_armor):
-			return "Le choix d'armure est incompatible avec l'objet de depart."
+
+	if data.class_id.strip_edges() != "":
+		var class_def = GameDataLoader.get_class_by_id(data.class_id)
+		if class_def.has("armor_proficiencies"):
+			var selected_armor_category = _armor_category_from_label(selected_armor)
+			var allowed_categories = class_def["armor_proficiencies"] as Array
+			if selected_armor != "Aucun" and selected_armor_category != "" and not allowed_categories.has(selected_armor_category):
+				var class_label = str(class_def.get("name", data.class_id))
+				return "La classe %s ne peut pas porter une armure %s." % [class_label, selected_armor_category]
+			elif selected_armor != "Aucun" and selected_armor_category == "":
+				return "Impossible de déterminer le type d'armure sélectionnée."
 	return ""
+
+
+func _armor_category_from_label(label: String) -> String:
+	if label.strip_edges().is_empty() or label == "Aucun":
+		return ""
+	var equipment_item := GameDataLoader.get_equipment_item_by_label(label)
+	if equipment_item.is_empty():
+		return ""
+	return str(equipment_item.get("armor_category", "")).strip_edges().to_lower()
 
 
 func _build_final_payload() -> Dictionary:

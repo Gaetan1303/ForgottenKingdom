@@ -157,7 +157,6 @@ func _build_ui() -> void:
 	# --- Illustration (60% haut) ---
 	_illus = TextureRect.new()
 	_illus.name = "Illustration"
-	_illus.layout_mode = 1
 	_illus.anchor_left   = 0.0
 	_illus.anchor_top    = 0.0
 	_illus.anchor_right  = 1.0
@@ -169,7 +168,6 @@ func _build_ui() -> void:
 	# Dégradé bas de l'illustration vers la boîte de texte
 	_gradient = ColorRect.new()
 	_gradient.name = "Gradient"
-	_gradient.layout_mode = 1
 	_gradient.anchor_left   = 0.0
 	_gradient.anchor_top    = 0.50
 	_gradient.anchor_right  = 1.0
@@ -180,7 +178,6 @@ func _build_ui() -> void:
 	# --- Boîte de dialogue (38% bas) ---
 	var text_panel := PanelContainer.new()
 	text_panel.name = "TextBox"
-	text_panel.layout_mode = 1
 	text_panel.anchor_left   = 0.0
 	text_panel.anchor_top    = 0.62
 	text_panel.anchor_right  = 1.0
@@ -241,7 +238,6 @@ func _build_ui() -> void:
 	_btn_continue = Button.new()
 	_btn_continue.name = "BtnContinue"
 	_btn_continue.text = "Continuer ▶"
-	_btn_continue.layout_mode = 1
 	_btn_continue.anchor_left   = 1.0
 	_btn_continue.anchor_top    = 1.0
 	_btn_continue.anchor_right  = 1.0
@@ -267,7 +263,6 @@ func _build_ui() -> void:
 
 	_tuto_panel = PanelContainer.new()
 	_tuto_panel.name = "TutoPanel"
-	_tuto_panel.layout_mode = 0
 	_tuto_panel.set_anchors_preset(Control.PRESET_CENTER)
 	_tuto_panel.custom_minimum_size = Vector2(560, 420)
 	_tuto_panel.offset_left  = -280
@@ -336,7 +331,6 @@ func _build_ui() -> void:
 
 	_recruit_panel = PanelContainer.new()
 	_recruit_panel.name = "RecruitPanel"
-	_recruit_panel.layout_mode = 0
 	_recruit_panel.set_anchors_preset(Control.PRESET_CENTER)
 	_recruit_panel.custom_minimum_size = Vector2(520, 440)
 	_recruit_panel.offset_left  = -260

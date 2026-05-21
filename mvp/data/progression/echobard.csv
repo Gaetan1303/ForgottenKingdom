@@ -1,0 +1,11 @@
+﻿Niveau,Force,Magie,Espionnage,Artisanat,Diplomatie,Commandement,Attaque,Défense,Résistance,Initiative,Jet de Vigueur,Jet de Volonté,Jet de Réflexes,Nouveaux Talents,Lore
+1,8,10,8,8,10,8,8,8,8,8,8,12,8,mind_echo, Inspiration spectrale,"Tes paroles résonnent dans les esprits."
+2,8,11,8,8,11,8,8,8,8,9,8,13,9,+1 Diplomatie, Chant envoûtant,"Tes chants captivent même les cœurs les plus froids."
+3,8,12,8,8,12,8,8,8,9,9,9,14,9,Inspiration spectrale +1,"Tes alliés se battent avec une ferveur nouvelle."
+4,8,13,8,8,13,8,8,9,9,10,9,15,10,Mélodie de terreur (Fait fuir les ennemis faibles),"Tes mélodies brisent le moral de tes ennemis."
+5,8,14,8,8,14,9,8,9,10,10,10,16,10,Harmonie démoniaque (+2 Diplomatie),"Même les démons écoutent ta musique."
+6,8,15,8,8,15,9,8,10,10,11,10,17,11,Chœur des damnés (Soigne 10 PV à tous les alliés),"Tes chants apaisent les blessures de tes alliés."
+7,8,16,8,8,16,9,8,10,11,11,11,18,11,Maîtrise des échos (Bonus +1 à toutes les actions),"Tes paroles ont un pouvoir sur le champ de bataille."
+8,8,17,8,8,17,10,8,11,11,12,11,19,12,Sympathie démoniaque (Neutralise un ennemi),"Même tes ennemis peuvent devenir tes alliés."
+9,8,18,8,8,18,10,8,11,12,12,12,20,12,Chant de guerre (+2 Attaque pour tous les alliés),"Tes chants inspirent la rage au combat."
+10,8,19,8,8,19,11,8,12,13,13,13,21,13,Requiem démoniaque (Tue instantanément un ennemi à 20% PV),"Ta musique devient une sentence de mort."

@@ -1,0 +1,12 @@
+﻿Niveau,Force,Magie,Espionnage,Artisanat,Diplomatie,Commandement,Attaque,Défense,Résistance,Initiative,Jet de Vigueur,Jet de Volonté,Jet de Réflexes,Nouveaux Talents,Lore
+1,8,8,10,8,8,8,8,8,8,10,8,8,10,silent_killer, Entaille spectrale,"Tu te fondes dans l’ombre comme un fantôme."
+2,8,8,11,8,8,8,8,8,8,11,8,8,11,+1 Espionnage, Passe sans trace,"Aucun piège ne peut te détecter."
+3,8,8,12,8,8,8,9,8,8,12,9,9,12,Entaille spectrale +1,"Tes lames tranchent les ombres elles-mêmes."
+4,8,8,13,8,8,8,9,8,8,13,9,9,13,Embuscade mortelle (Dégâts +20%),"Tes ennemis ne savent pas ce qui les attend."
+5,8,8,14,8,9,8,10,8,9,14,10,10,14,Invisibilité spectrale,"Tu deviens une ombre parmi les ombres."
+6,9,8,15,8,9,8,10,9,9,15,10,10,15,Attaque sournoise (Dégâts x2),"Une lame dans le dos vaut dix en face à face."
+7,9,8,16,8,9,8,11,9,10,16,11,11,16,Maître des ombres (+1 Initiative),"Les ombres obéissent à tes ordres."
+8,10,8,17,8,10,8,11,10,10,17,11,11,17,Assassinat parfait (One-shot sur cible faible),"La mort arrive sans avertissement."
+9,10,8,18,8,10,8,12,10,11,18,12,12,18,Lame fantôme (Attaque à distance),"Tes lames traversent les murs comme du papier."
+10,11,8,19,8,11,8,13,11,11,19,13,13,,,
+13,,,,,,,,,,,,,,,
