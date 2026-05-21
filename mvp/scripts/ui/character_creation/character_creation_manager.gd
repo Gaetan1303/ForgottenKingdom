@@ -180,7 +180,7 @@ func _validate_step(step_index: int) -> String:
 				return equip_msg
 		CharacterCreationFlowType.Step.REVIEW_AND_CONFIRM:
 			if not data.confirmation_accepted:
-				return "Confirmez la creation pour terminer."
+				return "Confirmez la fiche finale pour terminer."
 	return ""
 
 
