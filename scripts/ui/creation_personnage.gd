@@ -270,6 +270,9 @@ func _ready() -> void:
 		vp.connect("size_changed", Callable(self, "_update_responsive_layout"))
 	_configurer_flux_par_slides()
 	_aller_a_slide(0)
+	var fiche := _sheet_host()
+	if fiche == null:
+		return
 
 	# Debug helper: show current name/clan overlay and highlight fields (temporary)
 	# debug overlay removed; label will show name & clan instead
@@ -312,8 +315,16 @@ func _ready() -> void:
 		feat_desc.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 		vbox.add_child(feat_desc)
 
+
 	# Met à jour ensuite les descriptions (existant ou nouvellement créées)
 	_refresh_slide2_descriptions()
+
+
+func _color_from_value(val, fallback: Color) -> Color:
+	if typeof(val) == TYPE_ARRAY:
+		if val.size() >= 3:
+			var a := 1.0
+			if val.size() >= 4:
 				a = float(val[3])
 			return Color(float(val[0]), float(val[1]), float(val[2]), a)
 		return fallback
@@ -327,6 +338,21 @@ func _ready() -> void:
 	if val is Color:
 		return val
 	return fallback
+
+
+func _make_panel_style(bg_color: Color, border_color: Color) -> StyleBoxFlat:
+	var style := StyleBoxFlat.new()
+	style.bg_color = bg_color
+	style.border_color = border_color
+	style.border_width_left = 1
+	style.border_width_top = 1
+	style.border_width_right = 1
+	style.border_width_bottom = 1
+	style.corner_radius_top_left = 8
+	style.corner_radius_top_right = 8
+	style.corner_radius_bottom_right = 8
+	style.corner_radius_bottom_left = 8
+	return style
 
 
 func _appliquer_style_creation() -> void:
@@ -1529,6 +1555,7 @@ func _distribuer_points(priorites: Array, max_spent: int) -> void:
 
 func _construire_fiche_complete() -> Dictionary:
 	var mods := CharacterBuildService.build_modifiers(_fiche_stats)
+	var derived := CharacterBuildService.build_derived_stats(mods)
 
 	var pv_base := 10
 	if _classe_choisie == "chevalier_sombre":
@@ -1551,11 +1578,13 @@ func _construire_fiche_complete() -> Dictionary:
 		"stats_brutes": _fiche_stats.duplicate(true),
 		"modificateurs": mods,
 		"pv_max": pv_base + int(mods["commandement"]),
-		"initiative": int(mods["espionnage"]),
-		"defense": 10 + int(mods["espionnage"]),
-		"jet_vigueur": int(mods["force"]),
-		"jet_volonte": int(mods["magie"]),
-		"jet_reflexes": int(mods["espionnage"]),
+		"initiative": int(derived["initiative"]),
+		"defense": int(derived["defense"]),
+		"attaque": int(derived["attaque"]),
+		"resistance": int(derived["resistance"]),
+		"jet_vigueur": int(derived["jet_vigueur"]),
+		"jet_volonte": int(derived["jet_volonte"]),
+		"jet_reflexes": int(derived["jet_reflexes"]),
 	}
 
 
@@ -1830,7 +1859,7 @@ func _build_slide2_right_pane() -> void:
 		classe_nom = str(_get_class_data(_classe_choisie).get("nom", _classe_choisie))
 	var genre := _texte_option(_find_option("OptionGenre"))
 	var apparence := _texte_option(_find_option("OptionApparence"))
-	var portrait_resume := "Image importee" if not _portrait_data.is_empty() else "Aucun portrait"
+	var _portrait_resume := "Image importee" if not _portrait_data.is_empty() else "Aucun portrait"
 
 	var fiche_body := RichTextLabel.new()
 	fiche_body.bbcode_enabled = false

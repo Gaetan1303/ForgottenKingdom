@@ -2,6 +2,8 @@
 class_name CharacterCreationRulesService
 extends RefCounted
 
+const CharacterBuildServiceClass = preload("res://scripts/data/character_build_service.gd")
+
 
 static func get_class_data(classe_id: String) -> Dictionary:
 	var classes: Dictionary = GameDataLoader.get_classes()
@@ -105,7 +107,8 @@ static func apply_point_buy_for_class(classe_id: String, target_points: int) -> 
 
 
 static func build_complete_sheet(classe_choisie: String, fiche_stats: Dictionary, fiche_points_restants: int) -> Dictionary:
-	var mods := CharacterBuildService.build_modifiers(fiche_stats)
+	var mods: Dictionary = CharacterBuildServiceClass.build_modifiers(fiche_stats)
+	var derived: Dictionary = CharacterBuildServiceClass.build_derived_stats(mods)
 
 	var pv_base := 10
 	if classe_choisie == "chevalier_sombre":
@@ -128,11 +131,13 @@ static func build_complete_sheet(classe_choisie: String, fiche_stats: Dictionary
 		"stats_brutes": fiche_stats.duplicate(true),
 		"modificateurs": mods,
 		"pv_max": pv_base + int(mods["commandement"]),
-		"initiative": int(mods["espionnage"]),
-		"defense": 10 + int(mods["espionnage"]),
-		"jet_vigueur": int(mods["force"]),
-		"jet_volonte": int(mods["magie"]),
-		"jet_reflexes": int(mods["espionnage"]),
+		"initiative": int(derived["initiative"]),
+		"defense": int(derived["defense"]),
+		"attaque": int(derived["attaque"]),
+		"resistance": int(derived["resistance"]),
+		"jet_vigueur": int(derived["jet_vigueur"]),
+		"jet_volonte": int(derived["jet_volonte"]),
+		"jet_reflexes": int(derived["jet_reflexes"]),
 	}
 
 
@@ -218,13 +223,18 @@ static func build_points_summary(points_remaining: int, points_spent: int) -> St
 
 
 static func compute_sheet_vitals(stats_dict: Dictionary, feats_effects: Dictionary, ame_pct: int) -> Dictionary:
-	var mods := CharacterBuildService.build_modifiers(stats_dict)
+	var mods: Dictionary = CharacterBuildServiceClass.build_modifiers(stats_dict)
+	var derived: Dictionary = CharacterBuildServiceClass.build_derived_stats(mods)
 	var pv_max := 10 + int(mods.get("commandement", 0)) + int(feats_effects.get("pv_bonus", 0))
 	var mana_max := 20 + int(mods.get("magie", 0)) * 3 + int(feats_effects.get("mana_bonus", 0))
 	return {
 		"pv_max": pv_max,
 		"mana_max": mana_max,
 		"ame_pct": ame_pct,
+		"attaque": int(derived["attaque"]),
+		"defense": int(derived["defense"]),
+		"resistance": int(derived["resistance"]),
+		"initiative": int(derived["initiative"]),
 	}
 
 

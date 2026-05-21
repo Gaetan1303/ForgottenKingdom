@@ -3,47 +3,8 @@ extends Control
 const INGRID_MVP_NOTICE_KEY = "ingrid_mvp_notice_seen"
 const MAIN_TRACK = "mainmenu.mp3"
 const EMBLEM_PATH = "res://assets/icon/jeu.png"
-const SOUND_ICON_PATH = "res://assets/ui/stop_icon.svg"
+const SOUND_ICON_PATH = "res://assets/ui/stop_icon.png"
 
-
-const MENU_ITEMS = [
-	{ 
-		"node_name": "BtnNouvellePartie",
-		"title": "NOUVELLE PARTIE",
-		"description": "RPG Gestion – Reconstituez votre Clan Démoniaque",
-		"action": "new_game",
-	},
-	{
-		"node_name": "BtnCreationPersonnage",
-		"title": "CREATION PERSONNAGE",
-		"description": "Reprendre un brouillon ou commencer une nouvelle creation",
-		"action": "character_creation",
-	},
-	{
-		"node_name": "BtnContinuer",
-		"title": "CHAPITRE EN COURS",
-		"description": "Reprendre une progression à partir d'un chapitre",
-		"action": "continue_game",
-	},
-	{
-		"node_name": "BtnEncyclopedie",
-		"title": "ENCYCLOPÉDIE",
-		"description": "Le Lore des 9 Maisons Nobles Démoniques",
-		"action": "encyclopedia",
-	},
-	{
-		"node_name": "BtnParametres",
-		"title": "PARAMÈTRES",
-		"description": "Options, Audio, Interface",
-		"action": "options",
-	},
-	{
-		"node_name": "BtnQuitter",
-		"title": "QUITTER",
-		"description": "Version 0.0.1",
-		"action": "quit",
-	},
-]
 
 var _ingrid_notice: AcceptDialog
 var _pending_ingrid_target: String = ""
@@ -68,38 +29,14 @@ func _ready() -> void:
 	_create_procedural_background()
 
 	_setup_notice_dialog()
-	# adjust card separation to follow mockup
-	var menu_list: VBoxContainer = $Content/ContentCenter/ContentVBox/MenuListHolder/MenuList
-	if menu_list != null:
-		menu_list.add_theme_constant_override("separation", 18)
-		var list_bg := StyleBoxFlat.new()
-		list_bg.bg_color = Color8(22, 10, 34, int(0.78 * 255))
-		list_bg.border_color = Color8(145, 88, 210)
-		list_bg.set_border_width_all(2)
-		list_bg.set_corner_radius_all(18)
-		list_bg.content_margin_left = 16
-		list_bg.content_margin_top = 16
-		list_bg.content_margin_right = 16
-		list_bg.content_margin_bottom = 16
-		menu_list.add_theme_stylebox_override("panel", list_bg)
-
-	_build_menu_cards()
+	_connect_menu_buttons()
 	_build_sound_button()
 	_apply_saved_display_settings()
 
-	var title_label: Label = $Content/ContentCenter/ContentVBox/Header/Title
-	if title_label != null:
-		title_label.text = "CHRONIQUES DES 9 NOBLES DU DEMON REALM"
-		title_label.custom_minimum_size = Vector2(0, 80)
-		title_label.horizontal_alignment = 1
-		title_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-
-	var subtitle_label: Label = $Content/ContentCenter/ContentVBox/Header/Subtitle
-	if subtitle_label != null:
-		subtitle_label.text = ""
+	call_deferred("_configure_title_label")
 
 	# hide any static background texture so procedural background is visible
-	if has_node("Background"):
+	if has_node("Background") and $Background is TextureRect:
 		$Background.visible = false
 
 
@@ -112,131 +49,46 @@ func _setup_notice_dialog() -> void:
 	_ingrid_notice.confirmed.connect(_on_ingrid_notice_confirmed)
 
 
-func _build_menu_cards() -> void:
-	var list: VBoxContainer = $Content/ContentCenter/ContentVBox/MenuListHolder/MenuList
-	for child in list.get_children():
-		child.queue_free()
+func _configure_title_label() -> void:
+	var title_label: Label = get_node_or_null("ContentVBox/HeaderContainer/Title") as Label
+	if title_label == null:
+		title_label = get_node_or_null("HeaderContainer/Title") as Label
+	if title_label == null:
+		title_label = find_child("Title", true, false) as Label
+	if title_label != null:
+		title_label.text = "CHRONIQUES DES 9 NOBLES DU DEMON REALM"
+		title_label.custom_minimum_size = Vector2(0, 120)
+		title_label.horizontal_alignment = 1
+		title_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	else:
+		push_warning("MainMenu: Title label not found")
 
-	var emblem: Texture2D = load(EMBLEM_PATH) as Texture2D
-	for item in _get_menu_items():
-		list.add_child(_create_menu_card(item, emblem))
 
-
-
-
-func _get_menu_items() -> Array:
-	var items: Array = []
-	for item in MENU_ITEMS:
-		items.append(item.duplicate(true))
-	var draft_path := "user://saves/creation_draft.json"
-	if FileAccess.file_exists(draft_path):
-		for item in items:
-			if str(item.get("action", "")) == "character_creation":
-				item["description"] = "Reprendre un brouillon existant ou continuer la creation"
-				break
-	return items
-
-func _create_menu_card(item: Dictionary, emblem: Texture2D) -> Button:
-	var button := Button.new()
-	button.name = str(item.get("node_name", "MenuButton"))
-	button.flat = true
-	button.focus_mode = Control.FOCUS_NONE
-	# card size matching maquette width and parent layout
-	button.custom_minimum_size = Vector2(832, 92)
-	button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	button.alignment = HORIZONTAL_ALIGNMENT_LEFT
-	button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
-
-	# create panel style matching the menu mockup without using image textures
-	var normal := StyleBoxFlat.new()
-	normal.bg_color = Color8(26, 12, 42, int(0.84 * 255))
-	normal.border_color = Color8(162, 95, 196)
-	normal.set_border_width_all(2)
-	normal.set_corner_radius_all(14)
-	normal.shadow_color = Color8(24, 8, 34, int(0.28 * 255))
-	normal.shadow_size = 12
-	normal.content_margin_left = 36
-	normal.content_margin_top = 18
-	normal.content_margin_right = 36
-	normal.content_margin_bottom = 14
-	button.add_theme_stylebox_override("normal", normal)
-
-	var hover2 := StyleBoxFlat.new()
-	hover2.bg_color = Color8(44, 20, 66, int(0.96 * 255))
-	hover2.border_color = Color8(220, 180, 255)
-	hover2.set_border_width_all(2)
-	hover2.set_corner_radius_all(14)
-	hover2.content_margin_left = 36
-	hover2.content_margin_top = 18
-	hover2.content_margin_right = 36
-	hover2.content_margin_bottom = 14
-	button.add_theme_stylebox_override("hover", hover2)
-	button.add_theme_stylebox_override("pressed", hover2)
-	button.add_theme_stylebox_override("focus", hover2)
-
-	var layout := HBoxContainer.new()
-	layout.alignment = BoxContainer.ALIGNMENT_BEGIN
-	layout.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	layout.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	button.add_child(layout)
-
-	# ensure button text left padding is consistent
-	button.add_theme_constant_override("hseparation", 12)
-
-	# icon with red framed panel background matching maquette
-	var icon_bg := PanelContainer.new()
-	var icon_style := StyleBoxFlat.new()
-	icon_style.bg_color = Color(0,0,0,0.0)
-	icon_style.border_color = Color(0,0,0,0)
-	icon_style.set_border_width_all(0)
-	icon_style.set_corner_radius_all(6)
-	icon_style.content_margin_left = 4
-	icon_style.content_margin_top = 4
-	icon_style.content_margin_right = 4
-	icon_style.content_margin_bottom = 4
-	icon_bg.add_theme_stylebox_override("panel", icon_style)
-	# slightly larger framed icon to match maquette
-	icon_bg.custom_minimum_size = Vector2(64, 64)
-	icon_bg.mouse_filter = Control.MOUSE_FILTER_IGNORE
-
-	var icon_rect := TextureRect.new()
-	icon_rect.texture = emblem
-	icon_rect.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-	icon_rect.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-	icon_rect.custom_minimum_size = Vector2(64, 64)
-	icon_rect.modulate = Color(0.5, 0.5, 0.5, 1.0)
-	icon_rect.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	icon_bg.add_child(icon_rect)
-	layout.add_child(icon_bg)
-
-	var spacer := Control.new()
-	spacer.custom_minimum_size = Vector2(16, 1)
-	spacer.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	layout.add_child(spacer)
-
-	var texts := VBoxContainer.new()
-	texts.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	texts.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	layout.add_child(texts)
-
-	var title := Label.new()
-	title.text = str(item.get("title", ""))
-	title.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	# card title (pixel‑perfect)
-	title.add_theme_font_size_override("font_size", 18)
-	title.add_theme_color_override("font_color", Color8(255, 255, 255))
-	texts.add_child(title)
-
-	var description := Label.new()
-	description.text = str(item.get("description", ""))
-	description.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	# subtitle / description smaller but readable
-	description.add_theme_font_size_override("font_size", 10)
-	description.add_theme_color_override("font_color", Color8(200, 180, 200))
-	texts.add_child(description)
-
-	button.pressed.connect(_on_menu_action.bind(str(item.get("action", ""))))
-	return button
+func _connect_menu_buttons() -> void:
+	var buttons = {
+		"BtnNouvellePartie": "new_game",
+		"BtnContinuer": "continue_game",
+		"BtnParametres": "options",
+		"BtnEncyclopedie": "encyclopedia",
+		"BtnQuitter": "quit",
+	}
+	var base_path: String = "ContentVBox/BodyCenterContainer/BodyListHolder/"
+	for name in buttons.keys():
+		var node_path: String = base_path + name
+		if has_node(node_path):
+			var button: Button = get_node(node_path)
+			button.flat = true
+			button.focus_mode = Control.FOCUS_NONE
+			var sb := StyleBoxFlat.new()
+			sb.bg_color = Color(0, 0, 0, 0)
+			sb.set_border_width_all(0)
+			button.add_theme_stylebox_override("normal", sb)
+			button.add_theme_stylebox_override("hover", sb)
+			button.add_theme_stylebox_override("pressed", sb)
+			button.add_theme_stylebox_override("disabled", sb)
+			button.add_theme_color_override("font_color", Color8(255, 255, 255))
+			button.add_theme_font_size_override("font_size", 20)
+			button.pressed.connect(_on_menu_action.bind(buttons[name]))
 
 
 func _create_procedural_background() -> void:
@@ -258,38 +110,50 @@ func _create_procedural_background() -> void:
 
 
 func _build_sound_button() -> void:
-	_sound_button = $Footer/SoundButton
+	_sound_button = $FooterContainer/SoundButton
 	_sound_button.flat = true
 	_sound_button.focus_mode = Control.FOCUS_NONE
 	_sound_button.text = ""
 	_sound_button.tooltip_text = "Couper / relancer la musique"
 	_sound_button.pressed.connect(_on_sound_button_pressed)
 
-	# Position footer at bottom-left like the maquette
-	var footer := $Footer
+	# Position footer at bottom-left like la maquette
+	var footer := $FooterContainer
 	footer.offset_left = 27
 	footer.offset_top = -55
 	footer.offset_right = 27
 	footer.offset_bottom = -6
 
-	# Make the sound button match maquette (40x40)
-	_sound_button.custom_minimum_size = Vector2(40, 40)
-	# style the button to match maquette: small rounded warm square with icon
+	# Make the sound button more visible on the dark background
+	_sound_button.custom_minimum_size = Vector2(48, 48)
+	# style the button to match maquette with stronger contrast
 	var sb := StyleBoxFlat.new()
-	sb.bg_color = Color8(38, 14, 24, int(0.72 * 255))
-	sb.border_color = Color8(240, 110, 94)
+	sb.bg_color = Color8(70, 30, 60, 220)
+	sb.border_color = Color8(255, 170, 170)
 	sb.set_border_width_all(2)
-	sb.set_corner_radius_all(10)
-	sb.content_margin_left = 8
-	sb.content_margin_top = 8
-	sb.content_margin_right = 8
-	sb.content_margin_bottom = 8
+	sb.set_corner_radius_all(12)
+	sb.content_margin_left = 10
+	sb.content_margin_top = 10
+	sb.content_margin_right = 10
+	sb.content_margin_bottom = 10
 	_sound_button.add_theme_stylebox_override("normal", sb)
-	_sound_button.add_theme_stylebox_override("hover", sb.duplicate())
+
+	var sb_hover := sb.duplicate()
+	sb_hover.bg_color = Color8(90, 40, 80, 230)
+	_sound_button.add_theme_stylebox_override("hover", sb_hover)
+
+	var sb_pressed := sb.duplicate()
+	sb_pressed.bg_color = Color8(120, 55, 110, 230)
+	_sound_button.add_theme_stylebox_override("pressed", sb_pressed)
+
+	_sound_button.add_theme_color_override("font_color", Color8(136, 46, 46))
+	_sound_button.add_theme_font_size_override("font_size", 24)
+
 	var icon_tex := ResourceLoader.load(SOUND_ICON_PATH)
 	if icon_tex is Texture2D:
 		_sound_button.icon = icon_tex
-		_sound_button.modulate = Color8(240, 110, 94)
+	else:
+		_sound_button.text = "⏯"
 
 
 func _apply_saved_display_settings() -> void:
