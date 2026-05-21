@@ -10,7 +10,7 @@ const CharacterCreationFlowType = preload("res://scripts/ui/character_creation/c
 	"res://scenes/character_creation/slides/slide_02_class_stats.tscn",
 	"res://scenes/character_creation/slides/slide_03_feats_abilities.tscn",
 	"res://scenes/character_creation/slides/slide_04_items_equipment.tscn",
-	"res://scenes/character_creation/slides/slide_05_review_confirm.tscn",
+	"res://scenes/character_creation/slides/slide_06_character_sheet.tscn",
 ]
 
 @onready var _slide_host := get_node_or_null("Main/SlideHost") as Control

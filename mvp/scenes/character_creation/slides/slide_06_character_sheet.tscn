@@ -1,0 +1,241 @@
+[gd_scene format=3 uid="uid://qhla5832n1ej"]
+
+[ext_resource type="Script" uid="uid://xahcgrh1oufc" path="res://scripts/ui/character_creation/slides/CharacterSheet.gd" id="1_slide"]
+
+[node name="Slide06CharacterSheet" type="Control" unique_id=1118118620]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_slide")
+
+[node name="Background" type="ColorRect" parent="." unique_id=1494158311]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.0470588, 0.0509804, 0.0862745, 1)
+
+[node name="CharacterSheetPanel" type="PanelContainer" parent="." unique_id=1947221356]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 38.0
+offset_top = 26.0
+offset_right = -38.0
+offset_bottom = -26.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Margin" type="MarginContainer" parent="CharacterSheetPanel" unique_id=559617302]
+layout_mode = 2
+theme_override_constants/margin_left = 18
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 18
+theme_override_constants/margin_bottom = 16
+
+[node name="Main" type="VBoxContainer" parent="CharacterSheetPanel/Margin" unique_id=733978628]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 10
+
+[node name="Title" type="Label" parent="CharacterSheetPanel/Margin/Main" unique_id=1735836534]
+layout_mode = 2
+theme_override_font_sizes/font_size = 26
+text = "Slide 6 - Fiche de Personnage Finale"
+horizontal_alignment = 1
+
+[node name="Body" type="HBoxContainer" parent="CharacterSheetPanel/Margin/Main" unique_id=145544651]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 12
+
+[node name="Left" type="VBoxContainer" parent="CharacterSheetPanel/Margin/Main/Body" unique_id=1173055433]
+custom_minimum_size = Vector2(260, 0)
+layout_mode = 2
+size_flags_horizontal = 1
+theme_override_constants/separation = 8
+
+[node name="PortraitContainer" type="PanelContainer" parent="CharacterSheetPanel/Margin/Main/Body/Left" unique_id=777648335]
+custom_minimum_size = Vector2(260, 320)
+layout_mode = 2
+size_flags_horizontal = 3
+clip_contents = true
+
+[node name="PortraitVBox" type="VBoxContainer" parent="CharacterSheetPanel/Margin/Main/Body/Left/PortraitContainer" unique_id=1529419451]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="Portrait" type="TextureRect" parent="CharacterSheetPanel/Margin/Main/Body/Left/PortraitContainer/PortraitVBox" unique_id=1624183037]
+custom_minimum_size = Vector2(240, 280)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+expand_mode = 1
+stretch_mode = 5
+
+[node name="ClassTag" type="Label" parent="CharacterSheetPanel/Margin/Main/Body/Left/PortraitContainer/PortraitVBox" unique_id=572053621]
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+text = "Classe: -"
+
+[node name="LevelTag" type="Label" parent="CharacterSheetPanel/Margin/Main/Body/Left/PortraitContainer/PortraitVBox" unique_id=2009511256]
+layout_mode = 2
+text = "Niveau 1"
+
+[node name="RightScroll" type="ScrollContainer" parent="CharacterSheetPanel/Margin/Main/Body" unique_id=214334001]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Right" type="VBoxContainer" parent="CharacterSheetPanel/Margin/Main/Body/RightScroll" unique_id=201567615]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 1.8
+theme_override_constants/separation = 8
+
+[node name="IdentitySection" type="PanelContainer" parent="CharacterSheetPanel/Margin/Main/Body/RightScroll/Right" unique_id=1480809056]
+layout_mode = 2
+
+[node name="IdentityVBox" type="VBoxContainer" parent="CharacterSheetPanel/Margin/Main/Body/RightScroll/Right/IdentitySection" unique_id=1584048966]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="IdentityTitle" type="Label" parent="CharacterSheetPanel/Margin/Main/Body/RightScroll/Right/IdentitySection/IdentityVBox" unique_id=368995238]
+layout_mode = 2
+theme_override_font_sizes/font_size = 18
+text = "Identite"
+
+[node name="IdentityGrid" type="GridContainer" parent="CharacterSheetPanel/Margin/Main/Body/RightScroll/Right/IdentitySection/IdentityVBox" unique_id=1331314989]
+layout_mode = 2
+theme_override_constants/h_separation = 14
+theme_override_constants/v_separation = 4
+columns = 2
+
+[node name="StatsSection" type="PanelContainer" parent="CharacterSheetPanel/Margin/Main/Body/RightScroll/Right" unique_id=1011496956]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="StatsVBox" type="VBoxContainer" parent="CharacterSheetPanel/Margin/Main/Body/RightScroll/Right/StatsSection" unique_id=1964961358]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="StatsTitle" type="Label" parent="CharacterSheetPanel/Margin/Main/Body/RightScroll/Right/StatsSection/StatsVBox" unique_id=1197741046]
+layout_mode = 2
+theme_override_font_sizes/font_size = 18
+text = "Statistiques"
+
+[node name="StatsGrid" type="VBoxContainer" parent="CharacterSheetPanel/Margin/Main/Body/RightScroll/Right/StatsSection/StatsVBox" unique_id=1658953848]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 6
+
+[node name="MidSections" type="HBoxContainer" parent="CharacterSheetPanel/Margin/Main/Body/RightScroll/Right" unique_id=1466728304]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 8
+
+[node name="SkillsSection" type="PanelContainer" parent="CharacterSheetPanel/Margin/Main/Body/RightScroll/Right/MidSections" unique_id=1477221729]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="SkillsVBox" type="VBoxContainer" parent="CharacterSheetPanel/Margin/Main/Body/RightScroll/Right/MidSections/SkillsSection" unique_id=1224185534]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="SkillsTitle" type="Label" parent="CharacterSheetPanel/Margin/Main/Body/RightScroll/Right/MidSections/SkillsSection/SkillsVBox" unique_id=1076778024]
+layout_mode = 2
+theme_override_font_sizes/font_size = 17
+text = "Competences"
+
+[node name="SkillsList" type="VBoxContainer" parent="CharacterSheetPanel/Margin/Main/Body/RightScroll/Right/MidSections/SkillsSection/SkillsVBox" unique_id=1351778747]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 6
+
+[node name="EquipmentSection" type="PanelContainer" parent="CharacterSheetPanel/Margin/Main/Body/RightScroll/Right/MidSections" unique_id=1492332183]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="EquipVBox" type="VBoxContainer" parent="CharacterSheetPanel/Margin/Main/Body/RightScroll/Right/MidSections/EquipmentSection" unique_id=962340337]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="EquipTitle" type="Label" parent="CharacterSheetPanel/Margin/Main/Body/RightScroll/Right/MidSections/EquipmentSection/EquipVBox" unique_id=2092424188]
+layout_mode = 2
+theme_override_font_sizes/font_size = 17
+text = "Equipement"
+
+[node name="EquipmentGrid" type="GridContainer" parent="CharacterSheetPanel/Margin/Main/Body/RightScroll/Right/MidSections/EquipmentSection/EquipVBox" unique_id=1760891105]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/h_separation = 6
+theme_override_constants/v_separation = 6
+columns = 2
+
+[node name="LoreSection" type="PanelContainer" parent="CharacterSheetPanel/Margin/Main/Body/RightScroll/Right" unique_id=1319707981]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="LoreVBox" type="VBoxContainer" parent="CharacterSheetPanel/Margin/Main/Body/RightScroll/Right/LoreSection" unique_id=1649805242]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="LoreTitle" type="Label" parent="CharacterSheetPanel/Margin/Main/Body/RightScroll/Right/LoreSection/LoreVBox" unique_id=855054818]
+layout_mode = 2
+theme_override_font_sizes/font_size = 17
+text = "Background"
+
+[node name="LoreScroll" type="ScrollContainer" parent="CharacterSheetPanel/Margin/Main/Body/RightScroll/Right/LoreSection/LoreVBox" unique_id=1699228450]
+custom_minimum_size = Vector2(0, 132)
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="LoreText" type="RichTextLabel" parent="CharacterSheetPanel/Margin/Main/Body/RightScroll/Right/LoreSection/LoreVBox/LoreScroll" unique_id=110767946]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+bbcode_enabled = true
+fit_content = true
+
+[node name="ActionButtons" type="VBoxContainer" parent="CharacterSheetPanel/Margin/Main" unique_id=467633777]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="ButtonsRow" type="HBoxContainer" parent="CharacterSheetPanel/Margin/Main/ActionButtons" unique_id=361622206]
+layout_mode = 2
+theme_override_constants/separation = 8
+alignment = 1
+
+[node name="BtnBack" type="Button" parent="CharacterSheetPanel/Margin/Main/ActionButtons/ButtonsRow" unique_id=68600399]
+custom_minimum_size = Vector2(130, 36)
+layout_mode = 2
+text = "Retour"
+
+[node name="BtnEdit" type="Button" parent="CharacterSheetPanel/Margin/Main/ActionButtons/ButtonsRow" unique_id=265467780]
+custom_minimum_size = Vector2(130, 36)
+layout_mode = 2
+text = "Modifier"
+
+[node name="BtnValidate" type="Button" parent="CharacterSheetPanel/Margin/Main/ActionButtons/ButtonsRow" unique_id=1639023169]
+custom_minimum_size = Vector2(150, 36)
+layout_mode = 2
+text = "Valider"
+
+[node name="BtnExport" type="Button" parent="CharacterSheetPanel/Margin/Main/ActionButtons/ButtonsRow" unique_id=375454319]
+custom_minimum_size = Vector2(150, 36)
+layout_mode = 2
+text = "Exporter fiche"
+
+[node name="ConfirmCheckBox" type="CheckBox" parent="CharacterSheetPanel/Margin/Main/ActionButtons" unique_id=1514182640]
+layout_mode = 2
+text = "Je confirme que cette fiche est correcte"
+
+[node name="StatusLabel" type="Label" parent="CharacterSheetPanel/Margin/Main/ActionButtons" unique_id=50107896]
+layout_mode = 2
