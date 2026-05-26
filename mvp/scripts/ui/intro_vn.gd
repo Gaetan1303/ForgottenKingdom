@@ -4,12 +4,39 @@
 ## Flux : Passé (tutoriel) → La Chute → Serment → clan_hub
 extends Control
 
+signal slide_changed(from_idx: int, to_idx: int)
+
+@export_range(0.60, 0.85, 0.01) var screen_image_ratio: float = 0.75
+@export var taimanin_night_tint: Color = Color("#170a35")
+@export var taimanin_deep_blue_tint: Color = Color("#0f193f")
+@export var taimanin_gold_border_color: Color = Color("#c8a84b")
+@export_range(4, 6, 1) var taimanin_gold_border_px: int = 5
+@export_range(0.1, 2.0, 0.05) var slide_fade_in_duration: float = 0.30
+@export_range(0.1, 2.0, 0.05) var slide_fade_out_duration: float = 0.30
+@export_range(0.2, 1.2, 0.05) var portrait_enter_duration: float = 0.36
+@export_range(20.0, 400.0, 1.0) var portrait_enter_offset_x: float = 140.0
+@export_range(2.0, 8.0, 0.5) var portrait_idle_bob_amplitude: float = 4.0
+@export_range(0.6, 6.0, 0.1) var portrait_idle_bob_period: float = 2.0
+@export_range(1.0, 4.0, 0.5) var portrait_outline_size: float = 2.5
+@export var portrait_outline_color: Color = Color(0, 0, 0, 1)
+@export var parallax_sky_texture: Texture2D = preload("res://assets/backgrounds/background_menu.png")
+@export var parallax_front_texture: Texture2D = preload("res://assets/images/clan/defaut.png")
+@export var dialogue_parchment_texture: Texture2D = preload("res://assets/backgrounds/background_menu.png")
+
 # ─────────────────────────────────────────────────────────────────────
 #  NŒUDS (construits dynamiquement dans _ready)
 # ─────────────────────────────────────────────────────────────────────
 var _bg:              ColorRect       = null
+var _parallax_bg:     ParallaxBackground = null
+var _parallax_sky:    Sprite2D        = null
+var _parallax_front:  Sprite2D        = null
+var _illus_prev:      TextureRect     = null
 var _illus:           TextureRect     = null
 var _gradient:        ColorRect       = null
+var _char_left:       TextureRect     = null
+var _char_right:      TextureRect     = null
+var _text_panel:      PanelContainer  = null
+var _text_panel_frame: Panel          = null
 var _label_periode:   Label           = null
 var _label_speaker:   Label           = null
 var _story_text:      RichTextLabel   = null
@@ -30,6 +57,10 @@ var _recruit_role:    Label           = null
 var _recruit_desc:    RichTextLabel   = null
 var _recruit_stats:   VBoxContainer   = null
 var _btn_recruit:     Button          = null
+var _transition_layer: CanvasLayer    = null
+var _transition_rect: ColorRect       = null
+var _transition_anim: AnimationPlayer = null
+var _portrait_outline_material: ShaderMaterial = null
 
 # ─────────────────────────────────────────────────────────────────────
 #  ÉTAT
@@ -38,6 +69,25 @@ var _scenes:          Array           = []
 var _idx:             int             = 0
 var _animating:       bool            = false
 var _pending_recruit: Dictionary      = {}
+var _illus_tween:     Tween           = null
+var _shake_tween:     Tween           = null
+var _text_panel_origin: Vector2       = Vector2.ZERO
+var _rng := RandomNumberGenerator.new()
+var _last_dialogue_speaker: String = ""
+var _left_portrait_key: String = ""
+var _right_portrait_key: String = ""
+var _portrait_texture_cache: Dictionary = {}
+var _portrait_bob_players: Dictionary = {}
+
+const SCREEN_TEXT_RATIO := 0.30
+const PORTRAIT_TOP_RATIO := 0.00
+const PORTRAIT_SOLO_LEFT := 0.15
+const PORTRAIT_SOLO_RIGHT := 0.85
+const PORTRAIT_DUO_LEFT_LEFT := 0.00
+const PORTRAIT_DUO_LEFT_RIGHT := 0.50
+const PORTRAIT_DUO_RIGHT_LEFT := 0.50
+const PORTRAIT_DUO_RIGHT_RIGHT := 1.00
+const ENABLE_PORTRAIT_BG_REMOVAL := false
 
 # Données joueur (résolues une fois)
 var _player_name: String  = "Héritier"
@@ -45,6 +95,7 @@ var _clan_name:   String  = "votre Clan"
 var _parent_name: String  = "Ton Père"
 var _pere_name: String    = "Ton Père"
 var _mere_name: String    = "Ta Mère"
+var _player_gender: String = ""
 
 
 # ─────────────────────────────────────────────────────────────────────
@@ -63,6 +114,14 @@ const ICONS_BBCODE = {
     "essence":   "res://assets/icon/essence.png",
 }
 
+const SPEAKER_COLORS = {
+	"mere": Color(1.00, 0.66, 0.80, 1.0),
+	"pere": Color(1.00, 0.80, 0.52, 1.0),
+	"personnage": Color(0.82, 0.60, 1.00, 1.0),
+	"kael": Color(0.56, 0.87, 1.00, 1.0),
+	"narrateur": Color(1.00, 0.85, 0.40, 1.0),
+}
+
 # Remplacement emojis → icônes pixel art dans le texte BBCode
 func _inject_icons(text: String) -> String:
 	return text \
@@ -76,14 +135,21 @@ func _inject_icons(text: String) -> String:
 
 
 func _ready() -> void:
+	_rng.randomize()
+	set_process(true)
 	_resolve_player_data()
 	_build_ui()
+	resized.connect(_on_viewport_resized)
 	_load_scenes()
 	if _scenes.is_empty():
 		push_error("IntroVN: aucune scène chargée — vérifier data/intro_vn.json")
 		GameManager.go_to("clan_hub")
 		return
 	_show_scene(0)
+
+
+func _on_viewport_resized() -> void:
+	_apply_layout_ratios()
 
 
 func _resolve_player_data() -> void:
@@ -93,13 +159,20 @@ func _resolve_player_data() -> void:
 	_player_name = str(cm.get("nom_personnage") if cm.get("nom_personnage") != "" else "Héritier")
 	_clan_name   = str(cm.get("nom_clan")       if cm.get("nom_clan")       != "" else "votre Clan")
 	var profil: Dictionary = (cm.get("profil_personnage") as Dictionary)
-	var genre: String = str(profil.get("genre", ""))
-	# prefer explicit parent names from profile if present
-	_pere_name = str(profil.get("pere_name", "Ton Père"))
-	_mere_name = str(profil.get("mere_name", "Ta Mère"))
-	if genre == "Femme":
+	_player_gender = str(profil.get("genre", ""))
+
+	# Intro canon demandée: les parents prennent le nom de clan saisi.
+	var clan_suffix := _clan_name.strip_edges()
+	if clan_suffix == "" or clan_suffix.to_lower() == "votre clan":
+		_pere_name = "Orcus"
+		_mere_name = "Dorothy"
+	else:
+		_pere_name = "Orcus %s" % clan_suffix
+		_mere_name = "Dorothy %s" % clan_suffix
+
+	if _player_gender == "Femme":
 		_parent_name = _mere_name
-	elif genre == "Homme":
+	elif _player_gender == "Homme":
 		_parent_name = _pere_name
 	else:
 		_parent_name = "Ton Parent"
@@ -151,16 +224,28 @@ func _build_ui() -> void:
 	_bg = ColorRect.new()
 	_bg.name = "Background"
 	_bg.set_anchors_preset(Control.PRESET_FULL_RECT)
-	_bg.color = Color(0.04, 0.0, 0.1, 1)
+	_bg.color = taimanin_night_tint
 	add_child(_bg)
+	_setup_parallax_background()
 
-	# --- Illustration (60% haut) ---
+	# --- Illustration (70% haut) ---
+	_illus_prev = TextureRect.new()
+	_illus_prev.name = "IllustrationPrev"
+	_illus_prev.anchor_left   = 0.0
+	_illus_prev.anchor_top    = 0.0
+	_illus_prev.anchor_right  = 1.0
+	_illus_prev.anchor_bottom = screen_image_ratio
+	_illus_prev.stretch_mode  = TextureRect.STRETCH_KEEP_ASPECT_COVERED
+	_illus_prev.expand_mode   = TextureRect.EXPAND_IGNORE_SIZE
+	_illus_prev.modulate = Color(1, 1, 1, 0)
+	add_child(_illus_prev)
+
 	_illus = TextureRect.new()
 	_illus.name = "Illustration"
 	_illus.anchor_left   = 0.0
 	_illus.anchor_top    = 0.0
 	_illus.anchor_right  = 1.0
-	_illus.anchor_bottom = 0.62
+	_illus.anchor_bottom = screen_image_ratio
 	_illus.stretch_mode  = TextureRect.STRETCH_KEEP_ASPECT_COVERED
 	_illus.expand_mode   = TextureRect.EXPAND_IGNORE_SIZE
 	add_child(_illus)
@@ -169,40 +254,55 @@ func _build_ui() -> void:
 	_gradient = ColorRect.new()
 	_gradient.name = "Gradient"
 	_gradient.anchor_left   = 0.0
-	_gradient.anchor_top    = 0.50
+	_gradient.anchor_top    = screen_image_ratio - 0.14
 	_gradient.anchor_right  = 1.0
-	_gradient.anchor_bottom = 0.65
-	_gradient.color = Color(0.04, 0.0, 0.1, 0.8)
+	_gradient.anchor_bottom = screen_image_ratio + 0.02
+	_gradient.color = Color(taimanin_night_tint.r, taimanin_night_tint.g, taimanin_night_tint.b, 0.82)
 	add_child(_gradient)
 
-	# --- Boîte de dialogue (38% bas) ---
-	var text_panel := PanelContainer.new()
-	text_panel.name = "TextBox"
-	text_panel.anchor_left   = 0.0
-	text_panel.anchor_top    = 0.62
-	text_panel.anchor_right  = 1.0
-	text_panel.anchor_bottom = 1.0
-	text_panel.offset_left   = 20.0
-	text_panel.offset_right  = -20.0
-	text_panel.offset_bottom = -10.0
-	var style_bg := StyleBoxFlat.new()
-	style_bg.bg_color = Color(0.06, 0.0, 0.14, 0.9)
-	style_bg.corner_radius_top_left     = 8
-	style_bg.corner_radius_top_right    = 8
-	style_bg.corner_radius_bottom_left  = 8
-	style_bg.corner_radius_bottom_right = 8
-	style_bg.border_width_top    = 1
-	style_bg.border_width_bottom = 1
-	style_bg.border_width_left   = 1
-	style_bg.border_width_right  = 1
-	style_bg.border_color = Color(0.4, 0.1, 0.6, 0.6)
-	text_panel.add_theme_stylebox_override("panel", style_bg)
-	add_child(text_panel)
+	# Duo portraits style VN (gauche/droite), façon dialogue taimanin.
+	_char_left = TextureRect.new()
+	_char_left.name = "CharacterLeft"
+	_char_left.anchor_left = 0.00
+	_char_left.anchor_top = PORTRAIT_TOP_RATIO
+	_char_left.anchor_right = 0.46
+	_char_left.anchor_bottom = screen_image_ratio
+	_char_left.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_COVERED
+	_char_left.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	_char_left.modulate = Color(1, 1, 1, 0)
+	_char_left.visible = false
+	add_child(_char_left)
+
+	_char_right = TextureRect.new()
+	_char_right.name = "CharacterRight"
+	_char_right.anchor_left = 0.54
+	_char_right.anchor_top = PORTRAIT_TOP_RATIO
+	_char_right.anchor_right = 1.00
+	_char_right.anchor_bottom = screen_image_ratio
+	_char_right.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_COVERED
+	_char_right.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	_char_right.modulate = Color(1, 1, 1, 0)
+	_char_right.visible = false
+	add_child(_char_right)
+
+	# --- Boîte de dialogue (30% bas) ---
+	_text_panel = PanelContainer.new()
+	_text_panel.name = "TextBox"
+	_text_panel.anchor_left   = 0.0
+	_text_panel.anchor_top    = screen_image_ratio
+	_text_panel.anchor_right  = 1.0
+	_text_panel.anchor_bottom = 1.0
+	_text_panel.offset_left   = 20.0
+	_text_panel.offset_right  = -20.0
+	_text_panel.offset_bottom = -10.0
+	_setup_taimanin_panel()
+	add_child(_text_panel)
+	_text_panel_origin = _text_panel.position
 
 	var vbox := VBoxContainer.new()
 	vbox.name = "InnerVBox"
 	vbox.add_theme_constant_override("separation", 6)
-	text_panel.add_child(vbox)
+	_text_panel.add_child(vbox)
 
 	# --- Étiquette de période (ex: "Il y a quinze ans") ---
 	_label_periode = Label.new()
@@ -249,6 +349,8 @@ func _build_ui() -> void:
 	_btn_continue.disabled = true
 	_btn_continue.pressed.connect(_on_continue)
 	add_child(_btn_continue)
+
+	_setup_transition_overlay()
 
 	# ── Tutorial overlay ────────────────────────────────────────────
 	_tuto_layer = CanvasLayer.new()
@@ -413,6 +515,280 @@ func _build_ui() -> void:
 	rec_vbox.add_child(_btn_recruit)
 
 	_recruit_layer.visible = false
+	_apply_layout_ratios()
+	_setup_portrait_outline_material()
+
+
+func _setup_parallax_background() -> void:
+	_parallax_bg = ParallaxBackground.new()
+	_parallax_bg.name = "taimaninParallax"
+	_parallax_bg.scroll_base_scale = Vector2.ONE
+	add_child(_parallax_bg)
+
+	var sky_layer := ParallaxLayer.new()
+	sky_layer.motion_scale = Vector2(0.12, 0.04)
+	_parallax_bg.add_child(sky_layer)
+	_parallax_sky = Sprite2D.new()
+	_parallax_sky.name = "SkyLayer"
+	_parallax_sky.centered = false
+	_parallax_sky.modulate = taimanin_night_tint.lightened(0.24)
+	_parallax_sky.texture = parallax_sky_texture
+	sky_layer.add_child(_parallax_sky)
+
+	var front_layer := ParallaxLayer.new()
+	front_layer.motion_scale = Vector2(0.26, 0.10)
+	_parallax_bg.add_child(front_layer)
+	_parallax_front = Sprite2D.new()
+	_parallax_front.name = "FrontLayer"
+	_parallax_front.centered = false
+	_parallax_front.modulate = taimanin_deep_blue_tint.darkened(0.12)
+	_parallax_front.texture = parallax_front_texture
+	front_layer.add_child(_parallax_front)
+
+
+func _setup_transition_overlay() -> void:
+	_transition_layer = CanvasLayer.new()
+	_transition_layer.name = "SlideTransitionLayer"
+	_transition_layer.layer = 12
+	add_child(_transition_layer)
+
+	_transition_rect = ColorRect.new()
+	_transition_rect.name = "SlideFade"
+	_transition_rect.set_anchors_preset(Control.PRESET_FULL_RECT)
+	_transition_rect.color = Color(0, 0, 0, 0)
+	_transition_layer.add_child(_transition_rect)
+
+	_transition_anim = AnimationPlayer.new()
+	_transition_anim.name = "SlideTransitionAnimation"
+	_transition_layer.add_child(_transition_anim)
+	_rebuild_transition_animations()
+
+
+func _rebuild_transition_animations() -> void:
+	if _transition_anim == null:
+		return
+	for n in ["fade_in", "fade_out"]:
+		if _transition_anim.has_animation(n):
+			_transition_anim.remove_animation_library("")
+			break
+	var lib := AnimationLibrary.new()
+
+	var fade_in := Animation.new()
+	fade_in.length = slide_fade_in_duration
+	var in_track := fade_in.add_track(Animation.TYPE_VALUE)
+	fade_in.track_set_path(in_track, NodePath("../SlideFade:color"))
+	fade_in.track_insert_key(in_track, 0.0, Color(0, 0, 0, 0))
+	fade_in.track_insert_key(in_track, slide_fade_in_duration, Color(0, 0, 0, 1))
+	lib.add_animation("fade_in", fade_in)
+
+	var fade_out := Animation.new()
+	fade_out.length = slide_fade_out_duration
+	var out_track := fade_out.add_track(Animation.TYPE_VALUE)
+	fade_out.track_set_path(out_track, NodePath("../SlideFade:color"))
+	fade_out.track_insert_key(out_track, 0.0, Color(0, 0, 0, 1))
+	fade_out.track_insert_key(out_track, slide_fade_out_duration, Color(0, 0, 0, 0))
+	lib.add_animation("fade_out", fade_out)
+
+	_transition_anim.add_animation_library("", lib)
+
+
+func _setup_portrait_outline_material() -> void:
+	var outline_shader := Shader.new()
+	outline_shader.code = """
+shader_type canvas_item;
+
+uniform vec4 outline_color : source_color = vec4(0.0, 0.0, 0.0, 1.0);
+uniform float outline_size = 2.5;
+
+void fragment() {
+	vec4 base = texture(TEXTURE, UV) * COLOR;
+	vec2 px = TEXTURE_PIXEL_SIZE * outline_size;
+	float a = texture(TEXTURE, UV + vec2(px.x, 0.0)).a;
+	a = max(a, texture(TEXTURE, UV + vec2(-px.x, 0.0)).a);
+	a = max(a, texture(TEXTURE, UV + vec2(0.0, px.y)).a);
+	a = max(a, texture(TEXTURE, UV + vec2(0.0, -px.y)).a);
+	vec4 outlined = vec4(outline_color.rgb, a * outline_color.a);
+	COLOR = mix(outlined, base, base.a);
+}
+"""
+	_portrait_outline_material = ShaderMaterial.new()
+	_portrait_outline_material.shader = outline_shader
+	_portrait_outline_material.set_shader_parameter("outline_size", portrait_outline_size)
+	_portrait_outline_material.set_shader_parameter("outline_color", portrait_outline_color)
+
+
+func _setup_taimanin_panel() -> void:
+	if _text_panel == null:
+		return
+	var style_bg: StyleBox
+	if dialogue_parchment_texture != null:
+		var parchment := StyleBoxTexture.new()
+		parchment.texture = dialogue_parchment_texture
+		parchment.texture_margin_left = 16
+		parchment.texture_margin_right = 16
+		parchment.texture_margin_top = 16
+		parchment.texture_margin_bottom = 16
+		parchment.expand_margin_left = 14.0
+		parchment.expand_margin_right = 14.0
+		parchment.expand_margin_top = 10.0
+		parchment.expand_margin_bottom = 10.0
+		style_bg = parchment
+	else:
+		var fallback := StyleBoxFlat.new()
+		fallback.bg_color = taimanin_deep_blue_tint
+		fallback.corner_radius_top_left = 14
+		fallback.corner_radius_top_right = 14
+		fallback.corner_radius_bottom_left = 14
+		fallback.corner_radius_bottom_right = 14
+		style_bg = fallback
+
+	_text_panel.add_theme_stylebox_override("panel", style_bg)
+
+	if _text_panel_frame != null and is_instance_valid(_text_panel_frame):
+		_text_panel_frame.queue_free()
+	_text_panel_frame = Panel.new()
+	_text_panel_frame.name = "TextBoxFrame"
+	_text_panel_frame.set_anchors_preset(Control.PRESET_FULL_RECT)
+	_text_panel_frame.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_text_panel.add_child(_text_panel_frame)
+
+	var border := StyleBoxFlat.new()
+	border.bg_color = Color(0.02, 0.02, 0.05, 0.0)
+	border.corner_radius_top_left = 16
+	border.corner_radius_top_right = 16
+	border.corner_radius_bottom_left = 16
+	border.corner_radius_bottom_right = 16
+	border.border_width_top = taimanin_gold_border_px
+	border.border_width_bottom = taimanin_gold_border_px
+	border.border_width_left = taimanin_gold_border_px
+	border.border_width_right = taimanin_gold_border_px
+	border.border_color = taimanin_gold_border_color
+	_text_panel_frame.add_theme_stylebox_override("panel", border)
+
+
+func play_character_enter(portrait_node: TextureRect, side: String) -> void:
+	if portrait_node == null:
+		return
+	if _portrait_outline_material != null:
+		portrait_node.material = _portrait_outline_material.duplicate(true)
+
+	var dir := -1.0 if side == "left" else 1.0
+	portrait_node.visible = true
+	portrait_node.modulate.a = 0.0
+	portrait_node.position = Vector2(dir * portrait_enter_offset_x, 0.0)
+
+	var enter := create_tween()
+	enter.set_parallel(true)
+	enter.tween_property(portrait_node, "position", Vector2.ZERO, portrait_enter_duration).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
+	enter.tween_property(portrait_node, "modulate:a", 1.0, portrait_enter_duration * 0.85).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
+	enter.finished.connect(func() -> void:
+		_ensure_idle_bob(portrait_node)
+	)
+
+
+func _ensure_idle_bob(portrait_node: TextureRect) -> void:
+	if portrait_node == null:
+		return
+	var key := portrait_node.name
+	var anim_player: AnimationPlayer = _portrait_bob_players.get(key, null)
+	if anim_player == null:
+		anim_player = AnimationPlayer.new()
+		anim_player.name = "IdleBobPlayer"
+		portrait_node.add_child(anim_player)
+		_portrait_bob_players[key] = anim_player
+
+	if anim_player.has_animation("idle_bob"):
+		anim_player.stop()
+		if anim_player.has_animation_library(""):
+			anim_player.remove_animation_library("")
+
+	var anim := Animation.new()
+	anim.loop_mode = Animation.LOOP_LINEAR
+	anim.length = portrait_idle_bob_period
+	var track := anim.add_track(Animation.TYPE_VALUE)
+	anim.track_set_path(track, NodePath("..:position:y"))
+	anim.track_insert_key(track, 0.0, 0.0)
+	anim.track_insert_key(track, portrait_idle_bob_period * 0.5, -portrait_idle_bob_amplitude)
+	anim.track_insert_key(track, portrait_idle_bob_period, 0.0)
+
+	var lib := AnimationLibrary.new()
+	lib.add_animation("idle_bob", anim)
+	anim_player.add_animation_library("", lib)
+	anim_player.play("idle_bob")
+
+
+func _fit_parallax_to_viewport() -> void:
+	var vp: Vector2 = get_viewport_rect().size
+	var layers: Array[Sprite2D] = []
+	if _parallax_sky != null:
+		layers.append(_parallax_sky)
+	if _parallax_front != null:
+		layers.append(_parallax_front)
+
+	for s: Sprite2D in layers:
+		if s.texture == null:
+			continue
+		var tex_size: Vector2 = s.texture.get_size()
+		if tex_size.x <= 0.0 or tex_size.y <= 0.0:
+			continue
+		var scale_x: float = vp.x / tex_size.x
+		var scale_y: float = vp.y / tex_size.y
+		var k: float = maxf(scale_x, scale_y)
+		s.scale = Vector2(k, k)
+		s.position = Vector2.ZERO
+
+
+func _process(delta: float) -> void:
+	if _parallax_bg == null:
+		return
+	_parallax_bg.scroll_offset.x += 16.0 * delta
+	_parallax_bg.scroll_offset.y += 5.0 * delta
+
+
+func transition_slide(from_idx: int, to_idx: int) -> void:
+	if _transition_anim == null or _transition_rect == null:
+		_show_scene(to_idx)
+		slide_changed.emit(from_idx, to_idx)
+		return
+
+	_rebuild_transition_animations()
+	_transition_anim.play("fade_in")
+	await _transition_anim.animation_finished
+
+	slide_changed.emit(from_idx, to_idx)
+	_show_scene(to_idx)
+
+	_transition_anim.play("fade_out")
+	await _transition_anim.animation_finished
+
+
+func _apply_layout_ratios() -> void:
+	if _illus_prev != null:
+		_illus_prev.anchor_top = 0.0
+		_illus_prev.anchor_bottom = screen_image_ratio
+	if _illus != null:
+		_illus.anchor_top = 0.0
+		_illus.anchor_bottom = screen_image_ratio
+	if _gradient != null:
+		_gradient.anchor_top = maxf(0.0, screen_image_ratio - 0.14)
+		_gradient.anchor_bottom = minf(1.0, screen_image_ratio + 0.02)
+	if _text_panel != null:
+		var vp_w := get_viewport_rect().size.x
+		var margin := clampf(vp_w * 0.016, 12.0, 28.0)
+		_text_panel.anchor_top = screen_image_ratio
+		_text_panel.anchor_bottom = 1.0
+		_text_panel.offset_left = margin
+		_text_panel.offset_right = -margin
+		_text_panel.offset_bottom = -maxf(8.0, margin * 0.45)
+		_text_panel_origin = _text_panel.position
+	_fit_parallax_to_viewport()
+	if _btn_continue != null:
+		var vp_w2 := get_viewport_rect().size.x
+		var margin2 := clampf(vp_w2 * 0.016, 12.0, 28.0)
+		_btn_continue.offset_left = -160.0
+		_btn_continue.offset_top = -44.0
+		_btn_continue.offset_right = -margin2
+		_btn_continue.offset_bottom = -maxf(8.0, margin2 * 0.45)
 
 
 # ─────────────────────────────────────────────────────────────────────
@@ -435,8 +811,20 @@ func _show_scene(idx: int) -> void:
 	_label_periode.text = periode
 	_label_periode.visible = not periode.is_empty()
 
-	# Illustration
-	_load_illustration(str(s.get("illustration", "")))
+	# Illustration (désactivée en mode dialogue duo pour éviter une 3e image de fond)
+	var speaker_raw_scene: String = str(s.get("speaker", "narrateur"))
+	var duo_mode_scene := _is_dialogue_speaker(speaker_raw_scene)
+	print("IntroVN: show_scene idx=%d speaker=%s duo_mode=%s" % [_idx, speaker_raw_scene, str(duo_mode_scene)])
+	if duo_mode_scene:
+		if _illus:
+			_illus.visible = false
+		if _illus_prev:
+			_illus_prev.visible = false
+	else:
+		var illus_key := str(s.get("illustration", "")).strip_edges()
+		if illus_key.is_empty():
+			illus_key = _default_illustration_for_scene(s)
+		_apply_illustration_transition(illus_key, s)
 
 	# Musique (uniquement si définie dans la scène)
 	var musique: String = str(s.get("musique", ""))
@@ -467,6 +855,10 @@ func _show_narration(s: Dictionary) -> void:
 	# Speaker
 	var speaker_raw: String = str(s.get("speaker", "narrateur"))
 	var speaker: String = _resolve_speaker(speaker_raw)
+	var duo_mode := _is_dialogue_speaker(speaker_raw)
+	_set_dialogue_visual_mode(duo_mode)
+	_update_duo_portraits(speaker_raw)
+	_label_speaker.add_theme_color_override("font_color", _speaker_color(speaker_raw))
 	if speaker.is_empty():
 		_label_speaker.visible = false
 	else:
@@ -475,26 +867,261 @@ func _show_narration(s: Dictionary) -> void:
 
 	# Texte avec typewriter
 	var texte: String = str(s.get("texte", ""))
-	_typewrite(texte)
+	_typewrite(texte, s)
+	if _is_dramatic_scene(s):
+		_play_scene_impact(s)
 
 
 func _resolve_speaker(raw: String) -> String:
 	match raw:
 		"narrateur":  return ""
 		"parent":     return _parent_name
+		"mere":       return _mere_name
+		"pere":       return _pere_name
 		"personnage": return _player_name
 		"kael":       return "Kael"
 		_:            return raw
 
 
-func _typewrite(text: String) -> void:
+func _speaker_color(raw: String) -> Color:
+	var key := raw.to_lower()
+	if SPEAKER_COLORS.has(key):
+		return SPEAKER_COLORS[key]
+	return SPEAKER_COLORS["narrateur"]
+
+
+func _set_dialogue_visual_mode(duo_mode: bool) -> void:
+	if _illus != null:
+		_illus.visible = not duo_mode
+	if _illus_prev != null:
+		_illus_prev.visible = not duo_mode
+	if _char_left != null:
+		_char_left.visible = duo_mode and _char_left.texture != null
+	if _char_right != null:
+		_char_right.visible = duo_mode and _char_right.texture != null
+
+
+func _default_illustration_for_scene(scene_data: Dictionary) -> String:
+	var speaker_raw := str(scene_data.get("speaker", "")).to_lower()
+	match speaker_raw:
+		"mere":
+			return "clan/mère/Okasa-sama (6).png"
+		"pere":
+			return _default_father_illustration()
+		"personnage":
+			return _default_hero_illustration()
+		"parent":
+			return "clan/mère/Okasa-sama (6).png" if _player_gender == "Femme" else _default_father_illustration()
+		"kael":
+			return "PNJ/defaut/Kael.png"
+
+	var sid := str(scene_data.get("id", "")).to_lower()
+	if sid.begins_with("famille") or sid.begins_with("lecon") or sid.begins_with("chute") or sid.begins_with("serment") or sid.begins_with("exil"):
+		return _default_hero_illustration()
+	return ""
+
+
+func _default_hero_illustration() -> String:
+	if _player_gender == "Femme":
+		return "clan/hero-children/girl (1).png"
+	return "clan/hero-children/boy.png"
+
+
+func _default_father_illustration() -> String:
+	# Image de base demandee pour le pere.
+	if ResourceLoader.exists("res://assets/images/clan/Pere et fils/Ottosama_00002_.png"):
+		return "clan/Pere et fils/Ottosama_00002_.png"
+	if ResourceLoader.exists("res://assets/images/clan/Pere et fille/Ottosama_00002_.png"):
+		return "clan/Pere et fille/Ottosama_00002_.png"
+	return "clan/Pere et fils/Ottosama_00028_.png"
+
+
+func _is_dialogue_speaker(raw: String) -> bool:
+	var key := raw.to_lower()
+	return key == "mere" or key == "pere" or key == "personnage" or key == "kael" or key == "parent"
+
+
+func _normalized_speaker_key(raw: String) -> String:
+	var key := raw.to_lower()
+	if key == "parent":
+		return "mere" if _player_gender == "Femme" else "pere"
+	if _is_dialogue_speaker(key):
+		return key
+	return ""
+
+
+func _default_counterpart_for(key: String) -> String:
+	match key:
+		"mere": return "personnage"
+		"pere": return "personnage"
+		"kael": return "personnage"
+		"personnage": return "pere"
+		_:
+			return ""
+
+
+func _speaker_prefers_left(key: String) -> bool:
+	match key:
+		"mere":
+			return true
+		"personnage":
+			return true
+		"pere":
+			return false
+		"kael":
+			return false
+		_:
+			return true
+
+
+func _portrait_path_for_speaker(key: String) -> String:
+	match key:
+		"mere":
+			return "clan/mère/Okasa-sama (6).png"
+		"pere":
+			return _default_father_illustration()
+		"personnage":
+			return _default_hero_illustration()
+		"kael":
+			return "PNJ/defaut/Kael.png"
+		_:
+			return ""
+
+
+func _apply_portrait_slot(slot: TextureRect, key: String, is_left: bool, solo_mode: bool = false) -> void:
+	if slot == null:
+		return
+
+	# Portrait unique = grand cadre central. Duo = deux cadres larges et symetriques.
+	if solo_mode:
+		slot.anchor_left = PORTRAIT_SOLO_LEFT
+		slot.anchor_right = PORTRAIT_SOLO_RIGHT
+		slot.offset_left = 0.0
+		slot.offset_right = 0.0
+	else:
+		if is_left:
+			slot.anchor_left = PORTRAIT_DUO_LEFT_LEFT
+			slot.anchor_right = PORTRAIT_DUO_LEFT_RIGHT
+			slot.offset_left = 0.0
+			slot.offset_right = -2.0
+		else:
+			slot.anchor_left = PORTRAIT_DUO_RIGHT_LEFT
+			slot.anchor_right = PORTRAIT_DUO_RIGHT_RIGHT
+			slot.offset_left = 2.0
+			slot.offset_right = 0.0
+	slot.anchor_top = PORTRAIT_TOP_RATIO
+	slot.anchor_bottom = screen_image_ratio
+	slot.offset_top = 0.0
+	slot.offset_bottom = 0.0
+	slot.scale = Vector2.ONE
+	slot.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	slot.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+
+	var p := _portrait_path_for_speaker(key)
+	if p == "":
+		slot.visible = false
+		slot.texture = null
+		return
+	var tex := _resolve_portrait_texture(p)
+	if tex == null:
+		slot.visible = false
+		slot.texture = null
+		return
+
+	slot.visible = true
+	var changed := slot.texture != tex
+	slot.texture = tex
+
+	if changed:
+		slot.scale = Vector2.ONE
+		slot.pivot_offset = slot.size * 0.5
+		play_character_enter(slot, "left" if is_left else "right")
+	else:
+		slot.pivot_offset = slot.size * 0.5
+		slot.position = Vector2.ZERO
+		slot.modulate = Color(1, 1, 1, 1)
+		_ensure_idle_bob(slot)
+
+
+func _set_active_portrait_focus(active_key: String, left_key: String, right_key: String) -> void:
+	if _char_left == null or _char_right == null:
+		return
+	var left_active := left_key == active_key and left_key != ""
+	var right_active := right_key == active_key and right_key != ""
+	var tl := create_tween()
+	tl.set_parallel(true)
+	tl.tween_property(_char_left, "modulate", Color(1, 1, 1, 1.0) if left_active else Color(0.48, 0.48, 0.52, 0.64), 0.16)
+	tl.tween_property(_char_right, "modulate", Color(1, 1, 1, 1.0) if right_active else Color(0.48, 0.48, 0.52, 0.64), 0.16)
+	tl.tween_property(_char_left, "scale", Vector2(1.00, 1.00), 0.16)
+	tl.tween_property(_char_right, "scale", Vector2(1.00, 1.00), 0.16)
+	_play_speaking_pulse(active_key, left_key, right_key)
+
+
+func _play_speaking_pulse(active_key: String, left_key: String, right_key: String) -> void:
+	var target: TextureRect = null
+	if left_key == active_key:
+		target = _char_left
+	elif right_key == active_key:
+		target = _char_right
+	if target == null or not target.visible:
+		return
+	var origin := target.position
+	var pulse := create_tween()
+	pulse.tween_property(target, "position", origin + Vector2(0, -3.0), 0.07).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
+	pulse.tween_property(target, "position", origin, 0.10).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN)
+
+
+func _update_duo_portraits(speaker_raw: String) -> void:
+	var current := _normalized_speaker_key(speaker_raw)
+	if current == "":
+		if _char_left:
+			_char_left.visible = false
+		if _char_right:
+			_char_right.visible = false
+		return
+
+	var other := ""
+	if _last_dialogue_speaker != "" and _last_dialogue_speaker != current:
+		other = _last_dialogue_speaker
+	else:
+		other = _default_counterpart_for(current)
+	if other == current:
+		other = _default_counterpart_for(current)
+
+	var left_key := current if _speaker_prefers_left(current) else other
+	var right_key := other if _speaker_prefers_left(current) else current
+	var duo_mode := left_key != "" and right_key != "" and left_key != right_key
+
+	if duo_mode:
+		_apply_portrait_slot(_char_left, left_key, true, false)
+		_apply_portrait_slot(_char_right, right_key, false, false)
+		_set_active_portrait_focus(current, left_key, right_key)
+	else:
+		var solo_key := left_key if left_key != "" else right_key
+		if solo_key == "":
+			solo_key = current
+		_apply_portrait_slot(_char_left, solo_key, true, true)
+		if _char_right != null:
+			_char_right.visible = false
+		_set_active_portrait_focus(current, solo_key, "")
+
+	_left_portrait_key = left_key
+	_right_portrait_key = right_key
+	_last_dialogue_speaker = current
+
+
+func _typewrite(text: String, scene_data: Dictionary = {}) -> void:
 	_animating = true
 	_story_text.bbcode_enabled = true
 	_story_text.text = ""
 	_story_text.append_text(text)
 	_story_text.visible_ratio = 0.0
 	var tween: Tween = create_tween()
-	var duration: float = clampf(float(text.length()) * 0.025, 0.4, 4.5)
+	var speed_factor := _type_speed_factor(scene_data)
+	var duration: float = float(text.length()) * 0.025 * speed_factor
+	if _is_dramatic_scene(scene_data):
+		duration += min(1.0, float(_count_punctuation_hits(text)) * 0.03)
+	duration = clampf(duration, 0.30, 6.20)
 	tween.tween_property(_story_text, "visible_ratio", 1.0, duration)
 	tween.finished.connect(func() -> void:
 		_animating = false
@@ -502,16 +1129,214 @@ func _typewrite(text: String) -> void:
 	)
 
 
-func _load_illustration(illus_name: String) -> void:
-	if illus_name.is_empty():
-		_illus.texture = null
+func _count_punctuation_hits(text: String) -> int:
+	var hits := 0
+	for c in text:
+		if c == "!" or c == "?" or c == "…":
+			hits += 1
+	return hits
+
+
+func _type_speed_factor(scene_data: Dictionary) -> float:
+	if scene_data.has("type_speed"):
+		var explicit := float(scene_data.get("type_speed", 1.0))
+		if explicit > 0.05:
+			return explicit
+
+	var sid := str(scene_data.get("id", "")).to_lower()
+	var stype := str(scene_data.get("type", "narration")).to_lower()
+	var factor := 1.0
+
+	match stype:
+		"tutorial":
+			factor *= 0.82
+		"dialogue":
+			factor *= 0.95
+		"fin":
+			factor *= 1.20
+		_:
+			factor *= 1.0
+
+	if sid.begins_with("chute_"):
+		factor *= 1.35
+	elif sid.begins_with("serment_"):
+		factor *= 1.28
+	elif sid.begins_with("exil_"):
+		factor *= 1.08
+	elif sid.begins_with("kael_"):
+		factor *= 0.92
+
+	if _is_dramatic_scene(scene_data):
+		factor *= 1.10
+
+	return factor
+
+
+func _is_dramatic_scene(scene_data: Dictionary) -> bool:
+	if bool(scene_data.get("dramatic", false)):
+		return true
+	var sid := str(scene_data.get("id", "")).to_lower()
+	if sid.begins_with("chute_") or sid.begins_with("serment_") or sid.begins_with("conclave_"):
+		return true
+	return false
+
+
+func _play_scene_impact(scene_data: Dictionary) -> void:
+	var intensity := float(scene_data.get("shake_intensity", 11.0))
+	var duration := float(scene_data.get("shake_duration", 0.22))
+	_shake_dialogue_box(intensity, duration)
+
+
+func _shake_dialogue_box(intensity: float = 10.0, duration: float = 0.22) -> void:
+	if _text_panel == null:
 		return
-	for ext in ["", ".png", ".jpg", ".svg", ".webp"]:
+	if _shake_tween != null and _shake_tween.is_running():
+		_shake_tween.kill()
+	_text_panel.position = _text_panel_origin
+	var steps := maxi(4, int(round(duration / 0.04)))
+	var step_time := duration / float(steps)
+	_shake_tween = create_tween()
+	for _i in range(steps):
+		var dx := _rng.randf_range(-intensity, intensity)
+		var dy := _rng.randf_range(-intensity * 0.35, intensity * 0.35)
+		_shake_tween.tween_property(_text_panel, "position", _text_panel_origin + Vector2(dx, dy), step_time)
+	_shake_tween.tween_property(_text_panel, "position", _text_panel_origin, 0.06)
+
+
+func _apply_illustration_transition(illus_name: String, scene_data: Dictionary) -> void:
+	var next_tex := _resolve_illustration_texture(illus_name)
+	if _illus == null:
+		return
+
+	if _idx == 0 or _illus.texture == null or _illus_prev == null:
+		_illus.texture = next_tex
+		_illus.position = Vector2.ZERO
+		_illus.modulate = Color(1, 1, 1, 1)
+		if _illus_prev != null:
+			_illus_prev.texture = null
+			_illus_prev.modulate = Color(1, 1, 1, 0)
+		return
+
+	if _illus.texture == next_tex:
+		return
+
+	if _illus_tween != null and _illus_tween.is_running():
+		_illus_tween.kill()
+
+	_illus_prev.texture = _illus.texture
+	_illus_prev.position = Vector2.ZERO
+	_illus_prev.modulate = Color(1, 1, 1, 1)
+
+	_illus.texture = next_tex
+	var dramatic := _is_dramatic_scene(scene_data)
+	var travel := 44.0 if dramatic else 26.0
+	var fade_dur := 0.36 if dramatic else 0.24
+	_illus.position = Vector2(travel, 0)
+	_illus.modulate = Color(1, 1, 1, 0)
+
+	_illus_tween = create_tween()
+	_illus_tween.set_parallel(true)
+	_illus_tween.tween_property(_illus_prev, "position", Vector2(-travel * 0.75, 0), fade_dur)
+	_illus_tween.tween_property(_illus_prev, "modulate:a", 0.0, fade_dur)
+	_illus_tween.tween_property(_illus, "position", Vector2.ZERO, fade_dur).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
+	_illus_tween.tween_property(_illus, "modulate:a", 1.0, fade_dur)
+	_illus_tween.finished.connect(func() -> void:
+		if _illus_prev != null:
+			_illus_prev.texture = null
+			_illus_prev.position = Vector2.ZERO
+			_illus_prev.modulate = Color(1, 1, 1, 0)
+	)
+
+
+func _load_illustration(illus_name: String) -> void:
+	_illus.texture = _resolve_illustration_texture(illus_name)
+	_illus.position = Vector2.ZERO
+	_illus.modulate = Color(1, 1, 1, 1)
+
+
+func _resolve_illustration_texture(illus_name: String) -> Texture2D:
+	if illus_name.is_empty():
+		return null
+
+	if illus_name.begins_with("res://"):
+		if ResourceLoader.exists(illus_name):
+			return load(illus_name) as Texture2D
+		var ext_candidates_abs: PackedStringArray = PackedStringArray([".png", ".jpg", ".svg", ".webp"])
+		for ext2: String in ext_candidates_abs:
+			var p2: String = illus_name + ext2
+			if ResourceLoader.exists(p2):
+				return load(p2) as Texture2D
+		return null
+
+	var ext_candidates_rel: PackedStringArray = PackedStringArray(["", ".png", ".jpg", ".svg", ".webp"])
+	for ext: String in ext_candidates_rel:
 		var path: String = "res://assets/images/" + illus_name + ext if ext != "" else "res://assets/images/" + illus_name
 		if ResourceLoader.exists(path):
-			_illus.texture = load(path)
-			return
-	_illus.texture = null
+			return load(path) as Texture2D
+	return null
+
+
+func _resolve_portrait_texture(illus_name: String) -> Texture2D:
+	var cache_key := "portrait::%s" % illus_name
+	if _portrait_texture_cache.has(cache_key):
+		return _portrait_texture_cache[cache_key] as Texture2D
+	var raw := _resolve_illustration_texture(illus_name)
+	if raw == null:
+		return null
+	var out_tex: Texture2D = raw
+	if ENABLE_PORTRAIT_BG_REMOVAL:
+		var cleaned := _remove_portrait_background(raw)
+		if cleaned != null:
+			out_tex = cleaned
+	_portrait_texture_cache[cache_key] = out_tex
+	return out_tex
+
+
+func _remove_portrait_background(tex: Texture2D) -> Texture2D:
+	if tex == null:
+		return null
+	var img: Image = tex.get_image()
+	if img == null or img.is_empty():
+		return tex
+	if img.get_width() < 4 or img.get_height() < 4:
+		return tex
+
+	if img.get_format() != Image.FORMAT_RGBA8:
+		img.convert(Image.FORMAT_RGBA8)
+
+	var bg := img.get_pixel(0, 0)
+	if bg.a <= 0.04:
+		return tex
+
+	var max_dist := 0.18
+	var removed := 0
+	var total := img.get_width() * img.get_height()
+
+	for y in range(img.get_height()):
+		for x in range(img.get_width()):
+			var c := img.get_pixel(x, y)
+			var d := _rgb_distance(c, bg)
+			if d <= max_dist and absf(c.a - bg.a) <= 0.45:
+				var alpha_scale := clampf((d / max_dist), 0.0, 1.0)
+				var new_a := c.a * alpha_scale
+				if new_a < 0.08:
+					new_a = 0.0
+				if absf(new_a - c.a) > 0.001:
+					removed += 1
+				c.a = new_a
+				img.set_pixel(x, y, c)
+
+	if removed < int(float(total) * 0.01):
+		return tex
+
+	return ImageTexture.create_from_image(img)
+
+
+func _rgb_distance(a: Color, b: Color) -> float:
+	var dr := a.r - b.r
+	var dg := a.g - b.g
+	var db := a.b - b.b
+	return sqrt(dr * dr + dg * dg + db * db)
 
 
 # ─────────────────────────────────────────────────────────────────────
@@ -547,7 +1372,7 @@ func _on_continue() -> void:
 
 
 func _advance() -> void:
-	_show_scene(_idx + 1)
+	transition_slide(_idx, _idx + 1)
 
 
 # ─── Input clavier ────────────────────────────────────────────────────
