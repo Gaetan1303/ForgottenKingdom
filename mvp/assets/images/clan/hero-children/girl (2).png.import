@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dda3fw7ruk4xy"
-path="res://.godot/imported/Ottosama_00002_.png-a1461dc0669502ded34ef2ae61367fc4.ctex"
+uid="uid://clmkwtejmhegi"
+path="res://.godot/imported/girl (2).png-de08ed8eba8cb43ce087421bf64bbe6c.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/images/clan/Pere et fille/Ottosama_00002_.png"
-dest_files=["res://.godot/imported/Ottosama_00002_.png-a1461dc0669502ded34ef2ae61367fc4.ctex"]
+source_file="res://assets/images/clan/hero-children/girl (2).png"
+dest_files=["res://.godot/imported/girl (2).png-de08ed8eba8cb43ce087421bf64bbe6c.ctex"]
 
 [params]
 
