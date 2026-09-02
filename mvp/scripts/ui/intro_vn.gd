@@ -416,6 +416,8 @@ func _build_ui() -> void:
 	_btn_tuto_ok.custom_minimum_size = Vector2(140, 36)
 	_btn_tuto_ok.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
 	_btn_tuto_ok.pressed.connect(_on_tuto_ok)
+	_btn_tuto_ok.focus_mode = Control.FOCUS_ALL
+	_btn_tuto_ok.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 	tuto_vbox.add_child(_btn_tuto_ok)
 
 	_tuto_layer.visible = false
@@ -1378,7 +1380,18 @@ func _advance() -> void:
 # ─── Input clavier ────────────────────────────────────────────────────
 
 func _input(event: InputEvent) -> void:
-	if _tuto_layer.visible or _recruit_layer.visible:
+	# Les overlays sont modaux, mais ils doivent toujours rester validables au
+	# clavier/manette. Sans cela, un bouton hors zone visible ou sans focus
+	# peut bloquer définitivement la narration (notamment dans le Web Editor).
+	if _tuto_layer.visible:
+		if event.is_action_pressed("ui_accept") or event.is_action_pressed("ui_next"):
+			_on_tuto_ok()
+			get_viewport().set_input_as_handled()
+		return
+	if _recruit_layer.visible:
+		if event.is_action_pressed("ui_accept") or event.is_action_pressed("ui_next"):
+			_on_recruit()
+			get_viewport().set_input_as_handled()
 		return
 	if event.is_action_pressed("ui_accept") or event.is_action_pressed("ui_next"):
 		_on_continue()
@@ -1392,6 +1405,11 @@ func _input(event: InputEvent) -> void:
 func _open_tutorial(ttype: String) -> void:
 	_btn_continue.visible = false
 	_tuto_layer.visible   = true
+	# Le popup tutoriel prend explicitement le focus : indispensable pour le
+	# clavier/manette et plus fiable dans l'éditeur Web.
+	if _btn_tuto_ok != null:
+		_btn_tuto_ok.disabled = false
+		_btn_tuto_ok.grab_focus()
 	match ttype:
 		"ressources":
 			_tuto_title.text = "[img width=18 height=18]%s[/img]  Les Ressources du Clan" % ICONS_BBCODE["or"]
@@ -1408,8 +1426,15 @@ func _open_tutorial(ttype: String) -> void:
 
 
 func _on_tuto_ok() -> void:
-	_tuto_layer.visible   = false
+	# Garde anti-double validation : un clic + ui_accept dans la même frame ne
+	# doit pas avancer de deux scènes.
+	if not _tuto_layer.visible:
+		return
+	_tuto_layer.visible = false
+	if _btn_tuto_ok != null:
+		_btn_tuto_ok.release_focus()
 	_btn_continue.visible = true
+	_btn_continue.disabled = false
 	_advance()
 
 
