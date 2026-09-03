@@ -1,0 +1,100 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/ui/event_result_view.gd" id="1"]
+
+[node name="EventResultView" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 0
+script = ExtResource("1")
+
+[node name="Dim" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 0
+color = Color(0, 0, 0, 0.82)
+
+[node name="ModalCenter" type="CenterContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 24.0
+offset_top = 24.0
+offset_right = -24.0
+offset_bottom = -24.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+
+[node name="Panel" type="PanelContainer" parent="ModalCenter"]
+custom_minimum_size = Vector2(760, 620)
+layout_mode = 2
+
+[node name="Layout" type="VBoxContainer" parent="ModalCenter/Panel"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Header" type="MarginContainer" parent="ModalCenter/Panel/Layout"]
+layout_mode = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 16
+
+[node name="Title" type="Label" parent="ModalCenter/Panel/Layout/Header"]
+layout_mode = 2
+text = "RÉSULTAT"
+horizontal_alignment = 1
+autowrap_mode = 3
+theme_override_font_sizes/font_size = 24
+
+[node name="ContentScroll" type="ScrollContainer" parent="ModalCenter/Panel/Layout"]
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+
+[node name="Content" type="VBoxContainer" parent="ModalCenter/Panel/Layout/ContentScroll"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 12
+
+[node name="IllustrationFrame" type="MarginContainer" parent="ModalCenter/Panel/Layout/ContentScroll/Content"]
+custom_minimum_size = Vector2(0, 260)
+layout_mode = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_right = 16
+
+[node name="Illustration" type="TextureRect" parent="ModalCenter/Panel/Layout/ContentScroll/Content/IllustrationFrame"]
+layout_mode = 2
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Description" type="Label" parent="ModalCenter/Panel/Layout/ContentScroll/Content"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Description"
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="Effects" type="VBoxContainer" parent="ModalCenter/Panel/Layout/ContentScroll/Content"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 6
+
+[node name="Footer" type="HBoxContainer" parent="ModalCenter/Panel/Layout"]
+custom_minimum_size = Vector2(0, 52)
+layout_mode = 2
+alignment = 2
+
+[node name="ContinueButton" type="Button" parent="ModalCenter/Panel/Layout/Footer"]
+custom_minimum_size = Vector2(180, 44)
+layout_mode = 2
+text = "Continuer"

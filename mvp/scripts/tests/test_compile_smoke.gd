@@ -15,6 +15,8 @@ const TrainingSystemScript = preload("res://scripts/services/training_system.gd"
 const PactServiceScript = preload("res://scripts/services/pact_service.gd")
 const WorldStateScript = preload("res://scripts/data/world_state.gd")
 const WorldStateAdapterScript = preload("res://scripts/adapters/world_state_adapter.gd")
+const EventResultPresenterScript = preload("res://scripts/ui/event_result_presenter.gd")
+const EventResultViewScript = preload("res://scripts/ui/event_result_view.gd")
 const CreatureProfileScript = preload("res://scripts/data/creature_profile.gd")
 const CreatureProfileLegacyPathScript = preload("res://scripts/domain/creature_profile.gd")
 const CreatureFactoryScript = preload("res://scripts/factory/creature_factory.gd")
@@ -54,6 +56,8 @@ func _run() -> void:
 		PactServiceScript,
 		WorldStateScript,
 		WorldStateAdapterScript,
+		EventResultPresenterScript,
+		EventResultViewScript,
 		CreatureProfileScript,
 		CreatureProfileLegacyPathScript,
 		CreatureFactoryScript,

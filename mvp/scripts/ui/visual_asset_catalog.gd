@@ -33,7 +33,9 @@ const RESOURCE_ICONS := {
 	"nourriture": "res://assets/icon/food.png",
 	"bois": "res://assets/icon/wood.png",
 	"fer": "res://assets/icon/iron.png",
+	"pierre": "res://assets/icon/stone.png",
 	"essence": "res://assets/icon/essence.png",
+	"reputation": "res://assets/icon/reputation.png",
 }
 
 const RESOURCE_LABELS := {
@@ -43,7 +45,9 @@ const RESOURCE_LABELS := {
 	"nourriture": "Nourriture",
 	"bois": "Bois",
 	"fer": "Fer",
+	"pierre": "Pierre",
 	"essence": "Essence",
+	"reputation": "Réputation",
 }
 
 const FAMILY_DIRECTORY := "res://assets/images/clan"

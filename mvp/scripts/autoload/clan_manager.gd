@@ -114,6 +114,7 @@ var maisons_nobles: Array   = []
 var evenements_declenches: Array = []
 var historique_tours: Array = []
 var pnj_gestion: Dictionary = {}
+var _dernier_resultat_evenement: Dictionary = {}
 
 # ── Services (instanciation unique — DRY / SRP) ────────────────────────
 var _planner: RefCounted = null
@@ -1109,6 +1110,7 @@ func _appliquer_effets(effets: Dictionary) -> void:
 ## Tire au plus un événement aléatoire pour le tour et applique ses effets.
 ## Retourne un message à afficher dans le log, ou une chaîne vide.
 func tirer_et_appliquer_evenement(evenements: Array) -> String:
+	_dernier_resultat_evenement = {}
 	if evenements.is_empty():
 		return ""
 
@@ -1129,17 +1131,30 @@ func tirer_et_appliquer_evenement(evenements: Array) -> String:
 			continue
 
 		if rng.randf() <= probabilite:
-			_appliquer_effets((d.get("effets", {}) as Dictionary).duplicate(true))
+			var event_effects := (d.get("effets", {}) as Dictionary).duplicate(true)
+			_appliquer_effets(event_effects)
 			var id_evt := str(d.get("id", ""))
 			if not id_evt.is_empty() and not evenements_declenches.has(id_evt):
 				evenements_declenches.append(id_evt)
 			var titre := str(d.get("titre", "Événement"))
 			var texte := str(d.get("texte", ""))
+			_dernier_resultat_evenement = {
+				"title": titre,
+				"description": texte,
+				"illustration_path": str(d.get("illustration_path", d.get("illustration", d.get("image", "")))),
+				"effects": event_effects,
+				"severity": str(d.get("severity", "event")),
+				"effects_applied": true,
+			}
 			if texte.is_empty():
 				return "Événement: %s." % titre
 			return "Événement: %s — %s" % [titre, texte]
 
 	return ""
+
+
+func get_dernier_resultat_evenement() -> Dictionary:
+	return _dernier_resultat_evenement.duplicate(true)
 
 
 ## Évalue l'état de la partie (en cours / victoire / défaite).

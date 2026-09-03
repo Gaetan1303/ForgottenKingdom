@@ -7,6 +7,9 @@ extends Control
 const FallenUI = preload("res://scripts/ui/fallen_ui.gd")
 const VisualAssetCatalog = preload("res://scripts/ui/visual_asset_catalog.gd")
 const ResourcePathResolver = preload("res://scripts/utils/resource_path_resolver.gd")
+const EventResultPresenter = preload("res://scripts/ui/event_result_presenter.gd")
+
+signal result_confirmed
 
 # ── Données de l'action en cours ─────────────────────────────────────
 var _action_id:  String = ""
@@ -24,6 +27,8 @@ var _anim_step: int = 0
 var _message_retour_extra: String = ""
 var _anim_score_joueur: float = 0.0
 var _anim_score_resistance: float = 0.0
+var _already_confirmed: bool = false
+var _effects_applied: bool = false
 
 const CLAN_ICON_SIZE: Vector2 = Vector2(48, 48)
 const DEBUG_CONTINUE_BTN: bool = false
@@ -37,7 +42,8 @@ var _animator: Node = null
 func _ready() -> void:
 	FallenUI.apply(self, "clan")
 	$PanneauCentre/ActionBarBottom/BtnContinuer.pressed.connect(_on_continuer)
-	$PanneauCentre/ActionBarBottom/BtnContinuer.visible = false
+	$PanneauCentre/ActionBarBottom/BtnContinuer.visible = true
+	$PanneauCentre/ActionBarBottom/BtnContinuer.disabled = true
 	$PanneauCentre/PanneauEffets.visible = false
 	# Instantiate animator helper
 	_animator = RES_ANIMATOR.new()
@@ -47,6 +53,8 @@ func _ready() -> void:
 		journal.text = ""
 
 func init_data(data: Dictionary) -> void:
+	_already_confirmed = false
+	_effects_applied = false
 	_action_id = data.get("action_id", "") as String
 	_maison_id = int(data.get("maison_id", -1))
 	_action_cfg = GameDataLoader.get_action((_action_id) if not _action_id.is_empty() else "recuperer")
@@ -257,8 +265,11 @@ func _afficher_resultat() -> void:
 	if _action_id == "attaquer":
 		_animator.shake($PanneauCentre)
 
-	# Application des effets au clan
-	_appliquer_effets_clan()
+	# Le presenter peut être rappelé (resize/test), mais les conséquences métier
+	# ne doivent être appliquées qu'une seule fois.
+	if not _effects_applied:
+		_effects_applied = true
+		_appliquer_effets_clan()
 
 	# Affichage des effets (après application pour inclure les effets calculés dynamiquement)
 	_afficher_effets()
@@ -302,111 +313,37 @@ func _afficher_effets() -> void:
 	for child in liste.get_children():
 		child.queue_free()
 
-	var effets_texte := _effets_vers_texte()
-	if effets_texte.is_empty():
+	var effets_normalises := EventResultPresenter.normalize_effects(_effets)
+	if effets_normalises.is_empty():
 		$PanneauCentre/PanneauEffets.visible = false
 		return
 
 	$PanneauCentre/PanneauEffets.visible = true
 
-	# Icônes uniquement quand l'asset représente réellement la ressource.
-	var icones := VisualAssetCatalog.RESOURCE_ICONS
-
-	for ligne in effets_texte:
+	for effect_value in effets_normalises:
+		var effect := effect_value as Dictionary
 		var hbox := HBoxContainer.new()
 		hbox.alignment = BoxContainer.ALIGNMENT_CENTER
-		var lower = ligne.to_lower()
-		var icon_path: String = ""
-		if lower.find("or") >= 0:
-			icon_path = icones["or"]
-		elif lower.find("soldat") >= 0:
-			icon_path = icones["soldats"]
-		elif lower.find("mana") >= 0:
-			icon_path = icones["mana"]
-		if icon_path != "" and ResourceLoader.exists(icon_path):
-			var tex = TextureRect.new()
-			tex.texture = load(icon_path)
+		var icon_path := str(effect.get("icon_path", ""))
+		if not icon_path.is_empty():
+			var tex := TextureRect.new()
+			tex.texture = EventResultPresenter.resolve_illustration(icon_path)
 			tex.custom_minimum_size = Vector2(18, 18)
+			tex.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 			tex.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-			hbox.add_child(tex)
+			if tex.texture != null:
+				hbox.add_child(tex)
 		var lbl := Label.new()
-		lbl.text = ligne
+		lbl.text = str(effect.get("text", ""))
 		lbl.add_theme_color_override("font_color", Color(0.85, 0.9, 0.85, 1))
 		hbox.add_child(lbl)
 		liste.add_child(hbox)
 
 func _effets_vers_texte() -> Array:
-	var lignes := []
-
-	# Messages formatés pour clés numériques courantes
-	var labels := {
-		"or_recupere":          "Or gagné : +%d",
-		"or_penalite":          "Or perdu : -%d",
-		"soldats_gain":         "Soldats recrutés : +%d",
-		"pnj_recrute":          "PNJ recruté : +%d",
-		"mana_gain":            "Mana récupéré : +%d",
-		"reputation_gain":      "Réputation : +%d",
-		"renseignements_gain":  "Renseignements : +%d",
-		"affinite_pnj_gain":    "Affinité PNJ : +%d",
-		"pertes_soldats_pct":   "Pertes en soldats : -%d %%",
-		"soldats_perte_pct":    "Pertes en soldats : -%d %%",
-		"reputation_perte":     "Réputation perdue : -%d",
-		"soldats_gain_formule": "Soldats (formule) : %s",
-	}
-
-	# Messages pour flags booléens (valeur true)
-	var bool_true_msgs := {
-		"bastion_conquis": "Bastion conquis.",
-		"famille_revelee": "Famille révélée.",
-		"bastions_reveles": "Bastions révélés.",
-		"ressources_cible_revelees": "Ressources de la cible révélées.",
-		"detail_chef_revele": "Détails du chef révélés.",
-		"alerte_declenchee": "Alerte déclenchée.",
-		"non_agression": "Accord de non-agression établi.",
-		"ouvre_boutique_speciale": "Boutique spéciale ouverte.",
-	}
-
-	if _effets == null:
-		return lignes
-
-	# D'abord les clés formatées explicitement
-	for cle in labels:
-		if _effets.has(cle):
-			var v = _effets[cle]
-			# Certains labels attendent une string (formule)
-			if cle == "soldats_gain_formule":
-				lignes.append(labels[cle] % str(v))
-			else:
-				lignes.append(labels[cle] % int(v))
-
-	# Puis les autres clés — générique et intelligentes selon le type
-	for cle in _effets.keys():
-		if labels.has(cle):
-			continue
-		var val = _effets[cle]
-		if val is bool:
-			if val:
-				if bool_true_msgs.has(cle):
-					lignes.append(bool_true_msgs[cle])
-				else:
-					lignes.append(str(cle).replace("_", " ").capitalize())
-			else:
-				lignes.append("%s : Non" % [str(cle).replace("_", " ").capitalize()])
-		elif val is int or val is float:
-			var k = cle.to_lower()
-			if k.find("gain") >= 0 or k.find("recup") >= 0 or k.find("gagne") >= 0:
-				lignes.append("%s : +%d" % [str(cle).replace("_", " ").capitalize(), int(val)])
-			elif k.find("perte") >= 0 or k.find("perdu") >= 0 or k.find("penalite") >= 0:
-				lignes.append("%s : -%d" % [str(cle).replace("_", " ").capitalize(), int(abs(int(val)))])
-			elif k.find("pct") >= 0:
-				lignes.append("%s : %d%%" % [str(cle).replace("_", " ").capitalize(), int(val)])
-			else:
-				lignes.append("%s : %s" % [str(cle).replace("_", " ").capitalize(), str(val)])
-		else:
-			# chaînes ou autres
-			lignes.append("%s : %s" % [str(cle).replace("_", " ").capitalize(), str(val)])
-
-	return lignes
+	var lines: Array = []
+	for effect_value in EventResultPresenter.normalize_effects(_effets):
+		lines.append(str((effect_value as Dictionary).get("text", "")))
+	return lines
 
 func _append_journal(line: String) -> void:
 	var journal := _journal_node()
@@ -508,12 +445,18 @@ func _afficher_erreur() -> void:
 	$PanneauCentre/TitreAction.text    = "Erreur"
 	$PanneauCentre/LabelResultat.text  = "Action inconnue : %s" % _action_id
 	$PanneauCentre/ActionBarBottom/BtnContinuer.visible = true
+	$PanneauCentre/ActionBarBottom/BtnContinuer.disabled = false
 
 # ─────────────────────────────────────────────────────────────────────
 #  NAVIGATION
 # ─────────────────────────────────────────────────────────────────────
 
 func _on_continuer() -> void:
+	if _already_confirmed or $PanneauCentre/ActionBarBottom/BtnContinuer.disabled:
+		return
+	_already_confirmed = true
+	$PanneauCentre/ActionBarBottom/BtnContinuer.disabled = true
+	result_confirmed.emit()
 	# Cleanup overlay continue button if present
 	var root = get_tree().root
 	var overlay = root.get_node_or_null("ResolutionContinueLayer")
