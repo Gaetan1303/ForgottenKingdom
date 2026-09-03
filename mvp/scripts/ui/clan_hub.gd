@@ -12,6 +12,8 @@ const FallenUI = preload("res://scripts/ui/fallen_ui.gd")
 const FKHelpers = preload("res://scripts/utils/fk_helpers.gd")
 const ResourcePathResolver = preload("res://scripts/utils/resource_path_resolver.gd")
 const VisualAssetCatalog = preload("res://scripts/ui/visual_asset_catalog.gd")
+const EventResultPresenter = preload("res://scripts/ui/event_result_presenter.gd")
+const EventResultViewScene = preload("res://scenes/ui/event_result_view.tscn")
 
 ## Données de cible mémorisées lors du retour depuis la résolution
 var maison_cible_id: int   = -1
@@ -57,6 +59,7 @@ const DISPLAY_LABELS := {
 
 var _fallback_house_portrait: Texture2D = null
 var _icones_pretes: bool = false
+var _pending_result_view: Control = null
 
 # Icônes pixel art des ressources — header
 const ICON_RES_HEADER := {
@@ -1235,6 +1238,8 @@ func _aller_resolution(cible_id: int) -> void:
 # ─────────────────────────────────────────────────────────────────────
 
 func _on_fin_tour() -> void:
+	if _pending_result_view != null:
+		return
 	if ClanManager.moment_journee == "jour":
 		# Avant de passer à la nuit, résoudre les missions planifiées (après-midi)
 		var report: Dictionary = ClanManager.resoudre_planning_pnj_journee()
@@ -1247,28 +1252,50 @@ func _on_fin_tour() -> void:
 				parts.append("%s %+d" % [str(k), int(gains.get(k, 0))])
 			report_msg = "%s %s" % [report_msg, FKHelpers.join_array(parts, ", ")]
 
-		ClanManager.moment_journee = "nuit"
-		ClanManager.reset_actions_pour_nuit()
-		var msg_passifs := ClanManager.appliquer_passifs_nuit()
-		ClanManager.sauvegarder()
-		var msg_nuit := "La nuit tombe sur Yomihara. Les actions nocturnes sont disponibles."
-		if not msg_passifs.is_empty():
-			msg_nuit = "%s | %s" % [msg_nuit, msg_passifs]
-		# Affiche d'abord le rapport d'après-midi puis le message de nuit
-		_afficher_message("%s \n%s" % [report_msg, msg_nuit])
-		_rafraichir_tout()
+		_show_event_result({
+			"title": "Résultat de l'après-midi",
+			"description": report_msg,
+			"effects": _resource_effects(gains),
+			"severity": "neutral",
+			"effects_applied": true,
+		}, Callable(self, "_complete_day_to_night"))
 		return
 
 	var production_base := GameDataLoader.get_production_par_tour()
 	var production := ClanManager.get_production_totale(production_base)
 	ClanManager.gagner(production)
 	var msg_event := ClanManager.tirer_et_appliquer_evenement(GameDataLoader.get_evenements_aleatoires())
+	var event_result := ClanManager.get_dernier_resultat_evenement()
 
 	var msg_tour := _construire_resume_tour(production)
 	if not msg_event.is_empty():
 		msg_tour = "%s | %s" % [msg_tour, msg_event]
-	_afficher_message(msg_tour)
+	var displayed_effects := _resource_effects(production)
+	if not event_result.is_empty():
+		displayed_effects.append_array(EventResultPresenter.normalize_effects(event_result.get("effects", {}) as Dictionary))
+	_show_event_result({
+		"title": str(event_result.get("title", "Fin du tour")),
+		"description": msg_tour,
+		"illustration_path": str(event_result.get("illustration_path", "")),
+		"effects": displayed_effects,
+		"severity": str(event_result.get("severity", "neutral")),
+		"effects_applied": true,
+	}, Callable(self, "_complete_night_to_day"))
 
+
+func _complete_day_to_night() -> void:
+	ClanManager.moment_journee = "nuit"
+	ClanManager.reset_actions_pour_nuit()
+	var msg_passifs := ClanManager.appliquer_passifs_nuit()
+	ClanManager.sauvegarder()
+	var msg_nuit := "La nuit tombe sur Yomihara. Les actions nocturnes sont disponibles."
+	if not msg_passifs.is_empty():
+		msg_nuit = "%s | %s" % [msg_nuit, msg_passifs]
+	_afficher_message(msg_nuit)
+	_rafraichir_tout()
+
+
+func _complete_night_to_day() -> void:
 	ClanManager.tour_actuel += 1
 	ClanManager.moment_journee = "jour"
 	ClanManager.reset_actions_nouveau_tour()
@@ -1277,6 +1304,45 @@ func _on_fin_tour() -> void:
 
 	# Vérification des conditions de victoire / défaite
 	_verifier_fin_de_partie()
+
+
+func _resource_effects(resources: Dictionary) -> Array:
+	var effects: Array = []
+	for resource_value in resources.keys():
+		var resource_id := str(resource_value)
+		var amount := float(resources.get(resource_value, 0.0))
+		if is_zero_approx(amount):
+			continue
+		effects.append({
+			"type": "resource",
+			"resource_id": resource_id,
+			"amount": amount,
+			"label": str(VisualAssetCatalog.RESOURCE_LABELS.get(resource_id, resource_id.capitalize())),
+		})
+	return effects
+
+
+func _show_event_result(result: Dictionary, continuation: Callable = Callable()) -> void:
+	if _pending_result_view != null:
+		return
+	var view := EventResultViewScene.instantiate() as Control
+	if view == null:
+		push_error("ClanHub: impossible d'instancier EventResultView")
+		return
+	_pending_result_view = view
+	view.z_index = 100
+	add_child(view)
+	view.connect("result_confirmed", Callable(self, "_on_event_result_confirmed").bind(view, continuation), CONNECT_ONE_SHOT)
+	view.call("present", result)
+
+
+func _on_event_result_confirmed(view: Control, continuation: Callable) -> void:
+	if view != _pending_result_view:
+		return
+	_pending_result_view = null
+	view.queue_free()
+	if continuation.is_valid():
+		continuation.call()
 
 
 func _construire_resume_tour(production: Dictionary) -> String:
@@ -1291,7 +1357,13 @@ func _verifier_fin_de_partie() -> void:
 		return
 
 	var message := str(etat.get("message", "Fin de partie."))
-	_afficher_message(message)
+	_show_event_result({
+		"title": "Fin de partie",
+		"description": message,
+		"effects": [],
+		"severity": str(etat.get("etat", "neutral")),
+		"effects_applied": true,
+	})
 
 
 # ─────────────────────────────────────────────────────────────────────
