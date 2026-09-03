@@ -2,6 +2,8 @@
 class_name PortraitPayload
 extends Control
 
+const MAX_IMPORTED_PORTRAIT_SIDE := 512
+
 @onready var _preview: TextureRect = null
 @onready var _path_label: Label = null
 @onready var _file_dialog: FileDialog = null
@@ -69,6 +71,7 @@ func _on_file_selected(path: String) -> void:
 	var image := _open_image_file(path)
 	if image == null:
 		return
+	image = resize_for_import(image)
 	var texture := ImageTexture.create_from_image(image)
 	if texture:
 		if _preview != null:
@@ -102,3 +105,21 @@ func _open_image_file(path: String) -> Image:
 	if image.load_webp_from_buffer(bytes) == OK:
 		return image
 	return null
+
+
+## Limit imported portraits before previewing and serializing them. Small images
+## are preserved and large images keep their aspect ratio.
+static func resize_for_import(image: Image) -> Image:
+	if image == null or image.is_empty():
+		return image
+	var longest_side: int = maxi(image.get_width(), image.get_height())
+	if longest_side <= MAX_IMPORTED_PORTRAIT_SIDE:
+		return image
+	var scale_factor: float = float(MAX_IMPORTED_PORTRAIT_SIDE) / float(longest_side)
+	var resized: Image = image.duplicate()
+	resized.resize(
+		maxi(1, roundi(float(image.get_width()) * scale_factor)),
+		maxi(1, roundi(float(image.get_height()) * scale_factor)),
+		Image.INTERPOLATE_LANCZOS
+	)
+	return resized

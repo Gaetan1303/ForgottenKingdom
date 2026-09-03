@@ -39,7 +39,7 @@ anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 stretch_mode = 4
-expand = true
+expand_mode = 1
 
 [node name="LocationMarkers" type="Node2D" parent="MapContainer/MapViewport"]
 ; NOTE: legacy Node2D kept for compatibility, markers are placed on MapOverlay/LocationMarkers

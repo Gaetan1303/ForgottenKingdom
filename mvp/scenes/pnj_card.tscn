@@ -4,7 +4,7 @@
 [node name="PnjCard" type="PanelContainer"]
 script = ExtResource( 1 )
 custom_colors/panel = Color( 0.08, 0.08, 0.08, 0.6 )
-min_size = Vector2( 0, 64 )
+custom_minimum_size = Vector2(0, 112)
 [node name="Content" type="VBoxContainer" parent="."]
 layout_mode = 2
 
@@ -15,8 +15,9 @@ separation = 8
 [node name="Left" type="VBoxContainer" parent="HBox"]
 size_flags_horizontal = 3
 [node name="Portrait" type="TextureRect" parent="HBox/Left"]
-stretch_mode = 3
-custom_minimum_size = Vector2(8, 8)
+stretch_mode = 5
+expand_mode = 1
+custom_minimum_size = Vector2(84, 84)
 size_flags_horizontal = 0
 size_flags_vertical = 0
 [node name="LabelName" type="Label" parent="HBox/Left"]
@@ -46,8 +47,9 @@ visible = false
 [node name="DetailRow" type="HBoxContainer" parent="DetailsPanel"]
 layout_mode = 2
 [node name="DetailPortrait" type="TextureRect" parent="DetailsPanel/DetailRow"]
-stretch_mode = 3
-custom_minimum_size = Vector2(8, 8)
+stretch_mode = 5
+expand_mode = 1
+custom_minimum_size = Vector2(150, 180)
 size_flags_horizontal = 0
 size_flags_vertical = 0
 [node name="DetailStats" type="VBoxContainer" parent="DetailsPanel/DetailRow"]

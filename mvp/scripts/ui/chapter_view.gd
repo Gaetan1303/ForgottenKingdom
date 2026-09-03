@@ -1,8 +1,10 @@
 ## scripts/ui/chapter_view.gd
 ## Contrôleur de la vue chapitre — affiche les scènes narratives une par une.
 extends Control
+const FallenUI = preload("res://scripts/ui/fallen_ui.gd")
 
 const ResourcePathResolverScript = preload("res://scripts/utils/resource_path_resolver.gd")
+const VisualAssetCatalog = preload("res://scripts/ui/visual_asset_catalog.gd")
 
 # Nœuds de l'interface
 @onready var illustration: TextureRect = $IllustrationContainer
@@ -22,6 +24,7 @@ var _is_animating: bool = false
 
 
 func _ready() -> void:
+	FallenUI.apply(self, "narrative")
 	btn_next.pressed.connect(_on_next)
 	btn_prev.pressed.connect(_on_prev)
 	btn_menu.pressed.connect(_on_menu)
@@ -84,6 +87,7 @@ func _load_illustration(illustration_name: String) -> void:
 	var texture: Texture2D = ResourcePathResolverScript.load_texture(illustration_name, "res://assets/images")
 	if texture != null:
 		illustration.texture = texture
+		VisualAssetCatalog.apply_fit(illustration, VisualAssetCatalog.infer_kind(illustration_name))
 		return
 	push_warning("ChapterView: illustration introuvable '%s'" % illustration_name)
 	illustration.texture = null

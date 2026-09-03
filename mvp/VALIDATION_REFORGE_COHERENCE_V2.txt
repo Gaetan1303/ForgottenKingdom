@@ -1,0 +1,55 @@
+Royaume déchu / ForgottenKingdom — Reforge cohérente V2
+
+Principes appliqués
+- Les associations visuelles de l'introduction sont explicites, scène par scène, dans data/ui_visual_bindings.json.
+- Aucun portrait générique n'est attribué à un PNJ dont le sexe/portrait n'est pas défini dans les données.
+- Aucun symbole de clan n'est utilisé comme portrait de personnage.
+- Les ressources utilisent uniquement les icônes correspondant à la ressource (or, soldats, mana, nourriture, bois, fer, essence).
+- Les portraits utilisent KEEP_ASPECT_CENTERED ; le recadrage COVERED est réservé au fond d'inventaire.
+- Les zones de boutons à risque utilisent HFlowContainer pour revenir à la ligne au lieu de sortir de la scène.
+- Les tweens/animations de classes n'ont pas été modifiés.
+
+Corrections de cohérence / layout
+- Intro : 40/40 scènes possèdent une décision visuelle explicite ; @none est volontaire lorsqu'aucun asset exact n'existe.
+- exil_05 affiche la carte, qui est explicitement posée sur la table dans le texte.
+- exil_07 (Caëlith) n'affiche plus un symbole/personnage arbitraire faute de portrait exact.
+- Le portrait joueur est résolu depuis le portrait choisi ou l'apparence créée (homme/femme), plus depuis genre vide.
+- PNJ : Ravik, Selyra, Borel et Ithra restent sans portrait tant que leurs données ne définissent ni sexe ni portrait.
+- PNJ Manager : footer en deux niveaux et HFlowContainer ; les boutons ne débordent plus horizontalement.
+- PNJ Card : hiérarchie de scène réparée et actions en HFlowContainer.
+- Slots : actions en HFlowContainer.
+- Clan Hub : ressources du header en HFlowContainer et icônes exactes.
+- Slide 1 : preview portrait en KEEP_ASPECT_CENTERED (plus de texture 1080 affichée à taille native/coupée).
+- Résolution : portraits/icônes en KEEP_ASPECT_CENTERED et identité joueur basée sur l'apparence réelle.
+- Menu : suppression des fausses associations Fer=Paramètres et Soldat=Quitter.
+- ChapterLoader : fallback embarqué aligné sur les illustrations réellement présentes.
+- OptionsDialog : anciens parent paths invalides réparés.
+- ResourcePathResolver : support des chemins absolus de portraits choisis par l'utilisateur.
+
+Contrôles statiques réalisés avant emballage
+- 120 preload() : chemins présents.
+- 65 class_name : uniques.
+- 24 scènes TSCN : hiérarchie parent/enfant contrôlée.
+- 28 ext_resource : chemins présents.
+- 15 JSON : parsing OK.
+- 2 YAML : parsing OK.
+- 40/40 scènes d'introduction : décision visuelle explicite.
+- 17 assets visuels critiques : fichiers image valides.
+- 4 PNJ initiaux sans identité visuelle (Ravik, Selyra, Borel, Ithra) : aucune image inventée.
+- 18 fichiers d'animation/tween comparés à la reforge V1 : inchangés byte-for-byte.
+- create_tween() : 18 avant / 18 après.
+- Aucun TextureRect portrait en mode KEEP natif/crop-prone ; COVERED ne reste que sur InventoryBg.
+
+Test à lancer sous Godot 4.4
+  godot --headless --path . -s scripts/tests/test_visual_coherence.gd
+Résultat attendu :
+  VISUAL_COHERENCE_OK: 17 assets, 11 scenes
+
+Puis les tests existants :
+  godot --headless --path . -s scripts/tests/test_compile_smoke.gd
+  godot --headless --path . -s scripts/tests/test_domain_services.gd
+  godot --headless --path . -s scripts/tests/test_narration_assets.gd
+  godot --headless --path . -s scripts/tests/test_chapter_view_illustrations.gd
+
+Limite de validation
+Le conteneur ayant préparé cette archive ne possède pas de binaire Godot. Les contrôles ci-dessus sont structurels, syntaxiques légers, d'assets et de non-régression ; le runtime Godot 4.4 doit être confirmé sur la machine de développement.

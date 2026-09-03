@@ -6,8 +6,9 @@ const StatDefs = preload("res://scripts/data/stat_defs.gd")
 const ClassCardFactory = preload("res://scripts/ui/tween/classedeperso/class_card_factory.gd")
 const CharacterCreationRules = preload("res://scripts/services/character_creation_rules_service.gd")
 const CharacterBuildService = preload("res://scripts/data/character_build_service.gd")
+const FallenUI = preload("res://scripts/ui/fallen_ui.gd")
 
-const CARD_COLUMNS := 3
+const CARD_COLUMNS := 2
 
 var _selected_class_id: String = ""
 const POINTS_POOL_TOTAL: int = 18
@@ -102,7 +103,7 @@ func _build_class_card(class_id: String, class_data: Dictionary) -> Button:
 	var card: Button = ClassCardFactory.create(class_id, str(class_data.get("icon", "")))
 	card.name = "ClassCard_%s" % class_id
 	card.text = ""
-	card.custom_minimum_size = Vector2(150, 130)
+	card.custom_minimum_size = Vector2(205, 148)
 	card.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	card.size_flags_vertical = Control.SIZE_SHRINK_BEGIN
 	card.focus_mode = Control.FOCUS_NONE
@@ -393,17 +394,5 @@ func _make_progression_cell_style(heading: bool) -> StyleBoxFlat:
 
 
 func _make_card_style(selected: bool) -> StyleBoxFlat:
-	var style := StyleBoxFlat.new()
-	style.bg_color = Color("2d1d1a") if selected else Color("181312")
-	style.border_color = Color("e0ac6f") if selected else Color("5d4943")
-	style.border_width_left = 2
-	style.border_width_top = 2
-	style.border_width_right = 2
-	style.border_width_bottom = 2
-	style.corner_radius_top_left = 10
-	style.corner_radius_top_right = 10
-	style.corner_radius_bottom_right = 10
-	style.corner_radius_bottom_left = 10
-	style.shadow_color = Color(0, 0, 0, 0.2)
-	style.shadow_size = 4
-	return style
+	return FallenUI.card_style(selected)
+

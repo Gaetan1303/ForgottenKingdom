@@ -1,6 +1,7 @@
 ## scripts/ui/map_view.gd
 ## Contrôleur de la carte interactive des lieux d'Ingrid.
 extends Control
+const FallenUI = preload("res://scripts/ui/fallen_ui.gd")
 
 const ResourcePathResolverScript = preload("res://scripts/utils/resource_path_resolver.gd")
 
@@ -14,12 +15,13 @@ const ResourcePathResolverScript = preload("res://scripts/utils/resource_path_re
 @onready var map_image: TextureRect = $MapContainer/MapViewport/MapImage
 
 const MAP_SIZE := Vector2(1280, 634)
-const MARKER_SIZE := 24.0
+const MARKER_SIZE := 30.0
 
 var _selected_location: Dictionary = {}
 
 
 func _ready() -> void:
+	FallenUI.apply(self, "map")
 	AudioManager.play_music("map_ambient.ogg")
 	btn_menu.pressed.connect(func(): GameManager.go_to_menu())
 	btn_go_chapter.pressed.connect(_on_go_chapter)
@@ -101,8 +103,10 @@ func _build_markers(region_filter: String = "") -> void:
 func _create_marker(loc: Dictionary, visited: bool) -> Control:
 	var btn := Button.new()
 	btn.name = "Marker_" + (loc.get("id", "unknown") as String)
-	btn.text = "*"
-	btn.flat = true
+	btn.text = "◆"
+	btn.flat = false
+	btn.focus_mode = Control.FOCUS_NONE
+	btn.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 
 	# Position relative (0.0–1.0) → pixel (Control parent)
 	var base: Vector2 = Vector2(map_image.texture.get_width(), map_image.texture.get_height()) if map_image.texture else MAP_SIZE
@@ -121,10 +125,22 @@ func _create_marker(loc: Dictionary, visited: bool) -> Control:
 	btn.offset_right = off_x + int(MARKER_SIZE)
 	btn.offset_bottom = off_y + int(MARKER_SIZE)
 
-	# Couleur selon visite
-	var col: Color = Color(0.8, 0.5, 1.0) if visited else Color(0.5, 0.3, 0.7, 0.7)
-	btn.add_theme_color_override("font_color", col)
-	btn.add_theme_color_override("font_hover_color", Color(1, 0.8, 1))
+	# Sceau cartographique : or pour les lieux visités, violet pour l'inconnu.
+	var marker_color: Color = FallenUI.GOLD if visited else FallenUI.VIOLET
+	var normal_style := StyleBoxFlat.new()
+	normal_style.bg_color = Color(0.04, 0.02, 0.06, 0.82)
+	normal_style.border_color = marker_color
+	normal_style.set_border_width_all(1 if not visited else 2)
+	normal_style.set_corner_radius_all(15)
+	var hover_style := normal_style.duplicate() as StyleBoxFlat
+	hover_style.bg_color = Color(0.18, 0.07, 0.20, 0.94)
+	hover_style.border_color = FallenUI.GOLD
+	hover_style.set_border_width_all(2)
+	btn.add_theme_stylebox_override("normal", normal_style)
+	btn.add_theme_stylebox_override("hover", hover_style)
+	btn.add_theme_stylebox_override("pressed", hover_style)
+	btn.add_theme_color_override("font_color", marker_color)
+	btn.add_theme_color_override("font_hover_color", Color("fff1c8"))
 
 	btn.pressed.connect(_on_marker_pressed.bind(loc, btn))
 	return btn

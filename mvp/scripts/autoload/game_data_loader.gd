@@ -516,15 +516,10 @@ func get_class_icon_path(class_id: String) -> String:
 			var cand := "res://" + explicit.strip_edges()
 			if ResourceLoader.exists(cand):
 				return cand
-			var cand2 := "res://mvp/" + explicit.strip_edges()
-			if ResourceLoader.exists(cand2):
-				return cand2
 
 	# Cherche automatiquement dans des dossiers d'assets communs
 	var icon_dirs: Array = [
 		"res://assets/class_icons/",
-		"res://mvp/assets/class_icons/",
-		"res://mvp/assets/class_icons/",
 	]
 	var exts: Array = [".webp", ".png", ".jpg", ".jpeg"]
 	for d in icon_dirs:
@@ -549,10 +544,9 @@ func get_class_icon_path(class_id: String) -> String:
 				if ResourceLoader.exists(p):
 					return p
 
-	# fallback global (si présent)
-	var fallback := "res://mvp/assets/class_icons/chevalier_sombre.png"
-	if ResourceLoader.exists(fallback):
-		return fallback
+	# Toutes les classes du build courant ont une icône dédiée.
+	# Si une nouvelle classe n'en a pas encore, on préfère une carte sans image
+	# à un emblème de jeu sans rapport avec la classe.
 	return ""
 
 

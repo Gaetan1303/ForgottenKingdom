@@ -18,31 +18,42 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(0.06, 0.02, 0.1, 1)
+color = Color(0.035, 0.016, 0.045, 1)
 
 [node name="Main" type="VBoxContainer" parent="."]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 24.0
-offset_top = 24.0
-offset_right = -24.0
-offset_bottom = -24.0
+offset_left = 26.0
+offset_top = 18.0
+offset_right = -26.0
+offset_bottom = -22.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_constants/separation = 12
+theme_override_constants/separation = 8
 
 [node name="Title" type="Label" parent="Main"]
 layout_mode = 2
-theme_override_font_sizes/font_size = 26
-text = "Creation du personnage"
+theme_override_font_sizes/font_size = 28
+text = "FAÇONNER L’HÉRITIER"
+horizontal_alignment = 1
+
+[node name="Subtitle" type="Label" parent="Main"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 13
+text = "Nom • héritage • classe • dons • équipement"
 horizontal_alignment = 1
 
 [node name="ErrorLabel" type="Label" parent="Main"]
+custom_minimum_size = Vector2(0, 22)
 layout_mode = 2
-theme_override_colors/font_color = Color(1, 0.45, 0.45, 1)
+theme_override_colors/font_color = Color(0.9, 0.36, 0.42, 1)
+horizontal_alignment = 1
 autowrap_mode = 3
+
+[node name="Divider" type="HSeparator" parent="Main"]
+layout_mode = 2
 
 [node name="SlideHost" type="PanelContainer" parent="Main"]
 layout_mode = 2

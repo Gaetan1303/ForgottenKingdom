@@ -1,0 +1,214 @@
+{
+  "_commentaire": "Associations visuelles explicites relues scene par scene depuis intro_vn.json. Une image n'est affichee que si elle represente le personnage, le lieu, l'objet ou le groupe mentionne. '@none' est volontaire quand aucun asset exact n'existe.",
+  "intro_vn": {
+    "prologue_01": {
+      "visual": "@nobles_group",
+      "mode": "group",
+      "reason": "Les Neuf Familles Nobles sont le sujet central du cadre politique."
+    },
+    "prologue_02": {
+      "visual": "@map",
+      "mode": "map",
+      "reason": "Le texte situe geographiquement les Terres Libres a l'est des domaines nobles."
+    },
+    "famille_01": {
+      "visual": "@child",
+      "mode": "portrait",
+      "reason": "Le souvenir s'ouvre sur le protagoniste enfant."
+    },
+    "famille_02": {
+      "visual": "@mother",
+      "mode": "portrait",
+      "reason": "Dialogue et action de la mere."
+    },
+    "famille_03": {
+      "visual": "@father_alone",
+      "mode": "portrait",
+      "reason": "Dialogue et action du pere."
+    },
+    "famille_04": {
+      "visual": "@child",
+      "mode": "portrait",
+      "reason": "Souvenir de la vie quotidienne vu par le protagoniste enfant."
+    },
+    "lecon_01": {
+      "visual": "@father_alone",
+      "mode": "portrait",
+      "reason": "Le pere accompagne le protagoniste et lui donne la lecon."
+    },
+    "lecon_02": {
+      "visual": "@father_alone",
+      "mode": "portrait",
+      "reason": "Le pere enseigne les ressources au protagoniste."
+    },
+    "lecon_03": {
+      "visual": "@father_alone",
+      "mode": "portrait",
+      "reason": "Le pere enseigne les choix d'action."
+    },
+    "lecon_04": {
+      "visual": "@mother",
+      "mode": "portrait",
+      "reason": "La mere prend la parole dans la salle des cartes."
+    },
+    "lecon_05": {
+      "visual": "@mother",
+      "mode": "portrait",
+      "reason": "La mere enseigne la valeur des alliances et du recrutement."
+    },
+    "lecon_06": {
+      "visual": "@child",
+      "mode": "portrait",
+      "reason": "Souvenir familial centre sur ce que le protagoniste enfant retient."
+    },
+    "kael_01": {
+      "visual": "@mother",
+      "mode": "portrait",
+      "reason": "La mere prend la parole pour introduire Kael."
+    },
+    "kael_02": {
+      "visual": "@kael",
+      "mode": "portrait",
+      "reason": "Premiere apparition physique de Kael."
+    },
+    "kael_03": {
+      "visual": "@kael",
+      "mode": "portrait",
+      "reason": "Dialogue de Kael."
+    },
+    "kael_04": {
+      "visual": "@clan",
+      "mode": "symbol",
+      "reason": "Kael est accueilli a la table et devient membre du clan."
+    },
+    "conclave_01": {
+      "visual": "@nobles_symbol",
+      "mode": "symbol",
+      "reason": "Verdict collectif du Grand Conclave des Neuf Familles."
+    },
+    "conclave_02": {
+      "visual": "@father_alone",
+      "mode": "portrait",
+      "reason": "Le pere refuse l'ultimatum du Conclave."
+    },
+    "conclave_03": {
+      "visual": "@mother",
+      "mode": "portrait",
+      "reason": "Dialogue intime initie par la mere."
+    },
+    "chute_01": {
+      "visual": "@none",
+      "mode": "none",
+      "reason": "Alerte dans le bastion; aucun asset exact de cette situation."
+    },
+    "chute_02": {
+      "visual": "@hell_knight",
+      "mode": "group",
+      "reason": "Le texte montre les bannieres et un Chevalier Infernal en tete de l'assaut."
+    },
+    "chute_03": {
+      "visual": "@father_alone",
+      "mode": "portrait",
+      "reason": "Le pere blesse donne ses instructions."
+    },
+    "chute_04": {
+      "visual": "@mother",
+      "mode": "portrait",
+      "reason": "La mere blessee rejoint l'heritier."
+    },
+    "chute_05": {
+      "visual": "@mother",
+      "mode": "portrait",
+      "reason": "Dernier adieu de la mere."
+    },
+    "chute_06": {
+      "visual": "@father_alone",
+      "mode": "portrait",
+      "reason": "Dernieres paroles du pere."
+    },
+    "chute_07": {
+      "visual": "@none",
+      "mode": "none",
+      "reason": "Les deux parents sont ensemble; aucun asset double exact n'existe."
+    },
+    "chute_08": {
+      "visual": "@clan",
+      "mode": "symbol",
+      "reason": "Le bastion et l'identite du clan sont detruits; le sceau represente ici le clan, pas un personnage."
+    },
+    "exil_01": {
+      "visual": "@none",
+      "mode": "none",
+      "reason": "Faim, froid et fuite; aucun decor exact disponible."
+    },
+    "exil_02": {
+      "visual": "@kael",
+      "mode": "portrait",
+      "reason": "Dialogue de Kael autour du feu."
+    },
+    "exil_03": {
+      "visual": "@kael",
+      "mode": "portrait",
+      "reason": "Kael raconte la destruction de son village."
+    },
+    "exil_04": {
+      "visual": "@none",
+      "mode": "none",
+      "reason": "Le maitre exile n'a aucun portrait associe dans les donnees/assets."
+    },
+    "exil_05": {
+      "visual": "@nobles_symbol",
+      "mode": "symbol",
+      "reason": "L'enseignement porte explicitement sur la patience des Neuf Familles."
+    },
+    "exil_06": {
+      "visual": "@clan",
+      "mode": "symbol",
+      "reason": "Formation des premiers allies et renaissance du clan."
+    },
+    "exil_07": {
+      "visual": "@nobles_symbol",
+      "mode": "symbol",
+      "reason": "Caelith appartient au Dragon Blanc mais aucun portrait exact de Caelith n'existe."
+    },
+    "exil_08": {
+      "visual": "@kael",
+      "mode": "portrait",
+      "reason": "Kael remet le rapport et dialogue avec l'heritier."
+    },
+    "serment_01": {
+      "visual": "@player",
+      "mode": "portrait",
+      "reason": "Transformation de l'heritier survivant."
+    },
+    "serment_02": {
+      "visual": "@player",
+      "mode": "portrait",
+      "reason": "Serment prononce par le personnage."
+    },
+    "serment_03": {
+      "visual": "@player",
+      "mode": "portrait",
+      "reason": "Serment prononce par le personnage."
+    },
+    "serment_04": {
+      "visual": "@kael",
+      "mode": "portrait",
+      "reason": "Reponse de Kael au serment."
+    },
+    "serment_05": {
+      "visual": "@clan",
+      "mode": "symbol",
+      "reason": "Cloture sur la Maison et son histoire a reconstruire."
+    }
+  },
+  "resource_cards": [
+    "or",
+    "soldats",
+    "mana",
+    "nourriture",
+    "bois",
+    "fer",
+    "essence"
+  ]
+}
