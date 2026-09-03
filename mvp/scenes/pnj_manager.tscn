@@ -3,8 +3,19 @@
 [ext_resource type="Script" path="res://scripts/ui/pnj_manager.gd" id="1_pnj_manager"]
 
 [node name="PNJManager" type="VBoxContainer"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 16.0
+offset_top = 16.0
+offset_right = -16.0
+offset_bottom = -16.0
+grow_horizontal = 2
+grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
+theme_override_constants/separation = 8
 script = ExtResource("1_pnj_manager")
 
 [node name="Header" type="PanelContainer" parent="."]
@@ -13,7 +24,7 @@ layout_mode = 2
 [node name="Title" type="Label" parent="Header"]
 layout_mode = 2
 custom_minimum_size = Vector2(0, 40)
-text = "PNJ Manager - Planification"
+text = "INTENDANCE — SERVITEURS & PNJ"
 
 [node name="Body" type="VBoxContainer" parent="."]
 layout_mode = 2
@@ -31,14 +42,14 @@ custom_minimum_size = Vector2(0, 260)
 
 [node name="PlanningSummary" type="PanelContainer" parent="Body"]
 layout_mode = 2
-custom_minimum_size = Vector2(0, 160)
+custom_minimum_size = Vector2(0, 120)
 
 [node name="PlanVBox" type="VBoxContainer" parent="Body/PlanningSummary"]
 layout_mode = 2
 
 [node name="PlanHeader" type="Label" parent="Body/PlanningSummary/PlanVBox"]
 layout_mode = 2
-text = "Planification"
+text = "ORDRES DU JOUR"
 
 [node name="PlanList" type="VBoxContainer" parent="Body/PlanningSummary/PlanVBox"]
 layout_mode = 2
@@ -49,7 +60,7 @@ custom_minimum_size = Vector2(0, 56)
 
 [node name="Status" type="Label" parent="Footer"]
 layout_mode = 2
-text = "Pret"
+text = "Prêt à donner les ordres"
 
 [node name="Spacer" type="Control" parent="Footer"]
 layout_mode = 2
@@ -67,7 +78,7 @@ value = 0.0
 
 [node name="ApplyNow" type="CheckBox" parent="Footer"]
 layout_mode = 2
-text = "Appliquer maintenant"
+text = "Exécuter immédiatement"
 button_pressed = false
 
 [node name="BtnsRight" type="HBoxContainer" parent="Footer"]
@@ -75,15 +86,15 @@ layout_mode = 2
 
 [node name="BtnAssignSoldiers" type="Button" parent="Footer/BtnsRight"]
 layout_mode = 2
-text = "Assigner tous les soldats"
+text = "Affecter les soldats"
 
 [node name="BtnResolve" type="Button" parent="Footer/BtnsRight"]
 layout_mode = 2
-text = "Resoudre"
+text = "Résoudre les tâches"
 
 [node name="BtnBack" type="Button" parent="Footer/BtnsRight"]
 layout_mode = 2
-text = "Retour"
+text = "◀  Retour au clan"
 
 [node name="ConfirmDialog" type="ConfirmationDialog" parent="."]
 ok_button_text = "Confirmer"

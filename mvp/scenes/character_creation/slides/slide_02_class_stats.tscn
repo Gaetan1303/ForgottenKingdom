@@ -27,7 +27,7 @@ theme_override_constants/separation = 8
 [node name="StepTitle" type="Label" parent="Content" unique_id=349396851]
 layout_mode = 2
 theme_override_font_sizes/font_size = 18
-text = "Slide 2 - Classe et stats"
+text = "Choisir une voie et définir ses forces"
 
 [node name="MainSplit" type="HBoxContainer" parent="Content" unique_id=233840170]
 layout_mode = 2
@@ -36,14 +36,14 @@ size_flags_vertical = 3
 theme_override_constants/separation = 12
 
 [node name="ProgressionPanel" type="VBoxContainer" parent="Content/MainSplit" unique_id=54404524]
-custom_minimum_size = Vector2(320, 0)
+custom_minimum_size = Vector2(280, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = 6
 
 [node name="ProgressionHeader" type="Label" parent="Content/MainSplit/ProgressionPanel" unique_id=1278410625]
 layout_mode = 2
-text = "Progression Niveaux 1 a 10"
+text = "Progression • Niveaux 1 à 10"
 
 [node name="ProgressionSummary" type="ScrollContainer" parent="Content/MainSplit/ProgressionPanel" unique_id=2030761527]
 custom_minimum_size = Vector2(0, 130)
@@ -59,7 +59,7 @@ theme_override_constants/v_separation = 12
 columns = 2
 
 [node name="StatsPanel" type="VBoxContainer" parent="Content/MainSplit" unique_id=951307311]
-custom_minimum_size = Vector2(260, 0)
+custom_minimum_size = Vector2(270, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = 6
@@ -71,7 +71,7 @@ text = "Statistiques"
 [node name="PointsPoolLabel" type="Label" parent="Content/MainSplit/StatsPanel" unique_id=2000000001]
 layout_mode = 2
 text = "Points restants: 18 / 18"
-add_theme_color_override/font_color = Color(0.85, 0.82, 0.72, 0.95)
+theme_override_colors/font_color = Color(0.85, 0.82, 0.72, 0.95)
 
 [node name="StatsGrid" type="GridContainer" parent="Content/MainSplit/StatsPanel" unique_id=742487701]
 layout_mode = 2
@@ -141,7 +141,7 @@ value = 8.0
 
 [node name="DerivedHeader" type="Label" parent="Content/MainSplit/StatsPanel" unique_id=727925578]
 layout_mode = 2
-text = "Stats Secondaires"
+text = "Statistiques secondaires"
 
 [node name="DerivedGrid" type="GridContainer" parent="Content/MainSplit/StatsPanel" unique_id=1409784501]
 layout_mode = 2
@@ -206,7 +206,7 @@ layout_mode = 2
 text = "0"
 
 [node name="ClassesPanel" type="VBoxContainer" parent="Content/MainSplit" unique_id=1837221198]
-custom_minimum_size = Vector2(320, 0)
+custom_minimum_size = Vector2(455, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = 6
@@ -225,7 +225,7 @@ horizontal_scroll_mode = 0
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 0
-columns = 3
+columns = 2
 
 [node name="Nav" type="HBoxContainer" parent="Content" unique_id=875117468]
 layout_mode = 2
@@ -233,11 +233,11 @@ alignment = 2
 
 [node name="BtnPrev" type="Button" parent="Content/Nav" unique_id=1683952528]
 layout_mode = 2
-text = "Precedent"
+text = "◀  Précédent"
 
 [node name="BtnNext" type="Button" parent="Content/Nav" unique_id=291634004]
 layout_mode = 2
-text = "Suivant"
+text = "Continuer  ▶"
 
 [connection signal="pressed" from="Content/Nav/BtnPrev" to="." method="request_previous"]
 [connection signal="pressed" from="Content/Nav/BtnNext" to="." method="request_next"]

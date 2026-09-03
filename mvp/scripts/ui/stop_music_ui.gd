@@ -21,7 +21,7 @@ func _ready() -> void:
     btn.focus_mode = Control.FOCUS_NONE
     btn.add_theme_color_override("font_color", Color8(136, 46, 46))
 
-    var tex := ResourceLoader.load("res://assets/ui/stop_icon.svg")
+    var tex := ResourceLoader.load("res://assets/ui/stop_icon.png")
     if tex and tex is Texture2D:
         btn.icon = tex
     else:

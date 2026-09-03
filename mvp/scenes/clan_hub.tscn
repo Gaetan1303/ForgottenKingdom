@@ -24,14 +24,14 @@ color = Color(0.04, 0, 0.1, 1)
 layout_mode = 1
 anchors_preset = 10
 anchor_right = 1.0
-offset_bottom = 56.0
+offset_bottom = 72.0
 grow_horizontal = 0
 theme_override_constants/separation = 0
 
 [node name="BgHeader" type="ColorRect" parent="Header"]
 layout_mode = 2
 size_flags_horizontal = 3
-color = Color(0.08, 0, 0.18, 1)
+color = Color(0.075, 0.025, 0.07, 0.98)
 
 [node name="InfoClan" type="HBoxContainer" parent="Header/BgHeader"]
 layout_mode = 1
@@ -97,8 +97,8 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_top = 66.0
-offset_bottom = -48.0
+offset_top = 82.0
+offset_bottom = -58.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/separation = 14
@@ -113,28 +113,31 @@ layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = 6
 
-[node name="PanneauActions" type="PanelContainer" parent="ContenuPrincipal"]
-custom_minimum_size = Vector2(360, 0)
+[node name="PanneauActions" type="ScrollContainer" parent="ContenuPrincipal"]
+custom_minimum_size = Vector2(400, 0)
 layout_mode = 2
 size_flags_vertical = 3
+horizontal_scroll_mode = 0
+vertical_scroll_mode = 1
+clip_contents = true
 
 [node name="ContenuActions" type="VBoxContainer" parent="ContenuPrincipal/PanneauActions"]
 layout_mode = 2
+size_flags_horizontal = 3
 theme_override_constants/separation = 4
 
 [node name="TitreActions" type="Label" parent="ContenuPrincipal/PanneauActions/ContenuActions"]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.8, 0.6, 1, 1)
 theme_override_font_sizes/font_size = 15
-text = "Actions disponibles"
+text = "CONSEIL DE GUERRE"
 horizontal_alignment = 1
 
 [node name="DescAction" type="Label" parent="ContenuPrincipal/PanneauActions/ContenuActions"]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.7, 0.7, 0.7, 0.8)
 theme_override_font_sizes/font_size = 11
-text = "Sélectionnez une action
-pour voir son effet."
+text = "Choisissez un ordre pour engager les forces de votre Maison."
 horizontal_alignment = 1
 autowrap_mode = 3
 
@@ -192,7 +195,7 @@ layout_mode = 2
 layout_mode = 2
 theme_override_colors/font_color = Color(0.8, 0.65, 1, 1)
 theme_override_font_sizes/font_size = 14
-text = "Navigation"
+text = "DOMAINES DE LA MAISON"
 horizontal_alignment = 1
 
 [node name="BtnProfil" type="Button" parent="ContenuPrincipal/PanneauActions/ContenuActions"]
@@ -217,7 +220,7 @@ anchors_preset = 12
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_top = -48.0
+offset_top = -58.0
 grow_horizontal = 0
 grow_vertical = 0
 theme_override_constants/separation = 0
@@ -226,7 +229,7 @@ theme_override_constants/separation = 0
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-color = Color(0.04, 0, 0.1, 0.9)
+color = Color(0.03, 0.012, 0.04, 0.96)
 
 [node name="MessageLog" type="Label" parent="Footer/BgFooter"]
 layout_mode = 1

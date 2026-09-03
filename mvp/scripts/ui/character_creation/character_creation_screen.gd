@@ -1,9 +1,26 @@
 ## Orchestrates slide scenes and delegates data/validation to CharacterCreationManager.
 class_name CharacterCreationScreen
 extends Control
+const FallenUI = preload("res://scripts/ui/fallen_ui.gd")
 
 const ManagerType = preload("res://scripts/ui/character_creation/character_creation_manager.gd")
 const CharacterCreationFlowType = preload("res://scripts/ui/character_creation/creation_flow_controller.gd")
+
+const STEP_TITLES: Array[String] = [
+	"IDENTITÉ & HÉRITAGE",
+	"CLASSE & ATTRIBUTS",
+	"DONS & CAPACITÉS",
+	"ARSENAL & ÉQUIPEMENT",
+	"SERMENT DE L’HÉRITIER",
+]
+
+const STEP_SUBTITLES: Array[String] = [
+	"Définissez le nom, la Maison et la marque de votre héritage démoniaque.",
+	"Choisissez votre voie et répartissez les forces qui définiront votre règne.",
+	"Affinez votre style de jeu par les dons et aptitudes qui vous distinguent.",
+	"Préparez ce que vous emporterez pour survivre à la reconquête.",
+	"Relisez votre destinée avant de l’inscrire dans les Chroniques.",
+]
 
 @export var slide_scene_paths: Array[String] = [
 	"res://scenes/character_creation/slides/slide_01_basic_info.tscn",
@@ -25,6 +42,7 @@ func init_data(data: Dictionary) -> void:
 		_resume_requested = true
 
 func _ready() -> void:
+	FallenUI.apply(self, "creation")
 	_error_timer = Timer.new()
 	_error_timer.one_shot = true
 	_error_timer.wait_time = 5.0
@@ -41,6 +59,7 @@ func _ready() -> void:
 
 
 func _on_slide_changed(step_index: int) -> void:
+	_update_step_header(step_index)
 	if _slide_host == null:
 		push_warning("SlideHost node not found in CharacterCreationScreen.")
 		return
@@ -73,6 +92,16 @@ func _on_slide_changed(step_index: int) -> void:
 		_active_slide.bind_manager(_manager)
 	if _active_slide.has_method("enter_slide"):
 		_active_slide.enter_slide(_manager.get_data())
+
+
+
+func _update_step_header(step_index: int) -> void:
+	var title := get_node_or_null("Main/Title") as Label
+	var subtitle := get_node_or_null("Main/Subtitle") as Label
+	if title != null and step_index >= 0 and step_index < STEP_TITLES.size():
+		title.text = "ÉTAPE %d / %d  —  %s" % [step_index + 1, slide_scene_paths.size(), STEP_TITLES[step_index]]
+	if subtitle != null and step_index >= 0 and step_index < STEP_SUBTITLES.size():
+		subtitle.text = STEP_SUBTITLES[step_index]
 
 
 func _bind_slide_signals(slide: Control) -> void:
@@ -113,6 +142,15 @@ func _clear_error_label() -> void:
 	var error_label := get_node_or_null("Main/ErrorLabel") as Label
 	if error_label:
 		error_label.text = ""
+
+
+func _genre_from_appearance(appearance_id: String) -> String:
+	var normalized: String = appearance_id.strip_edges().to_lower()
+	if normalized.contains("femme") or normalized.contains("female"):
+		return "Femme"
+	if normalized.contains("homme") or normalized.contains("male"):
+		return "Homme"
+	return ""
 
 
 func _on_creation_completed(final_payload: Dictionary) -> void:
@@ -172,13 +210,14 @@ func _on_creation_completed(final_payload: Dictionary) -> void:
 
 	var full_name := "%s de %s" % [nom_perso, nom_clan]
 	var appearance_value := str(character["appearance_id"]) if character.has("appearance_id") else ""
+	var genre_value: String = _genre_from_appearance(appearance_value)
 	var portrait_value: Dictionary = {}
 	if character.has("portrait_payload"):
 		portrait_value = (character["portrait_payload"] as Dictionary).duplicate(true)
 	var pouvoir_value := str(character["racial_power_id"]) if character.has("racial_power_id") else ""
 	var profil := {
 		"nom_complet": full_name,
-		"genre": "",
+		"genre": genre_value,
 		"apparence": appearance_value,
 		"portrait": portrait_value,
 		"pouvoir_magique": pouvoir_value,

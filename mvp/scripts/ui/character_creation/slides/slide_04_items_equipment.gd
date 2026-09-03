@@ -2,6 +2,7 @@
 class_name Slide04ItemsEquipment
 extends CreationSlideBase
 
+const VisualAssetCatalog = preload("res://scripts/ui/visual_asset_catalog.gd")
 const MALE_PORTRAIT = preload("res://assets/images/hero/homme/male.png")
 const FEMALE_PORTRAIT = preload("res://assets/images/hero/femme/female.png")
 
@@ -359,14 +360,17 @@ func _refresh_portrait(data: Resource) -> void:
 	var portrait := find_child("CharacterPortrait", true, false) as TextureRect
 	if portrait == null:
 		return
-	var texture: Texture2D = MALE_PORTRAIT
+	var texture: Texture2D = null
 	var appearance_id: String = ""
 	if data != null and data.has_method("get"):
+		var payload_variant: Variant = data.get("portrait_payload")
+		if payload_variant is Dictionary:
+			texture = VisualAssetCatalog.texture_from_portrait_payload(payload_variant as Dictionary)
 		appearance_id = str(data.get("appearance_id")).to_lower()
-	if appearance_id.find("femme") != -1:
-		texture = FEMALE_PORTRAIT
-	elif appearance_id.find("homme") != -1:
+	if texture == null:
 		texture = MALE_PORTRAIT
+		if appearance_id.find("femme") != -1:
+			texture = FEMALE_PORTRAIT
 	portrait.texture = texture
 
 

@@ -3,12 +3,17 @@
 ## Jouée une seule fois après la création du personnage.
 ## Flux : Passé (tutoriel) → La Chute → Serment → clan_hub
 extends Control
+const FallenUI = preload("res://scripts/ui/fallen_ui.gd")
+const ResourcePathResolver = preload("res://scripts/utils/resource_path_resolver.gd")
+const VisualAssetCatalog = preload("res://scripts/ui/visual_asset_catalog.gd")
 
 # ─────────────────────────────────────────────────────────────────────
 #  NŒUDS (construits dynamiquement dans _ready)
 # ─────────────────────────────────────────────────────────────────────
 var _bg:              ColorRect       = null
 var _illus:           TextureRect     = null
+var _resource_visual: PanelContainer  = null
+var _resource_grid:   GridContainer   = null
 var _gradient:        ColorRect       = null
 var _label_periode:   Label           = null
 var _label_speaker:   Label           = null
@@ -27,6 +32,7 @@ var _recruit_layer:   CanvasLayer     = null
 var _recruit_panel:   PanelContainer  = null
 var _recruit_title:   Label           = null
 var _recruit_role:    Label           = null
+var _recruit_portrait: TextureRect     = null
 var _recruit_desc:    RichTextLabel   = null
 var _recruit_stats:   VBoxContainer   = null
 var _btn_recruit:     Button          = null
@@ -38,6 +44,8 @@ var _scenes:          Array           = []
 var _idx:             int             = 0
 var _animating:       bool            = false
 var _pending_recruit: Dictionary      = {}
+var _visual_bindings: Dictionary      = {}
+var _resource_card_keys: Array        = []
 
 # Données joueur (résolues une fois)
 var _player_name: String  = "Héritier"
@@ -45,6 +53,9 @@ var _clan_name:   String  = "votre Clan"
 var _parent_name: String  = "Ton Père"
 var _pere_name: String    = "Ton Père"
 var _mere_name: String    = "Ta Mère"
+var _player_portrait_path: String = ""
+var _player_portrait_texture: Texture2D = null
+var _player_genre: String = ""
 
 
 # ─────────────────────────────────────────────────────────────────────
@@ -77,7 +88,9 @@ func _inject_icons(text: String) -> String:
 
 func _ready() -> void:
 	_resolve_player_data()
+	_load_visual_bindings()
 	_build_ui()
+	FallenUI.apply(self, "intro")
 	_load_scenes()
 	if _scenes.is_empty():
 		push_error("IntroVN: aucune scène chargée — vérifier data/intro_vn.json")
@@ -93,16 +106,45 @@ func _resolve_player_data() -> void:
 	_player_name = str(cm.get("nom_personnage") if cm.get("nom_personnage") != "" else "Héritier")
 	_clan_name   = str(cm.get("nom_clan")       if cm.get("nom_clan")       != "" else "votre Clan")
 	var profil: Dictionary = (cm.get("profil_personnage") as Dictionary)
-	var genre: String = str(profil.get("genre", ""))
-	# prefer explicit parent names from profile if present
+	var genre: String = str(profil.get("genre", "")).strip_edges()
+	if genre.is_empty():
+		var appearance: String = str(profil.get("apparence", "")).to_lower()
+		if appearance.contains("femme") or appearance.contains("female"):
+			genre = "Femme"
+		elif appearance.contains("homme") or appearance.contains("male"):
+			genre = "Homme"
+	_player_genre = genre
+	# Prefer explicit parent names from profile if present.
 	_pere_name = str(profil.get("pere_name", "Ton Père"))
 	_mere_name = str(profil.get("mere_name", "Ta Mère"))
+
+	# The protagonist first uses the portrait chosen during character creation.
+	# Without one, narration uses the matching family child asset, never a generic NPC.
+	var portrait_payload: Dictionary = profil.get("portrait", {}) as Dictionary
+	_player_portrait_texture = VisualAssetCatalog.texture_from_portrait_payload(portrait_payload)
 	if genre == "Femme":
 		_parent_name = _mere_name
 	elif genre == "Homme":
 		_parent_name = _pere_name
 	else:
 		_parent_name = "Ton Parent"
+	_player_portrait_path = VisualAssetCatalog.resolve_family_portrait("child", genre)
+
+
+func _load_visual_bindings() -> void:
+	var path := "res://data/ui_visual_bindings.json"
+	if not FileAccess.file_exists(path):
+		push_warning("IntroVN: ui_visual_bindings.json absent; les scènes sans illustration resteront volontairement vides.")
+		return
+	var file := FileAccess.open(path, FileAccess.READ)
+	if file == null:
+		return
+	var parsed: Variant = JSON.parse_string(file.get_as_text())
+	file.close()
+	if parsed is Dictionary:
+		var root := parsed as Dictionary
+		_visual_bindings = (root.get("intro_vn", {}) as Dictionary).duplicate(true)
+		_resource_card_keys = (root.get("resource_cards", []) as Array).duplicate()
 
 
 func _load_scenes() -> void:
@@ -160,18 +202,59 @@ func _build_ui() -> void:
 	_illus.anchor_left   = 0.0
 	_illus.anchor_top    = 0.0
 	_illus.anchor_right  = 1.0
-	_illus.anchor_bottom = 0.62
-	_illus.stretch_mode  = TextureRect.STRETCH_KEEP_ASPECT_COVERED
+	_illus.anchor_bottom = 0.67
+	_illus.stretch_mode  = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 	_illus.expand_mode   = TextureRect.EXPAND_IGNORE_SIZE
 	add_child(_illus)
+
+	# Visualisation dédiée aux ressources : de vraies cartes avec les vraies icônes,
+	# jamais un symbole de clan ou une image de personnage utilisée comme substitut.
+	_resource_visual = PanelContainer.new()
+	_resource_visual.name = "ResourceVisual"
+	_resource_visual.anchor_left = 0.08
+	_resource_visual.anchor_top = 0.07
+	_resource_visual.anchor_right = 0.92
+	_resource_visual.anchor_bottom = 0.58
+	var resource_style := StyleBoxFlat.new()
+	resource_style.bg_color = Color(0.025, 0.008, 0.055, 0.94)
+	resource_style.border_color = Color(0.48, 0.22, 0.70, 0.72)
+	resource_style.set_border_width_all(1)
+	resource_style.set_corner_radius_all(10)
+	_resource_visual.add_theme_stylebox_override("panel", resource_style)
+	add_child(_resource_visual)
+
+	var resource_margin := MarginContainer.new()
+	resource_margin.add_theme_constant_override("margin_left", 20)
+	resource_margin.add_theme_constant_override("margin_top", 16)
+	resource_margin.add_theme_constant_override("margin_right", 20)
+	resource_margin.add_theme_constant_override("margin_bottom", 16)
+	_resource_visual.add_child(resource_margin)
+	var resource_vbox := VBoxContainer.new()
+	resource_vbox.add_theme_constant_override("separation", 12)
+	resource_margin.add_child(resource_vbox)
+	var resource_title := Label.new()
+	resource_title.text = "RESSOURCES DU CLAN"
+	resource_title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	resource_title.add_theme_font_size_override("font_size", 18)
+	resource_title.add_theme_color_override("font_color", Color(0.92, 0.74, 0.34, 1.0))
+	resource_vbox.add_child(resource_title)
+	_resource_grid = GridContainer.new()
+	_resource_grid.columns = 4
+	_resource_grid.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	_resource_grid.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	_resource_grid.add_theme_constant_override("h_separation", 12)
+	_resource_grid.add_theme_constant_override("v_separation", 10)
+	resource_vbox.add_child(_resource_grid)
+	_build_resource_cards()
+	_resource_visual.visible = false
 
 	# Dégradé bas de l'illustration vers la boîte de texte
 	_gradient = ColorRect.new()
 	_gradient.name = "Gradient"
 	_gradient.anchor_left   = 0.0
-	_gradient.anchor_top    = 0.50
+	_gradient.anchor_top    = 0.54
 	_gradient.anchor_right  = 1.0
-	_gradient.anchor_bottom = 0.65
+	_gradient.anchor_bottom = 0.70
 	_gradient.color = Color(0.04, 0.0, 0.1, 0.8)
 	add_child(_gradient)
 
@@ -179,12 +262,12 @@ func _build_ui() -> void:
 	var text_panel := PanelContainer.new()
 	text_panel.name = "TextBox"
 	text_panel.anchor_left   = 0.0
-	text_panel.anchor_top    = 0.62
+	text_panel.anchor_top    = 0.64
 	text_panel.anchor_right  = 1.0
 	text_panel.anchor_bottom = 1.0
-	text_panel.offset_left   = 20.0
-	text_panel.offset_right  = -20.0
-	text_panel.offset_bottom = -10.0
+	text_panel.offset_left   = 24.0
+	text_panel.offset_right  = -24.0
+	text_panel.offset_bottom = -16.0
 	var style_bg := StyleBoxFlat.new()
 	style_bg.bg_color = Color(0.06, 0.0, 0.14, 0.9)
 	style_bg.corner_radius_top_left     = 8
@@ -217,7 +300,7 @@ func _build_ui() -> void:
 	_label_speaker = Label.new()
 	_label_speaker.name = "LabelSpeaker"
 	_label_speaker.add_theme_color_override("font_color", Color(1.0, 0.85, 0.4, 1.0))
-	_label_speaker.add_theme_font_size_override("font_size", 15)
+	_label_speaker.add_theme_font_size_override("font_size", 16)
 	_label_speaker.text = ""
 	_label_speaker.visible = false
 	vbox.add_child(_label_speaker)
@@ -226,29 +309,29 @@ func _build_ui() -> void:
 	_story_text = RichTextLabel.new()
 	_story_text.name = "StoryText"
 	_story_text.bbcode_enabled = true
-	_story_text.scroll_active = false
+	_story_text.scroll_active = true
 	_story_text.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	_story_text.add_theme_font_size_override("normal_font_size", 15)
+	_story_text.add_theme_font_size_override("normal_font_size", 16)
 	_story_text.add_theme_color_override("default_color", Color(0.92, 0.88, 1.0, 1.0))
-	_story_text.custom_minimum_size = Vector2(0, 100)
+	_story_text.custom_minimum_size = Vector2(0, 118)
 	_story_text.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	vbox.add_child(_story_text)
 
-	# --- Bouton continuer ---
+	# --- Navigation intégrée à la boîte de texte : aucun bouton flottant hors-écran ---
+	var nav_row := HBoxContainer.new()
+	nav_row.name = "NarrationNav"
+	nav_row.custom_minimum_size = Vector2(0, 40)
+	vbox.add_child(nav_row)
+	var nav_spacer := Control.new()
+	nav_spacer.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	nav_row.add_child(nav_spacer)
 	_btn_continue = Button.new()
 	_btn_continue.name = "BtnContinue"
 	_btn_continue.text = "Continuer ▶"
-	_btn_continue.anchor_left   = 1.0
-	_btn_continue.anchor_top    = 1.0
-	_btn_continue.anchor_right  = 1.0
-	_btn_continue.anchor_bottom = 1.0
-	_btn_continue.offset_left   = -160.0
-	_btn_continue.offset_top    = -44.0
-	_btn_continue.offset_bottom = -10.0
-	_btn_continue.offset_right  = -20.0
+	_btn_continue.custom_minimum_size = Vector2(170, 38)
 	_btn_continue.disabled = true
 	_btn_continue.pressed.connect(_on_continue)
-	add_child(_btn_continue)
+	nav_row.add_child(_btn_continue)
 
 	# ── Tutorial overlay ────────────────────────────────────────────
 	_tuto_layer = CanvasLayer.new()
@@ -378,6 +461,13 @@ func _build_ui() -> void:
 	_recruit_role.text = ""
 	rec_vbox.add_child(_recruit_role)
 
+	_recruit_portrait = TextureRect.new()
+	_recruit_portrait.name = "RecruitPortrait"
+	_recruit_portrait.custom_minimum_size = Vector2(132, 132)
+	_recruit_portrait.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
+	VisualAssetCatalog.apply_fit(_recruit_portrait, "portrait")
+	rec_vbox.add_child(_recruit_portrait)
+
 	rec_vbox.add_child(HSeparator.new())
 
 	_recruit_desc = RichTextLabel.new()
@@ -435,8 +525,8 @@ func _show_scene(idx: int) -> void:
 	_label_periode.text = periode
 	_label_periode.visible = not periode.is_empty()
 
-	# Illustration
-	_load_illustration(str(s.get("illustration", "")))
+	# Illustration explicitement liée au contenu de la scène.
+	_apply_scene_visual(s)
 
 	# Musique (uniquement si définie dans la scène)
 	var musique: String = str(s.get("musique", ""))
@@ -482,6 +572,8 @@ func _resolve_speaker(raw: String) -> String:
 	match raw:
 		"narrateur":  return ""
 		"parent":     return _parent_name
+		"mere":       return _mere_name
+		"pere":       return _pere_name
 		"personnage": return _player_name
 		"kael":       return "Kael"
 		_:            return raw
@@ -502,16 +594,109 @@ func _typewrite(text: String) -> void:
 	)
 
 
-func _load_illustration(illus_name: String) -> void:
-	if illus_name.is_empty():
-		_illus.texture = null
+func _build_resource_cards(keys: Array = []) -> void:
+	if _resource_grid == null:
 		return
-	for ext in ["", ".png", ".jpg", ".svg", ".webp"]:
-		var path: String = "res://assets/images/" + illus_name + ext if ext != "" else "res://assets/images/" + illus_name
-		if ResourceLoader.exists(path):
-			_illus.texture = load(path)
-			return
+	for child in _resource_grid.get_children():
+		child.queue_free()
+	var source_keys: Array = keys if not keys.is_empty() else _resource_card_keys
+	for raw_key in source_keys:
+		var key: String = str(raw_key)
+		var icon_path: String = VisualAssetCatalog.resource_icon_path(key)
+		if icon_path.is_empty():
+			continue
+		var card := PanelContainer.new()
+		card.custom_minimum_size = Vector2(190, 96)
+		card.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		var style := StyleBoxFlat.new()
+		style.bg_color = Color(0.075, 0.025, 0.11, 0.90)
+		style.border_color = Color(0.32, 0.16, 0.45, 0.8)
+		style.set_border_width_all(1)
+		style.set_corner_radius_all(7)
+		card.add_theme_stylebox_override("panel", style)
+		_resource_grid.add_child(card)
+		var row := HBoxContainer.new()
+		row.add_theme_constant_override("separation", 10)
+		card.add_child(row)
+		var icon := TextureRect.new()
+		icon.custom_minimum_size = Vector2(58, 58)
+		icon.texture = ResourcePathResolver.load_texture(icon_path, "res://assets/icon")
+		VisualAssetCatalog.apply_fit(icon, "resource")
+		row.add_child(icon)
+		var label := Label.new()
+		label.text = VisualAssetCatalog.resource_label(key)
+		label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+		label.add_theme_font_size_override("font_size", 14)
+		label.add_theme_color_override("font_color", Color(0.92, 0.88, 0.98, 1.0))
+		row.add_child(label)
+
+
+func _apply_scene_visual(scene_data: Dictionary) -> void:
+	_resource_visual.visible = false
+	_illus.visible = true
 	_illus.texture = null
+
+	# Une illustration écrite dans la donnée narrative est toujours prioritaire.
+	var explicit: String = str(scene_data.get("illustration", "")).strip_edges()
+	if not explicit.is_empty():
+		_load_illustration(explicit, VisualAssetCatalog.infer_kind(explicit))
+		return
+
+	var scene_id: String = str(scene_data.get("id", ""))
+	var binding: Dictionary = _visual_bindings.get(scene_id, {}) as Dictionary
+	if binding.is_empty():
+		push_warning("IntroVN: aucune association visuelle explicite pour '%s'" % scene_id)
+		return
+
+	var visual: String = str(binding.get("visual", "@none"))
+	var mode: String = str(binding.get("mode", "contain"))
+	if visual == "@none":
+		_illus.visible = false
+		return
+	if visual == "@resources":
+		_illus.visible = false
+		var scene_resources: Array = (binding.get("resources", []) as Array).duplicate()
+		_build_resource_cards(scene_resources)
+		_resource_visual.visible = true
+		return
+	if visual in ["@player", "@child"] and _player_portrait_texture != null:
+		_illus.texture = _player_portrait_texture
+		_illus.visible = true
+		VisualAssetCatalog.apply_fit(_illus, "portrait")
+		return
+
+	var path: String = _resolve_visual_token(visual)
+	if path.is_empty():
+		push_warning("IntroVN: token visuel non résolu '%s' pour '%s'" % [visual, scene_id])
+		_illus.visible = false
+		return
+	_load_illustration(path, mode)
+
+
+func _resolve_visual_token(token: String) -> String:
+	match token:
+		"@mother": return VisualAssetCatalog.family_mother_path()
+		"@father": return VisualAssetCatalog.father_with_child_path(_player_genre)
+		"@father_alone": return VisualAssetCatalog.resolve_family_portrait("father_alone", _player_genre)
+		"@child": return VisualAssetCatalog.resolve_family_portrait("child", _player_genre)
+		"@kael": return VisualAssetCatalog.person_path("kael")
+		"@player": return _player_portrait_path
+		"@clan": return VisualAssetCatalog.world_path("clan")
+		"@nobles_symbol": return VisualAssetCatalog.world_path("nobles_symbol")
+		"@nobles_group": return VisualAssetCatalog.world_path("nobles_group")
+		"@map": return VisualAssetCatalog.world_path("demon_realm_map")
+		"@yomihara": return VisualAssetCatalog.world_path("yomihara")
+		"@hell_knight": return VisualAssetCatalog.world_path("hell_knight")
+		_: return token if token.begins_with("res://") else ""
+
+
+func _load_illustration(illus_name: String, mode: String = "contain") -> void:
+	var texture: Texture2D = ResourcePathResolver.load_texture(illus_name, "res://assets/images")
+	_illus.texture = texture
+	_illus.visible = texture != null
+	VisualAssetCatalog.apply_fit(_illus, mode)
+	if texture == null:
+		push_warning("IntroVN: illustration introuvable '%s'" % illus_name)
 
 
 # ─────────────────────────────────────────────────────────────────────
@@ -569,13 +754,13 @@ func _open_tutorial(ttype: String) -> void:
 	_tuto_layer.visible   = true
 	match ttype:
 		"ressources":
-			_tuto_title.text = "[img width=18 height=18]%s[/img]  Les Ressources du Clan" % ICONS_BBCODE["or"]
+			_tuto_title.text = "Les Ressources du Clan"
 			_tuto_body.text  = _inject_icons(_tuto_text_ressources())
 		"actions":
-			_tuto_title.text = "[img width=18 height=18]%s[/img]  Le Cycle de Jeu" % ICONS_BBCODE["soldats"]
+			_tuto_title.text = "Le Cycle de Jeu"
 			_tuto_body.text  = _inject_icons(_tuto_text_actions())
 		"recrutement_pnj":
-			_tuto_title.text = "[img width=18 height=18]%s[/img]  Les Alliés du Clan" % ICONS_BBCODE["nourriture"]
+			_tuto_title.text = "Les Alliés du Clan"
 			_tuto_body.text  = _inject_icons(_tuto_text_recrutement())
 		_:
 			_tuto_title.text = "Aide"
@@ -663,6 +848,11 @@ func _open_recruitment(pnj_data: Dictionary) -> void:
 	_recruit_layer.visible = true
 
 	_recruit_title.text = str(pnj_data.get("nom", "Allié"))
+	if _recruit_portrait != null:
+		var pnj_id := str(pnj_data.get("id", "")).to_lower()
+		var portrait_path := VisualAssetCatalog.person_path("kael") if pnj_id == "pnj_kael" else ""
+		_recruit_portrait.texture = VisualAssetCatalog.load_path(portrait_path) if not portrait_path.is_empty() else null
+		_recruit_portrait.visible = _recruit_portrait.texture != null
 	_recruit_role.text  = "%s  —  Niveau %d" % [
 		str(pnj_data.get("role", "Guerrier")).capitalize(),
 		int(pnj_data.get("niveau", 1))

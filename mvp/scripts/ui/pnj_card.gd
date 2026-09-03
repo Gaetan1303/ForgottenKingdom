@@ -2,6 +2,8 @@ extends PanelContainer
 class_name PnjCard
 
 const FKHelpers = preload("res://scripts/utils/fk_helpers.gd")
+const ResourcePathResolver = preload("res://scripts/utils/resource_path_resolver.gd")
+const VisualAssetCatalog = preload("res://scripts/ui/visual_asset_catalog.gd")
 
 var _profile: Dictionary = {}
 
@@ -45,17 +47,13 @@ func _ready() -> void:
 	if _btn_details and not _btn_details.is_connected("pressed", Callable(self, "_on_toggle_details")):
 		_btn_details.connect("pressed", Callable(self, "_on_toggle_details"))
 
-	# Force very small portrait sizes to ensure UI does not stretch large images
+	# Les portraits restent entièrement visibles; on ne les recadre jamais en "cover".
 	if _portrait:
-		_portrait.stretch_mode = 3
-		_portrait.custom_minimum_size = Vector2(8, 8)
-		_portrait.size_flags_horizontal = 0
-		_portrait.size_flags_vertical = 0
+		VisualAssetCatalog.apply_fit(_portrait, "portrait")
+		_portrait.custom_minimum_size = Vector2(84, 84)
 	if _detail_portrait:
-		_detail_portrait.stretch_mode = 3
-		_detail_portrait.custom_minimum_size = Vector2(8, 8)
-		_detail_portrait.size_flags_horizontal = 0
-		_detail_portrait.size_flags_vertical = 0
+		VisualAssetCatalog.apply_fit(_detail_portrait, "portrait")
+		_detail_portrait.custom_minimum_size = Vector2(150, 180)
 
 	_apply_profile_to_ui()
 
@@ -93,6 +91,13 @@ func _apply_profile_to_ui() -> void:
 		pnj_basename = pnj_id_raw.replace("pnj_", "").replace(".pnj", "")
 	var exts = [".png", ".jpg", ".svg", ".webp"]
 	var found := false
+	# 0) Une donnée PNJ peut déclarer son portrait exact.
+	var explicit_portrait := str(_profile.get("portrait", _profile.get("portrait_path", ""))).strip_edges()
+	if not explicit_portrait.is_empty() and _portrait:
+		var explicit_tex := ResourcePathResolver.load_texture(explicit_portrait, "res://assets/images/PNJ")
+		if explicit_tex != null:
+			_portrait.texture = explicit_tex
+			found = true
 	# 1) Try id-based exact
 	if pnj_basename != "":
 		for e in exts:
@@ -167,47 +172,21 @@ func _apply_profile_to_ui() -> void:
 					dir.list_dir_end()
 
 	if not found:
-		var gender_val = str(_profile.get("sexe", _profile.get("gender", _profile.get("genre", "")))).to_lower()
-		var is_female = (gender_val.find("f") != -1 or gender_val.find("femme") != -1 or gender_val.find("female") != -1)
-		var tried = []
-		if is_female:
-			tried = [
-				"res://assets/images/PNJ/defaut/femme_pnj.png",
-				"res://assets/images/PNJ/defaut/femme_pnj.jpg",
-				"res://assets/images/PNJ/defaut/female.png",
-				"res://assets/images/PNJ/defaut/female.jpg",
-			]
-		else:
-			tried = [
-				"res://assets/images/PNJ/defaut/homme_pnj.png",
-				"res://assets/images/PNJ/defaut/homme_pnj.jpg",
-				"res://assets/images/PNJ/defaut/male.png",
-				"res://assets/images/PNJ/defaut/male.jpg",
-			]
-		for p in tried:
-			if ResourceLoader.exists(p) and _portrait:
-				var tex2 = load(p)
-				if tex2:
-					_portrait.texture = tex2
-					found = true
-					break
+		var gender_val := str(_profile.get("sexe", _profile.get("gender", _profile.get("genre", "")))).to_lower()
+		var fallback_path := ""
+		if gender_val.contains("femme") or gender_val.contains("female"):
+			fallback_path = VisualAssetCatalog.person_path("pnj_female")
+		elif gender_val.contains("homme") or gender_val.contains("male"):
+			fallback_path = VisualAssetCatalog.person_path("pnj_male")
+		if not fallback_path.is_empty() and _portrait:
+			var tex2 := ResourcePathResolver.load_texture(fallback_path, "res://assets/images/PNJ")
+			if tex2 != null:
+				_portrait.texture = tex2
+				found = true
 
 	if _detail_portrait and _portrait and _portrait.texture:
 		_detail_portrait.texture = _portrait.texture
 
-	# Force a tiny texture copy (8x8) so the image always displays very small
-	# even if layout/containers try to expand the control.
-	if _portrait and _portrait.texture and typeof(_portrait.texture) != TYPE_NIL:
-		var orig_tex = _portrait.texture
-		if orig_tex is Texture2D:
-			var img: Image = orig_tex.get_image()
-			if img:
-				img.resize(128, 128, Image.INTERPOLATE_NEAREST)
-				var tiny = ImageTexture.create_from_image(img)
-				if tiny:
-					_portrait.texture = tiny
-					if _detail_portrait:
-						_detail_portrait.texture = tiny
 
 	if _detail_stats:
 		for child in _detail_stats.get_children():

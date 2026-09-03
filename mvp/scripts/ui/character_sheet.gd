@@ -1,5 +1,6 @@
 ## scripts/ui/character_sheet.gd
 extends Control
+const FallenUI = preload("res://scripts/ui/fallen_ui.gd")
 
 signal saved(stats, points_remaining, char_class, feats)
 
@@ -30,10 +31,10 @@ var _class_desc: Label
 var _embedded_mode: bool = false
 var _class_locked: bool = false
 const POINTS_RESTANTS_CIBLE = 10
-const COLOR_GOLD = Color(0.91, 0.79, 0.42, 1.0)
-const COLOR_GOLD_DIM = Color(0.79, 0.66, 0.30, 1.0)
-const COLOR_TEXT_MAIN = Color(0.94, 0.90, 0.80, 1.0)
-const COLOR_TEXT_MUTED = Color(0.66, 0.54, 0.40, 1.0)
+const COLOR_GOLD = Color("d7b56d")
+const COLOR_GOLD_DIM = Color("a98952")
+const COLOR_TEXT_MAIN = Color("f3ecf3")
+const COLOR_TEXT_MUTED = Color("b6a8b8")
 
 var _stat_cost_labels: Dictionary = {}
 
@@ -78,6 +79,7 @@ func set_selected_class(class_value: String) -> void:
 			return
 
 func _ready() -> void:
+	FallenUI.apply(self, "sheet")
 	# Build UI dynamically so the scene file stays minimal.
 	print("CharacterSheet._ready: start")
 	# Ensure CharacterClass is loaded and instantiate
@@ -119,7 +121,7 @@ func _ready() -> void:
 	add_child(center)
 
 	var title = Label.new()
-	title.text = "Fiche Personnage"
+	title.text = "DOSSIER DE L’HÉRITIER"
 	title.add_theme_font_size_override("font_size", 20)
 	title.add_theme_color_override("font_color", COLOR_GOLD)
 	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
@@ -205,11 +207,8 @@ func _ready() -> void:
 
 	var stats_panel = PanelContainer.new()
 	stats_panel.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	var stats_style = StyleBoxFlat.new()
-	stats_style.bg_color = Color(0.07, 0.02, 0.14, 0.85)
-	stats_style.border_color = Color(0.79, 0.66, 0.30, 0.45)
-	stats_style.set_border_width_all(1)
-	stats_style.set_corner_radius_all(4)
+	var stats_style: StyleBoxFlat = FallenUI.card_style(false)
+	stats_style.border_color = FallenUI.GOLD_SOFT
 	stats_panel.add_theme_stylebox_override("panel", stats_style)
 	panel.add_child(stats_panel)
 
@@ -270,11 +269,8 @@ func _ready() -> void:
 	feat_panel.clip_contents = true
 	# Provide a larger minimum so the list has enough room
 	feat_panel.custom_minimum_size = Vector2(0, 420)
-	var feat_style = StyleBoxFlat.new()
-	feat_style.bg_color = Color(0.05, 0.01, 0.10, 0.82)
-	feat_style.border_color = Color(0.79, 0.66, 0.30, 0.35)
-	feat_style.set_border_width_all(1)
-	feat_style.set_corner_radius_all(4)
+	var feat_style: StyleBoxFlat = FallenUI.card_style(false)
+	feat_style.border_color = FallenUI.BORDER
 	feat_panel.add_theme_stylebox_override("panel", feat_style)
 	panel.add_child(feat_panel)
 

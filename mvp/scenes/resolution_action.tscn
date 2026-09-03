@@ -169,6 +169,9 @@ name = "BarreAnimation"
 [node name="PanneauEffets" type="PanelContainer" parent="PanneauCentre"]
 layout_mode = 2
 visible = false
+custom_minimum_size = Vector2(0, 104)
+size_flags_vertical = 3
+clip_contents = true
 name = "PanneauEffets"
 
 [node name="ContenuEffets" type="VBoxContainer" parent="PanneauCentre/PanneauEffets"]
@@ -181,8 +184,15 @@ text = "Conséquences :"
 theme_override_font_sizes/font_size = 12
 theme_override_colors/font_color = Color(0.7, 0.7, 0.7, 0.7)
 
-[node name="ListeEffets" type="VBoxContainer" parent="PanneauCentre/PanneauEffets/ContenuEffets"]
+[node name="EffetsScroll" type="ScrollContainer" parent="PanneauCentre/PanneauEffets/ContenuEffets"]
 layout_mode = 2
+custom_minimum_size = Vector2(0, 76)
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+
+[node name="ListeEffets" type="VBoxContainer" parent="PanneauCentre/PanneauEffets/ContenuEffets/EffetsScroll"]
+layout_mode = 2
+size_flags_horizontal = 3
 name = "ListeEffets"
 
 [node name="ActionBarBottom" type="HBoxContainer" parent="PanneauCentre"]

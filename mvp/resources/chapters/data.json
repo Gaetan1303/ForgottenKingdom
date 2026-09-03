@@ -4,7 +4,7 @@
       "id": 0,
       "titre": "Prologue — L'Ange Tombé",
       "periode": "Antiquité, Demon Realm",
-      "illustration": "yomihara_1024.png",
+      "illustration": "ingrid_39_1024.png",
       "musique": "dark_ambient_01.ogg",
       "scenes": [
         {
@@ -23,7 +23,7 @@
       "id": 1,
       "titre": "Chapitre I — Le Sang du Pacte",
       "periode": "Antiquité",
-      "illustration": "demon_realm_map_1024.png",
+      "illustration": "ingrid_39_1024.png",
       "musique": "demon_realm_theme.ogg",
       "scenes": [
         {
@@ -38,7 +38,7 @@
         },
         {
           "texte": "\"Tu n'es plus un ange,\" dit Cara Cromwell, Seigneure du Sang, ses yeux rouges brillant dans la pénombre. \"Mais tu n'es pas encore une déesse. Ce que tu deviendras... dépend de tes choix.\"",
-          "illustration": "edwin_black_1024.png",
+          "illustration": "",
           "animation": "idle"
         }
       ]
@@ -78,7 +78,7 @@
       "nom": "Yomihara",
       "region": "Japon contemporain",
       "pos_x": 0.85,
-      "pos_y": 0.20,
+      "pos_y": 0.2,
       "chapitre_associe": 2,
       "description": "Ville japonaise à l'intersection du monde humain et du Royaume Démoniaque."
     },
@@ -105,7 +105,7 @@
       "nom": "Corpse Lord",
       "region": "Demon Realm",
       "pos_x": 0.18,
-      "pos_y": 0.40,
+      "pos_y": 0.4,
       "chapitre_associe": -1,
       "description": "Région hantée gouvernée par les morts."
     },
@@ -122,8 +122,8 @@
       "id": "rollo_viscounty",
       "nom": "Rollo Viscounty",
       "region": "Demon Realm",
-      "pos_x": 0.20,
-      "pos_y": 0.70,
+      "pos_x": 0.2,
+      "pos_y": 0.7,
       "chapitre_associe": -1,
       "description": "Comté fortifié entre la côte et les plaines."
     },
@@ -141,7 +141,7 @@
       "nom": "Gate City",
       "region": "Demon Realm",
       "pos_x": 0.52,
-      "pos_y": 0.60,
+      "pos_y": 0.6,
       "chapitre_associe": -1,
       "description": "Ville carrefour qui contrôle l'accès aux terres inconnues."
     },
@@ -194,7 +194,7 @@
       "id": "kings_rock",
       "nom": "King's Rock",
       "region": "Demon Realm",
-      "pos_x": 0.10,
+      "pos_x": 0.1,
       "pos_y": 0.86,
       "chapitre_associe": -1,
       "description": "Promontoire rocheux légendaire."
@@ -203,7 +203,7 @@
       "id": "richster_territory",
       "nom": "Richster Territory",
       "region": "Demon Realm",
-      "pos_x": 0.60,
+      "pos_x": 0.6,
       "pos_y": 0.82,
       "chapitre_associe": -1,
       "description": "Terres agricoles du sud-est."
@@ -239,7 +239,7 @@
       "id": "frost_demons",
       "nom": "Frost Demons",
       "region": "Demon Realm",
-      "pos_x": 0.50,
+      "pos_x": 0.5,
       "pos_y": 0.02,
       "chapitre_associe": -1,
       "description": "Région polaire hantée par des démons de gel."

@@ -1,0 +1,23 @@
+ForgottenKingdom - validation v4 narration images
+
+Correctif principal:
+- ResourcePathResolver.load_texture() tente désormais un chargement direct des PNG/JPG/WebP via Image.load() avant ResourceLoader.
+- Cela permet aux illustrations narratives restaurées d'être chargées même si leur sidecar .import n'existe pas encore.
+- Fallback ResourceLoader puis .godot/imported/*.ctex conservé.
+
+Illustrations présentes et vérifiées:
+- assets/images/demon_realm_map_1024.png
+- assets/images/edwin_black_1024.png
+- assets/images/ingrid_39_1024.png
+- assets/images/nine_nobles_1024.png
+- assets/images/yomihara_1024.png
+
+Tests disponibles côté Godot 4.4:
+  godot --headless --path . -s scripts/tests/test_narration_assets.gd
+  godot --headless --path . -s scripts/tests/test_chapter_view_illustrations.gd
+
+Résultats attendus:
+  NARRATION_ASSETS_OK: 5 illustrations chargeables
+  CHAPTER_VIEW_ILLUSTRATIONS_OK: 5/5
+
+Note: le runtime de génération n'embarque pas de binaire Godot, donc ces deux tests doivent être exécutés sur la machine Godot 4.4 de développement.
