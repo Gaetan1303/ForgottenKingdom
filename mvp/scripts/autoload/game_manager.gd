@@ -215,7 +215,7 @@ func _deferred_connect_stop(stop_inst: Node) -> void:
 	var btn := stop_inst.get_node_or_null("BtnStopMusicGlobal")
 	if btn:
 		# try load icon at runtime for raster formats; skip SVG (import needed in editor)
-		var icon_path := "res://assets/ui/stop_icon.svg"
+		var icon_path := "res://assets/ui/stop_icon.png"
 		var ext := icon_path.get_extension().to_lower()
 		if ext != "svg" and FileAccess.file_exists(icon_path):
 			var tex := ResourceLoader.load(icon_path)

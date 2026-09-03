@@ -1,14 +1,16 @@
 extends Control
+const FallenUI = preload("res://scripts/ui/fallen_ui.gd")
 
 const ITEM_DEF := [
-	{"key":"new", "title":"Nouvelle partie", "desc":"RPG Gestion — Reconstituez votre Clan Démoniaque", "icon":"res://assets/maquette/Menu Principal.png"},
-	{"key":"continue", "title":"Continuer", "desc":"Reprendre votre dernière sauvegarde", "icon":""},
-	{"key":"encyclo", "title":"Encyclopédie", "desc":"Le Lore des 9 Maisons Nobles Démoniques", "icon":""},
-	{"key":"options", "title":"Paramètres", "desc":"Options, Audio, Interface", "icon":""},
-	{"key":"quit", "title":"Quitter", "desc":"Version 0.0.1", "icon":""},
+	{"key":"new", "title":"Nouvelle partie", "desc":"Fonder une Maison déchue et reprendre votre héritage", "icon":"res://assets/icon/jeu.png"},
+	{"key":"continue", "title":"Continuer", "desc":"Reprendre le dernier serment sauvegardé", "icon":"res://assets/images/clan/defaut.png"},
+	{"key":"encyclo", "title":"Chroniques", "desc":"Relire les récits et secrets déjà révélés", "icon":"res://assets/images/clan/nine_nobles.png"},
+	{"key":"options", "title":"Paramètres", "desc":"Audio, affichage et confort de jeu", "icon":""},
+	{"key":"quit", "title":"Quitter", "desc":"Refermer les chroniques", "icon":""},
 ]
 
 func _ready() -> void:
+	FallenUI.apply(self, "main_menu")
 	# Appliquer couleur de fond légère via script (évite problèmes de parsing du tscn)
 	if has_node("Background"):
 		$Background.color = UIColors.BG

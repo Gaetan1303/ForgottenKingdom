@@ -1,0 +1,38 @@
+ForgottenKingdom / Game corrected v3 - 2026-09-03
+
+Corrections basées sur le runtime Godot 4.4 fourni par l'utilisateur :
+- test_domain_services : suppression de l'appel statique invalide ClanEconomyService.can_instantiate().
+- test_compile_smoke : ne précharge plus les autoloads qui se référencent entre eux.
+- scripts/domain/creature_profile.gd : shim sans class_name pour écraser l'ancien doublon CreatureProfile laissé par des extractions précédentes.
+- ResourcePathResolver : résolution de textures + fallback vers les .ctex importés.
+- Restauration des sources PNG de narration depuis les WebP embarqués dans les .ctex Godot :
+  * demon_realm_map_1024.png
+  * edwin_black_1024.png
+  * ingrid_39_1024.png
+  * nine_nobles_1024.png
+  * yomihara_1024.png
+- ChapterView utilise le resolver pour les illustrations.
+- MapView utilise le resolver pour les cartes.
+- AudioManager ignore proprement un nom de musique vide.
+- test_narration_assets.gd ajouté.
+
+Validations effectuées dans le conteneur :
+- 88 preload() -> chemins présents.
+- 65 class_name -> uniques.
+- CreatureProfile global uniquement dans scripts/data/creature_profile.gd.
+- 5/5 illustrations de resources/chapters/data.json restaurées comme PNG valides.
+- 0 modification dans :
+  * scripts/ui/character_creation/slides/
+  * scripts/ui/tween/
+  * scenes/character_creation/slides/
+- JSON valides.
+- YAML valides.
+- Contrôle de délimiteurs sur les fichiers modifiés : OK.
+
+Limite : aucun binaire Godot n'est disponible dans le conteneur OpenAI ; les commandes Godot ci-dessous doivent donc être exécutées sur la machine de l'utilisateur.
+
+Tests à exécuter sous Godot 4.4 :
+  godot --headless --path . -s scripts/tests/test_compile_smoke.gd
+  godot --headless --path . -s scripts/tests/test_domain_services.gd
+  godot --headless --path . -s scripts/tests/test_narration_assets.gd
+  godot

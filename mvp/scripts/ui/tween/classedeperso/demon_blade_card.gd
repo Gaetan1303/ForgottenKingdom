@@ -1,6 +1,6 @@
 ## Demon Blade — sword energy burst: fast scale punch + red flash.
 class_name DemonBladeCard
-extends BaseClassCard
+extends "res://scripts/ui/tween/classedeperso/base_class_card.gd"
 
 
 func _play_idle_animation() -> void:

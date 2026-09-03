@@ -1,6 +1,6 @@
 ## Warlord — commanding presence: slow imposing scale + gold authority modulate.
 class_name WarlordCard
-extends BaseClassCard
+extends "res://scripts/ui/tween/classedeperso/base_class_card.gd"
 
 
 func _play_idle_animation() -> void:

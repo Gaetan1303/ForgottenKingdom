@@ -31,10 +31,16 @@ theme_override_constants/separation = 12
 
 [node name="Title" type="Label" parent="Root"]
 layout_mode = 2
-text = "Sélection de slot de sauvegarde"
+text = "REGISTRE DES HÉRITIERS"
 horizontal_alignment = 1
 theme_override_font_sizes/font_size = 26
 theme_override_colors/font_color = Color(0.85, 0.7, 1, 1)
+
+[node name="Subtitle" type="Label" parent="Root"]
+layout_mode = 2
+text = "Choisissez le sceau d’une campagne existante ou gravez-en un nouveau."
+horizontal_alignment = 1
+theme_override_font_sizes/font_size = 13
 
 [node name="Body" type="HBoxContainer" parent="Root"]
 layout_mode = 2
@@ -52,7 +58,7 @@ theme_override_constants/separation = 8
 
 [node name="SlotListLabel" type="Label" parent="Root/Body/LeftPanel/LeftContent"]
 layout_mode = 2
-text = "Slots"
+text = "SCEAUX DE CAMPAGNE"
 theme_override_font_sizes/font_size = 16
 
 [node name="SlotList" type="ItemList" parent="Root/Body/LeftPanel/LeftContent"]
@@ -71,7 +77,7 @@ theme_override_constants/separation = 8
 
 [node name="SummaryLabel" type="Label" parent="Root/Body/RightPanel/RightContent"]
 layout_mode = 2
-text = "Résumé du slot"
+text = "ÉTAT DE LA MAISON"
 theme_override_font_sizes/font_size = 16
 
 [node name="SlotNameLabel" type="Label" parent="Root/Body/RightPanel/RightContent"]
@@ -85,7 +91,7 @@ placeholder_text = "Nom personnalisé (facultatif)"
 
 [node name="BtnSaveName" type="Button" parent="Root/Body/RightPanel/RightContent"]
 layout_mode = 2
-text = "Enregistrer nom"
+text = "Renommer le sceau"
 
 [node name="PortraitPreview" type="TextureRect" parent="Root/Body/RightPanel/RightContent"]
 layout_mode = 2
@@ -106,19 +112,19 @@ theme_override_constants/separation = 12
 
 [node name="BtnLoad" type="Button" parent="Root/Actions"]
 layout_mode = 2
-text = "Charger"
+text = "Reprendre"
 
 [node name="BtnNewOverwrite" type="Button" parent="Root/Actions"]
 layout_mode = 2
-text = "Nouvelle / Écraser"
+text = "Nouvelle campagne"
 
 [node name="BtnDelete" type="Button" parent="Root/Actions"]
 layout_mode = 2
-text = "Supprimer"
+text = "Briser le sceau"
 
 [node name="BtnBack" type="Button" parent="Root/Actions"]
 layout_mode = 2
-text = "Retour"
+text = "◀  Retour"
 
 [node name="Status" type="Label" parent="Root"]
 layout_mode = 2
@@ -130,9 +136,9 @@ theme_override_colors/font_color = Color(0.95, 0.75, 1, 1)
 [node name="ConfirmDelete" type="ConfirmationDialog" parent="."]
 title = "Supprimer le slot"
 dialog_text = "Cette action supprimera la progression et l'état du clan pour ce slot."
-ok_button_text = "Supprimer"
+ok_button_text = "Briser le sceau"
 
 [node name="ConfirmNewOverwrite" type="ConfirmationDialog" parent="."]
 title = "Nouvelle / Écraser"
 dialog_text = "Démarrer une nouvelle campagne ici ? Cela écrasera les données existantes dans ce slot."
-ok_button_text = "Nouvelle / Écraser"
+ok_button_text = "Nouvelle campagne"

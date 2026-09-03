@@ -1,4 +1,6 @@
 extends Control
+const FallenUI = preload("res://scripts/ui/fallen_ui.gd")
+const VisualAssetCatalog = preload("res://scripts/ui/visual_asset_catalog.gd")
 
 ## Use global class_name DateTimeFormatter for formatting utilities.
 
@@ -7,6 +9,7 @@ var _selected_slot_id: String = ""
 var _portrait_texture_cache: Dictionary = {}
 
 func _ready() -> void:
+	FallenUI.apply(self, "default")
 	_connect_ui()
 	_refresh_slots()
 
@@ -87,26 +90,7 @@ func _render_summary(slot: Dictionary) -> void:
 
 
 func _texture_from_portrait_payload(payload: Dictionary) -> Texture2D:
-	if payload.is_empty():
-		return null
-	if str(payload.get("encoding", "")) != "png_base64":
-		return null
-	var encoded := str(payload.get("data", ""))
-	if encoded.is_empty():
-		return null
-	var raw := Marshalls.base64_to_raw(encoded)
-	if raw.is_empty():
-		return null
-	# Cache to avoid recreating textures for identical payloads
-	var cache_key := String(encoded).sha256_text()
-	if _portrait_texture_cache.has(cache_key):
-		return _portrait_texture_cache[cache_key]
-	var image := Image.new()
-	if image.load_png_from_buffer(raw) != OK:
-		return null
-	var tex := ImageTexture.create_from_image(image)
-	_portrait_texture_cache[cache_key] = tex
-	return tex
+	return VisualAssetCatalog.texture_from_portrait_payload(payload)
 
 
 func _exit_tree() -> void:

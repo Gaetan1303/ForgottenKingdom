@@ -4,6 +4,9 @@
 ## Reçoit via init_data() :
 ##   { "action_id": String, "maison_id": int }
 extends Control
+const FallenUI = preload("res://scripts/ui/fallen_ui.gd")
+const VisualAssetCatalog = preload("res://scripts/ui/visual_asset_catalog.gd")
+const ResourcePathResolver = preload("res://scripts/utils/resource_path_resolver.gd")
 
 # ── Données de l'action en cours ─────────────────────────────────────
 var _action_id:  String = ""
@@ -32,6 +35,7 @@ var _animator: Node = null
 # ─────────────────────────────────────────────────────────────────────
 
 func _ready() -> void:
+	FallenUI.apply(self, "clan")
 	$PanneauCentre/ActionBarBottom/BtnContinuer.pressed.connect(_on_continuer)
 	$PanneauCentre/ActionBarBottom/BtnContinuer.visible = false
 	$PanneauCentre/PanneauEffets.visible = false
@@ -61,16 +65,27 @@ func _mettre_a_jour_entete() -> void:
 
 	var maison := ClanManager.get_maison(_maison_id)
 
-	# --- Image du héros (choisie à la création) ---
-	var hero_img_path = "res://assets/images/clan/defaut.png"
-	var portrait_path := ClanManager.get_personnage_portrait_path()
-	if portrait_path != "":
-		hero_img_path = portrait_path
-	if not ResourceLoader.exists(hero_img_path):
-		hero_img_path = "res://assets/images/clan/defaut.png"
-	var joueur_icon = $PanneauCentre/PanneauStats/ContenuStats/ColJoueur/IconeClanJoueur
-	joueur_icon.texture = load(hero_img_path)
-	joueur_icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	# --- Portrait du héros (portrait réellement choisi, puis fallback de genre) ---
+	var profil := ClanManager.profil_personnage as Dictionary
+	var portrait_payload: Dictionary = profil.get("portrait", {}) as Dictionary
+	var hero_texture: Texture2D = VisualAssetCatalog.texture_from_portrait_payload(portrait_payload)
+	if hero_texture == null:
+		var genre := str(profil.get("genre", "")).to_lower()
+		if genre.is_empty():
+			var appearance := str(profil.get("apparence", "")).to_lower()
+			if appearance.contains("femme"):
+				genre = "femme"
+			elif appearance.contains("homme"):
+				genre = "homme"
+		var hero_img_path: String = VisualAssetCatalog.person_path("player_default")
+		if genre == "femme":
+			hero_img_path = VisualAssetCatalog.person_path("player_female")
+		elif genre == "homme":
+			hero_img_path = VisualAssetCatalog.person_path("player_male")
+		hero_texture = ResourcePathResolver.load_texture(hero_img_path, "res://assets/images")
+	var joueur_icon := $PanneauCentre/PanneauStats/ContenuStats/ColJoueur/IconeClanJoueur as TextureRect
+	joueur_icon.texture = hero_texture
+	VisualAssetCatalog.apply_fit(joueur_icon, "portrait")
 	joueur_icon.custom_minimum_size = CLAN_ICON_SIZE
 
 	# --- Image de la cible (dépend de l'action) ---
@@ -251,71 +266,11 @@ func _afficher_resultat() -> void:
 	for e in effets_resume:
 		_append_journal(e)
 
-	var btn = $PanneauCentre/ActionBarBottom/BtnContinuer
-	var need_overlay: bool = false
-	if btn != null:
-		# Try to ensure the scene button is visible and usable
-		btn.visible = true
-		btn.show()
-		btn.z_index = 1000
-		btn.custom_minimum_size = Vector2(180, 40)
-		if DEBUG_CONTINUE_BTN:
-			var gpos = btn.get_global_transform().origin
-			print("[resolution_action] BtnContinuer global_pos=", gpos)
-		# If the button isn't actually visible in the tree or is offscreen, create overlay
-		if not btn.is_visible_in_tree():
-			need_overlay = true
-		else:
-			var gpos2 = btn.get_global_transform().origin
-			var view_size = get_viewport().get_visible_rect().size
-			if gpos2.x < 0 or gpos2.y < 0 or gpos2.x > view_size.x or gpos2.y > view_size.y:
-				need_overlay = true
-	else:
-		need_overlay = true
-
-	if need_overlay:
-		var root := get_tree().root
-		if not root.has_node("ResolutionContinueLayer"):
-			var view_size = get_viewport().get_visible_rect().size
-			var layer = CanvasLayer.new()
-			layer.name = "ResolutionContinueLayer"
-			layer.layer = 50
-			var obtn = Button.new()
-			obtn.name = "ResolutionContinueOverlayBtn"
-			obtn.text = "→  Continuer"
-			obtn.custom_minimum_size = Vector2(180, 40)
-			# Positionnement robuste : préférer à droite de la barre, sinon à gauche, sinon coin bas-droit
-			var bar = $PanneauCentre/BarreAnimation
-			var pos_x: float = 0.0
-			var pos_y: float = 0.0
-			if bar != null:
-				var bar_global = bar.get_global_transform().origin
-				var bar_w = float(bar.size.x)
-				var bar_h = float(bar.size.y)
-				var right_of_bar = bar_global.x + bar_w + 12.0
-				var left_of_bar = bar_global.x - obtn.custom_minimum_size.x - 12.0
-				if right_of_bar + obtn.custom_minimum_size.x <= view_size.x - 8.0:
-					pos_x = right_of_bar
-				elif left_of_bar >= 8.0:
-					pos_x = left_of_bar
-				else:
-					pos_x = view_size.x - obtn.custom_minimum_size.x - 24.0
-				# centrer verticalement sur la barre si possible, sinon placer juste en dessous
-				pos_y = bar_global.y + (bar_h / 2.0) - (obtn.custom_minimum_size.y / 2.0)
-				if pos_y < 8.0 or pos_y + obtn.custom_minimum_size.y > view_size.y - 8.0:
-					pos_y = min(view_size.y - obtn.custom_minimum_size.y - 24.0, bar_global.y + bar_h + 12.0)
-			else:
-				pos_x = view_size.x - obtn.custom_minimum_size.x - 24.0
-				pos_y = view_size.y - obtn.custom_minimum_size.y - 24.0
-			pos_x = clamp(pos_x, 8.0, view_size.x - obtn.custom_minimum_size.x - 8.0)
-			pos_y = clamp(pos_y, 8.0, view_size.y - obtn.custom_minimum_size.y - 8.0)
-			obtn.position = Vector2(pos_x, pos_y)
-			obtn.pressed.connect(_on_continuer)
-			# Try to match the scene styling a bit
-			obtn.add_theme_font_size_override("font_size", 14)
-			obtn.add_theme_color_override("font_color", Color(0.95, 0.95, 0.95, 1))
-			layer.add_child(obtn)
-			root.add_child(layer)
+	# Le bouton appartient au layout du panneau et reste toujours dans le viewport.
+	var btn := $PanneauCentre/ActionBarBottom/BtnContinuer as Button
+	btn.visible = true
+	btn.disabled = false
+	btn.custom_minimum_size = Vector2(180, 40)
 
 func _titre_resultat() -> String:
 	match _resultat_id:
@@ -343,7 +298,7 @@ func _couleur_resultat() -> Color:
 	return Color(0.8, 0.8, 0.8, 1)
 
 func _afficher_effets() -> void:
-	var liste := $PanneauCentre/PanneauEffets/ContenuEffets/ListeEffets
+	var liste := $PanneauCentre/PanneauEffets/ContenuEffets/EffetsScroll/ListeEffets
 	for child in liste.get_children():
 		child.queue_free()
 
@@ -354,27 +309,20 @@ func _afficher_effets() -> void:
 
 	$PanneauCentre/PanneauEffets.visible = true
 
-	# Dictionnaire d'icônes pour chaque effet clé
-	var icones = {
-		"or": "res://mvp/assets/icon/gold.png",
-		"soldats": "res://mvp/assets/icon/soldat.png",
-		"mana": "res://mvp/assets/icon/mana.png",
-		"reputation": "res://mvp/assets/icon/essence.png"
-	}
+	# Icônes uniquement quand l'asset représente réellement la ressource.
+	var icones := VisualAssetCatalog.RESOURCE_ICONS
 
 	for ligne in effets_texte:
 		var hbox := HBoxContainer.new()
 		hbox.alignment = BoxContainer.ALIGNMENT_CENTER
 		var lower = ligne.to_lower()
-		var icon_path = ""
+		var icon_path: String = ""
 		if lower.find("or") >= 0:
 			icon_path = icones["or"]
 		elif lower.find("soldat") >= 0:
 			icon_path = icones["soldats"]
 		elif lower.find("mana") >= 0:
 			icon_path = icones["mana"]
-		elif lower.find("réputation") >= 0 or lower.find("reputation") >= 0:
-			icon_path = icones["reputation"]
 		if icon_path != "" and ResourceLoader.exists(icon_path):
 			var tex = TextureRect.new()
 			tex.texture = load(icon_path)

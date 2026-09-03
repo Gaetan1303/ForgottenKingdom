@@ -1,6 +1,6 @@
 ## Hellranger — hunter movement: vertical bob + slight horizontal lean.
 class_name HellrangerCard
-extends BaseClassCard
+extends "res://scripts/ui/tween/classedeperso/base_class_card.gd"
 
 
 func _play_idle_animation() -> void:

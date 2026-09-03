@@ -1,6 +1,6 @@
 ## Soulwarden — soul pulse: slow scale breathe + soft ethereal glow.
 class_name SoulwardenCard
-extends BaseClassCard
+extends "res://scripts/ui/tween/classedeperso/base_class_card.gd"
 
 
 func _play_idle_animation() -> void:

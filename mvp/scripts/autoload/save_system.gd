@@ -2,7 +2,7 @@
 ## Singleton de sauvegarde — persiste la progression par slot dans user://slots/<slot>/.
 extends Node
 
-## Use global class_name JsonPersistenceService for persistence utilities.
+const JsonPersistenceService = preload("res://scripts/services/json_persistence_service.gd")
 
 const SLOTS_ROOT_PATH := "user://slots"
 const SLOTS_INDEX_PATH := "user://save_slots.json"

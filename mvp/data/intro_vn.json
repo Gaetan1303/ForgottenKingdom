@@ -1,8 +1,6 @@
 {
   "_commentaire": "Séquence d'introduction — Version 3. Inspirée du lore Taimanin : société féodale démoniaque, Neuf Familles Nobles, Chevaliers Infernaux. Arc émotionnel Sasuke : amour profond du clan/parents → rupture traumatique → haine froide et absolue. Parents nommés et présents. Jouée une seule fois après la création du personnage.",
-
   "scenes": [
-
     {
       "id": "prologue_01",
       "type": "narration",
@@ -12,7 +10,6 @@
       "musique": "Naissance.mp3",
       "texte": "Le Royaume Démoniaque ne ressemble pas à ce que les légendes racontent.\n\nCe n'est pas un enfer de flammes et de chaos.\n\nC'est une [b]société[/b]. Féodale. Cruelle. Précise.\n\nAu sommet, les [b][color=#ff4444]Neuf Familles Nobles[/color][/b] régnent sur des territoires immenses, protégées par les [b][color=#cc3300]Chevaliers Infernaux[/color][/b] — les gardiens de l'ordre, exécuteurs du Conclave, terreur des clans libres.\n\nEt en dessous... tout le reste."
     },
-
     {
       "id": "prologue_02",
       "type": "narration",
@@ -20,7 +17,6 @@
       "fond_couleur": "#080018",
       "texte": "Les [b]Terres Libres[/b] s'étendent à l'est des domaines nobles — des territoires non contrôlés où des clans indépendants survivent par la force, l'astuce, et les pactes forgés dans l'ombre.\n\nLà, pas de seigneur. Pas d'allégeance forcée.\n\nJuste la loi du sang et de l'honneur.\n\nC'est là qu'était ton foyer."
     },
-
     {
       "id": "famille_01",
       "type": "narration",
@@ -29,7 +25,6 @@
       "fond_couleur": "#0d001a",
       "texte": "Tu avais dix ans.\n\nLe bastion du [b][color=#cc99ff]{clan_name}[/color][/b] sentait toujours la même chose au matin — l'encens de résine noire que ta mère brûlait pour le rituel d'aube, et le pain d'orge que ton père faisait cuire lui-même, parce qu'il disait que les chefs de clan qui ne savent pas nourrir leur famille ne méritent pas de la diriger."
     },
-
     {
       "id": "famille_02",
       "type": "dialogue",
@@ -37,7 +32,6 @@
       "fond_couleur": "#0d001a",
       "texte": "[color=#ffaacc]{mere_name}[/color] t'attrapa par l'épaule alors que tu filais vers la cour d'entraînement — encore en pyjama, l'épée déjà à la ceinture.\n\n« [i]{player_name}[/i]. »\n\nElle sourit — ce sourire-là, le seul qui te faisait t'arrêter net.\n\n« Tu peux tuer tous les ennemis de ce clan. Mais si tu pars sans manger, c'est moi qui te tue. »"
     },
-
     {
       "id": "famille_03",
       "type": "dialogue",
@@ -45,7 +39,6 @@
       "fond_couleur": "#0d001a",
       "texte": "[color=#ffcc88]{pere_name}[/color] — depuis la cuisine, sans lever les yeux de la poêle :\n\n« Laisse-le/la partir, [color=#ffaacc]{mere_name}[/color]. »\n\nUne pause.\n\n« ...[i]{player_name}[/i], si tu reviens sans avoir fait tes cent frappes, je te fais manger debout. »\n\nTu souriais déjà en descendant les escaliers."
     },
-
     {
       "id": "famille_04",
       "type": "narration",
@@ -53,7 +46,6 @@
       "fond_couleur": "#0d001a",
       "texte": "C'était comme ça, chaque matin.\n\n[color=#ffaacc]{mere_name}[/color] qui grondait pour que tu manges. [color=#ffcc88]{pere_name}[/color] qui prétendait ne pas s'inquiéter.\n\nLe bruit des soldats du clan à l'entraînement. L'odeur du feu dans les forges. Les rires dans les couloirs.\n\nTu n'appelais pas ça le bonheur. Tu n'avais pas de mot pour ça.\n\nC'était juste... [i]la vie[/i]."
     },
-
     {
       "id": "lecon_01",
       "type": "dialogue",
@@ -61,7 +53,6 @@
       "fond_couleur": "#0e0020",
       "texte": "[color=#ffcc88]{pere_name}[/color] t'emmena ce soir-là dans la salle des cartes.\n\n« Viens. Il est temps que tu comprennes où nous vivons. »\n\nSur la grande table de pierre, une carte du Royaume Démoniaque s'étalait — les territoires des Neuf Familles en rouge sang, et au milieu, un espace vide marqué d'un cercle blanc.\n\n« Ça, c'est nous. Les Terres Libres. »"
     },
-
     {
       "id": "lecon_02",
       "type": "tutorial",
@@ -70,7 +61,6 @@
       "fond_couleur": "#0e0020",
       "texte": "[color=#ffcc88]{pere_name}[/color] : « Un clan, c'est vivant. Comme un corps. L'or, c'est le sang. Les soldats, c'est les muscles. Le mana dans nos cristaux — c'est le souffle. »\n\n« Si l'un manque, tout faiblit. Si deux manquent, tu meurs. »\n\nIl posa sa main sur ton épaule — lourde, chaude, solide.\n\n« Retiens ça avant tout le reste. »"
     },
-
     {
       "id": "lecon_03",
       "type": "tutorial",
@@ -79,7 +69,6 @@
       "fond_couleur": "#0e0020",
       "texte": "[color=#ffcc88]{pere_name}[/color] : « Chaque jour que tu passeras à la tête de ce clan, tu devras choisir. Attaquer ? Espionner ? Recruter ? Forger une alliance ? »\n\n« Il n'y a pas de bon choix universel. Il y a le bon choix [i]ce jour-là[/i], avec [i]ces ressources-là[/i], contre [i]cet ennemi-là[/i]. »\n\n« C'est pour ça qu'on réfléchit. Avant de frapper. »"
     },
-
     {
       "id": "lecon_04",
       "type": "dialogue",
@@ -87,7 +76,6 @@
       "fond_couleur": "#0d001a",
       "texte": "[color=#ffaacc]{mere_name}[/color] rejoignit la salle des cartes — une tasse dans chaque main, qu'elle posa sans cérémonie.\n\n« Tu lui expliques les ressources et les actions. Bien. »\n\nElle s'assit en face de toi.\n\n« Maintenant je vais t'expliquer la partie que [color=#ffcc88]{pere_name}[/color] oublie toujours. »\n\n[color=#ffcc88]{pere_name}[/color], sans se retourner : « Je n'oublie pas. Je gardais le meilleur pour la fin. »\n\n[color=#ffaacc]{mere_name}[/color] : « Bien sûr. »"
     },
-
     {
       "id": "lecon_05",
       "type": "tutorial",
@@ -96,7 +84,6 @@
       "fond_couleur": "#0d001a",
       "texte": "[color=#ffaacc]{mere_name}[/color] : « Un clan sans alliés est un clan mort. La nuit est le moment des liens — des pactes qui durent plus que les batailles. »\n\n« Quand quelqu'un rejoint le [color=#cc99ff]{clan_name}[/color], tu ne recrutes pas un outil. Tu accueilles une personne. »\n\n« Sa confiance, ça se gagne. Et quand tu l'as gagnée — on appelle ça l'[b][color=#cc99ff]affinité[/color][/b] — cette personne se battra pour toi là où les mercenaires fuient. »"
     },
-
     {
       "id": "lecon_06",
       "type": "narration",
@@ -104,7 +91,6 @@
       "fond_couleur": "#080015",
       "texte": "La nuit avança. Les cartes, les chiffres, les noms des clans voisins — tu absorbais tout.\n\nMais ce que tu retins le plus fort, ce soir-là, c'est cette image.\n\n[color=#ffcc88]{pere_name}[/color] qui te montrait les routes de retraite sur la carte. [color=#ffaacc]{mere_name}[/color] qui ajoutait une couverture sur tes épaules sans s'arrêter de parler.\n\nEt l'idée — naïve, absolue — que rien ne pourrait toucher cet endroit."
     },
-
     {
       "id": "kael_01",
       "type": "dialogue",
@@ -112,7 +98,6 @@
       "fond_couleur": "#060012",
       "texte": "[color=#ffaacc]{mere_name}[/color] : « Il y a un jeune guerrier qui attend depuis le matin à la porte. Il s'appelle [b]Kael[/b]. »\n\n« Son village a été rasé par les Chevaliers Infernaux de la [b][color=#ffffff]Maison Dragon Blanc[/color][/b]. Il a survécu seul pendant deux ans. »\n\nElle marqua une pause.\n\n« Va lui parler. Regarde ses yeux. Et décide par toi-même. »"
     },
-
     {
       "id": "kael_02",
       "type": "recrutement",
@@ -134,10 +119,10 @@
           "commandement": 6
         },
         "description": "Rescapé d'un village des Terres Libres brûlé par les Chevaliers Infernaux du Dragon Blanc. Il ne cherche pas de la gloire ni de l'or — il cherche un endroit qui mérite qu'on meure pour lui. Sa loyauté, une fois donnée, ne se reprend pas.",
-        "texte_serment": "« Je jure loyauté au [b][color=#cc99ff]{clan_name}[/color][/b]. Ma lame est la vôtre, {player_name}. Jusqu'à la dernière goutte de sang. »"
+        "texte_serment": "« Je jure loyauté au [b][color=#cc99ff]{clan_name}[/color][/b]. Ma lame est la vôtre, {player_name}. Jusqu'à la dernière goutte de sang. »",
+        "portrait": "res://assets/images/PNJ/defaut/Kael.png"
       }
     },
-
     {
       "id": "kael_03",
       "type": "dialogue",
@@ -145,7 +130,6 @@
       "fond_couleur": "#060018",
       "texte": "[color=#88ddff]Kael[/color] : « {clan_name}. J'ai entendu ce nom dans les plaines de l'est. Un clan qui refuse de plier devant les Neuf Familles. »\n\nIl te regarda directement — sans déférence, sans hostilité.\n\n« C'est rare. Suffisamment rare pour que je marche trois jours pour vérifier. »\n\nUn silence.\n\n« Je ne veux ni titre ni solde. Je veux un foyer qui mérite d'être défendu. »"
     },
-
     {
       "id": "kael_04",
       "type": "narration",
@@ -153,7 +137,6 @@
       "fond_couleur": "#050010",
       "texte": "Ce soir-là, [color=#ffcc88]{pere_name}[/color] accueillit Kael à la table du clan.\n\n[color=#ffaacc]{mere_name}[/color] lui servit elle-même — ce qu'elle ne faisait que pour les membres du clan.\n\nTu ne savais pas encore que c'était la dernière nuit ordinaire de ta vie."
     },
-
     {
       "id": "conclave_01",
       "type": "narration",
@@ -162,7 +145,6 @@
       "fond_couleur": "#150010",
       "texte": "Le [b][color=#ff5555]Grand Conclave des Neuf Familles[/color][/b] avait rendu son verdict en secret.\n\nLa décision était simple : les clans des Terres Libres qui refusaient de prêter allégeance formelle seraient considérés comme des [i]anomalies à corriger[/i].\n\nPas des ennemis. Pas des rebelles.\n\nDes [i]anomalies[/i].\n\nLe mot était choisi. Ce qu'on corrige, on ne le regrette pas."
     },
-
     {
       "id": "conclave_02",
       "type": "dialogue",
@@ -170,7 +152,6 @@
       "fond_couleur": "#150010",
       "texte": "[color=#ffcc88]{pere_name}[/color] avait reçu l'émissaire du [b][color=#ffffff]Dragon Blanc[/color][/b] seul, dans la salle des cartes.\n\nL'émissaire avait posé le sceau du Conclave sur la table — un parchemin rouge marqué des neuf sceaux.\n\n[color=#ffcc88]{pere_name}[/color] l'avait regardé longtemps. Puis il l'avait plié. Et rendu.\n\n« Dites à votre seigneur que le [color=#cc99ff]{clan_name}[/color] ne plie pas. »\n\nL'émissaire n'avait pas répondu. Il était parti."
     },
-
     {
       "id": "conclave_03",
       "type": "dialogue",
@@ -178,17 +159,15 @@
       "fond_couleur": "#150010",
       "texte": "Plus tard ce soir-là, [color=#ffaacc]{mere_name}[/color] trouva [color=#ffcc88]{pere_name}[/color] debout devant la fenêtre.\n\n« Ils vont envoyer les Chevaliers. »\n\n[color=#ffcc88]{pere_name}[/color] : « Oui. »\n\n[color=#ffaacc]{mere_name}[/color] : « Et tu n'as pas changé d'avis. »\n\nIl se retourna. Son regard était calme — d'un calme qui n'était pas de l'indifférence, mais de la résolution.\n\n« Non. »\n\nElle hocha la tête. Une seule fois.\n\n« Alors on se prépare. »"
     },
-
     {
       "id": "chute_01",
       "type": "narration",
       "periode": "La nuit de la chute",
       "speaker": "narrateur",
       "fond_couleur": "#1a0000",
-      "musique": "Déchu.mp3",
+      "musique": "D#U00e9chu.mp3",
       "texte": "Le tonnerre vint sans nuage.\n\nLes signaux d'alerte — les cornes de cristal que tu n'avais entendues qu'à l'entraînement — retentirent dans tout le bastion.\n\nTu sus avant même d'ouvrir les yeux."
     },
-
     {
       "id": "chute_02",
       "type": "narration",
@@ -196,7 +175,6 @@
       "fond_couleur": "#1f0000",
       "texte": "Depuis les remparts, tu vis leurs bannières.\n\n[color=#ffffff]Dragon Blanc[/color]. [color=#ffcc00]Dragon d'Or[/color]. [color=#ff3300]Dragon Rouge[/color].\n\nTrois des Neuf Familles. Une décision collective, propre, bureaucratique.\n\nEt à leur tête — en armure blanche marquée d'une flamme noire, monté sur un destrier de cendres — un Chevalier Infernal.\n\nCalme. Méthodique.\n\nLa façon dont il regardait le bastion ne ressemblait pas à de la haine.\n\nC'était pire. C'était de l'indifférence."
     },
-
     {
       "id": "chute_03",
       "type": "dialogue",
@@ -204,7 +182,6 @@
       "fond_couleur": "#200000",
       "texte": "[color=#ffcc88]{pere_name}[/color] — déjà blessé à l'épaule, soufflant fort — te saisit par les épaules dans le couloir principal.\n\n« [i]{player_name}![/i] Écoute-moi. »\n\nSes yeux étaient les mêmes qu'à la table des cartes. Pas de panique. Pas de regret.\n\n« Kael va t'emmener hors du bastion par le passage nord. Tu prends les cristaux de mana dans mon bureau et tu pars. »\n\n« Papa— »\n\n« [i]Tu pars.[/i] »"
     },
-
     {
       "id": "chute_04",
       "type": "dialogue",
@@ -212,7 +189,6 @@
       "fond_couleur": "#200000",
       "texte": "[color=#ffaacc]{mere_name}[/color] apparut au bout du couloir — épée à la main, une entaille au front qu'elle ignorait.\n\nElle traversa la distance entre vous en trois pas et te prit le visage entre ses paumes — chaudes, fermes, comme tous les matins.\n\n« Regarde-moi. »\n\nTu la regardas.\n\n« Tu vas avoir peur. Tu vas vouloir revenir. Tu vas te sentir lâche de fuir. »\n\nSa voix ne tremblait pas.\n\n« Tout ça est normal. Et tu fuiras quand même. Tu m'entends ? »"
     },
-
     {
       "id": "chute_05",
       "type": "dialogue",
@@ -220,7 +196,6 @@
       "fond_couleur": "#1a0000",
       "texte": "[color=#ffaacc]{mere_name}[/color] te serra contre elle — une seconde, une seule — puis elle recula d'un pas.\n\n« On a fait une erreur. On aurait dû te préparer à [i]cette[/i] nuit aussi. »\n\nElle sourit — ce sourire-là, le dernier.\n\n« Alors écoute bien, parce que je ne le répéterai pas : »\n\n« [b]Le {clan_name} ne meurt pas ce soir. Il part avec toi.[/b] »\n\nElle se retourna vers le couloir d'où venaient les bruits de combat.\n\nElle n'ajouta rien."
     },
-
     {
       "id": "chute_06",
       "type": "dialogue",
@@ -228,7 +203,6 @@
       "fond_couleur": "#1a0000",
       "texte": "[color=#ffcc88]{pere_name}[/color] te saisit une dernière fois par le bras.\n\nIl ne te regarda pas longtemps — comme s'il savait que si ça durait trop, il ne te laisserait pas partir.\n\n« Retiens son nom. »\n\n« Quel nom ? »\n\n« Le Chevalier dehors. Celui en armure blanche. »\n\nUne pause. Le bastion tremblait.\n\n« [b][color=#ff5555]Caëlith. Première Lance du Dragon Blanc.[/color][/b] »\n\n« Il a dit que nous étions une anomalie. »\n\nIl te lâcha.\n\n« Prouve-lui qu'il avait tort. »"
     },
-
     {
       "id": "chute_07",
       "type": "narration",
@@ -236,7 +210,6 @@
       "fond_couleur": "#120000",
       "texte": "Tu t'es retourné une fois.\n\nUne seule.\n\n[color=#ffaacc]{mere_name}[/color] et [color=#ffcc88]{pere_name}[/color] côte à côte dans le couloir — elle l'épée levée, lui le bras tendu pour bloquer l'avancée.\n\nLa dernière image.\n\nLe feu prit le mur derrière eux.\n\nKael t'attrapa le poignet.\n\n« Maintenant. »\n\nTu courus."
     },
-
     {
       "id": "chute_08",
       "type": "narration",
@@ -244,17 +217,15 @@
       "fond_couleur": "#0a0000",
       "texte": "Le bastion brûla toute la nuit.\n\nDe la colline où Kael t'avait emmené, tu voyais la lueur — violette et rouge — monter dans le ciel noir.\n\nTu ne pleuras pas. Pas cette nuit-là.\n\nQuelque chose en toi — la partie qui pleurait, qui aimait, qui riait aux petits-déjeuners — s'éteignit avec le bastion.\n\nEt dans le silence qui resta...\n\n...quelque chose d'autre prit la place."
     },
-
     {
       "id": "exil_01",
       "type": "narration",
       "periode": "Première année — Routes de l'est",
       "speaker": "narrateur",
       "fond_couleur": "#0a000f",
-      "musique": "Déchu.mp3",
+      "musique": "D#U00e9chu.mp3",
       "texte": "La faim. Le froid. Les nuits sans feu parce que la fumée attire les espions du [b][color=#ffffff]Dragon Blanc[/color][/b].\n\nKael ne parlait pas beaucoup. C'était bien.\n\nTu n'avais rien à dire qui ne soit pas dangereux à entendre."
     },
-
     {
       "id": "exil_02",
       "type": "dialogue",
@@ -262,7 +233,6 @@
       "fond_couleur": "#080010",
       "texte": "Un soir, autour d'un feu trop petit pour chauffer, Kael dit :\n\n[color=#88ddff]Kael[/color] : « Tu pourrais changer de nom. Disparaître vers le nord. Les Terres Grises, personne ne va chercher là-bas. »\n\nLong silence.\n\n[color=#cc99ff]{player_name}[/color] : « Non. »\n\n[color=#88ddff]Kael[/color] : « Pourquoi ? »\n\nTu le regardas. Et pour la première fois depuis la nuit du bastion, tu répondis avec quelque chose qui ressemblait à de la certitude.\n\n[color=#cc99ff]{player_name}[/color] : « Parce que [b]Caëlith[/b] est encore en vie. »"
     },
-
     {
       "id": "exil_03",
       "type": "dialogue",
@@ -270,7 +240,6 @@
       "fond_couleur": "#080010",
       "texte": "[color=#88ddff]Kael[/color] regarda les flammes un long moment.\n\nPuis il dit, sans te regarder :\n\n« Mon village aussi. C'était des Chevaliers du Dragon Blanc. »\n\nPause.\n\n« J'avais neuf ans. »\n\nIl n'ajouta rien. Tu n'ajoutas rien.\n\nCertaines choses n'ont pas besoin d'être dites pour être comprises."
     },
-
     {
       "id": "exil_04",
       "type": "narration",
@@ -279,7 +248,6 @@
       "fond_couleur": "#060012",
       "texte": "Tu trouvas un maître.\n\nUne démone exilée — chassée par la [b][color=#ffcc00]Maison Dragon d'Or[/color][/b] pour avoir refusé de transmettre ses arts d'invocation au Conclave.\n\nElle vivait seule dans une tour à moitié effondrée, entourée de cristaux morts et de cartes trop vieilles pour être exactes.\n\nElle te regarda arriver. Ne dit rien pendant une minute entière. Puis :\n\n« Tu veux apprendre à te venger. »\n\nCe n'était pas une question."
     },
-
     {
       "id": "exil_05",
       "type": "dialogue",
@@ -287,7 +255,6 @@
       "fond_couleur": "#060012",
       "texte": "Elle ne t'apprit pas à te battre — tu savais déjà.\n\nElle t'apprit à [i]attendre[/i].\n\n« La vengeance précipitée est un cadeau offert à l'ennemi. »\n\n« Les Neuf Familles sont vieilles. Patientes. Elles ont vu tomber cent clans qui les haïssaient comme tu les hais. »\n\n« La seule façon de les détruire, c'est de les dépasser à leur propre jeu. »\n\nElle posa une carte du Royaume Démoniaque devant toi.\n\n« Alors. Par où tu commences ? »"
     },
-
     {
       "id": "exil_06",
       "type": "narration",
@@ -296,7 +263,6 @@
       "fond_couleur": "#050010",
       "texte": "Tu avais tes premiers alliés.\n\nDes rescapés. Des exilés. Des démones et démons que les Neuf Familles avaient brisés et qui n'avaient nulle part où aller.\n\nPas une armée. Pas encore.\n\nMais un clan.\n\nLe [b][color=#cc99ff]{clan_name}[/color][/b] vivait encore."
     },
-
     {
       "id": "exil_07",
       "type": "narration",
@@ -304,7 +270,6 @@
       "fond_couleur": "#050010",
       "texte": "Et tu avais appris sa position.\n\n[b][color=#ff5555]Seigneur Caëlith — Première Lance du Dragon Blanc.[/color][/b]\n\nIl gouvernait désormais trois territoires conquis sur les Terres Libres — les cendres de clans comme le tien, rebâtis en garnisons.\n\nIl portait toujours cette armure blanche.\n\nEt selon les informateurs de Kael... il avait totalement oublié le nom du clan qu'il avait brûlé cette nuit-là.\n\nUne [i]anomalie[/i], avait-il dit.\n\nUne formalité."
     },
-
     {
       "id": "exil_08",
       "type": "dialogue",
@@ -312,7 +277,6 @@
       "fond_couleur": "#050010",
       "texte": "[color=#88ddff]Kael[/color] posa le rapport sur la table et te regarda.\n\n« Caëlith. On a son nom, sa position, ses garnisons. »\n\n[color=#cc99ff]{player_name}[/color] : « Oui. »\n\n[color=#88ddff]Kael[/color] : « Et les huit autres Maisons ? »\n\nTu regardas la carte. Les neuf territoires rouges. Les neuf sceaux qui avaient condamné le {clan_name}.\n\n[color=#cc99ff]{player_name}[/color] : « On commence par lui. Et quand il tombe... les huit autres sauront que l'anomalie est revenue. »"
     },
-
     {
       "id": "serment_01",
       "type": "narration",
@@ -322,7 +286,6 @@
       "musique": "Serment d'Ingrid.mp3",
       "texte": "Tu as survécu à ce que les Familles Nobles pensaient fatal.\n\nTu as appris ce qu'elles ne voulaient pas que tu saches.\n\nTu n'es plus l'enfant qui regardait brûler son bastion depuis une colline.\n\nTu es ce que cette nuit a fabriqué à la place."
     },
-
     {
       "id": "serment_02",
       "type": "dialogue",
@@ -330,7 +293,6 @@
       "fond_couleur": "#080010",
       "texte": "[color=#cc99ff]{player_name}[/color] :\n\n« Je me souviens du pain que mon père faisait cuire le matin. »\n\n« Je me souviens du sourire de ma mère. »\n\n« Je me souviens du bruit que faisaient les murs du bastion quand le feu les a pris. »\n\nLong silence.\n\n« Je n'oublierai rien. »\n\n« Et je ne pardonnerai rien. »"
     },
-
     {
       "id": "serment_03",
       "type": "dialogue",
@@ -338,7 +300,6 @@
       "fond_couleur": "#050008",
       "texte": "[color=#cc99ff]{player_name}[/color] :\n\n« Au nom du [b]{clan_name}[/b] — au nom du sang de [color=#ffaacc]{mere_name}[/color] et [color=#ffcc88]{pere_name}[/color] — »\n\n« Je jure que les [b][color=#ff5555]Neuf Familles Nobles[/color][/b] s'agenouilleront. »\n\n« Toutes. »\n\n« À commencer par [b][color=#ffffff]Caëlith[/color][/b], qui a appelé mon clan une [i]anomalie[/i]. »\n\n« Il va apprendre ce que ce mot signifie vraiment. »"
     },
-
     {
       "id": "serment_04",
       "type": "dialogue",
@@ -346,7 +307,6 @@
       "fond_couleur": "#050008",
       "texte": "[color=#88ddff]Kael[/color] — debout à ta gauche, là où il se tenait toujours :\n\n« Et moi, je serai là pour chaque victoire. »\n\n« Comme je l'ai promis cette nuit-là. »\n\nIl marqua une pause. Son regard — plus grave qu'autrefois, taillé par les années.\n\n« Il était temps qu'ils se souviennent du nom du [color=#cc99ff]{clan_name}[/color]. »"
     },
-
     {
       "id": "serment_05",
       "type": "fin",
@@ -354,6 +314,5 @@
       "fond_couleur": "#030006",
       "texte": "[center][b][color=#cc99ff]Ton histoire commence ici.[/color][/b][/center]\n\n[center][i][color=#666688]Et la leur se termine bientôt.[/color][/i][/center]"
     }
-
   ]
 }
