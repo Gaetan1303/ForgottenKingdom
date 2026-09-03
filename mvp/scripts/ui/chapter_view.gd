@@ -2,6 +2,8 @@
 ## Contrôleur de la vue chapitre — affiche les scènes narratives une par une.
 extends Control
 
+const ResourcePathResolverScript = preload("res://scripts/utils/resource_path_resolver.gd")
+
 # Nœuds de l'interface
 @onready var illustration: TextureRect = $IllustrationContainer
 @onready var story_text: RichTextLabel = $TextBox/VBox/StoryText
@@ -79,13 +81,10 @@ func _load_illustration(illustration_name: String) -> void:
 	if illustration_name.is_empty():
 		illustration.texture = null
 		return
-	var base := "res://assets/images/" + illustration_name
-	# Essai avec l'extension d'origine, puis avec .svg, .png en fallback
-	var base_noext := base.get_basename()
-	for ext in [base, base_noext + ".png", base_noext + ".svg", base_noext + ".jpg", base_noext + ".jpeg"]:
-		if ResourceLoader.exists(ext):
-			illustration.texture = load(ext)
-			return
+	var texture: Texture2D = ResourcePathResolverScript.load_texture(illustration_name, "res://assets/images")
+	if texture != null:
+		illustration.texture = texture
+		return
 	push_warning("ChapterView: illustration introuvable '%s'" % illustration_name)
 	illustration.texture = null
 

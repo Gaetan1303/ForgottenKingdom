@@ -1,6 +1,6 @@
 ## Echo Bard — sound wave: scale_x ripple simulating a sound propagation.
 class_name EchoBardCard
-extends BaseClassCard
+extends "res://scripts/ui/tween/classedeperso/base_class_card.gd"
 
 
 func _play_idle_animation() -> void:

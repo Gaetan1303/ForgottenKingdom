@@ -1,6 +1,6 @@
 ## Blood Sorcerer — blood surge: crimson modulate throb + scale pulse.
 class_name BloodSorcererCard
-extends BaseClassCard
+extends "res://scripts/ui/tween/classedeperso/base_class_card.gd"
 
 
 func _play_idle_animation() -> void:

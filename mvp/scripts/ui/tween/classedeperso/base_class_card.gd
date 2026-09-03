@@ -23,7 +23,7 @@ func _build_icon() -> void:
 		return
 	_icon_rect = TextureRect.new()
 	_icon_rect.name = "ClassIcon"
-	_icon_rect.expand = true
+	_icon_rect.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 	_icon_rect.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 	_icon_rect.custom_minimum_size = Vector2(0, 64)
 	_icon_rect.size_flags_horizontal = Control.SIZE_EXPAND_FILL

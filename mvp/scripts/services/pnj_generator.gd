@@ -1,5 +1,7 @@
 extends RefCounted
 class_name PnjGenerator
+const StatDefs = preload("res://scripts/data/stat_defs.gd")
+const PnjDailyPlannerServiceClass = preload("res://scripts/services/pnj_daily_planner_service.gd")
 
 # rely on StatDefs class_name from data/stat_defs.gd
 ## Rely on class_name PnjDailyPlannerService instead of preloading.
@@ -111,7 +113,7 @@ func generate_and_register_pnj(role_hint: String = "", pnj_type: String = "recru
     var behavior: Dictionary = _behavior_for_role(role)
 
     # 4. create profile via planner helper
-    var planner: RefCounted = PnjDailyPlannerService.new()
+    var planner: RefCounted = PnjDailyPlannerServiceClass.new()
     var profile: Dictionary = (planner as Object).make_pnj_profile(pnj_id, name, pnj_type, role, niveau, stats, traits)
     profile["equipment"] = equipment
     profile["behavior"] = behavior

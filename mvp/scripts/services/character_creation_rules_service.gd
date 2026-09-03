@@ -1,6 +1,7 @@
 ## Service metier: regles de creation de personnage (hors UI).
 class_name CharacterCreationRulesService
 extends RefCounted
+const StatDefs = preload("res://scripts/data/stat_defs.gd")
 
 const CharacterBuildServiceClass = preload("res://scripts/data/character_build_service.gd")
 

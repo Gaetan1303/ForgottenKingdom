@@ -1,6 +1,6 @@
 ## Berserker Demon — rage trembling: rapid horizontal shake burst.
 class_name BerserkerDemonCard
-extends BaseClassCard
+extends "res://scripts/ui/tween/classedeperso/base_class_card.gd"
 
 
 func _play_idle_animation() -> void:

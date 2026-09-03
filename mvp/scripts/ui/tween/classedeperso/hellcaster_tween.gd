@@ -27,7 +27,7 @@ func _build_placeholders() -> void:
 	if sprite == null:
 		sprite = TextureRect.new()
 		sprite.name = "Sprite2D"
-		sprite.expand = true
+		sprite.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 		sprite.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 		sprite.custom_minimum_size = Vector2(96, 88)
 		sprite.size_flags_horizontal = Control.SIZE_EXPAND_FILL
@@ -61,7 +61,7 @@ func _build_placeholders() -> void:
 		flames_left.name = "FlameLeft"
 		flames_left.texture = _create_flame_texture()
 		flames_left.modulate = Color(1, 0.45, 0.12, 0.9)
-		flames_left.expand = true
+		flames_left.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 		flames_left.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 		flames_left.custom_minimum_size = Vector2(22, 28)
 		flames_left.position = Vector2(20, 8)
@@ -78,7 +78,7 @@ func _build_placeholders() -> void:
 		flames_right.name = "FlameRight"
 		flames_right.texture = _create_flame_texture()
 		flames_right.modulate = Color(1, 0.55, 0.15, 0.9)
-		flames_right.expand = true
+		flames_right.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 		flames_right.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 		flames_right.custom_minimum_size = Vector2(22, 28)
 		flames_right.position = Vector2(88, 8)
