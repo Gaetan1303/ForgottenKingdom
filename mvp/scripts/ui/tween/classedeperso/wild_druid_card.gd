@@ -1,6 +1,6 @@
 ## Wild Druid — nature sway: gentle rotation oscillation + warm nature tint.
 class_name WildDruidCard
-extends BaseClassCard
+extends "res://scripts/ui/tween/classedeperso/base_class_card.gd"
 
 
 func _play_idle_animation() -> void:

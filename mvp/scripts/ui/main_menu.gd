@@ -1,4 +1,6 @@
 extends Control
+const FallenUI = preload("res://scripts/ui/fallen_ui.gd")
+const VisualAssetCatalog = preload("res://scripts/ui/visual_asset_catalog.gd")
 
 const INGRID_MVP_NOTICE_KEY = "ingrid_mvp_notice_seen"
 const MAIN_TRACK = "mainmenu.mp3"
@@ -30,6 +32,7 @@ func _ready() -> void:
 
 	_setup_notice_dialog()
 	_connect_menu_buttons()
+	_configure_menu_icons()
 	_build_sound_button()
 	_apply_saved_display_settings()
 
@@ -38,6 +41,7 @@ func _ready() -> void:
 	# hide any static background texture so procedural background is visible
 	if has_node("Background") and $Background is TextureRect:
 		$Background.visible = false
+	FallenUI.apply(self, "main_menu")
 
 
 func _setup_notice_dialog() -> void:
@@ -56,10 +60,14 @@ func _configure_title_label() -> void:
 	if title_label == null:
 		title_label = find_child("Title", true, false) as Label
 	if title_label != null:
-		title_label.text = "CHRONIQUES DES 9 NOBLES DU DEMON REALM"
-		title_label.custom_minimum_size = Vector2(0, 120)
+		title_label.text = "CHRONIQUES DES NEUF NOBLES"
+		title_label.custom_minimum_size = Vector2(0, 54)
 		title_label.horizontal_alignment = 1
 		title_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+		var subtitle := find_child("Subtitle", true, false) as Label
+		if subtitle != null:
+			subtitle.text = "DEMON REALM  •  ROYAUME DÉCHU"
+			subtitle.add_theme_color_override("font_color", Color8(190, 168, 198))
 	else:
 		push_warning("MainMenu: Title label not found")
 
@@ -89,6 +97,33 @@ func _connect_menu_buttons() -> void:
 			button.add_theme_color_override("font_color", Color8(255, 255, 255))
 			button.add_theme_font_size_override("font_size", 20)
 			button.pressed.connect(_on_menu_action.bind(buttons[name]))
+
+
+func _configure_menu_icons() -> void:
+	# Menu artwork must come from assets/ui/icons. No clan emblem, portrait or
+	# resource icon is used as a decorative substitute for a menu action.
+	var icon_actions: Dictionary = {
+		"BtnNouvellePartie": "new_game",
+		"BtnContinuer": "continue_game",
+		"BtnParametres": "options",
+		"BtnEncyclopedie": "encyclopedia",
+		"BtnQuitter": "quit",
+	}
+	var base_path: String = "ContentVBox/BodyCenterContainer/BodyListHolder/"
+	for button_name: String in icon_actions.keys():
+		var icon: TextureRect = get_node_or_null(base_path + button_name + "/" + button_name + "Content/Icon") as TextureRect
+		if icon == null:
+			continue
+		var action: String = str(icon_actions[button_name])
+		var icon_path: String = VisualAssetCatalog.menu_icon_path(action)
+		if icon_path.is_empty():
+			icon.texture = null
+			icon.visible = false
+			continue
+		var texture: Texture2D = VisualAssetCatalog.load_path(icon_path)
+		icon.texture = texture
+		icon.visible = texture != null
+
 
 
 func _create_procedural_background() -> void:

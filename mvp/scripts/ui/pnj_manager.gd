@@ -1,4 +1,7 @@
 extends VBoxContainer
+const VisualAssetCatalog = preload("res://scripts/ui/visual_asset_catalog.gd")
+const ResourcePathResolver = preload("res://scripts/utils/resource_path_resolver.gd")
+const FallenUI = preload("res://scripts/ui/fallen_ui.gd")
 
 const ACTION_LABELS := {
     "collecter_bois": "Collecter le bois",
@@ -37,6 +40,7 @@ var _pending_action: Dictionary = {}
 
 
 func _ready() -> void:
+	FallenUI.apply(self, "clan")
     call_deferred("_init_ui")
 
 
@@ -329,8 +333,8 @@ func _make_pnj_row(pnj: Dictionary) -> Control:
     row.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 
     var portrait_tex := TextureRect.new()
-    portrait_tex.stretch_mode = 3
-    var target_size := Vector2(64, 64)
+    VisualAssetCatalog.apply_fit(portrait_tex, "portrait")
+    var target_size := Vector2(72, 88)
     portrait_tex.custom_minimum_size = target_size
     portrait_tex.size_flags_horizontal = 0
     portrait_tex.size_flags_vertical = 0
@@ -342,9 +346,13 @@ func _make_pnj_row(pnj: Dictionary) -> Control:
         pnj_basename = pnj_basename.replace(".pnj", "")
     var pnj_class = str(pnj.get("classe", pnj.get("role", ""))).to_lower()
     var exts = [".png", ".jpg", ".webp", ".svg"]
-    var loaded_tex = null
+    var loaded_tex: Texture2D = null
+    # 0) Portrait explicite défini dans la donnée PNJ.
+    var explicit_portrait := str(pnj.get("portrait", pnj.get("portrait_path", ""))).strip_edges()
+    if not explicit_portrait.is_empty():
+        loaded_tex = ResourcePathResolver.load_texture(explicit_portrait, "res://assets/images/PNJ")
     # 1) Try id-based exact paths: res://assets/images/PNJ/<basename>/<basename>.<ext>
-    if pnj_basename != "":
+    if loaded_tex == null and pnj_basename != "":
         for e in exts:
             var p_id = "res://assets/images/PNJ/%s/%s" % [pnj_basename, pnj_basename] + e
             if ResourceLoader.exists(p_id):
@@ -359,7 +367,7 @@ func _make_pnj_row(pnj: Dictionary) -> Control:
                     break
     # 3) Try mvp/ui assets with basename
     if not loaded_tex and pnj_basename != "":
-        var ui_try = "res://mvp/assets/ui/%s.png" % pnj_basename
+        var ui_try = "res://assets/ui/%s.png" % pnj_basename
         if ResourceLoader.exists(ui_try):
             loaded_tex = load(ui_try)
 
@@ -418,49 +426,23 @@ func _make_pnj_row(pnj: Dictionary) -> Control:
                             break
                     fname = dir.get_next()
                 dir.list_dir_end()
-    # Determine selected texture (class-specific, ui basename, gender placeholder, or fallback)
-    var selected_tex = null
-    if loaded_tex:
-        selected_tex = loaded_tex
-    else:
-        # Try known UI placeholders by gender
-        var gender_val = str(pnj.get("sexe", pnj.get("gender", pnj.get("genre", "")))).to_lower()
-        var is_female = (gender_val.find("f") != -1 or gender_val.find("femme") != -1 or gender_val.find("female") != -1)
-        var ui_female = "res://mvp/assets/ui/femme_pnj.png"
-        var ui_male = "res://mvp/assets/ui/homme_pnj.png"
-        if is_female and ResourceLoader.exists(ui_female):
-            selected_tex = load(ui_female)
-        elif (not is_female) and ResourceLoader.exists(ui_male):
-            selected_tex = load(ui_male)
-        # Try defaut images in assets/images/PNJ/defaut
-        if not selected_tex:
-            var tried_def_f = "res://assets/images/PNJ/defaut/female.png"
-            var tried_def_m = "res://assets/images/PNJ/defaut/male.png"
-            if is_female and ResourceLoader.exists(tried_def_f):
-                selected_tex = load(tried_def_f)
-            elif (not is_female) and ResourceLoader.exists(tried_def_m):
-                selected_tex = load(tried_def_m)
+    # Determine selected texture. Unknown gender stays intentionally blank rather than
+    # displaying the wrong person.
+    var selected_tex: Texture2D = loaded_tex
+    if selected_tex == null:
+        var gender_val := str(pnj.get("sexe", pnj.get("gender", pnj.get("genre", "")))).to_lower()
+        var fallback_path := ""
+        if gender_val.contains("femme") or gender_val.contains("female"):
+            fallback_path = VisualAssetCatalog.person_path("pnj_female")
+        elif gender_val.contains("homme") or gender_val.contains("male"):
+            fallback_path = VisualAssetCatalog.person_path("pnj_male")
+        if not fallback_path.is_empty():
+            selected_tex = ResourcePathResolver.load_texture(fallback_path, "res://assets/images/PNJ")
 
-    # Try to produce a resized ImageTexture to ensure visible size
-    if selected_tex and selected_tex is Texture2D:
-        var ok_img = false
-        var img = null
-        if selected_tex.has_method("get_image"):
-            img = selected_tex.get_image()
-            ok_img = img != null
-        if ok_img and img:
-            img.resize(int(target_size.x), int(target_size.y), Image.INTERPOLATE_LANCZOS)
-            var t2 = ImageTexture.create_from_image(img)
-            if t2:
-                portrait_tex.texture = t2
-            else:
-                portrait_tex.texture = selected_tex
-        else:
-            # fallback: assign texture directly
-            portrait_tex.texture = selected_tex
+    if selected_tex != null:
+        portrait_tex.texture = selected_tex
     else:
-        # nothing found: leave empty and log
-        push_warning("PNJ portrait not found for %s" % str(pnj.get("nom", "?")))
+        push_warning("PNJ portrait non défini pour %s; aucune image arbitraire utilisée." % str(pnj.get("nom", "?")))
 
     var left := VBoxContainer.new()
     var name_label := Label.new()
@@ -504,7 +486,7 @@ func _make_pnj_row(pnj: Dictionary) -> Control:
     row.add_child(expedition_button)
 
     panel.add_child(row)
-    panel.custom_minimum_size = Vector2(0, 72)
+    panel.custom_minimum_size = Vector2(0, 100)
     return panel
 
 

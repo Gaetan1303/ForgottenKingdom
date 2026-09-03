@@ -1,5 +1,6 @@
 extends RefCounted
 class_name PnjDailyPlannerService
+const StatDefs = preload("res://scripts/data/stat_defs.gd")
 
 # rely on StatDefs class_name from data/stat_defs.gd
 

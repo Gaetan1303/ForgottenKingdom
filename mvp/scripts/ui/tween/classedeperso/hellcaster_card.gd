@@ -1,6 +1,6 @@
 ## Hellcaster — fire color shimmer: warm orange modulate + scale pulse.
 class_name HellcasterCard
-extends BaseClassCard
+extends "res://scripts/ui/tween/classedeperso/base_class_card.gd"
 
 
 func _play_idle_animation() -> void:

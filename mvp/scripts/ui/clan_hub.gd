@@ -7,8 +7,11 @@
 ##  3. Go to résolution_action → retour ici après
 ##  4. Fin de tour → produit ressources + événements → tour suivant
 extends Control
+const FallenUI = preload("res://scripts/ui/fallen_ui.gd")
 
 const FKHelpers = preload("res://scripts/utils/fk_helpers.gd")
+const ResourcePathResolver = preload("res://scripts/utils/resource_path_resolver.gd")
+const VisualAssetCatalog = preload("res://scripts/ui/visual_asset_catalog.gd")
 
 ## Données de cible mémorisées lors du retour depuis la résolution
 var maison_cible_id: int   = -1
@@ -40,11 +43,10 @@ var _actions_actuelles: Array = []
 var _vue_gauche: String = "maisons"
 
 const PORTRAIT_HINTS := {
-	"ingrid": "25_Ingrid",
-	"marjaana": "marjaana",
-	"mizuki": "mizuki",
-	"cara": "cara",
-	"ceres": "ceres",
+	"ingrid": "res://assets/images/ingrid_39_1024.png",
+	"edwin black": "res://assets/images/edwin_black_1024.png",
+	"ceres": "res://assets/images/lore/ceres_1024.webp",
+	"ceres (vasuki)": "res://assets/images/lore/ceres_1024.webp",
 }
 
 const DISPLAY_LABELS := {
@@ -84,15 +86,16 @@ func _ready() -> void:
 	_rafraichir_tout()
 	_init_resource_icons()
 
-	# Debug helper: add a lightweight PNJ planning button to the actions area
+	# Accès à l'intendance PNJ dans le panneau défilable de la Maison.
 	var action_container := $ContenuPrincipal/PanneauActions/ContenuActions/BoutonActions
 	if action_container != null and action_container.get_node_or_null("BtnPlanPNJ") == null:
 		var btn := Button.new()
 		btn.name = "BtnPlanPNJ"
-		btn.text = "Plan PNJ"
+		btn.text = "Intendance PNJ"
 		btn.toggle_mode = false
 		btn.pressed.connect(_on_open_pnj_manager)
 		action_container.add_child(btn)
+	FallenUI.apply(self, "clan")
 
 
 func init_data(data: Dictionary) -> void:
@@ -195,7 +198,7 @@ func _init_resource_icons() -> void:
 		tr.texture     = tex
 		tr.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 		tr.expand_mode  = TextureRect.EXPAND_IGNORE_SIZE
-		tr.custom_minimum_size = Vector2(20, 20)
+		tr.custom_minimum_size = Vector2(24, 24)
 		header.add_child(tr)
 		header.move_child(tr, lbl.get_index())
 	_icones_pretes = true
@@ -245,7 +248,7 @@ func _mettre_a_jour_infos_avancees(res: Dictionary) -> void:
 					tr.texture     = tex
 					tr.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 					tr.expand_mode  = TextureRect.EXPAND_IGNORE_SIZE
-					tr.custom_minimum_size = Vector2(16, 16)
+					tr.custom_minimum_size = Vector2(18, 18)
 					col.add_child(tr)
 			# Label valeur
 			var lbl := Label.new()
@@ -327,6 +330,10 @@ func _rafraichir_liste_maisons() -> void:
 
 		var panneau := PanelContainer.new()
 		panneau.clip_contents = true
+		var house_style: StyleBoxFlat = FallenUI.card_style(false)
+		house_style.border_color = _couleur_statut(statut) if revelee else FallenUI.BORDER_SOFT
+		house_style.set_border_width_all(2 if revelee else 1)
+		panneau.add_theme_stylebox_override("panel", house_style)
 		var vbox    := VBoxContainer.new()
 		vbox.add_theme_constant_override("separation", 4)
 		vbox.custom_minimum_size = Vector2(0, 240)
@@ -343,12 +350,21 @@ func _rafraichir_liste_maisons() -> void:
 		if puissance <= 0:
 			puissance = int((maison.get("bastions", []) as Array).size()) * 10
 		var reputation := int(maison.get("reputation", 0))
-		var chef := "???" if not revelee else str(maison.get("chef", "???"))
-		var principal := "???" if not revelee else str(maison.get("personnage_principal", "Ingrid"))
+		var chef: String = "???" if not revelee else str(maison.get("chef", "???"))
+		var principal: String = "???"
+		if revelee:
+			var principal_value: Variant = maison.get("personnage_principal", "")
+			if principal_value != null:
+				principal = str(principal_value).strip_edges()
+			if principal.is_empty():
+				principal = "-"
 
 		var lbl_identite := Label.new()
 		lbl_identite.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-		lbl_identite.text = "Chef/Cheffe: %s | Personnage principal: %s" % [chef, principal]
+		if principal == "-":
+			lbl_identite.text = "Chef/Cheffe: %s" % chef
+		else:
+			lbl_identite.text = "Chef/Cheffe: %s | Personnage principal: %s" % [chef, principal]
 
 		var portrait := TextureRect.new()
 		var portrait_frame := CenterContainer.new()
@@ -492,10 +508,18 @@ func _afficher_vue_profil() -> void:
 
 	# Portrait du personnage sous le bouton (utilise `profil` déjà déclaré)
 	var portrait_payload := (profil.get("portrait", {}) as Dictionary)
-	var portrait_tex := _texture_from_portrait_payload(portrait_payload)
+	var portrait_tex: Texture2D = _texture_from_portrait_payload(portrait_payload)
 	if portrait_tex == null:
-		# fallback: try by name
+		# Un nom de joueur ne doit jamais retomber sur un sceau de clan.
 		portrait_tex = _texture_for_character(str(ClanManager.nom_personnage))
+	if portrait_tex == null:
+		var profil_genre: String = str(profil.get("genre", "")).to_lower()
+		var player_path: String = VisualAssetCatalog.person_path("player_default")
+		if profil_genre.contains("femme"):
+			player_path = VisualAssetCatalog.person_path("player_female")
+		elif profil_genre.contains("homme"):
+			player_path = VisualAssetCatalog.person_path("player_male")
+		portrait_tex = VisualAssetCatalog.load_path(player_path)
 	var portrait_rect := TextureRect.new()
 	portrait_rect.texture = portrait_tex
 	portrait_rect.name = "PortraitRect"
@@ -976,26 +1000,7 @@ func _reenable_button(btn: Button) -> void:
 
 
 func _texture_from_portrait_payload(payload: Dictionary) -> Texture2D:
-	if payload.is_empty():
-		return null
-	if str(payload.get("encoding", "")) != "png_base64":
-		return null
-	var encoded := str(payload.get("data", ""))
-	if encoded.is_empty():
-		return null
-	var raw := Marshalls.base64_to_raw(encoded)
-	if raw.is_empty():
-		return null
-	# Use a small cache key to avoid recreating textures repeatedly for the same payload
-	var cache_key := String(encoded).sha256_text()
-	if _portrait_texture_cache.has(cache_key):
-		return _portrait_texture_cache[cache_key]
-	var image := Image.new()
-	if image.load_png_from_buffer(raw) != OK:
-		return null
-	var tex := ImageTexture.create_from_image(image)
-	_portrait_texture_cache[cache_key] = tex
-	return tex
+	return VisualAssetCatalog.texture_from_portrait_payload(payload)
 
 
 func _exit_tree() -> void:
@@ -1006,40 +1011,37 @@ func _exit_tree() -> void:
 
 
 func _texture_for_character(name: String) -> Texture2D:
-	var norm := name.strip_edges().to_lower()
-	if norm.is_empty() or norm == "???":
-		return _default_house_portrait()
+	var norm: String = name.strip_edges().to_lower()
+	if norm.is_empty() or norm in ["???", "-", "<null>", "null"]:
+		return null
 
-	var hint := str(PORTRAIT_HINTS.get(norm, norm.replace(" ", "_")))
-	var candidates := [
-		"res://assets/images/%s.png" % hint,
-		"res://assets/images/%s.webp" % hint,
-		"res://assets/images/%s.jpg" % hint,
-	]
-
-	for rpath in candidates:
-		if not FileAccess.file_exists(rpath):
-			continue
-		var tex := ResourceLoader.load(rpath) as Texture2D
-		if tex != null:
-			return tex
-
-	# Only load images from project assets. External lore images were removed.
-	return _default_house_portrait()
+	# Portraits strictement nominatifs: on ne remplace jamais une personne inconnue
+	# par le sceau du clan ou par un autre personnage.
+	var exact_path: String = str(PORTRAIT_HINTS.get(norm, ""))
+	if exact_path.is_empty():
+		if norm.contains("ingrid"):
+			exact_path = VisualAssetCatalog.person_path("ingrid")
+		elif norm.contains("edwin"):
+			exact_path = VisualAssetCatalog.person_path("edwin_black")
+		elif norm.contains("ceres"):
+			exact_path = VisualAssetCatalog.person_path("ceres")
+	if exact_path.is_empty():
+		return null
+	return ResourcePathResolver.load_texture(exact_path, "res://assets/images")
 
 
 func _default_house_portrait() -> Texture2D:
 	if _fallback_house_portrait != null:
 		return _fallback_house_portrait
 
-	var res_path := "res://assets/images/defaut.png"
+	var res_path := "res://assets/images/clan/defaut.png"
 	if FileAccess.file_exists(res_path):
 		var res_candidate := ResourceLoader.load(res_path) as Texture2D
 		if res_candidate != null:
 			_fallback_house_portrait = res_candidate
 			return _fallback_house_portrait
 
-	# Do not attempt to load external lore images (deleted). Use only res://assets/images/defaut.png if present.
+	# Do not attempt to load external lore images (deleted). Use only res://assets/images/clan/defaut.png if present.
 	return _fallback_house_portrait
 
 

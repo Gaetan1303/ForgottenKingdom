@@ -1,4 +1,5 @@
 extends Control
+const FallenUI = preload("res://scripts/ui/fallen_ui.gd")
 
 const FKHelpers = preload("res://scripts/utils/fk_helpers.gd")
 
@@ -12,6 +13,7 @@ const FKHelpers = preload("res://scripts/utils/fk_helpers.gd")
 
 
 func _ready() -> void:
+	FallenUI.apply(self, "dungeon")
 	btn_resolve.pressed.connect(_on_resolve)
 	btn_next.pressed.connect(_on_next)
 	btn_exit.pressed.connect(_on_exit)
