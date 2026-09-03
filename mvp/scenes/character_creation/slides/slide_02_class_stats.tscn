@@ -29,12 +29,11 @@ layout_mode = 2
 theme_override_font_sizes/font_size = 18
 text = "Slide 2 - Classe et stats"
 
-[node name="MainSplit" type="HSplitContainer" parent="Content" unique_id=233840170]
+[node name="MainSplit" type="HBoxContainer" parent="Content" unique_id=233840170]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-split_offsets = PackedInt32Array(360, 0)
-split_offset = 360
+theme_override_constants/separation = 12
 
 [node name="ProgressionPanel" type="VBoxContainer" parent="Content/MainSplit" unique_id=54404524]
 custom_minimum_size = Vector2(320, 0)
@@ -150,6 +149,18 @@ theme_override_constants/h_separation = 8
 theme_override_constants/v_separation = 6
 columns = 2
 
+[node name="DerivedAttaqueLabel" type="Label" parent="Content/MainSplit/StatsPanel/DerivedGrid" unique_id=2000000101]
+layout_mode = 2
+text = "Attaque"
+
+[node name="DerivedAttaqueValue" type="Label" parent="Content/MainSplit/StatsPanel/DerivedGrid" unique_id=2000000102]
+layout_mode = 2
+text = "0"
+
+[node name="DerivedDefenseLabel" type="Label" parent="Content/MainSplit/StatsPanel/DerivedGrid" unique_id=2000000103]
+layout_mode = 2
+text = "Défense"
+
 [node name="DerivedDefenseValue" type="Label" parent="Content/MainSplit/StatsPanel/DerivedGrid" unique_id=941827725]
 layout_mode = 2
 text = "0"
@@ -189,6 +200,10 @@ text = "0"
 [node name="DerivedReflexesLabel" type="Label" parent="Content/MainSplit/StatsPanel/DerivedGrid" unique_id=1264579089]
 layout_mode = 2
 text = "Jet de Réflexes"
+
+[node name="DerivedReflexesValue" type="Label" parent="Content/MainSplit/StatsPanel/DerivedGrid" unique_id=2000000104]
+layout_mode = 2
+text = "0"
 
 [node name="ClassesPanel" type="VBoxContainer" parent="Content/MainSplit" unique_id=1837221198]
 custom_minimum_size = Vector2(320, 0)

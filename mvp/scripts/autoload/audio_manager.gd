@@ -52,6 +52,8 @@ func _exit_tree() -> void:
 
 ## Joue une musique de fond (fondu si une autre est en cours).
 func play_music(track_name: String, loop: bool = true) -> void:
+	if track_name.strip_edges().is_empty():
+		return
 	# In headless runs (CI/tests), avoid loading audio resources which may not have loaders.
 	if OS.has_feature("headless") or DisplayServer.get_name() == "headless":
 		return

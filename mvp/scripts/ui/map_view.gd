@@ -2,6 +2,8 @@
 ## Contrôleur de la carte interactive des lieux d'Ingrid.
 extends Control
 
+const ResourcePathResolverScript = preload("res://scripts/utils/resource_path_resolver.gd")
+
 @onready var location_markers: Control = $MapOverlay/LocationMarkers
 @onready var tooltip: PanelContainer = $Tooltip
 @onready var tooltip_title: Label = $Tooltip/TooltipVBox/TooltipTitle
@@ -40,39 +42,37 @@ func _ready() -> void:
 
 
 func _try_load_map_image() -> void:
-	# Default to demon realm map if present
-	var default := "res://assets/images/demon_realm_map.png"
-	if ResourceLoader.exists(default):
-		map_image.texture = load(default)
+	var texture: Texture2D = ResourcePathResolverScript.load_texture("demon_realm_map.png", "res://assets/images")
+	if texture == null:
+		texture = ResourcePathResolverScript.load_texture("demon_realm_map_1024.png", "res://assets/images")
+	if texture == null:
+		texture = ResourcePathResolverScript.load_texture("demon_realm_map_512.png", "res://assets/images")
+	if texture == null:
+		texture = ResourcePathResolverScript.load_texture("yomihara.png", "res://assets/images")
+	if texture != null:
+		map_image.texture = texture
 		_sync_location_markers_to_image()
-		return
-	# fallback other candidates
-	var paths := [
-		"res://assets/images/demon_realm_map_1024.png",
-		"res://assets/images/demon_realm_map_512.png",
-		"res://assets/images/yomihara.png",
-	]
-	for p in paths:
-		if ResourceLoader.exists(p):
-			map_image.texture = load(p)
-			_sync_location_markers_to_image()
-			return
 
 
 func _set_map(which: String) -> void:
+	var texture: Texture2D = null
 	match which:
 		"demon":
-			var p := "res://assets/images/demon_realm_map.png"
-			if ResourceLoader.exists(p):
-				map_image.texture = load(p)
+			texture = ResourcePathResolverScript.load_texture("demon_realm_map.png", "res://assets/images")
+			if texture == null:
+				texture = ResourcePathResolverScript.load_texture("demon_realm_map_1024.png", "res://assets/images")
 		"yomi":
-			var p2 := "res://assets/images/yomihara.png"
-			if ResourceLoader.exists(p2):
-				map_image.texture = load(p2)
-		_: pass
+			texture = ResourcePathResolverScript.load_texture("yomihara.png", "res://assets/images")
+			if texture == null:
+				texture = ResourcePathResolverScript.load_texture("yomihara_1024.png", "res://assets/images")
+		_:
+			pass
+	if texture != null:
+		map_image.texture = texture
 	_sync_location_markers_to_image()
 	# Rebuild markers to reflect any region-specific filtering
 	_build_markers()
+
 
 func _sync_location_markers_to_image() -> void:
 	# Ensure overlay marker container matches the displayed map size

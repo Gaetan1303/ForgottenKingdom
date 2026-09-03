@@ -1,6 +1,6 @@
 ## Abyss Paladin — heavy presence: slow imposing scale + infernal red-silver aura.
 class_name AbyssPaladinCard
-extends BaseClassCard
+extends "res://scripts/ui/tween/classedeperso/base_class_card.gd"
 
 
 func _play_idle_animation() -> void:

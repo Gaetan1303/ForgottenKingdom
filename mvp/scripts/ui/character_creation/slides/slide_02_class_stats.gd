@@ -1,7 +1,9 @@
 ## Slide 2: class selection and stat allocation.
 class_name Slide02ClassStats
-extends CreationSlideBase
+extends "res://scripts/ui/character_creation/slides/creation_slide_base.gd"
 
+const StatDefs = preload("res://scripts/data/stat_defs.gd")
+const ClassCardFactory = preload("res://scripts/ui/tween/classedeperso/class_card_factory.gd")
 const CharacterCreationRules = preload("res://scripts/services/character_creation_rules_service.gd")
 const CharacterBuildService = preload("res://scripts/data/character_build_service.gd")
 

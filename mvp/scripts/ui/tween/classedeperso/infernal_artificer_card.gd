@@ -1,6 +1,6 @@
 ## Infernal Artificer — gear mechanism: stutter rotation + gentle y bob.
 class_name InfernalArtificerCard
-extends BaseClassCard
+extends "res://scripts/ui/tween/classedeperso/base_class_card.gd"
 
 
 func _play_idle_animation() -> void:
