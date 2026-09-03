@@ -1,0 +1,26 @@
+[gd_resource type="Resource" script_class="CreatureProfile" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/data/creature_profile.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = "incubus_azrael"
+display_name = "Azrael"
+description = "Incube apte aux pactes et au contrôle mental."
+species_id = "incubus"
+creature_type = 2
+roles = Array[int]([0, 1])
+capabilities = Array[int]([1, 7, 8])
+role = "corrupter"
+corruption_aura = 22.0
+domination_power = 45.0
+domination_presence = 40.0
+training_efficiency = 1.2
+loyalty = 45.0
+pheromone_strength = 65.0
+technique_level = 4
+preferred_trainings = Array[int]([8, 9, 15])
+portrait_path = "res://assets/images/Creatures/incubus_azrael.png"
+aggression = 55.0
+patience = 55.0
+creativity = 65.0

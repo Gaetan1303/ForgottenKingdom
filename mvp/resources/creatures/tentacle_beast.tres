@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CreatureProfile" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/data/creature_profile.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = "tentacle_01"
+display_name = "Abyssal Tentacle"
+description = "Créature abyssale spécialisée dans la restriction."
+species_id = "tentacle_beast"
+creature_type = 4
+roles = Array[int]([1, 3])
+capabilities = Array[int]([4, 5])
+role = "trainer"
+corruption_aura = 18.0
+domination_power = 35.0
+training_efficiency = 1.15
+loyalty = 30.0
+physical_endurance = 90.0
+preferred_trainings = Array[int]([11, 6, 10])
+portrait_path = "res://assets/images/Creatures/tentacle_01.png"
+aggression = 70.0
+patience = 30.0
+creativity = 45.0

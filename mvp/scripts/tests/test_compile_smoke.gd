@@ -10,6 +10,11 @@ const JsonPersistenceScript = preload("res://scripts/services/json_persistence_s
 const CharacterBuildScript = preload("res://scripts/data/character_build_service.gd")
 const ResourcePathResolverScript = preload("res://scripts/utils/resource_path_resolver.gd")
 const CorruptionServiceScript = preload("res://scripts/services/corruption_service.gd")
+const EnumsScript = preload("res://scripts/core/enums.gd")
+const TrainingSystemScript = preload("res://scripts/services/training_system.gd")
+const PactServiceScript = preload("res://scripts/services/pact_service.gd")
+const WorldStateScript = preload("res://scripts/data/world_state.gd")
+const WorldStateAdapterScript = preload("res://scripts/adapters/world_state_adapter.gd")
 const CreatureProfileScript = preload("res://scripts/data/creature_profile.gd")
 const CreatureProfileLegacyPathScript = preload("res://scripts/domain/creature_profile.gd")
 const CreatureFactoryScript = preload("res://scripts/factory/creature_factory.gd")
@@ -44,6 +49,11 @@ func _run() -> void:
 		CharacterBuildScript,
 		ResourcePathResolverScript,
 		CorruptionServiceScript,
+		EnumsScript,
+		TrainingSystemScript,
+		PactServiceScript,
+		WorldStateScript,
+		WorldStateAdapterScript,
 		CreatureProfileScript,
 		CreatureProfileLegacyPathScript,
 		CreatureFactoryScript,

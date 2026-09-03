@@ -40,7 +40,7 @@ var _pending_action: Dictionary = {}
 
 
 func _ready() -> void:
-	FallenUI.apply(self, "clan")
+    FallenUI.apply(self, "clan")
     call_deferred("_init_ui")
 
 
@@ -749,4 +749,3 @@ func _handle_result(result: Dictionary, success_message: String) -> void:
         ClanManager.sauvegarder()
     else:
         _set_status("Erreur : %s" % str(result.get("error", "inconnue")))
-

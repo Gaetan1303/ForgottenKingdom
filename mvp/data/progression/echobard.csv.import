@@ -15,5 +15,3 @@ dest_files=["res://data/progression/echobard.Force.translation", "res://data/pro
 
 compress=1
 delimiter=0
-unescape_keys=false
-unescape_translations=true

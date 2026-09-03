@@ -1,0 +1,25 @@
+[gd_resource type="Resource" script_class="CreatureProfile" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/data/creature_profile.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = "mind_flayer_01"
+display_name = "Vorl'eth"
+description = "Entité télépathe experte en domination et pactes."
+species_id = "mind_flayer"
+creature_type = 3
+roles = Array[int]([0, 3])
+capabilities = Array[int]([1, 2, 6, 8])
+role = "corrupter"
+corruption_aura = 30.0
+corruption_potency = 1.15
+domination_power = 60.0
+domination_presence = 70.0
+training_efficiency = 1.1
+loyalty = 20.0
+preferred_trainings = Array[int]([3, 8, 9])
+portrait_path = "res://assets/images/Creatures/mind_flayer_01.png"
+aggression = 45.0
+patience = 85.0
+creativity = 75.0

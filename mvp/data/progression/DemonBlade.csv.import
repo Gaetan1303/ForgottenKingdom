@@ -15,5 +15,3 @@ dest_files=["res://data/progression/DemonBlade.Force.translation", "res://data/p
 
 compress=1
 delimiter=0
-unescape_keys=false
-unescape_translations=true
