@@ -11,6 +11,10 @@ const PnjGeneratorClass = preload("res://scripts/services/pnj_generator.gd")
 const JsonPersistenceService = preload("res://scripts/services/json_persistence_service.gd")
 const CharacterBuildService = preload("res://scripts/data/character_build_service.gd")
 const FKHelpers = preload("res://scripts/utils/fk_helpers.gd")
+const CorruptionServiceClass = preload("res://scripts/services/corruption_service.gd")
+const CreatureRosterServiceClass = preload("res://scripts/services/creature_roster_service.gd")
+const PactServiceClass = preload("res://scripts/services/pact_service.gd")
+const CreatureProfileClass = preload("res://scripts/data/creature_profile.gd")
 
 # ── Chemins ────────────────────────────────────────────────────────────
 const DEFAULT_STATE_PATH := "res://data/clan/etat_clan_defaut.json"
@@ -113,6 +117,9 @@ var pnj_gestion: Dictionary = {}
 
 # ── Services (instanciation unique — DRY / SRP) ────────────────────────
 var _planner: RefCounted = null
+var _corruption_service: RefCounted = null
+var _creature_roster: RefCounted = null
+var _pact_service: RefCounted = null
 
 # Bonus de classe chargés depuis les données
 var _bonus_par_action: Dictionary = {}
@@ -129,6 +136,7 @@ const SOLDATS_MAX := 600
 func _ready() -> void:
 	_planner = PnjDailyPlannerServiceClass.new()
 	_charger_etat_defaut()
+	_setup_corruption_system()
 
 
 # ─────────────────────────────────────────────────────────────────────
@@ -184,6 +192,7 @@ func nouvelle_partie(
 	evenements_declenches = []
 	historique_tours = []
 	pnj_gestion = _make_default_pnj_gestion_state()
+	_setup_corruption_system()
 
 	# Initialiser la pool de soldats (IDs) à partir de la ressource initiale
 	_soldat_next_id = 1
@@ -579,6 +588,8 @@ func ajouter_pnj_gere(
 		roster.append(fiche)
 	state["roster"] = roster
 	pnj_gestion = state
+	if _corruption_service != null:
+		_corruption_service.call("register_character", pnj_id, 50.0, traits, 0, {}, str(fiche.get("portrait_path", fiche.get("image_path", ""))))
 	return fiche.duplicate(true)
 
 
@@ -1283,6 +1294,9 @@ func sauvegarder() -> void:
 		"historique_tours": historique_tours.duplicate(true),
 		"soldats_disponibles": _soldats_disponibles.duplicate(true),
 		"soldat_next_id": _soldat_next_id,
+		"corruption_data": _corruption_service.call("export_state") if _corruption_service != null else {},
+		"creature_roster": _creature_roster.call("export_state") if _creature_roster != null else {},
+		"pact_data": _pact_service.call("export_state") if _pact_service != null else {},
 	}
 	var save_path := _get_clan_save_path()
 	if not JsonPersistenceService.write_json_atomic(save_path, data):
@@ -1328,11 +1342,103 @@ func charger_sauvegarde() -> bool:
 	_soldat_next_id = int(data.get("soldat_next_id", _soldat_next_id))
 	_sanitizer_pnj_et_domaines()
 	_sanitizer_pnj_gestion()
+	_setup_corruption_system(data)
 	if moment_journee not in ["jour", "nuit"]:
 		moment_journee = "jour"
 
 	emit_signal("ressources_mises_a_jour")
 	return true
+
+
+# ─────────────────────────────────────────────────────────────────────
+#  CORRUPTION / CRÉATURES / PACTES — FAÇADE SHADOW MODE
+# ─────────────────────────────────────────────────────────────────────
+
+func _setup_corruption_system(saved_state: Dictionary = {}) -> void:
+	_corruption_service = CorruptionServiceClass.new()
+	_creature_roster = CreatureRosterServiceClass.new()
+	_pact_service = PactServiceClass.new()
+	set_meta("corruption_service", _corruption_service)
+	set_meta("creature_roster", _creature_roster)
+	set_meta("pact_service", _pact_service)
+	_corruption_service.call("setup", self)
+	_load_default_creatures()
+	if saved_state.has("corruption_data"):
+		_corruption_service.call("import_state", saved_state.get("corruption_data", {}) as Dictionary)
+	if saved_state.has("creature_roster"):
+		_creature_roster.call("import_state", saved_state.get("creature_roster", {}) as Dictionary)
+	if saved_state.has("pact_data"):
+		_pact_service.call("import_state", saved_state.get("pact_data", {}) as Dictionary)
+	_register_roster_creatures_for_corruption()
+
+
+func _load_default_creatures() -> void:
+	for path in [
+		"res://resources/creatures/succubus_base.tres",
+		"res://resources/creatures/incubus_base.tres",
+		"res://resources/creatures/tentacle_beast.tres",
+		"res://resources/creatures/mind_flayer.tres",
+	]:
+		var profile: Resource = ResourceLoader.load(path)
+		if profile == null:
+			continue
+		_creature_roster.call("add_available_creature", profile)
+		_corruption_service.call("register_creature", profile)
+
+
+func _register_roster_creatures_for_corruption() -> void:
+	for entry in _creature_roster.call("get_captured_list") as Array:
+		var profile_data := (entry as Dictionary).get("profile", {}) as Dictionary
+		var profile: Resource = CreatureProfileClass.from_dict(profile_data)
+		_corruption_service.call("register_creature", profile)
+
+
+func get_corruption_profile(char_id: String) -> Dictionary:
+	return {} if _corruption_service == null else _corruption_service.call("get_profile", char_id) as Dictionary
+
+
+func get_corruption_service() -> RefCounted:
+	return _corruption_service
+
+
+func get_creature_roster_service() -> RefCounted:
+	return _creature_roster
+
+
+func get_pact_service() -> RefCounted:
+	return _pact_service
+
+
+func assign_creature_to_pnj(creature_id: String, pnj_id: String, assignment_type: int) -> Dictionary:
+	if _corruption_service == null or _creature_roster == null:
+		return {"ok": false, "error": "corruption_system_unavailable"}
+	var creature: Resource = _creature_roster.call("get_profile_by_id", creature_id) as Resource
+	if creature == null:
+		return {"ok": false, "error": "creature_not_found"}
+	_corruption_service.call("register_creature", creature)
+	var result := _corruption_service.call("assign_creature_to_target", creature_id, pnj_id, assignment_type) as Dictionary
+	if bool(result.get("ok", false)):
+		_creature_roster.call("set_assignment", creature_id, result.get("assignment", {}) as Dictionary)
+	return result
+
+
+func start_pnj_training(pnj_id: String, training_type: int) -> Dictionary:
+	if _corruption_service == null:
+		return {"ok": false, "error": "corruption_system_unavailable"}
+	return _corruption_service.call("start_training", pnj_id, training_type) as Dictionary
+
+
+func process_corruption_tick(delta: float) -> void:
+	if _corruption_service != null:
+		_corruption_service.call("process_tick", delta, _managed_pnj_ids())
+
+
+func _managed_pnj_ids() -> Array:
+	var result: Array = []
+	for raw in pnj_gestion.get("roster", []) as Array:
+		if raw is Dictionary:
+			result.append(str((raw as Dictionary).get("id", "")))
+	return result
 
 
 func get_profil_personnage() -> Dictionary:
@@ -1572,6 +1678,15 @@ func _sanitizer_pnj_gestion() -> void:
 			)
 		)
 		sanitized_roster[-1]["etat"] = str(pnj.get("etat", "disponible"))
+		# Ces champs peuvent déjà exister dans une sauvegarde intermédiaire. Ils
+		# restent lisibles jusqu'à leur import dans CorruptionService.
+		for shadow_key in [
+			"resistance_mentale", "resistance", "corruption", "corruption_level",
+			"corruption_stage", "obedience", "perversion", "arousal", "orientation",
+			"virginity", "fetishes", "image_path", "portrait_path",
+		]:
+			if pnj.has(shadow_key):
+				sanitized_roster[-1][shadow_key] = (pnj[shadow_key] as Dictionary).duplicate(true) if pnj[shadow_key] is Dictionary else pnj[shadow_key]
 	pnj_gestion["roster"] = sanitized_roster
 
 	var planning := (pnj_gestion.get("planning", _planner.make_daily_plan()) as Dictionary).duplicate(true)
