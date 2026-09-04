@@ -1,155 +1,286 @@
 {
   "demon_blade": {
-    "name": "Demon Blade",
-    "description": "Guerrier maudit maniant une épée imprégnée d'énergie infernale.",
+    "name": "Lame Cendrée",
+    "description": "Combattant de première ligne qui canalise la résonance de Veyr dans son arme.",
     "hit_die": 10,
-    "primary": ["force"],
-    "starting_feats": ["blood_edge"],
-    "starting_abilities": ["Frappe démoniaque"],
-    "icon": "assets/class_icons/demonblade.png",
-    "armor_proficiencies": ["heavy", "medium", "light", "clothing"]
+    "primary": [
+      "force"
+    ],
+    "starting_feats": [
+      "attaque_puissante"
+    ],
+    "starting_abilities": [
+      "Second souffle"
+    ],
+    "icon": "res://assets/class_icons/demonblade.png",
+    "armor_proficiencies": [
+      "heavy",
+      "medium",
+      "light",
+      "clothing"
+    ]
   },
-
   "hellcaster": {
-    "name": "Hellcaster",
-    "description": "Mage du sang maîtrisant les arcanes démoniaques et les veines brûlantes.",
+    "name": "Arcaniste des Braises",
+    "description": "Mage de guerre spécialisé dans les flux instables laissés par la Fracture.",
     "hit_die": 6,
-    "primary": ["magie"],
-    "starting_feats": ["abyss_focus"],
-    "starting_abilities": ["Décharge infernale"],
-    "icon": "assets/class_icons/hellcaster.png",
-    "armor_proficiencies": ["light", "clothing"]
+    "primary": [
+      "magie"
+    ],
+    "starting_feats": [
+      "lanceur_de_rituels"
+    ],
+    "starting_abilities": [
+      "Récupération arcanique"
+    ],
+    "icon": "res://assets/class_icons/hellcaster.png",
+    "armor_proficiencies": [
+      "light",
+      "clothing"
+    ]
   },
-
   "shadowfang": {
-    "name": "Shadowfang",
-    "description": "Assassin démoniaque, rapide, silencieux, frappant depuis les ombres.",
+    "name": "Croc du Voile",
+    "description": "Éclaireur et assassin qui exploite les ruines, l’obscurité et la désinformation.",
     "hit_die": 8,
-    "primary": ["espionnage"],
-    "starting_feats": ["silent_killer"],
-    "starting_abilities": ["Entaille spectrale"],
-    "icon": "assets/class_icons/shadowfang.png",
-    "armor_proficiencies": ["light", "clothing"]
+    "primary": [
+      "espionnage"
+    ],
+    "starting_feats": [
+      "maitrise_furtive"
+    ],
+    "starting_abilities": [
+      "Attaque sournoise"
+    ],
+    "icon": "res://assets/class_icons/shadowfang.png",
+    "armor_proficiencies": [
+      "light",
+      "clothing"
+    ]
   },
-
   "soulwarden": {
-    "name": "Soulwarden",
-    "description": "Canalise l'énergie vitale et les pactes anciens pour protéger et purifier.",
+    "name": "Gardien des Échos",
+    "description": "Protecteur capable de stabiliser les âmes, les serments et les pactes fragiles.",
     "hit_die": 8,
-    "primary": ["magie"],
-    "starting_feats": ["soul_anchor"],
-    "starting_abilities": ["Lumière intérieure"],
-    "icon": "assets/class_icons/soulwarden.png",
-    "armor_proficiencies": ["light", "clothing"]
+    "primary": [
+      "magie"
+    ],
+    "starting_feats": [
+      "soigneur"
+    ],
+    "starting_abilities": [
+      "Canalisation divine"
+    ],
+    "icon": "res://assets/class_icons/soulwarden.png",
+    "armor_proficiencies": [
+      "light",
+      "clothing"
+    ]
   },
-
   "hellranger": {
-    "name": "Hellranger",
-    "description": "Traqueur démoniaque, expert en reconnaissance et en chasse surnaturelle.",
+    "name": "Pisteur des Ruines",
+    "description": "Traqueur des étendues mortes, expert en reconnaissance et chasse aux Altérés.",
     "hit_die": 10,
-    "primary": ["force", "espionnage"],
-    "starting_feats": ["predator_instinct"],
-    "starting_abilities": ["Marque du chasseur"],
-    "icon": "assets/class_icons/hellranger.png",
-    "armor_proficiencies": ["medium", "light", "clothing"]
+    "primary": [
+      "force",
+      "espionnage"
+    ],
+    "starting_feats": [
+      "reflexes_rapides"
+    ],
+    "starting_abilities": [
+      "Ennemi favori"
+    ],
+    "icon": "res://assets/class_icons/hellranger.png",
+    "armor_proficiencies": [
+      "medium",
+      "light",
+      "clothing"
+    ]
   },
-
   "abyss_paladin": {
-    "name": "Abyss Paladin",
-    "description": "Chevalier du pacte, protecteur implacable lié à une force infernale.",
+    "name": "Paladin de la Faille",
+    "description": "Chevalier lié à un serment ancien, conçu pour tenir une ligne lorsque tout cède.",
     "hit_die": 10,
-    "primary": ["force", "commandement"],
-    "starting_feats": ["unyielding_oath"],
-    "starting_abilities": ["Main du pacte"],
-    "icon": "assets/class_icons/abysspaladin.png",
-    "armor_proficiencies": ["heavy", "medium", "light", "clothing"]
+    "primary": [
+      "force",
+      "commandement"
+    ],
+    "starting_feats": [
+      "volonte_de_fer"
+    ],
+    "starting_abilities": [
+      "Imposition des mains"
+    ],
+    "icon": "res://assets/class_icons/abysspaladin.png",
+    "armor_proficiencies": [
+      "heavy",
+      "medium",
+      "light",
+      "clothing"
+    ]
   },
-
   "pactbound": {
-    "name": "Pactbound",
-    "description": "Occultiste lié à un seigneur démon, maniant la magie du pacte.",
+    "name": "Lié du Pacte",
+    "description": "Occultiste qui négocie avec les Entités de Veyr au prix de dettes toujours plus lourdes.",
     "hit_die": 8,
-    "primary": ["magie", "diplomatie"],
-    "starting_feats": ["void_tongue"],
-    "starting_abilities": ["Explosion du pacte"],
-    "icon": "assets/class_icons/pactbound.png",
-    "armor_proficiencies": ["light", "clothing"]
+    "primary": [
+      "magie",
+      "diplomatie"
+    ],
+    "starting_feats": [
+      "focalisation_de_pacte"
+    ],
+    "starting_abilities": [
+      "Explosion occulte"
+    ],
+    "icon": "res://assets/class_icons/pactbound.png",
+    "armor_proficiencies": [
+      "light",
+      "clothing"
+    ]
   },
-
   "echo_bard": {
-    "name": "Echo Bard",
-    "description": "Manipule les émotions et les esprits grâce à des résonances occultes.",
+    "name": "Chantre des Échos",
+    "description": "Diplomate mystique qui manipule mémoire, morale et résonance collective.",
     "hit_die": 8,
-    "primary": ["diplomatie", "magie"],
-    "starting_feats": ["mind_echo"],
-    "starting_abilities": ["Inspiration spectrale"],
-    "icon": "assets/class_icons/echobard.png",
-    "armor_proficiencies": ["light", "clothing"]
+    "primary": [
+      "diplomatie",
+      "magie"
+    ],
+    "starting_feats": [
+      "langue_d_argent"
+    ],
+    "starting_abilities": [
+      "Inspiration"
+    ],
+    "icon": "res://assets/class_icons/echobard.png",
+    "armor_proficiencies": [
+      "light",
+      "clothing"
+    ]
   },
-
   "berserker_demon": {
-    "name": "Berserker Demon",
-    "description": "Guerrier frénétique alimenté par la rage infernale.",
+    "name": "Furie Cendrée",
+    "description": "Guerrier de choc qui transforme douleur et fatigue en puissance immédiate.",
     "hit_die": 12,
-    "primary": ["force"],
-    "starting_feats": ["blood_fury"],
-    "starting_abilities": ["Rage démoniaque"],
-    "icon": "assets/class_icons/berserkdemon.png",
-    "armor_proficiencies": ["heavy", "medium", "light", "clothing"]
+    "primary": [
+      "force"
+    ],
+    "starting_feats": [
+      "robustesse"
+    ],
+    "starting_abilities": [
+      "Rage"
+    ],
+    "icon": "res://assets/class_icons/berserkdemon.png",
+    "armor_proficiencies": [
+      "heavy",
+      "medium",
+      "light",
+      "clothing"
+    ]
   },
-
   "void_monk": {
-    "name": "Void Monk",
-    "description": "Maître martial utilisant l'énergie du néant pour frapper avec précision.",
+    "name": "Moine du Vide",
+    "description": "Combattant discipliné qui exploite les instants de silence entre deux flux d’Éther.",
     "hit_die": 8,
-    "primary": ["espionnage", "force"],
-    "starting_feats": ["void_step"],
-    "starting_abilities": ["Enchaînement du néant"],
-    "icon": "assets/class_icons/voidmonk.png",
-    "armor_proficiencies": ["light", "clothing"]
+    "primary": [
+      "espionnage",
+      "force"
+    ],
+    "starting_feats": [
+      "evasion"
+    ],
+    "starting_abilities": [
+      "Enchaînement de frappes"
+    ],
+    "icon": "res://assets/class_icons/voidmonk.png",
+    "armor_proficiencies": [
+      "light",
+      "clothing"
+    ]
   },
-
   "wild_druid": {
-    "name": "Wild Druid",
-    "description": "Canalise les forces primordiales et les métamorphoses infernales.",
+    "name": "Druide des Friches",
+    "description": "Gardien des formes de vie mutées qui ont survécu à la Fracture.",
     "hit_die": 8,
-    "primary": ["magie", "artisanat"],
-    "starting_feats": ["feral_bond"],
-    "starting_abilities": ["Forme bestiale"],
-    "icon": "assets/class_icons/wilddruid.png",
-    "armor_proficiencies": ["light", "clothing"]
+    "primary": [
+      "magie",
+      "artisanat"
+    ],
+    "starting_feats": [
+      "lien_avec_la_nature"
+    ],
+    "starting_abilities": [
+      "Métamorphose"
+    ],
+    "icon": "res://assets/class_icons/wilddruid.png",
+    "armor_proficiencies": [
+      "light",
+      "clothing"
+    ]
   },
-
   "blood_sorcerer": {
-    "name": "Blood Sorcerer",
-    "description": "Magicien inné dont la puissance coule dans ses veines démoniaques.",
+    "name": "Thaumaturge Écarlate",
+    "description": "Mage inné qui grave ses sorts dans sa propre vitalité.",
     "hit_die": 6,
-    "primary": ["magie"],
-    "starting_feats": ["crimson_focus"],
-    "starting_abilities": ["Déferlement sanguin"],
-    "icon": "assets/class_icons/bloodsorcerer.png",
-    "armor_proficiencies": ["light", "clothing"]
+    "primary": [
+      "magie"
+    ],
+    "starting_feats": [
+      "precision_arcane"
+    ],
+    "starting_abilities": [
+      "Impulsion métamagique"
+    ],
+    "icon": "res://assets/class_icons/bloodsorcerer.png",
+    "armor_proficiencies": [
+      "light",
+      "clothing"
+    ]
   },
-
   "infernal_artificer": {
-    "name": "Infernal Artificer",
-    "description": "Forgeron mystique combinant technologie noire et arcanes.",
+    "name": "Artificier des Vestiges",
+    "description": "Ingénieur mystique capable de réveiller les machines et reliques d’avant la Fracture.",
     "hit_die": 8,
-    "primary": ["artisanat", "magie"],
-    "starting_feats": ["hellforge_engineer"],
-    "starting_abilities": ["Infusion démoniaque"],
-    "icon": "assets/class_icons/infernalartificer.png",
-    "armor_proficiencies": ["medium", "light", "clothing"]
+    "primary": [
+      "artisanat",
+      "magie"
+    ],
+    "starting_feats": [
+      "ingenieur_de_bataille"
+    ],
+    "starting_abilities": [
+      "Infuser un objet"
+    ],
+    "icon": "res://assets/class_icons/infernalartificer.png",
+    "armor_proficiencies": [
+      "medium",
+      "light",
+      "clothing"
+    ]
   },
-
   "warlord": {
-    "name": "Warlord",
-    "description": "Stratège infernal, maître du champ de bataille et des escouades démoniaques.",
+    "name": "Maître de Guerre",
+    "description": "Chef de campagne spécialisé dans les escouades, la logistique et la pression politique.",
     "hit_die": 10,
-    "primary": ["commandement", "diplomatie"],
-    "starting_feats": ["infernal_tactician"],
-    "starting_abilities": ["Ordre du seigneur de guerre"],
-    "icon": "assets/class_icons/warlord.png",
-    "armor_proficiencies": ["heavy", "medium", "light", "clothing"]
+    "primary": [
+      "commandement",
+      "diplomatie"
+    ],
+    "starting_feats": [
+      "tacticien_de_champ_de_bataille"
+    ],
+    "starting_abilities": [
+      "Ordre tactique"
+    ],
+    "icon": "res://assets/class_icons/warlord.png",
+    "armor_proficiencies": [
+      "heavy",
+      "medium",
+      "light",
+      "clothing"
+    ]
   }
 }

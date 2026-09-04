@@ -42,12 +42,7 @@ var _actions_nuit := [
 var _actions_actuelles: Array = []
 var _vue_gauche: String = "maisons"
 
-const PORTRAIT_HINTS := {
-	"ingrid": "res://assets/images/ingrid_39_1024.png",
-	"edwin black": "res://assets/images/edwin_black_1024.png",
-	"ceres": "res://assets/images/lore/ceres_1024.webp",
-	"ceres (vasuki)": "res://assets/images/lore/ceres_1024.webp",
-}
+const PORTRAIT_HINTS := {}
 
 const DISPLAY_LABELS := {
 	"ritual_caster": "Magie des Pactes",
@@ -180,7 +175,7 @@ func _vider_colonne_gauche() -> VBoxContainer:
 func _init_resource_icons() -> void:
 	if _icones_pretes:
 		return
-	var header := $Header/BgHeader/InfoClan/RessourcesHeader as HBoxContainer
+	var header := $Header/BgHeader/InfoClan/RessourcesHeader as Container
 	if header == null:
 		return
 	for label_name in ICON_RES_HEADER:
@@ -514,12 +509,14 @@ func _afficher_vue_profil() -> void:
 		portrait_tex = _texture_for_character(str(ClanManager.nom_personnage))
 	if portrait_tex == null:
 		var profil_genre: String = str(profil.get("genre", "")).to_lower()
-		var player_path: String = VisualAssetCatalog.person_path("player_default")
-		if profil_genre.contains("femme"):
+		var profil_apparence: String = str(profil.get("apparence", "")).to_lower()
+		var player_path: String = ""
+		if profil_apparence.contains("femme") or profil_genre.contains("femme"):
 			player_path = VisualAssetCatalog.person_path("player_female")
-		elif profil_genre.contains("homme"):
+		elif profil_apparence.contains("homme") or profil_genre.contains("homme"):
 			player_path = VisualAssetCatalog.person_path("player_male")
-		portrait_tex = VisualAssetCatalog.load_path(player_path)
+		if not player_path.is_empty():
+			portrait_tex = VisualAssetCatalog.load_path(player_path)
 	var portrait_rect := TextureRect.new()
 	portrait_rect.texture = portrait_tex
 	portrait_rect.name = "PortraitRect"
@@ -1000,7 +997,26 @@ func _reenable_button(btn: Button) -> void:
 
 
 func _texture_from_portrait_payload(payload: Dictionary) -> Texture2D:
-	return VisualAssetCatalog.texture_from_portrait_payload(payload)
+	if payload.is_empty():
+		return null
+	if str(payload.get("encoding", "")) != "png_base64":
+		return null
+	var encoded := str(payload.get("data", ""))
+	if encoded.is_empty():
+		return null
+	var raw := Marshalls.base64_to_raw(encoded)
+	if raw.is_empty():
+		return null
+	# Use a small cache key to avoid recreating textures repeatedly for the same payload
+	var cache_key := String(encoded).sha256_text()
+	if _portrait_texture_cache.has(cache_key):
+		return _portrait_texture_cache[cache_key]
+	var image := Image.new()
+	if image.load_png_from_buffer(raw) != OK:
+		return null
+	var tex := ImageTexture.create_from_image(image)
+	_portrait_texture_cache[cache_key] = tex
+	return tex
 
 
 func _exit_tree() -> void:
@@ -1018,13 +1034,6 @@ func _texture_for_character(name: String) -> Texture2D:
 	# Portraits strictement nominatifs: on ne remplace jamais une personne inconnue
 	# par le sceau du clan ou par un autre personnage.
 	var exact_path: String = str(PORTRAIT_HINTS.get(norm, ""))
-	if exact_path.is_empty():
-		if norm.contains("ingrid"):
-			exact_path = VisualAssetCatalog.person_path("ingrid")
-		elif norm.contains("edwin"):
-			exact_path = VisualAssetCatalog.person_path("edwin_black")
-		elif norm.contains("ceres"):
-			exact_path = VisualAssetCatalog.person_path("ceres")
 	if exact_path.is_empty():
 		return null
 	return ResourcePathResolver.load_texture(exact_path, "res://assets/images")
@@ -1251,7 +1260,7 @@ func _on_fin_tour() -> void:
 		ClanManager.reset_actions_pour_nuit()
 		var msg_passifs := ClanManager.appliquer_passifs_nuit()
 		ClanManager.sauvegarder()
-		var msg_nuit := "La nuit tombe sur Yomihara. Les actions nocturnes sont disponibles."
+		var msg_nuit := "La nuit tombe sur les Marches Libres. Les actions nocturnes sont disponibles."
 		if not msg_passifs.is_empty():
 			msg_nuit = "%s | %s" % [msg_nuit, msg_passifs]
 		# Affiche d'abord le rapport d'après-midi puis le message de nuit

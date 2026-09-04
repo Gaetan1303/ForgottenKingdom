@@ -1,5 +1,5 @@
 ## autoload/dungeon_generator.gd
-## Génère un donjon procédural de 10 étages avec salles, monstres et démons.
+## Génère un donjon procédural de 10 étages avec salles et entités des ruines.
 extends Node
 
 const FLOORS_TOTAL := 10
@@ -8,7 +8,7 @@ var current_run: Dictionary = {}
 var _rng := RandomNumberGenerator.new()
 
 var _monstres := ["Goule", "Harpie", "Ogre", "Loup infernal", "Chevalier corrompu"]
-var _demons := ["Succube", "Incube", "Démon majeur", "Archidémon", "Seigneur abyssal"]
+var _entities := ["Dévoreur de Cendre", "Veuve de Faille", "Héraut brisé", "Colosse d’Éther", "Seigneur de Ruine"]
 
 
 func generate_run(seed_value: int = -1) -> Dictionary:
@@ -83,8 +83,8 @@ func _pick_enemies(floor_num: int, room_type: String) -> Array:
 		"boss": count = 1
 
 	for _i in range(count):
-		var demon_chance := clampi(20 + floor_num * 6, 20, 90)
-		var pool := _demons if _rng.randi_range(1, 100) <= demon_chance else _monstres
+		var entity_chance := clampi(20 + floor_num * 6, 20, 90)
+		var pool := _entities if _rng.randi_range(1, 100) <= entity_chance else _monstres
 		enemies.append(pool[_rng.randi_range(0, pool.size() - 1)])
 	return enemies
 

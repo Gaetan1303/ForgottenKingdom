@@ -1,0 +1,21 @@
+# Royaume Déchu — Chroniques de Veyr
+# Source narrative originale. Le runtime utilise resources/chapters/data.json.
+
+monde: Veyr
+catastrophe: La Fracture
+pouvoirs_majeurs: Les Neuf Couronnes
+region_depart: Marches Libres
+bastion_depart: Refuge des Cendres
+antagoniste_initial: Seydran Vhalcor
+compagnon_initial: Kael
+
+arc_mvp:
+  - id: chute
+    titre: La Nuit des Cendres
+    objectif: Survivre à la destruction du clan.
+  - id: reconstruction
+    titre: Le Refuge des Cendres
+    objectif: Reconstituer une Maison, des ressources et un réseau.
+  - id: retour
+    titre: Une Couronne peut saigner
+    objectif: Révéler le retour du clan et choisir la première cible stratégique.

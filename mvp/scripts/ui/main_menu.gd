@@ -2,14 +2,14 @@ extends Control
 const FallenUI = preload("res://scripts/ui/fallen_ui.gd")
 const VisualAssetCatalog = preload("res://scripts/ui/visual_asset_catalog.gd")
 
-const INGRID_MVP_NOTICE_KEY = "ingrid_mvp_notice_seen"
+const STORY_MVP_NOTICE_KEY = "veyr_story_notice_seen"
 const MAIN_TRACK = "mainmenu.mp3"
 const EMBLEM_PATH = "res://assets/icon/jeu.png"
 const SOUND_ICON_PATH = "res://assets/ui/stop_icon.png"
 
 
-var _ingrid_notice: AcceptDialog
-var _pending_ingrid_target: String = ""
+var _story_notice: AcceptDialog
+var _pending_story_target: String = ""
 var _options_panel: PanelContainer
 var _options_slider: HSlider
 var _options_resolution: OptionButton
@@ -45,12 +45,12 @@ func _ready() -> void:
 
 
 func _setup_notice_dialog() -> void:
-	_ingrid_notice = AcceptDialog.new()
-	_ingrid_notice.title = "Mode Ingrid (MVP narratif)"
-	_ingrid_notice.dialog_text = "Le contenu Ingrid reste un MVP narratif. Continuer relance le dernier chapitre sauvegardé."
-	_ingrid_notice.ok_button_text = "Continuer"
-	add_child(_ingrid_notice)
-	_ingrid_notice.confirmed.connect(_on_ingrid_notice_confirmed)
+	_story_notice = AcceptDialog.new()
+	_story_notice.title = "Royaume Déchu — Chronique de Veyr"
+	_story_notice.dialog_text = "Continuer reprend la dernière chronique sauvegardée de votre Maison."
+	_story_notice.ok_button_text = "Continuer"
+	add_child(_story_notice)
+	_story_notice.confirmed.connect(_on_story_notice_confirmed)
 
 
 func _configure_title_label() -> void:
@@ -60,13 +60,13 @@ func _configure_title_label() -> void:
 	if title_label == null:
 		title_label = find_child("Title", true, false) as Label
 	if title_label != null:
-		title_label.text = "CHRONIQUES DES NEUF NOBLES"
+		title_label.text = "ROYAUME DÉCHU — LES CENDRES DE VEYR"
 		title_label.custom_minimum_size = Vector2(0, 54)
 		title_label.horizontal_alignment = 1
 		title_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 		var subtitle := find_child("Subtitle", true, false) as Label
 		if subtitle != null:
-			subtitle.text = "DEMON REALM  •  ROYAUME DÉCHU"
+			subtitle.text = "VEYR  •  LES NEUF COURONNES"
 			subtitle.add_theme_color_override("font_color", Color8(190, 168, 198))
 	else:
 		push_warning("MainMenu: Title label not found")
@@ -100,8 +100,6 @@ func _connect_menu_buttons() -> void:
 
 
 func _configure_menu_icons() -> void:
-	# Menu artwork must come from assets/ui/icons. No clan emblem, portrait or
-	# resource icon is used as a decorative substitute for a menu action.
 	var icon_actions: Dictionary = {
 		"BtnNouvellePartie": "new_game",
 		"BtnContinuer": "continue_game",
@@ -114,8 +112,7 @@ func _configure_menu_icons() -> void:
 		var icon: TextureRect = get_node_or_null(base_path + button_name + "/" + button_name + "Content/Icon") as TextureRect
 		if icon == null:
 			continue
-		var action: String = str(icon_actions[button_name])
-		var icon_path: String = VisualAssetCatalog.menu_icon_path(action)
+		var icon_path: String = VisualAssetCatalog.menu_icon_path(str(icon_actions[button_name]))
 		if icon_path.is_empty():
 			icon.texture = null
 			icon.visible = false
@@ -123,7 +120,6 @@ func _configure_menu_icons() -> void:
 		var texture: Texture2D = VisualAssetCatalog.load_path(icon_path)
 		icon.texture = texture
 		icon.visible = texture != null
-
 
 
 func _create_procedural_background() -> void:
@@ -222,20 +218,20 @@ func _on_menu_action(action: String) -> void:
 
 
 func _request_continue_game() -> void:
-	var notice_enabled: Variant = SaveSystem.get_value(INGRID_MVP_NOTICE_KEY, false)
+	var notice_enabled: Variant = SaveSystem.get_value(STORY_MVP_NOTICE_KEY, false)
 	if notice_enabled == true or str(notice_enabled).to_lower() == "true":
 		_open_saved_chapter()
 		return
-	_pending_ingrid_target = "continue_game"
-	_ingrid_notice.popup_centered_ratio(0.42)
+	_pending_story_target = "continue_game"
+	_story_notice.popup_centered_ratio(0.42)
 
 
-func _on_ingrid_notice_confirmed() -> void:
-	SaveSystem.set_value(INGRID_MVP_NOTICE_KEY, true)
+func _on_story_notice_confirmed() -> void:
+	SaveSystem.set_value(STORY_MVP_NOTICE_KEY, true)
 	SaveSystem.save()
-	if _pending_ingrid_target == "continue_game":
+	if _pending_story_target == "continue_game":
 		_open_saved_chapter()
-	_pending_ingrid_target = ""
+	_pending_story_target = ""
 
 
 func _open_saved_chapter() -> void:
@@ -254,8 +250,8 @@ func _open_saved_chapter() -> void:
 
 
 func _open_encyclopedia() -> void:
-	if GameManager.has_method("open_chapter_select"):
-		GameManager.open_chapter_select()
+	if GameManager.has_method("open_library"):
+		GameManager.open_library()
 
 
 func _on_sound_button_pressed() -> void:

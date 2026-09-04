@@ -104,31 +104,61 @@ func _resolve_player_data() -> void:
 	if cm == null:
 		return
 	_player_name = str(cm.get("nom_personnage") if cm.get("nom_personnage") != "" else "Héritier")
-	_clan_name   = str(cm.get("nom_clan")       if cm.get("nom_clan")       != "" else "votre Clan")
+	_clan_name = str(cm.get("nom_clan") if cm.get("nom_clan") != "" else "votre Clan")
 	var profil: Dictionary = (cm.get("profil_personnage") as Dictionary)
-	var genre: String = str(profil.get("genre", "")).strip_edges()
-	if genre.is_empty():
-		var appearance: String = str(profil.get("apparence", "")).to_lower()
-		if appearance.contains("femme") or appearance.contains("female"):
-			genre = "Femme"
-		elif appearance.contains("homme") or appearance.contains("male"):
-			genre = "Homme"
-	_player_genre = genre
-	# Prefer explicit parent names from profile if present.
 	_pere_name = str(profil.get("pere_name", "Ton Père"))
 	_mere_name = str(profil.get("mere_name", "Ta Mère"))
 
-	# The protagonist first uses the portrait chosen during character creation.
-	# Without one, narration uses the matching family child asset, never a generic NPC.
-	var portrait_payload: Dictionary = profil.get("portrait", {}) as Dictionary
-	_player_portrait_texture = VisualAssetCatalog.texture_from_portrait_payload(portrait_payload)
-	if genre == "Femme":
+	# Portrait explicite sélectionné par le joueur : priorité absolue.
+	var portrait_payload := profil.get("portrait", {}) as Dictionary
+	_player_portrait_texture = _texture_from_portrait_payload(portrait_payload)
+	_player_portrait_path = str(portrait_payload.get("image_path", portrait_payload.get("path", ""))).strip_edges()
+	if _player_portrait_texture == null and not _player_portrait_path.is_empty():
+		_player_portrait_texture = ResourcePathResolver.load_texture(_player_portrait_path, "res://assets/images/hero")
+
+	# La création de personnage stocke l'identité visuelle dans `apparence`, pas dans `genre`.
+	var appearance: String = str(profil.get("apparence", profil.get("appearance_id", ""))).to_lower()
+	var genre: String = str(profil.get("genre", "")).to_lower()
+	if appearance.contains("femme") or genre == "femme" or genre == "female":
+		_player_genre = "femme"
+	elif appearance.contains("homme") or genre == "homme" or genre == "male":
+		_player_genre = "homme"
+	else:
+		_player_genre = ""
+	if _player_portrait_texture == null:
+		if appearance.contains("femme") or genre == "femme" or genre == "female":
+			_player_portrait_path = VisualAssetCatalog.person_path("player_female")
+		elif appearance.contains("homme") or genre == "homme" or genre == "male":
+			_player_portrait_path = VisualAssetCatalog.person_path("player_male")
+		else:
+			# Pas d'image si le profil ne permet pas d'identifier le visuel : mieux vaut du vide qu'un faux portrait.
+			_player_portrait_path = ""
+
+	if appearance.contains("femme") or genre == "femme" or genre == "female":
 		_parent_name = _mere_name
-	elif genre == "Homme":
+	elif appearance.contains("homme") or genre == "homme" or genre == "male":
 		_parent_name = _pere_name
 	else:
 		_parent_name = "Ton Parent"
-	_player_portrait_path = VisualAssetCatalog.resolve_family_portrait("child", genre)
+
+
+func _texture_from_portrait_payload(payload: Dictionary) -> Texture2D:
+	if payload.is_empty():
+		return null
+	var encoded := ""
+	if str(payload.get("encoding", "")) == "png_base64":
+		encoded = str(payload.get("data", ""))
+	elif payload.has("image_base64"):
+		encoded = str(payload.get("image_base64", ""))
+	if encoded.is_empty():
+		return null
+	var raw := Marshalls.base64_to_raw(encoded)
+	if raw.is_empty():
+		return null
+	var image := Image.new()
+	if image.load_png_from_buffer(raw) != OK:
+		return null
+	return ImageTexture.create_from_image(image)
 
 
 func _load_visual_bindings() -> void:
@@ -384,7 +414,7 @@ func _build_ui() -> void:
 	_tuto_body = RichTextLabel.new()
 	_tuto_body.name = "TutoBody"
 	_tuto_body.bbcode_enabled = true
-	_tuto_body.scroll_active = false
+	_tuto_body.scroll_active = true
 	_tuto_body.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	_tuto_body.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	_tuto_body.add_theme_font_size_override("normal_font_size", 13)
@@ -415,11 +445,11 @@ func _build_ui() -> void:
 	_recruit_panel = PanelContainer.new()
 	_recruit_panel.name = "RecruitPanel"
 	_recruit_panel.set_anchors_preset(Control.PRESET_CENTER)
-	_recruit_panel.custom_minimum_size = Vector2(520, 440)
-	_recruit_panel.offset_left  = -260
-	_recruit_panel.offset_top   = -220
-	_recruit_panel.offset_right =  260
-	_recruit_panel.offset_bottom = 220
+	_recruit_panel.custom_minimum_size = Vector2(600, 500)
+	_recruit_panel.offset_left  = -300
+	_recruit_panel.offset_top   = -250
+	_recruit_panel.offset_right =  300
+	_recruit_panel.offset_bottom = 250
 	var style_rec := StyleBoxFlat.new()
 	style_rec.bg_color = Color(0.05, 0.01, 0.12, 0.97)
 	style_rec.corner_radius_top_left     = 12
@@ -473,7 +503,7 @@ func _build_ui() -> void:
 	_recruit_desc = RichTextLabel.new()
 	_recruit_desc.name = "RecruitDesc"
 	_recruit_desc.bbcode_enabled = true
-	_recruit_desc.scroll_active = false
+	_recruit_desc.scroll_active = true
 	_recruit_desc.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	_recruit_desc.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	_recruit_desc.add_theme_font_size_override("normal_font_size", 13)
@@ -659,11 +689,16 @@ func _apply_scene_visual(scene_data: Dictionary) -> void:
 		_build_resource_cards(scene_resources)
 		_resource_visual.visible = true
 		return
-	if visual in ["@player", "@child"] and _player_portrait_texture != null:
-		_illus.texture = _player_portrait_texture
-		_illus.visible = true
-		VisualAssetCatalog.apply_fit(_illus, "portrait")
-		return
+
+	if visual == "@player":
+		if _player_portrait_texture != null:
+			_illus.texture = _player_portrait_texture
+			_illus.visible = true
+			VisualAssetCatalog.apply_fit(_illus, "portrait")
+			return
+		if _player_portrait_path.is_empty():
+			_illus.visible = false
+			return
 
 	var path: String = _resolve_visual_token(visual)
 	if path.is_empty():
@@ -675,18 +710,17 @@ func _apply_scene_visual(scene_data: Dictionary) -> void:
 
 func _resolve_visual_token(token: String) -> String:
 	match token:
-		"@mother": return VisualAssetCatalog.family_mother_path()
+		"@mother": return VisualAssetCatalog.person_path("mother")
 		"@father": return VisualAssetCatalog.father_with_child_path(_player_genre)
-		"@father_alone": return VisualAssetCatalog.resolve_family_portrait("father_alone", _player_genre)
-		"@child": return VisualAssetCatalog.resolve_family_portrait("child", _player_genre)
+		"@heir_child": return VisualAssetCatalog.heir_child_path(_player_genre)
 		"@kael": return VisualAssetCatalog.person_path("kael")
 		"@player": return _player_portrait_path
 		"@clan": return VisualAssetCatalog.world_path("clan")
-		"@nobles_symbol": return VisualAssetCatalog.world_path("nobles_symbol")
-		"@nobles_group": return VisualAssetCatalog.world_path("nobles_group")
-		"@map": return VisualAssetCatalog.world_path("demon_realm_map")
-		"@yomihara": return VisualAssetCatalog.world_path("yomihara")
-		"@hell_knight": return VisualAssetCatalog.world_path("hell_knight")
+		"@nobles_symbol": return ""
+		"@nobles_group": return ""
+		"@map": return VisualAssetCatalog.world_path("veyr_world")
+		"@marches": return VisualAssetCatalog.world_path("marches")
+		"@hell_knight": return ""
 		_: return token if token.begins_with("res://") else ""
 
 
@@ -875,12 +909,13 @@ func _open_recruitment(pnj_data: Dictionary) -> void:
 		"commandement": "Commandement",
 	}
 	var pnj_stats: Dictionary = pnj_data.get("stats", {}) as Dictionary
-	var stats_hbox := HBoxContainer.new()
-	stats_hbox.add_theme_constant_override("separation", 16)
+	var stats_hbox := HFlowContainer.new()
+	stats_hbox.add_theme_constant_override("h_separation", 12)
+	stats_hbox.add_theme_constant_override("v_separation", 8)
 	_recruit_stats.add_child(stats_hbox)
 	for key in stat_display.keys():
 		var col := VBoxContainer.new()
-		col.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		col.custom_minimum_size = Vector2(78, 0)
 		var name_lbl := Label.new()
 		name_lbl.text = stat_display[key]
 		name_lbl.add_theme_font_size_override("font_size", 11)
@@ -896,10 +931,7 @@ func _open_recruitment(pnj_data: Dictionary) -> void:
 		stats_hbox.add_child(col)
 
 	_btn_recruit.set_meta("pnj_data", pnj_data)
-	_btn_recruit.text = "Accueillir %s dans le %s" % [
-		str(pnj_data.get("nom", "PNJ")),
-		_clan_name
-	]
+	_btn_recruit.text = "Accueillir %s" % str(pnj_data.get("nom", "PNJ"))
 
 
 func _on_recruit() -> void:

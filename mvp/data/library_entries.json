@@ -1,66 +1,64 @@
 {
   "sections": [
     {
-      "id": "lore",
-      "title": "Chroniques de Yomihara",
+      "id": "world",
+      "title": "Veyr — Le monde déchu",
       "entries": [
         {
-          "title": "Les Neuf Maisons",
-          "text": "Neuf lignées démoniaques se disputent le pouvoir. Leur influence varie selon les bastions contrôlés et les pactes politiques."
+          "title": "La Fracture",
+          "text": "Veyr était autrefois un monde continu. La Fracture a brisé ses routes, empoisonné ses mers et libéré l’Éther de Cendre. Les survivants vivent désormais entre citadelles, ruines et terres mortes."
         },
         {
-          "title": "Rôle du Clan",
-          "text": "Votre clan agit comme force militaire, diplomatique et occulte. Chaque tour impose des choix entre expansion, défense et stabilité interne."
-        }
-      ]
-    },
-    {
-      "id": "intro_lore",
-      "title": "Prologue du Clan",
-      "entries": [
+          "title": "Les Marches Libres",
+          "text": "Aux frontières des grands domaines, des clans sans Couronne survivent par le commerce, la récupération et la guerre. Le clan du joueur appartient à cette tradition indépendante."
+        },
         {
-          "title": "Les Terres Libres",
-          "text": "Le Royaume Démoniaque ne ressemble pas à ce que les légendes racontent. Ce n'est pas un enfer de flammes et de chaos. C'est une société. Féodale. Cruelle. Précise. Au sommet, les Neuf Familles Nobles règnent, protégées par les Chevaliers Infernaux. En dessous... tout le reste."
+          "title": "Les Neuf Couronnes",
+          "text": "Neuf grandes Maisons contrôlent les routes, les forges, les archives et les sources d’Éther. Elles coopèrent au sein du Synode uniquement lorsque leur domination commune est menacée."
         },
         {
           "title": "La Nuit de la Chute",
-          "text": "Ton bastion est attaqué par le Dragon Blanc. Tes parents t'obligent à fuir. La fumée monte violette et rouge. Tu ne pleures pas. Quelque chose meurt en toi. Et dans le silence qui reste... quelque chose d'autre prend la place."
-        },
-        {
-          "title": "Serment du Clan",
-          "text": "Je me souviens du pain que mon père faisait cuire le matin. Je me souviens du sourire de ma mère. Je me souviens du bruit que faisaient les murs du bastion quand le feu les a pris. Je n'oublierai rien. Et je ne pardonnerai rien. Au nom du clan — au nom du sang de ma mère et de mon père — je jure que les Neuf Familles Nobles s'agenouilleront. Toutes. À commencer par Caëlith. Il va apprendre ce que ce mot signifie vraiment."
+          "text": "Le clan du joueur est détruit par une opération du Synode menée par la Maison Vhalcor. L’héritier survit avec Kael et jure de reconstruire sa Maison."
         }
       ]
     },
     {
-      "id": "capacites",
-      "title": "Compendium des Capacités",
+      "id": "systems",
+      "title": "Règles du Royaume",
       "entries": [
         {
-          "title": "Jet d'action (inspiration d20)",
-          "text": "Le score d'action combine caractéristiques, bonus contextuels et un facteur aléatoire. Plus l'écart avec la résistance est grand, meilleur est le résultat."
+          "title": "Cycle de journée",
+          "text": "Matin : préparation et affectations. Après-midi : actions, missions et exploration. Nuit : relations, pactes, récupération et décisions personnelles. La fin de journée fait évoluer le monde."
         },
         {
-          "title": "Rôles et spécialisations",
-          "text": "Une spécialisation doit refléter un style de jeu: offensif, contrôle, soutien ou infiltration. Construire une équipe équilibrée réduit les risques d'échec critique."
+          "title": "Ressources",
+          "text": "Or, soldats, mana, réputation, renseignements, bois, fer, pierre, nourriture et essence soutiennent la reconstruction du clan."
         },
         {
-          "title": "Rythme jour/nuit",
-          "text": "Le cycle jour/nuit modifie les opportunités: pression stratégique le jour, actions discrètes et passifs de récupération la nuit."
+          "title": "Actions",
+          "text": "Attaquer, espionner, recruter, négocier, fortifier ou récupérer. Les classes et talents modifient les chances et les coûts de ces actions."
+        },
+        {
+          "title": "Pactes",
+          "text": "Les pactes lient le clan à des Entités ou des créatures de la Faille. Ils procurent de la puissance mais créent des dettes et peuvent altérer les personnages."
         }
       ]
     },
     {
       "id": "guide",
-      "title": "Guide Tactique",
+      "title": "Guide tactique",
       "entries": [
         {
-          "title": "Lecture des ressources",
-          "text": "Or et mana alimentent la projection de puissance; réputation et renseignements déterminent la flexibilité diplomatique et l'anticipation ennemie."
+          "title": "Reconstruire avant de conquérir",
+          "text": "Une armée sans nourriture ni économie s’effondre. Stabilisez une base de production avant les campagnes prolongées."
         },
         {
-          "title": "Plan de progression",
-          "text": "Prioriser un axe principal (militaire ou politique) tout en conservant un minimum de défense et de logistique évite les effondrements de milieu de campagne."
+          "title": "Information",
+          "text": "Les renseignements réduisent l’incertitude : composition d’une garnison, intentions d’une Couronne, risques d’une mission et opportunités diplomatiques."
+        },
+        {
+          "title": "Relations",
+          "text": "Les PNJ ne sont pas de simples bonus : leur loyauté, leur tempérament et leur combativité doivent influencer les missions qu’on leur confie."
         }
       ]
     }

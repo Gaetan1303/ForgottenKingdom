@@ -18,7 +18,7 @@ func _run() -> void:
         "fiche_complete": {"niveau": 1, "points_restants": 0, "stats_brutes": {"force": 12, "magie": 14, "espionnage": 8, "artisanat": 8, "diplomatie": 8, "commandement": 8}}
     }
 
-    ClanManager.nouvelle_partie("Test", "ClanTest", "mage_du_pacte", stats_bonus, profil)
+    ClanManager.nouvelle_partie("Test", "ClanTest", "hellcaster", stats_bonus, profil)
 
     print("--- After nouvelle_partie ---")
     print("classe:", str(ClanManager.classe))

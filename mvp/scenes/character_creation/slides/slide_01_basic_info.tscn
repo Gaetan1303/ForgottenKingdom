@@ -112,7 +112,8 @@ theme_override_constants/separation = 12
 [node name="PreviewBox" type="TextureRect" parent="Content/Body/LeftColumn/PortraitUploadArea/PortraitPanel/PortraitPadding/PortraitLayout" unique_id=237417235]
 custom_minimum_size = Vector2(140, 140)
 layout_mode = 2
-stretch_mode = 2
+expand_mode = 1
+stretch_mode = 5
 
 [node name="DetailsVBox" type="VBoxContainer" parent="Content/Body/LeftColumn/PortraitUploadArea/PortraitPanel/PortraitPadding/PortraitLayout" unique_id=1864636144]
 layout_mode = 2

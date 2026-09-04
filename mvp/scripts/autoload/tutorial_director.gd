@@ -47,7 +47,7 @@ var _steps: Array[Dictionary] = [
 		"type": "tour",
 		"tour_min": 2,
 		"hint": "Tutoriel: terminez la nuit pour commencer le Tour 2.",
-		"done": "Tutoriel termine. L'histoire d'Ingrid commence.",
+		"done": "Tutoriel terminé. L’histoire de votre Maison commence.",
 	},
 ]
 

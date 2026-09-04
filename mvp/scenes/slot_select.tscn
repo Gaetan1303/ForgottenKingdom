@@ -105,10 +105,11 @@ autowrap_mode = 3
 text = ""
 size_flags_vertical = 3
 
-[node name="Actions" type="HBoxContainer" parent="Root"]
+[node name="Actions" type="HFlowContainer" parent="Root"]
 layout_mode = 2
 alignment = 1
-theme_override_constants/separation = 12
+theme_override_constants/h_separation = 12
+theme_override_constants/v_separation = 8
 
 [node name="BtnLoad" type="Button" parent="Root/Actions"]
 layout_mode = 2

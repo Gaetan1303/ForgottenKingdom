@@ -1,6 +1,5 @@
 extends RefCounted
 class_name PnjDailyPlannerService
-const StatDefs = preload("res://scripts/data/stat_defs.gd")
 
 # rely on StatDefs class_name from data/stat_defs.gd
 
@@ -45,6 +44,29 @@ func make_pnj_profile(
 	stats: Dictionary,
 	traits: Array = []
 ) -> Dictionary:
+	var base_combativite: int = 45
+	match role:
+		"ennemi": base_combativite = 80
+		"garde": base_combativite = 68
+		"stratege": base_combativite = 58
+		"eclaireur": base_combativite = 52
+		"mage": base_combativite = 44
+		"diplomate": base_combativite = 30
+		"marchand": base_combativite = 24
+		"villageois": base_combativite = 20
+	var variation: int = int(abs(hash(pnj_id)) % 21) - 10
+	var combativite: int = clampi(base_combativite + variation, 0, 100)
+	var temperament: String = "prudent"
+	if combativite >= 85:
+		temperament = "implacable"
+	elif combativite >= 70:
+		temperament = "belliqueux"
+	elif combativite >= 55:
+		temperament = "combatif"
+	elif combativite >= 40:
+		temperament = "résolu"
+	elif combativite >= 25:
+		temperament = "mesuré"
 	return {
 		"id": pnj_id,
 		"nom": pnj_name,
@@ -53,6 +75,8 @@ func make_pnj_profile(
 		"niveau": clampi(niveau, 1, 20),
 		"stats": StatDefs.sanitize_stats(stats, StatDefs.CHARACTER_MIN_STAT, StatDefs.CHARACTER_MAX_STAT, StatDefs.CHARACTER_MIN_STAT),
 		"traits": traits.duplicate(true),
+		"combativite": combativite,
+		"temperament": temperament,
 		"etat": "disponible",
 	}
 

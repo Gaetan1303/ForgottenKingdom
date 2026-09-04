@@ -1,0 +1,258 @@
+{
+  "world": "Veyr",
+  "faction_group": "Neuf Couronnes",
+  "houses": [
+    {
+      "id": 1,
+      "slug": "vhalcor",
+      "nom": "Maison Vhalcor",
+      "titre": "Couronne d’Ivoire",
+      "chef": "Seydran Vhalcor",
+      "statut": "hostile",
+      "relation": "hostile",
+      "revelee": true,
+      "espionnee": false,
+      "archetype": "militaire",
+      "doctrine": "Ordre, expansion, obéissance",
+      "combativite": 92,
+      "bastions": [
+        {
+          "id": "citadelle_ivoire",
+          "nom": "Citadelle d’Ivoire",
+          "defense": 16,
+          "conquis": false
+        },
+        {
+          "id": "marche_de_verre",
+          "nom": "Marche de Verre",
+          "defense": 12,
+          "conquis": false
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "slug": "orsane",
+      "nom": "Maison Orsane",
+      "titre": "Couronne Dorée",
+      "chef": "Maëlys Orsane",
+      "statut": "active",
+      "relation": "neutre",
+      "revelee": false,
+      "espionnee": false,
+      "archetype": "marchand",
+      "doctrine": "Contrats, dette, influence",
+      "combativite": 46,
+      "bastions": [
+        {
+          "id": "palais_des_comptes",
+          "nom": "Palais des Comptes",
+          "defense": 10,
+          "conquis": false
+        },
+        {
+          "id": "pont_des_dimes",
+          "nom": "Pont des Dîmes",
+          "defense": 8,
+          "conquis": false
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "slug": "pyrhane",
+      "nom": "Maison Pyrhane",
+      "titre": "Couronne des Braises",
+      "chef": "Rhaz Pyrhane",
+      "statut": "hostile",
+      "relation": "hostile",
+      "revelee": false,
+      "espionnee": false,
+      "archetype": "forge",
+      "doctrine": "Force, forge, siège",
+      "combativite": 86,
+      "bastions": [
+        {
+          "id": "forge_rouge",
+          "nom": "Forge Rouge",
+          "defense": 14,
+          "conquis": false
+        },
+        {
+          "id": "rempart_de_scorie",
+          "nom": "Rempart de Scorie",
+          "defense": 13,
+          "conquis": false
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "slug": "nyssara",
+      "nom": "Maison Nyssara",
+      "titre": "Couronne du Voile",
+      "chef": "Ilyne Nyssara",
+      "statut": "active",
+      "relation": "neutre",
+      "revelee": false,
+      "espionnee": false,
+      "archetype": "espionnage",
+      "doctrine": "Secrets, réseaux, faux-semblants",
+      "combativite": 58,
+      "bastions": [
+        {
+          "id": "palais_du_voile",
+          "nom": "Palais du Voile",
+          "defense": 11,
+          "conquis": false
+        },
+        {
+          "id": "observatoire_noir",
+          "nom": "Observatoire Noir",
+          "defense": 12,
+          "conquis": false
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "slug": "kharven",
+      "nom": "Maison Kharven",
+      "titre": "Couronne des Lames",
+      "chef": "Darek Kharven",
+      "statut": "active",
+      "relation": "neutre",
+      "revelee": false,
+      "espionnee": false,
+      "archetype": "assassinat",
+      "doctrine": "Précision, dette de sang, mobilité",
+      "combativite": 79,
+      "bastions": [
+        {
+          "id": "fort_des_lames",
+          "nom": "Fort des Lames",
+          "defense": 13,
+          "conquis": false
+        },
+        {
+          "id": "cour_des_sans_noms",
+          "nom": "Cour des Sans-Noms",
+          "defense": 11,
+          "conquis": false
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "slug": "osselune",
+      "nom": "Maison Osselune",
+      "titre": "Couronne des Ossuaires",
+      "chef": "Sereva Osselune",
+      "statut": "active",
+      "relation": "neutre",
+      "revelee": false,
+      "espionnee": false,
+      "archetype": "rituels",
+      "doctrine": "Mémoire, rites, endurance",
+      "combativite": 61,
+      "bastions": [
+        {
+          "id": "ossuaire_couronne",
+          "nom": "Ossuaire de la Couronne",
+          "defense": 15,
+          "conquis": false
+        },
+        {
+          "id": "tour_des_memoires",
+          "nom": "Tour des Mémoires",
+          "defense": 12,
+          "conquis": false
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "slug": "vaelor",
+      "nom": "Maison Vaelor",
+      "titre": "Couronne des Archives",
+      "chef": "Thaïs Vaelor",
+      "statut": "active",
+      "relation": "neutre",
+      "revelee": true,
+      "espionnee": false,
+      "archetype": "savoir",
+      "doctrine": "Connaissance, contrôle, prédiction",
+      "combativite": 37,
+      "bastions": [
+        {
+          "id": "bibliotheque_fendue",
+          "nom": "Bibliothèque Fendue",
+          "defense": 10,
+          "conquis": false
+        },
+        {
+          "id": "tour_des_astres_morts",
+          "nom": "Tour des Astres Morts",
+          "defense": 14,
+          "conquis": false
+        }
+      ]
+    },
+    {
+      "id": 8,
+      "slug": "morcant",
+      "nom": "Maison Morcant",
+      "titre": "Couronne des Forges",
+      "chef": "Hadran Morcant",
+      "statut": "active",
+      "relation": "neutre",
+      "revelee": false,
+      "espionnee": false,
+      "archetype": "industrie",
+      "doctrine": "Production, fortification, discipline",
+      "combativite": 66,
+      "bastions": [
+        {
+          "id": "haut_fourneau_morcant",
+          "nom": "Haut-Fourneau Morcant",
+          "defense": 15,
+          "conquis": false
+        },
+        {
+          "id": "bastion_des_chainons",
+          "nom": "Bastion des Chaînons",
+          "defense": 12,
+          "conquis": false
+        }
+      ]
+    },
+    {
+      "id": 9,
+      "slug": "eryndor",
+      "nom": "Maison Eryndor",
+      "titre": "Couronne Brisée",
+      "chef": "Avar Eryndor",
+      "statut": "inconnue",
+      "relation": "hostile",
+      "revelee": false,
+      "espionnee": false,
+      "archetype": "conspiration",
+      "doctrine": "Patience, infiltration, effondrement",
+      "combativite": 74,
+      "bastions": [
+        {
+          "id": "tour_du_silence",
+          "nom": "Tour du Silence",
+          "defense": 17,
+          "conquis": false
+        },
+        {
+          "id": "bastion_de_la_faille",
+          "nom": "Bastion de la Faille",
+          "defense": 19,
+          "conquis": false
+        }
+      ]
+    }
+  ]
+}

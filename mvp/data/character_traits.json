@@ -1,37 +1,34 @@
 {
   "dons": {
     "regeneration": {
-      "label": "Régénération Démoniaque",
-      "description": "Ton corps, marqué par le sang des démons, se régénère lentement pendant la nuit. Chaque nuit, tu récupères une partie de ton âme dérobée par les combats de la journée.",
+      "label": "Régénération de Cendre",
+      "description": "Ton corps, marqué par le sang des Altérés, se régénère lentement pendant la nuit. Chaque nuit, tu récupères une partie de ton âme dérobée par les combats de la journée.",
       "effects": {
         "night_soul_regen": 3
       },
-      "lore": "Le sang des anciens démons coule dans tes veines. Même brisé, ton clan te protège encore.",
+      "lore": "Le sang des anciens Altérés coule dans tes veines. Même brisé, ton clan te protège encore.",
       "type": "passive"
     },
-
     "demon_vision": {
-      "label": "Vision Démoniaque",
+      "label": "Vision de Faille",
       "description": "Tes yeux perçoivent au-delà des apparences. Les ombres te murmurent les faiblesses de tes ennemis, te donnant un avantage pour les actions d’espionnage.",
       "effects": {
         "bonus_score_actions": {
           "espionner": 1
         }
       },
-      "lore": "Les Terres Libres n’ont pas de secrets pour toi. Les murmures des spectres te guident.",
+      "lore": "Les Marches Libres n’ont pas de secrets pour toi. Les murmures des spectres te guident.",
       "type": "passive"
     },
-
     "monster_empathy": {
       "label": "Empathie des Monstres",
-      "description": "Tu ressens la souffrance des créatures démoniaques. Cela te permet de réduire le coût en énergie mystique pour les invocations et les pactes.",
+      "description": "Tu ressens la souffrance des créatures cendrés. Cela te permet de réduire le coût en énergie mystique pour les invocations et les pactes.",
       "effects": {
         "mana_cost_reduction_pct": 20
       },
       "lore": "Les monstres te reconnaissent comme l’un des leurs. Leur loyauté est facile à obtenir... pour un prix.",
       "type": "passive"
     },
-
     "iron_will": {
       "label": "Volonté de Fer",
       "description": "Ton esprit est aussi solide que l’acier. Chaque nuit, tu récupères un peu de ton âme, et tes efforts pour recruter des PNJ sont plus efficaces.",
@@ -41,10 +38,9 @@
           "recruter_pnj": 1
         }
       },
-      "lore": "Rien ne peut briser ta détermination. Pas même la malédiction des Neuf Familles.",
+      "lore": "Rien ne peut briser ta détermination. Pas même la malédiction des Neuf Couronnes.",
       "type": "passive"
     },
-
     "noble_presence": {
       "label": "Présence Nobiliaire",
       "description": "Ton aura impose le respect. Les nobles et les alliés te voient comme un égal, ce qui améliore tes compétences en diplomatie et augmente ta réputation chaque nuit.",
@@ -54,10 +50,9 @@
         },
         "night_reputation_gain": 1
       },
-      "lore": "Même déchu, ton sang noble parle pour toi. Les autres démons sentent ton héritage.",
+      "lore": "Même déchu, ton sang noble parle pour toi. Les autres Altérés sentent ton héritage.",
       "type": "passive"
     },
-
     "battlefield_tactician": {
       "label": "Tacticien de Champ de Bataille",
       "description": "Tu es un maître de la stratégie militaire. Tes attaques coûtent moins de soldats, et tes assauts sont plus efficaces.",
@@ -70,7 +65,6 @@
       "lore": "La guerre est un jeu d’échecs, et tu es le grand maître. Tes soldats savent où frapper.",
       "type": "passive"
     },
-
     "craftsman_soul": {
       "label": "Âme d’Artisan",
       "description": "Tes mains sont habiles et précises. Les fortifications et les constructions sont plus rapides et plus solides sous ta direction.",
@@ -79,11 +73,10 @@
           "fortifier": 2
         }
       },
-      "lore": "Yomihara t’a appris l’art de bâtir. Tes mains savent réparer ce que la guerre a détruit.",
+      "lore": "Cendrepont t’a appris l’art de bâtir. Tes mains savent réparer ce que la guerre a détruit.",
       "type": "passive"
     }
   },
-
   "pouvoirs": {
     "pyrokinesis": {
       "label": "Pyrokinésie",
@@ -93,14 +86,17 @@
           "attaquer": 1
         }
       },
-      "cost": {"energie_mystique": 15},
+      "cost": {
+        "energie_mystique": 15
+      },
       "cooldown": 3,
-      "requirements": {"niveau": 3},
-      "lore": "Le feu est ton allié. Les flammes violettes de Grenier répondent à ton appel.",
+      "requirements": {
+        "niveau": 3
+      },
+      "lore": "Le feu est ton allié. Les flammes violettes de Vhal, la Braise-Source répondent à ton appel.",
       "type": "active",
       "target": "ennemi"
     },
-
     "telekinesis": {
       "label": "Télékinésie",
       "description": "Tu peux déplacer des objets à distance avec ton esprit. Idéal pour fortifier tes défenses ou manipuler l’environnement.",
@@ -109,14 +105,17 @@
           "fortifier": 1
         }
       },
-      "cost": {"energie_mystique": 10},
+      "cost": {
+        "energie_mystique": 10
+      },
       "cooldown": 2,
-      "requirements": {"niveau": 2},
+      "requirements": {
+        "niveau": 2
+      },
       "lore": "Ton esprit est aussi puissant que tes bras. Les murs se lèvent à ta volonté.",
       "type": "active",
       "target": "batiment"
     },
-
     "shadow_step": {
       "label": "Pas d’Ombre",
       "description": "Tu te fonds dans les ombres pour te déplacer sans être repéré. Parfait pour les missions d’espionnage.",
@@ -125,17 +124,20 @@
           "espionner": 1
         }
       },
-      "cost": {"energie_mystique": 12},
+      "cost": {
+        "energie_mystique": 12
+      },
       "cooldown": 4,
-      "requirements": {"niveau": 4},
-      "lore": "Les ombres sont ton domaine. Même les Chevaliers Infernaux ne peuvent te suivre.",
+      "requirements": {
+        "niveau": 4
+      },
+      "lore": "Les ombres sont ton domaine. Même les Lances de Couronne ne peuvent te suivre.",
       "type": "active",
       "target": "soi"
     },
-
     "demon_invocation": {
-      "label": "Invocation Démoniaque",
-      "description": "Invoque une créature démoniaque pour t’aider au combat ou au recrutement. Réduit le coût en mana et améliore les actions de recrutement.",
+      "label": "Invocation de Faille",
+      "description": "Invoque une créature cendré pour t’aider au combat ou au recrutement. Réduit le coût en mana et améliore les actions de recrutement.",
       "effects": {
         "mana_cost_reduction_pct": 10,
         "bonus_score_actions": {
@@ -143,14 +145,18 @@
           "recruter_pnj": 1
         }
       },
-      "cost": {"energie_mystique": 20},
+      "cost": {
+        "energie_mystique": 20
+      },
       "cooldown": 5,
-      "requirements": {"niveau": 5, "reputation_min": 15},
-      "lore": "Les démons te répondent. Leur loyauté a un prix... mais leur puissance est inégalée.",
+      "requirements": {
+        "niveau": 5,
+        "reputation_min": 15
+      },
+      "lore": "Les Altérés te répondent. Leur loyauté a un prix... mais leur puissance est inégalée.",
       "type": "active",
       "target": "clan"
     },
-
     "thunder_chain": {
       "label": "Chaîne de Foudre",
       "description": "Invoque une tempête de foudre pour frapper tes ennemis. Une attaque puissante, mais coûteuse en énergie.",
@@ -159,27 +165,33 @@
           "attaquer": 1
         }
       },
-      "cost": {"energie_mystique": 25},
+      "cost": {
+        "energie_mystique": 25
+      },
       "cooldown": 6,
-      "requirements": {"niveau": 6},
-      "lore": "La foudre de Grenier frappe sans pitié. Tes ennemis ne savent pas ce qui les attend.",
+      "requirements": {
+        "niveau": 6
+      },
+      "lore": "La foudre de Vhal, la Braise-Source frappe sans pitié. Tes ennemis ne savent pas ce qui les attend.",
       "type": "active",
       "target": "ennemi"
     },
-
     "blood_shield": {
       "label": "Bouclier de Sang",
       "description": "Un bouclier fait de ton propre sang te protège pendant la nuit, restaurant une partie de ton âme.",
       "effects": {
         "night_soul_regen": 1
       },
-      "cost": {"pv": 10},
+      "cost": {
+        "pv": 10
+      },
       "cooldown": 1,
-      "requirements": {"niveau": 4},
+      "requirements": {
+        "niveau": 4
+      },
       "lore": "Ton sang est ta meilleure armure. Les blessures du jour deviennent ta force la nuit venue.",
       "type": "passive"
     },
-
     "mind_crush": {
       "label": "Écrasement Mental",
       "description": "Tu brises la volonté de tes ennemis avec une attaque psychique. Idéal pour l’espionnage et la diplomatie.",
@@ -189,14 +201,18 @@
           "diplomatie": 1
         }
       },
-      "cost": {"energie_mystique": 18},
+      "cost": {
+        "energie_mystique": 18
+      },
       "cooldown": 4,
-      "requirements": {"niveau": 5, "intelligence": 10},
-      "lore": "Leur esprit est faible face à ta détermination. Les secrets des Neuf Familles ne sont plus à l’abri.",
+      "requirements": {
+        "niveau": 5,
+        "intelligence": 10
+      },
+      "lore": "Leur esprit est faible face à ta détermination. Les secrets des Neuf Couronnes ne sont plus à l’abri.",
       "type": "active",
       "target": "ennemi"
     },
-
     "earth_tremor": {
       "label": "Tremblement de Terre",
       "description": "Fais trembler la terre sous les pieds de tes ennemis. Idéal pour attaquer ou fortifier tes positions.",
@@ -206,15 +222,18 @@
           "fortifier": 1
         }
       },
-      "cost": {"energie_mystique": 22},
+      "cost": {
+        "energie_mystique": 22
+      },
       "cooldown": 5,
-      "requirements": {"niveau": 7},
-      "lore": "La terre elle-même se soulève pour te défendre. Les murs de Yomihara tremblent à ton appel.",
+      "requirements": {
+        "niveau": 7
+      },
+      "lore": "La terre elle-même se soulève pour te défendre. Les murs de Cendrepont tremblent à ton appel.",
       "type": "active",
       "target": "ennemi/batiment"
     }
   },
-
   "competences": {
     "maitrise_martiale": {
       "label": "Maîtrise Martiale",
@@ -224,10 +243,9 @@
           "attaquer": 1
         }
       },
-      "lore": "Chaque coup que tu portes est le résultat d’années d’entraînement. Les Chevaliers Infernaux savent ce que cela signifie.",
+      "lore": "Chaque coup que tu portes est le résultat d’années d’entraînement. Les Lances de Couronne savent ce que cela signifie.",
       "type": "passive"
     },
-
     "rituel_occulte": {
       "label": "Rituel Occulte",
       "description": "Tes connaissances en magie noire te permettent de réduire le coût en mana des invocations et d’améliorer le recrutement de PNJ.",
@@ -237,14 +255,18 @@
           "recruter_pnj": 1
         }
       },
-      "cost": {"energie_mystique": 5},
+      "cost": {
+        "energie_mystique": 5
+      },
       "cooldown": 1,
-      "requirements": {"niveau": 3, "reputation_min": 5},
-      "lore": "Les anciens rituels de ton clan ne sont pas oubliés. Les démons te reconnaissent comme l’un des leurs.",
+      "requirements": {
+        "niveau": 3,
+        "reputation_min": 5
+      },
+      "lore": "Les anciens rituels de ton clan ne sont pas oubliés. Les Altérés te reconnaissent comme l’un des leurs.",
       "type": "active",
       "target": "clan"
     },
-
     "diplomatie_de_guerre": {
       "label": "Diplomatie de Guerre",
       "description": "Tu sais négocier avec les guerriers et les seigneurs. Tes compétences en diplomatie et en recrutement sont améliorées.",
@@ -254,10 +276,9 @@
           "recruter": 1
         }
       },
-      "lore": "Parfois, une alliance vaut mieux qu’une bataille. Même Teutates ne peut ignorer ta diplomatie.",
+      "lore": "Parfois, une alliance vaut mieux qu’une bataille. Même Avar Eryndor ne peut ignorer ta diplomatie.",
       "type": "passive"
     },
-
     "infiltration": {
       "label": "Infiltration",
       "description": "Tu te déplaces comme une ombre, indétectable. Tes missions d’espionnage sont plus efficaces.",
@@ -266,15 +287,18 @@
           "espionner": 1
         }
       },
-      "cost": {"energie_mystique": 8},
+      "cost": {
+        "energie_mystique": 8
+      },
       "cooldown": 3,
-      "requirements": {"niveau": 2},
+      "requirements": {
+        "niveau": 2
+      },
       "lore": "Les murs ont des oreilles, mais toi, tu es le vent. Personne ne te voit venir.",
       "type": "active",
       "target": "maison_noble"
     }
   },
-
   "caps": {
     "mana_cost_reduction_pct": 35,
     "soldats_cost_reduction_attaquer_pct": 20,

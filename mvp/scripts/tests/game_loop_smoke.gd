@@ -33,7 +33,7 @@ func _run() -> void:
 	var profil := {
 		"genre": "Femme",
 		"apparence": "Noble exile",
-		"pouvoir_magique": "Invocation Demoniaque",
+		"pouvoir_magique": "Invocation de Faille",
 		"pouvoir_magique_id": "demon_invocation",
 		"archetype_pathfinder": "Ensorceleur abyssal (inspiration Magicien)",
 		"don": "Tacticien de Champ de Bataille",
@@ -51,7 +51,7 @@ func _run() -> void:
 			"night_reputation_gain": 1,
 		}
 	}
-	clan_manager.nouvelle_partie("Ingrid", "Clan Test", "mage_du_pacte", stats_bonus, profil)
+	clan_manager.nouvelle_partie("Aren", "Clan Test", "hellcaster", stats_bonus, profil)
 
 	if str(clan_manager.nom_clan) != "Clan Test":
 		failures.append("nouvelle_partie: nom_clan non initialise")

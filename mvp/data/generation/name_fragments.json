@@ -1,0 +1,143 @@
+{
+  "version": 1,
+  "cultures": {
+    "marches": {
+      "first_prefix": [
+        "Ae",
+        "Ka",
+        "Va",
+        "Se",
+        "Ly",
+        "Ma",
+        "Or",
+        "Tha",
+        "Eri",
+        "Ny",
+        "Ra",
+        "Da",
+        "Ily",
+        "Mor"
+      ],
+      "first_suffix": [
+        "ren",
+        "el",
+        "is",
+        "ar",
+        "eth",
+        "an",
+        "ys",
+        "or",
+        "a",
+        "en",
+        "iel",
+        "ek",
+        "yr",
+        "as"
+      ],
+      "family_prefix": [
+        "Val",
+        "Kor",
+        "Nyss",
+        "Mor",
+        "Eryn",
+        "Khar",
+        "Oss",
+        "Pyr",
+        "Sel",
+        "Vae",
+        "Dra",
+        "Thal"
+      ],
+      "family_suffix": [
+        "cor",
+        "ane",
+        "ara",
+        "ven",
+        "dor",
+        "hane",
+        "lune",
+        "mir",
+        "gard",
+        "reth",
+        "vyr",
+        "eth"
+      ]
+    },
+    "cendre": {
+      "first_prefix": [
+        "Ash",
+        "Vhar",
+        "Kel",
+        "Rhaz",
+        "Myr",
+        "Tal",
+        "Syr",
+        "Ner",
+        "Vor",
+        "Cal"
+      ],
+      "first_suffix": [
+        "en",
+        "a",
+        "ik",
+        "or",
+        "is",
+        "eth",
+        "un",
+        "yr",
+        "al",
+        "ae"
+      ],
+      "family_prefix": [
+        "Cend",
+        "Scor",
+        "Brais",
+        "Noir",
+        "Fend",
+        "Verr",
+        "Ruin",
+        "Sang"
+      ],
+      "family_suffix": [
+        "rel",
+        "ane",
+        "or",
+        "is",
+        "eth",
+        "ard",
+        "yr",
+        "on"
+      ]
+    }
+  },
+  "house_epithets": [
+    "du Voile",
+    "des Cendres",
+    "des Lames",
+    "des Archives",
+    "des Forges",
+    "de l’Épine",
+    "du Sel Noir",
+    "des Veilleurs",
+    "de la Faille",
+    "des Échos"
+  ],
+  "temperaments": [
+    "prudent",
+    "mesuré",
+    "résolu",
+    "combatif",
+    "belliqueux",
+    "implacable"
+  ],
+  "roles": [
+    "stratege",
+    "eclaireur",
+    "mage",
+    "diplomate",
+    "garde",
+    "marchand",
+    "villageois",
+    "ennemi"
+  ]
+}

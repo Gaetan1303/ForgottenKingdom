@@ -1,6 +1,5 @@
 extends Control
 const FallenUI = preload("res://scripts/ui/fallen_ui.gd")
-const VisualAssetCatalog = preload("res://scripts/ui/visual_asset_catalog.gd")
 
 ## Use global class_name DateTimeFormatter for formatting utilities.
 
@@ -73,7 +72,7 @@ func _render_summary(slot: Dictionary) -> void:
 	var updated_str := DateTimeFormatter.format_local_datetime(updated_unix)
 	var display_slot_name := _slot_display_name(slot)
 
-	txt.text = "Nom du slot: %s\nClan: %s\nPersonnage: %s\nTour: %d\nChapitre Ingrid: %d / scène %d\nTemps joué: %02dh%02d\nDernière sauvegarde: %s" % [
+	txt.text = "Nom du slot: %s\nClan: %s\nPersonnage: %s\nTour: %d\nChronique de Veyr: %d / scène %d\nTemps joué: %02dh%02d\nDernière sauvegarde: %s" % [
 		display_slot_name,
 		nom_clan if not nom_clan.is_empty() else "-",
 		nom_perso if not nom_perso.is_empty() else "-",
@@ -90,7 +89,26 @@ func _render_summary(slot: Dictionary) -> void:
 
 
 func _texture_from_portrait_payload(payload: Dictionary) -> Texture2D:
-	return VisualAssetCatalog.texture_from_portrait_payload(payload)
+	if payload.is_empty():
+		return null
+	if str(payload.get("encoding", "")) != "png_base64":
+		return null
+	var encoded := str(payload.get("data", ""))
+	if encoded.is_empty():
+		return null
+	var raw := Marshalls.base64_to_raw(encoded)
+	if raw.is_empty():
+		return null
+	# Cache to avoid recreating textures for identical payloads
+	var cache_key := String(encoded).sha256_text()
+	if _portrait_texture_cache.has(cache_key):
+		return _portrait_texture_cache[cache_key]
+	var image := Image.new()
+	if image.load_png_from_buffer(raw) != OK:
+		return null
+	var tex := ImageTexture.create_from_image(image)
+	_portrait_texture_cache[cache_key] = tex
+	return tex
 
 
 func _exit_tree() -> void:
