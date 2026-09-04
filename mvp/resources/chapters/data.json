@@ -2,42 +2,37 @@
   "chapitres": [
     {
       "id": 0,
-      "titre": "Prologue — L'Ange Tombé",
-      "periode": "Antiquité, Demon Realm",
-      "illustration": "ingrid_39_1024.png",
-      "musique": "dark_ambient_01.ogg",
+      "titre": "Prologue — La Nuit des Cendres",
+      "periode": "Douze ans plus tôt, Marches Libres",
+      "illustration": "",
+      "musique": "main_theme.ogg",
       "scenes": [
         {
-          "texte": "[color=#cc99ff]Ingrid[/color] — autrefois une Sainte du Paradis, aujourd'hui exilée dans les Royaumes Démoniques. Sa beauté n'a d'égale que la puissance du feu violet qui consume ses ailes brisées.",
-          "illustration": "ingrid_39_1024.png",
-          "animation": "wings_break"
+          "texte": "Votre Maison refusait de prêter serment aux Neuf Couronnes. Dans les Marches Libres, cette indépendance ressemblait à une victoire — jusqu’à la nuit où le Synode décida d’en faire un exemple.",
+          "illustration": "",
+          "animation": "idle"
         },
         {
-          "texte": "Les anciens textes la nomment [i]Schwarze Hexe[/i] — la Sorcière Noire. Mais pour les démons qui l'ont accueillie comme l'une des Neuf Nobles, elle est simplement... Ingrid.",
-          "illustration": "ingrid_39_1024.png",
+          "texte": "Trois armées convergèrent vers le bastion. À leur tête, [color=#e8d9c0]Seydran Vhalcor[/color], Première Lance de la Couronne d’Ivoire. Vos parents vous confièrent à Kael et restèrent derrière les murs.",
+          "illustration": "",
           "animation": "idle"
         }
       ]
     },
     {
       "id": 1,
-      "titre": "Chapitre I — Le Sang du Pacte",
-      "periode": "Antiquité",
-      "illustration": "ingrid_39_1024.png",
-      "musique": "demon_realm_theme.ogg",
+      "titre": "Chapitre I — Le Refuge des Cendres",
+      "periode": "Présent, Étendues Grises",
+      "illustration": "",
+      "musique": "main_theme.ogg",
       "scenes": [
         {
-          "texte": "Dans les profondeurs des Royaumes Démoniques, Ingrid scella son premier pacte avec le sang. Une flamme violette naquit de sa paume — marque indélébile de sa nouvelle nature.",
-          "illustration": "ingrid_39_1024.png",
-          "animation": "flame_birth"
-        },
-        {
-          "texte": "Les [color=#ff6666]Neuf Nobles[/color] la regardaient. Certains avec méfiance, d'autres avec curiosité. Seule Mizuki Shiranui, Seigneure Fantôme, lui adressa un sourire.",
-          "illustration": "nine_nobles_1024.png",
+          "texte": "Des années plus tard, un ancien relais de mineurs devient votre premier refuge. Quelques survivants, un stock de vivres, cinquante soldats et trop de dettes : c’est tout ce qu’il reste de votre Maison.",
+          "illustration": "",
           "animation": "idle"
         },
         {
-          "texte": "\"Tu n'es plus un ange,\" dit Cara Cromwell, Seigneure du Sang, ses yeux rouges brillant dans la pénombre. \"Mais tu n'es pas encore une déesse. Ce que tu deviendras... dépend de tes choix.\"",
+          "texte": "Kael déplie une carte incomplète de Veyr. Les Neuf Couronnes contrôlent encore les routes. Mais leurs alliances se fissurent. Pour la première fois depuis la Chute, vous avez une ouverture.",
           "illustration": "",
           "animation": "idle"
         }
@@ -45,19 +40,19 @@
     },
     {
       "id": 2,
-      "titre": "Chapitre II — Les Neuf Maisons",
-      "periode": "Époque contemporaine, Yomihara",
-      "illustration": "yomihara_1024.png",
-      "musique": "demon_realm_theme.ogg",
+      "titre": "Chapitre II — Une Couronne peut saigner",
+      "periode": "Premier mois de reconstruction",
+      "illustration": "",
+      "musique": "main_theme.ogg",
       "scenes": [
         {
-          "texte": "Des siècles plus tard. Yomihara — ville japonaise où le monde humain et le Royaume Démonique coexistent dans un équilibre fragile.",
-          "illustration": "yomihara_1024.png",
+          "texte": "La Maison Vhalcor ignore encore votre retour. Ses patrouilles considèrent les Marches comme pacifiées. Votre premier objectif n’est pas de gagner une guerre : c’est de prouver que votre clan existe de nouveau.",
+          "illustration": "",
           "animation": "idle"
         },
         {
-          "texte": "[color=#cc99ff]Ingrid[/color] règne sur son clan depuis le Palais des Ténèbres. Autour d'elle, huit autres maisons nobles se disputent le pouvoir — et certaines complotent déjà dans l'ombre.",
-          "illustration": "ingrid_39_1024.png",
+          "texte": "Espionner, recruter, négocier ou frapper. À partir d’ici, Veyr réagit à vos décisions. Chaque allié, chaque dette et chaque territoire modifie la suite de la campagne.",
+          "illustration": "",
           "animation": "idle"
         }
       ]
@@ -65,184 +60,103 @@
   ],
   "lieux": [
     {
-      "id": "demon_realm_citadel",
-      "nom": "Citadelle des Nobles",
-      "region": "Demon Realm",
-      "pos_x": 0.52,
-      "pos_y": 0.22,
-      "chapitre_associe": 0,
-      "description": "Forteresse ancestrale des Neuf Nobles du Royaume Démoniaque."
-    },
-    {
-      "id": "yomihara",
-      "nom": "Yomihara",
-      "region": "Japon contemporain",
-      "pos_x": 0.85,
-      "pos_y": 0.2,
-      "chapitre_associe": 2,
-      "description": "Ville japonaise à l'intersection du monde humain et du Royaume Démoniaque."
-    },
-    {
-      "id": "palais_tenebres_yomihara",
-      "nom": "Palais des Ténèbres",
-      "region": "Yomihara",
-      "pos_x": 0.83,
-      "pos_y": 0.24,
-      "chapitre_associe": 2,
-      "description": "Siège du clan d'Ingrid à Yomihara. Une bâtisse imposante qui cache son vrai visage aux humains."
-    },
-    {
-      "id": "blackport",
-      "nom": "Blackport",
-      "region": "Demon Realm",
-      "pos_x": 0.08,
-      "pos_y": 0.36,
-      "chapitre_associe": -1,
-      "description": "Port marchand sur la côte occidentale du Royaume Démoniaque."
-    },
-    {
-      "id": "corpse_lord",
-      "nom": "Corpse Lord",
-      "region": "Demon Realm",
-      "pos_x": 0.18,
-      "pos_y": 0.4,
-      "chapitre_associe": -1,
-      "description": "Région hantée gouvernée par les morts."
-    },
-    {
-      "id": "beowulf_territory",
-      "nom": "Beowulf Territory",
-      "region": "Demon Realm",
-      "pos_x": 0.12,
-      "pos_y": 0.68,
-      "chapitre_associe": -1,
-      "description": "Ancienne terra de guerriers et de bandits."
-    },
-    {
-      "id": "rollo_viscounty",
-      "nom": "Rollo Viscounty",
-      "region": "Demon Realm",
-      "pos_x": 0.2,
-      "pos_y": 0.7,
-      "chapitre_associe": -1,
-      "description": "Comté fortifié entre la côte et les plaines."
-    },
-    {
-      "id": "prime_minister",
-      "nom": "Prime Minister",
-      "region": "Demon Realm",
-      "pos_x": 0.34,
-      "pos_y": 0.78,
-      "chapitre_associe": -1,
-      "description": "Siège administratif proche des grandes routes."
-    },
-    {
-      "id": "gate_city",
-      "nom": "Gate City",
-      "region": "Demon Realm",
-      "pos_x": 0.52,
-      "pos_y": 0.6,
-      "chapitre_associe": -1,
-      "description": "Ville carrefour qui contrôle l'accès aux terres inconnues."
-    },
-    {
-      "id": "unknown_land",
-      "nom": "Unknown Land",
-      "region": "Demon Realm",
-      "pos_x": 0.52,
-      "pos_y": 0.46,
-      "chapitre_associe": -1,
-      "description": "Étendue mystérieuse aux frontières floues."
-    },
-    {
-      "id": "blood_lord",
-      "nom": "Blood Lord",
-      "region": "Demon Realm",
+      "id": "refuge_des_cendres",
+      "nom": "Refuge des Cendres",
+      "region": "Marches Libres",
       "pos_x": 0.48,
-      "pos_y": 0.16,
-      "chapitre_associe": -1,
-      "description": "Domaine central des seigneurs du sang."
+      "pos_y": 0.68,
+      "chapitre_associe": 1,
+      "description": "Ancien relais minier transformé en premier bastion du clan renaissant."
     },
     {
-      "id": "lake_vivian",
-      "nom": "Lake Vivian",
-      "region": "Demon Realm",
-      "pos_x": 0.74,
-      "pos_y": 0.56,
-      "chapitre_associe": -1,
-      "description": "Lac mystérieux aux eaux changeantes."
+      "id": "citadelle_ivoire",
+      "nom": "Citadelle d’Ivoire",
+      "region": "Domaine Vhalcor",
+      "pos_x": 0.72,
+      "pos_y": 0.18,
+      "chapitre_associe": 2,
+      "description": "Forteresse de la Maison Vhalcor et siège de Seydran."
     },
     {
-      "id": "flame_end",
-      "nom": "Flame End",
-      "region": "Demon Realm",
-      "pos_x": 0.82,
+      "id": "cendrepont",
+      "nom": "Cendrepont",
+      "region": "Marches Centrales",
+      "pos_x": 0.52,
       "pos_y": 0.44,
       "chapitre_associe": -1,
-      "description": "Extrémité fumante de la côte orientale."
+      "description": "Ville-carrefour bâtie autour d’un pont de pierre vitrifiée. Marchands et espions s’y croisent."
     },
     {
-      "id": "phantom_lord",
-      "nom": "Phantom Lord",
-      "region": "Demon Realm",
-      "pos_x": 0.78,
-      "pos_y": 0.12,
+      "id": "forge_rouge",
+      "nom": "Forge Rouge",
+      "region": "Domaine Pyrhane",
+      "pos_x": 0.84,
+      "pos_y": 0.52,
       "chapitre_associe": -1,
-      "description": "Terres spectrales au nord-est."
+      "description": "Complexe métallurgique alimenté par une faille thermique."
     },
     {
-      "id": "kings_rock",
-      "nom": "King's Rock",
-      "region": "Demon Realm",
-      "pos_x": 0.1,
-      "pos_y": 0.86,
+      "id": "palais_du_voile",
+      "nom": "Palais du Voile",
+      "region": "Domaine Nyssara",
+      "pos_x": 0.28,
+      "pos_y": 0.3,
       "chapitre_associe": -1,
-      "description": "Promontoire rocheux légendaire."
+      "description": "Réseau de tours, tunnels et observatoires contrôlé par la Maison Nyssara."
     },
     {
-      "id": "richster_territory",
-      "nom": "Richster Territory",
-      "region": "Demon Realm",
+      "id": "bibliotheque_fendue",
+      "nom": "Bibliothèque Fendue",
+      "region": "Domaine Vaelor",
       "pos_x": 0.6,
-      "pos_y": 0.82,
+      "pos_y": 0.24,
       "chapitre_associe": -1,
-      "description": "Terres agricoles du sud-est."
+      "description": "Archives survivantes d’avant la Fracture. Une partie du savoir est encore scellée."
     },
     {
-      "id": "wise_lord",
-      "nom": "Wise Lord",
-      "region": "Demon Realm",
-      "pos_x": 0.56,
-      "pos_y": 0.74,
+      "id": "haut_fourneau_morcant",
+      "nom": "Haut-Fourneau Morcant",
+      "region": "Domaine Morcant",
+      "pos_x": 0.24,
+      "pos_y": 0.66,
       "chapitre_associe": -1,
-      "description": "Domaine d'un ancien sage."
+      "description": "Cœur industriel des Marches occidentales."
     },
     {
-      "id": "margrave_iclingas",
-      "nom": "Margrave Iclingas Territory",
-      "region": "Demon Realm",
-      "pos_x": 0.18,
-      "pos_y": 0.06,
-      "chapitre_associe": -1,
-      "description": "Région glacée au nord-ouest."
-    },
-    {
-      "id": "werewolves",
-      "nom": "Werewolves",
-      "region": "Demon Realm",
+      "id": "ossuaire_couronne",
+      "nom": "Ossuaire de la Couronne",
+      "region": "Domaine Osselune",
       "pos_x": 0.38,
-      "pos_y": 0.08,
+      "pos_y": 0.14,
       "chapitre_associe": -1,
-      "description": "Bois sauvages infâmes pour leurs meutes."
+      "description": "Nécropole fortifiée où les pactes de mémoire sont conservés."
     },
     {
-      "id": "frost_demons",
-      "nom": "Frost Demons",
-      "region": "Demon Realm",
-      "pos_x": 0.5,
-      "pos_y": 0.02,
+      "id": "tour_du_silence",
+      "nom": "Tour du Silence",
+      "region": "Terres Eryndor",
+      "pos_x": 0.12,
+      "pos_y": 0.22,
       "chapitre_associe": -1,
-      "description": "Région polaire hantée par des démons de gel."
+      "description": "Une forteresse officiellement abandonnée. Les rapports des éclaireurs disent le contraire."
+    },
+    {
+      "id": "palais_des_comptes",
+      "nom": "Palais des Comptes",
+      "region": "Domaine Orsane",
+      "pos_x": 0.67,
+      "pos_y": 0.72,
+      "chapitre_associe": -1,
+      "description": "Place financière et diplomatique des routes du sud."
+    },
+    {
+      "id": "fort_des_lames",
+      "nom": "Fort des Lames",
+      "region": "Domaine Kharven",
+      "pos_x": 0.18,
+      "pos_y": 0.48,
+      "chapitre_associe": -1,
+      "description": "Forteresse mobile et école militaire de la Maison Kharven."
     }
   ]
 }

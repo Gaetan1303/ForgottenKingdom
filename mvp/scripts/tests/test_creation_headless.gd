@@ -30,9 +30,9 @@ func _post_ready_check(inst: Node) -> void:
 	var nom_perso = inst.get_node_or_null("PanneauCentre/LigneNoms/ColNomPerso/NomPersonnage")
 	var nom_clan = inst.get_node_or_null("PanneauCentre/LigneNoms/ColNomClan/NomClan")
 	if nom_perso and nom_clan:
-		nom_perso.text = "Ingrid"
+		nom_perso.text = "Aren"
 		nom_clan.text = "Maison Test"
-		print("Inputs set: NomPerso=Ingrid, NomClan=Maison Test")
+		print("Inputs set: NomPerso=Aren, NomClan=Maison Test")
 	else:
 		print("Inputs missing: NomPerso/ NomClan not found in scene tree")
 

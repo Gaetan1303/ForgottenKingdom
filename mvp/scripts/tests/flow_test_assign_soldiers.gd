@@ -6,7 +6,7 @@ func _init() -> void:
 func _run() -> void:
     # Init new game to get default resources
     var clan := root.get_node("ClanManager")
-    clan.nouvelle_partie("Ingrid", "Clan Test", "mage_du_pacte", {"force":1}, {})
+    clan.nouvelle_partie("Aren", "Clan Test", "hellcaster", {"force":1}, {})
     print("Soldats avant:", int(clan.ressources.get("soldats", 0)))
     var res: Dictionary = clan.planifier_mission_soldats("collecter_bois", 10)
     print("Planifier result:", JSON.stringify(res))

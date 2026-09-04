@@ -1,7 +1,8 @@
-[gd_scene load_steps=7 format=3 uid="uid://6qbtn2ld47jc"]
+[gd_scene load_steps=4 format=3 uid="uid://6qbtn2ld47jc"]
 
 [ext_resource type="Script" uid="uid://duxx0d0ccqb3" path="res://scripts/ui/main_menu.gd" id="1_main_menu"]
 [ext_resource type="Texture2D" path="res://assets/icon/jeu.png" id="2_emblem"]
+[ext_resource type="Texture2D" path="res://assets/images/clan/defaut.png" id="3_continue"]
 
 [node name="MainMenu" type="Control"]
 layout_mode = 3
@@ -45,7 +46,7 @@ custom_minimum_size = Vector2(0, 54)
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_font_sizes/font_size = 38
-text = "CHRONIQUES DES NEUF NOBLES"
+text = "ROYAUME DÉCHU — LES CENDRES DE VEYR"
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -53,7 +54,7 @@ vertical_alignment = 1
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_font_sizes/font_size = 14
-text = "DEMON REALM  •  ROYAUME DÉCHU"
+text = "VEYR  •  LES NEUF COURONNES"
 horizontal_alignment = 1
 
 [node name="ContentVBox" type="VBoxContainer" parent="."]
@@ -100,9 +101,9 @@ theme_override_constants/separation = 14
 mouse_filter = 2
 
 [node name="Icon" type="TextureRect" parent="ContentVBox/BodyCenterContainer/BodyListHolder/BtnNouvellePartie/BtnNouvellePartieContent"]
-visible = false
 custom_minimum_size = Vector2(48, 48)
 layout_mode = 2
+texture = ExtResource("2_emblem")
 expand_mode = 1
 stretch_mode = 5
 mouse_filter = 2
@@ -145,9 +146,9 @@ theme_override_constants/separation = 14
 mouse_filter = 2
 
 [node name="Icon" type="TextureRect" parent="ContentVBox/BodyCenterContainer/BodyListHolder/BtnContinuer/BtnContinuerContent"]
-visible = false
 custom_minimum_size = Vector2(44, 44)
 layout_mode = 2
+texture = ExtResource("3_continue")
 expand_mode = 1
 stretch_mode = 5
 mouse_filter = 2
@@ -235,9 +236,9 @@ theme_override_constants/separation = 14
 mouse_filter = 2
 
 [node name="Icon" type="TextureRect" parent="ContentVBox/BodyCenterContainer/BodyListHolder/BtnEncyclopedie/BtnEncyclopedieContent"]
-visible = false
 custom_minimum_size = Vector2(44, 44)
 layout_mode = 2
+
 expand_mode = 1
 stretch_mode = 5
 mouse_filter = 2
@@ -251,13 +252,13 @@ mouse_filter = 2
 [node name="LabelName" type="Label" parent="ContentVBox/BodyCenterContainer/BodyListHolder/BtnEncyclopedie/BtnEncyclopedieContent/Texts"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 18
-text = "Chroniques"
+text = "Bibliothèque"
 mouse_filter = 2
 
 [node name="LabelDescription" type="Label" parent="ContentVBox/BodyCenterContainer/BodyListHolder/BtnEncyclopedie/BtnEncyclopedieContent/Texts"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 12
-text = "Relire les récits et secrets déjà révélés"
+text = "Monde, règles, classes, talents et Neuf Couronnes"
 mouse_filter = 2
 
 [node name="BtnQuitter" type="Button" parent="ContentVBox/BodyCenterContainer/BodyListHolder"]

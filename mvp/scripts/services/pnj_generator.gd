@@ -1,21 +1,21 @@
 extends RefCounted
 class_name PnjGenerator
-const StatDefs = preload("res://scripts/data/stat_defs.gd")
-const PnjDailyPlannerServiceClass = preload("res://scripts/services/pnj_daily_planner_service.gd")
+
+const NameGeneratorServiceScript = preload("res://scripts/services/name_generator_service.gd")
 
 # rely on StatDefs class_name from data/stat_defs.gd
 ## Rely on class_name PnjDailyPlannerService instead of preloading.
 
 var _rng := RandomNumberGenerator.new()
+var _names: RefCounted = NameGeneratorServiceScript.new()
 
 func _init() -> void:
     _rng.randomize()
 
 
 func _pick_name(role: String) -> String:
-    var first := ["Ravik","Selyra","Borel","Ithra","Vael","Liora","Kade","Marek","Sora","Elen"]
-    var last := ["Thorn","Kov","Meris","Vorn","Hald","Ari","Nim","Dare","Yen","Kor"]
-    return "%s %s" % [first[_rng.randi_range(0, first.size()-1)], last[_rng.randi_range(0, last.size()-1)]]
+    var identity: Dictionary = _names.generate_pnj_identity(role, "marches")
+    return str(identity.get("nom", "Aren Veyr"))
 
 
 func _choose_role(hint: String = "") -> String:
@@ -50,7 +50,7 @@ func _stats_for_role(role: String, niveau: int) -> Dictionary:
             base["force"] = 11
         "mage":
             base["magie"] = 16
-            base["essai"] = 8
+            base["artisanat"] = 10
         "diplomate":
             base["diplomatie"] = 15
             base["commandement"] = 10
@@ -101,7 +101,8 @@ func generate_and_register_pnj(role_hint: String = "", pnj_type: String = "recru
     # 1. determine role and basic attributes
     var role := _choose_role(role_hint)
     var niveau := _rng.randi_range(1, 4)
-    var name := _pick_name(role)
+    var identity: Dictionary = _names.generate_pnj_identity(role, "marches")
+    var name := str(identity.get("nom", _pick_name(role)))
     var pnj_id := "%s_%d" % [name.replace(" ", "_").to_lower(), randi()]
 
     # 2. generate stats
@@ -113,10 +114,12 @@ func generate_and_register_pnj(role_hint: String = "", pnj_type: String = "recru
     var behavior: Dictionary = _behavior_for_role(role)
 
     # 4. create profile via planner helper
-    var planner: RefCounted = PnjDailyPlannerServiceClass.new()
+    var planner: RefCounted = PnjDailyPlannerService.new()
     var profile: Dictionary = (planner as Object).make_pnj_profile(pnj_id, name, pnj_type, role, niveau, stats, traits)
     profile["equipment"] = equipment
     profile["behavior"] = behavior
+    profile["combativite"] = int(identity.get("combativite", profile.get("combativite", 45)))
+    profile["temperament"] = str(identity.get("temperament", profile.get("temperament", "résolu")))
 
     # 5. register with ClanManager if available (use SceneTree root lookup for reliability)
     var main_loop := Engine.get_main_loop()
@@ -140,9 +143,13 @@ func generate_and_register_pnj(role_hint: String = "", pnj_type: String = "recru
                         var p := (roster[idx] as Dictionary).duplicate(true)
                         p["equipment"] = equipment
                         p["behavior"] = behavior
+                        p["combativite"] = profile["combativite"]
+                        p["temperament"] = profile["temperament"]
                         roster[idx] = p
                         state["roster"] = roster
                         cm_node.pnj_gestion = state
+                    added["combativite"] = profile["combativite"]
+                    added["temperament"] = profile["temperament"]
                     return added
 
     return profile

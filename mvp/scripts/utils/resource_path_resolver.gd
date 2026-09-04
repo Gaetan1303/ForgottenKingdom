@@ -19,9 +19,16 @@ static func normalize(path: String) -> String:
 	return value.simplify_path()
 
 
+static func _is_absolute_filesystem_path(path: String) -> bool:
+	if path.begins_with("/"):
+		return true
+	# Windows drive path, useful when saves are moved between dev machines.
+	return path.length() >= 3 and path.substr(1, 2) == ":/"
+
+
 static func join(base_path: String, child_path: String) -> String:
 	var child := normalize(child_path)
-	if child.begins_with("res://") or child.begins_with("user://"):
+	if child.begins_with("res://") or child.begins_with("user://") or _is_absolute_filesystem_path(child):
 		return child
 	var base := normalize(base_path).trim_suffix("/")
 	if base.is_empty():
@@ -97,22 +104,22 @@ static func exists(path: String) -> bool:
 static func load_texture(path_or_name: String, base_path: String = "res://assets/images") -> Texture2D:
 	var candidates: Array[String] = _texture_candidates(path_or_name, base_path)
 
-	# Les illustrations narratives peuvent exister comme fichiers image bruts sans
-	# sidecar .import (par exemple après restauration depuis un ancien cache).
-	# Dans ce cas ResourceLoader ne les voit pas forcément au premier lancement.
-	# Image.load() lit directement le fichier source et évite cette dépendance au cache.
-	for candidate: String in candidates:
-		var direct_texture: Texture2D = _load_direct_image(candidate)
-		if direct_texture != null:
-			return direct_texture
-
-	# Chemin Godot standard lorsqu'un import existe déjà.
+	# Chemin Godot standard en priorité. C'est le chemin export-safe pour les
+	# PNG/JPG/WebP qui possèdent un import Godot.
 	for candidate: String in candidates:
 		if not ResourceLoader.exists(candidate):
 			continue
 		var resource: Resource = ResourceLoader.load(candidate)
 		if resource is Texture2D:
 			return resource as Texture2D
+
+	# Fallback développement/récupération : certaines illustrations narratives
+	# restaurées peuvent encore exister comme fichiers bruts sans sidecar .import.
+	# On ne passe ici qu'après avoir essayé le pipeline d'import normal.
+	for candidate: String in candidates:
+		var direct_texture: Texture2D = _load_direct_image(candidate)
+		if direct_texture != null:
+			return direct_texture
 
 	# Dernier recours pour les anciens projets dont seul le cache .ctex subsiste.
 	var imported_path: String = _find_imported_texture(path_or_name)
@@ -140,7 +147,7 @@ static func _texture_candidates(path_or_name: String, base_path: String) -> Arra
 	var raw: String = normalize(path_or_name)
 	if raw.is_empty():
 		return []
-	var primary: String = raw if raw.begins_with("res://") or raw.begins_with("user://") else join(base_path, raw)
+	var primary: String = raw if raw.begins_with("res://") or raw.begins_with("user://") or _is_absolute_filesystem_path(raw) else join(base_path, raw)
 	var result: Array[String] = [primary]
 	var extension: String = primary.get_extension().to_lower()
 	var base_no_ext: String = primary.get_basename()

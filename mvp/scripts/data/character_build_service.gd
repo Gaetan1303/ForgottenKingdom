@@ -1,7 +1,6 @@
 ## Service métier de construction des stats finales d'un personnage.
 class_name CharacterBuildService
 extends RefCounted
-const StatDefs = preload("res://scripts/data/stat_defs.gd")
 
 # Use StatDefs global class_name from data/stat_defs.gd
 

@@ -107,15 +107,15 @@ offset_bottom = -8.0
 offset_left = 10.0
 offset_right = -10.0
 
-[node name="BtnDemonRealm" type="Button" parent="Timeline"]
-name = "BtnDemonRealm"
+[node name="BtnVeyr" type="Button" parent="Timeline"]
+name = "BtnVeyr"
 layout_mode = 2
-text = "Demon Realm"
+text = "Veyr"
 
-[node name="BtnJapon" type="Button" parent="Timeline"]
-name = "BtnJapon"
+[node name="BtnMarches" type="Button" parent="Timeline"]
+name = "BtnMarches"
 layout_mode = 2
-text = "Japon — Yomihara"
+text = "Veyr — Marches Libres"
 
 [node name="Spacer" type="Control" parent="Timeline"]
 layout_mode = 2

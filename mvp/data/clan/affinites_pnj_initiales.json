@@ -1,22 +1,22 @@
 {
-  "_commentaire": "Table d'affinites PNJ initiale coherente avec les factions du canon Ingrid",
-  "version": "1.0",
+  "_commentaire": "Affinités initiales des rôles et factions de Veyr.",
+  "version": "2.0",
   "factions": {
-    "nomad": {
-      "label": "Nomad",
-      "position_initiale": 15
-    },
-    "nobles": {
-      "label": "Bloc des 9 Nobles",
-      "position_initiale": 5
-    },
-    "independants_yomihara": {
-      "label": "Independants de Yomihara",
+    "marches_libres": {
+      "label": "Clans des Marches Libres",
       "position_initiale": 10
     },
-    "interferences": {
-      "label": "Factions opportunistes",
+    "neuf_couronnes": {
+      "label": "Neuf Couronnes",
       "position_initiale": -5
+    },
+    "guildes_cendre": {
+      "label": "Guildes de Cendrepont",
+      "position_initiale": 8
+    },
+    "entites_faille": {
+      "label": "Entités de la Faille",
+      "position_initiale": -10
     }
   },
   "roles_pnj": [
@@ -27,28 +27,28 @@
   ],
   "affinites_par_role": {
     "forgeron": {
-      "nomad": 8,
-      "nobles": -2,
-      "independants_yomihara": 12,
-      "interferences": -4
+      "marches_libres": 12,
+      "neuf_couronnes": -2,
+      "guildes_cendre": 8,
+      "entites_faille": -6
     },
     "alchimiste": {
-      "nomad": 4,
-      "nobles": 6,
-      "independants_yomihara": 3,
-      "interferences": 2
+      "marches_libres": 4,
+      "neuf_couronnes": 2,
+      "guildes_cendre": 6,
+      "entites_faille": 3
     },
     "intendant": {
-      "nomad": 10,
-      "nobles": 4,
-      "independants_yomihara": 8,
-      "interferences": -6
+      "marches_libres": 8,
+      "neuf_couronnes": 4,
+      "guildes_cendre": 10,
+      "entites_faille": -8
     },
     "arcaniste": {
-      "nomad": 6,
-      "nobles": 8,
-      "independants_yomihara": -2,
-      "interferences": 4
+      "marches_libres": 0,
+      "neuf_couronnes": 2,
+      "guildes_cendre": 3,
+      "entites_faille": 8
     }
   },
   "pnj_initiaux": [
@@ -56,7 +56,7 @@
       "id": "pnj_forg_01",
       "nom": "Ravik",
       "role": "forgeron",
-      "faction_principale": "independants_yomihara",
+      "faction_principale": "marches_libres",
       "affinite_depart": 12,
       "seuils_relation": {
         "hostile": -40,
@@ -70,7 +70,7 @@
       "id": "pnj_alch_01",
       "nom": "Selyra",
       "role": "alchimiste",
-      "faction_principale": "nobles",
+      "faction_principale": "guildes_cendre",
       "affinite_depart": 6,
       "seuils_relation": {
         "hostile": -40,
@@ -84,7 +84,7 @@
       "id": "pnj_int_01",
       "nom": "Borel",
       "role": "intendant",
-      "faction_principale": "nomad",
+      "faction_principale": "marches_libres",
       "affinite_depart": 10,
       "seuils_relation": {
         "hostile": -40,
@@ -98,7 +98,7 @@
       "id": "pnj_arc_01",
       "nom": "Ithra",
       "role": "arcaniste",
-      "faction_principale": "nobles",
+      "faction_principale": "entites_faille",
       "affinite_depart": 8,
       "seuils_relation": {
         "hostile": -40,
@@ -110,22 +110,22 @@
     }
   ],
   "modificateurs_actions": {
-    "aider_quartier_yomihara": {
-      "independants_yomihara": 4,
-      "nomad": -1
+    "aider_marches": {
+      "marches_libres": 4,
+      "neuf_couronnes": -1
     },
-    "executer_ordre_nomad": {
-      "nomad": 3,
-      "independants_yomihara": -2
+    "servir_couronnes": {
+      "neuf_couronnes": 3,
+      "marches_libres": -2
     },
-    "traiter_avec_nobles": {
-      "nobles": 3,
-      "nomad": -1
+    "traiter_avec_couronnes": {
+      "neuf_couronnes": 3,
+      "marches_libres": -1
     },
-    "usage_pouvoir_grenier": {
-      "interferences": 2,
-      "nobles": -1,
-      "independants_yomihara": -1
+    "usage_ether_faille": {
+      "entites_faille": 2,
+      "neuf_couronnes": -1,
+      "marches_libres": -1
     }
   }
 }

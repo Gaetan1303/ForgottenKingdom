@@ -58,7 +58,7 @@ func _initialize() -> void:
 	var ch := CharacterClass.new()
 	ch.name = "Test"
 	ch.clan = "QA"
-	ch.char_class = "mage_du_pacte"
+	ch.char_class = "hellcaster"
 	ch.stats = raw.duplicate(true)
 	ch.feats = selected_feats.duplicate(true)
 	var d := ch.to_dict()

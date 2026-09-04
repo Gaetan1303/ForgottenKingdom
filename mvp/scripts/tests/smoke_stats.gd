@@ -87,7 +87,7 @@ func _run_character_factory_tests(failures: Array[String]) -> void:
 	var profile := {
 		"name": "TestNPC",
 		"clan": "Clan QA",
-		"classe": "mage_du_pacte",
+		"classe": "hellcaster",
 		"niveau": 1,
 		"points_a_distribuer_base": 18,
 		"stats": {

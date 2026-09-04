@@ -1,21 +1,21 @@
 {
-  "_commentaire": "Séquence d'introduction — Version 3. Inspirée du lore Taimanin : société féodale démoniaque, Neuf Familles Nobles, Chevaliers Infernaux. Arc émotionnel Sasuke : amour profond du clan/parents → rupture traumatique → haine froide et absolue. Parents nommés et présents. Jouée une seule fois après la création du personnage.",
+  "_commentaire": "Prologue principal de Royaume Déchu — identité originale Veyr / Neuf Couronnes.",
   "scenes": [
     {
       "id": "prologue_01",
       "type": "narration",
-      "periode": "Il y a quinze ans — Royaumes Démoniaques, Terres Libres de l'Est",
+      "periode": "Il y a quinze ans — Veyr, Marches Libres de l’Est",
       "speaker": "narrateur",
       "fond_couleur": "#080018",
       "musique": "Naissance.mp3",
-      "texte": "Le Royaume Démoniaque ne ressemble pas à ce que les légendes racontent.\n\nCe n'est pas un enfer de flammes et de chaos.\n\nC'est une [b]société[/b]. Féodale. Cruelle. Précise.\n\nAu sommet, les [b][color=#ff4444]Neuf Familles Nobles[/color][/b] régnent sur des territoires immenses, protégées par les [b][color=#cc3300]Chevaliers Infernaux[/color][/b] — les gardiens de l'ordre, exécuteurs du Conclave, terreur des clans libres.\n\nEt en dessous... tout le reste."
+      "texte": "Le Veyr ne ressemble pas à ce que les légendes racontent.\n\nCe n'est pas un enfer de flammes et de chaos.\n\nC'est une [b]société[/b]. Féodale. Cruelle. Précise.\n\nAu sommet, les [b][color=#ff4444]Neuf Couronnes[/color][/b] régnent sur des territoires immenses, protégées par les [b][color=#cc3300]Lances de Couronne[/color][/b] — les gardiens de l'ordre, exécuteurs du Conclave, terreur des clans libres.\n\nEt en dessous... tout le reste."
     },
     {
       "id": "prologue_02",
       "type": "narration",
       "speaker": "narrateur",
       "fond_couleur": "#080018",
-      "texte": "Les [b]Terres Libres[/b] s'étendent à l'est des domaines nobles — des territoires non contrôlés où des clans indépendants survivent par la force, l'astuce, et les pactes forgés dans l'ombre.\n\nLà, pas de seigneur. Pas d'allégeance forcée.\n\nJuste la loi du sang et de l'honneur.\n\nC'est là qu'était ton foyer."
+      "texte": "Les [b]Marches Libres[/b] s'étendent à l'est des domaines nobles — des territoires non contrôlés où des clans indépendants survivent par la force, l'astuce, et les pactes forgés dans l'ombre.\n\nLà, pas de seigneur. Pas d'allégeance forcée.\n\nJuste la loi du sang et de l'honneur.\n\nC'est là qu'était ton foyer."
     },
     {
       "id": "famille_01",
@@ -51,7 +51,7 @@
       "type": "dialogue",
       "speaker": "pere",
       "fond_couleur": "#0e0020",
-      "texte": "[color=#ffcc88]{pere_name}[/color] t'emmena ce soir-là dans la salle des cartes.\n\n« Viens. Il est temps que tu comprennes où nous vivons. »\n\nSur la grande table de pierre, une carte du Royaume Démoniaque s'étalait — les territoires des Neuf Familles en rouge sang, et au milieu, un espace vide marqué d'un cercle blanc.\n\n« Ça, c'est nous. Les Terres Libres. »"
+      "texte": "[color=#ffcc88]{pere_name}[/color] t'emmena ce soir-là dans la salle des cartes.\n\n« Viens. Il est temps que tu comprennes où nous vivons. »\n\nSur la grande table de pierre, une carte du Veyr s'étalait — les territoires des Neuf Couronnes en rouge sang, et au milieu, un espace vide marqué d'un cercle blanc.\n\n« Ça, c'est nous. Les Marches Libres. »"
     },
     {
       "id": "lecon_02",
@@ -96,7 +96,7 @@
       "type": "dialogue",
       "speaker": "mere",
       "fond_couleur": "#060012",
-      "texte": "[color=#ffaacc]{mere_name}[/color] : « Il y a un jeune guerrier qui attend depuis le matin à la porte. Il s'appelle [b]Kael[/b]. »\n\n« Son village a été rasé par les Chevaliers Infernaux de la [b][color=#ffffff]Maison Dragon Blanc[/color][/b]. Il a survécu seul pendant deux ans. »\n\nElle marqua une pause.\n\n« Va lui parler. Regarde ses yeux. Et décide par toi-même. »"
+      "texte": "[color=#ffaacc]{mere_name}[/color] : « Il y a un jeune guerrier qui attend depuis le matin à la porte. Il s'appelle [b]Kael[/b]. »\n\n« Son village a été rasé par les Lances de la [b][color=#ffffff]Maison Vhalcor[/color][/b]. Il a survécu seul pendant deux ans. »\n\nElle marqua une pause.\n\n« Va lui parler. Regarde ses yeux. Et décide par toi-même. »"
     },
     {
       "id": "kael_02",
@@ -118,9 +118,8 @@
           "diplomatie": 3,
           "commandement": 6
         },
-        "description": "Rescapé d'un village des Terres Libres brûlé par les Chevaliers Infernaux du Dragon Blanc. Il ne cherche pas de la gloire ni de l'or — il cherche un endroit qui mérite qu'on meure pour lui. Sa loyauté, une fois donnée, ne se reprend pas.",
-        "texte_serment": "« Je jure loyauté au [b][color=#cc99ff]{clan_name}[/color][/b]. Ma lame est la vôtre, {player_name}. Jusqu'à la dernière goutte de sang. »",
-        "portrait": "res://assets/images/PNJ/defaut/Kael.png"
+        "description": "Rescapé d'un village des Marches Libres brûlé par les Lances de Couronne du Vhalcor. Il ne cherche pas de la gloire ni de l'or — il cherche un endroit qui mérite qu'on meure pour lui. Sa loyauté, une fois donnée, ne se reprend pas.",
+        "texte_serment": "« Je jure loyauté au [b][color=#cc99ff]{clan_name}[/color][/b]. Ma lame est la vôtre, {player_name}. Jusqu'à la dernière goutte de sang. »"
       }
     },
     {
@@ -128,7 +127,7 @@
       "type": "dialogue",
       "speaker": "kael",
       "fond_couleur": "#060018",
-      "texte": "[color=#88ddff]Kael[/color] : « {clan_name}. J'ai entendu ce nom dans les plaines de l'est. Un clan qui refuse de plier devant les Neuf Familles. »\n\nIl te regarda directement — sans déférence, sans hostilité.\n\n« C'est rare. Suffisamment rare pour que je marche trois jours pour vérifier. »\n\nUn silence.\n\n« Je ne veux ni titre ni solde. Je veux un foyer qui mérite d'être défendu. »"
+      "texte": "[color=#88ddff]Kael[/color] : « {clan_name}. J'ai entendu ce nom dans les plaines de l'est. Un clan qui refuse de plier devant les Neuf Couronnes. »\n\nIl te regarda directement — sans déférence, sans hostilité.\n\n« C'est rare. Suffisamment rare pour que je marche trois jours pour vérifier. »\n\nUn silence.\n\n« Je ne veux ni titre ni solde. Je veux un foyer qui mérite d'être défendu. »"
     },
     {
       "id": "kael_04",
@@ -143,14 +142,14 @@
       "periode": "Trois jours plus tôt — Ce que tu ne savais pas encore",
       "speaker": "narrateur",
       "fond_couleur": "#150010",
-      "texte": "Le [b][color=#ff5555]Grand Conclave des Neuf Familles[/color][/b] avait rendu son verdict en secret.\n\nLa décision était simple : les clans des Terres Libres qui refusaient de prêter allégeance formelle seraient considérés comme des [i]anomalies à corriger[/i].\n\nPas des ennemis. Pas des rebelles.\n\nDes [i]anomalies[/i].\n\nLe mot était choisi. Ce qu'on corrige, on ne le regrette pas."
+      "texte": "Le [b][color=#ff5555]Grand Conclave des Neuf Couronnes[/color][/b] avait rendu son verdict en secret.\n\nLa décision était simple : les clans des Marches Libres qui refusaient de prêter allégeance formelle seraient considérés comme des [i]anomalies à corriger[/i].\n\nPas des ennemis. Pas des rebelles.\n\nDes [i]anomalies[/i].\n\nLe mot était choisi. Ce qu'on corrige, on ne le regrette pas."
     },
     {
       "id": "conclave_02",
       "type": "dialogue",
       "speaker": "pere",
       "fond_couleur": "#150010",
-      "texte": "[color=#ffcc88]{pere_name}[/color] avait reçu l'émissaire du [b][color=#ffffff]Dragon Blanc[/color][/b] seul, dans la salle des cartes.\n\nL'émissaire avait posé le sceau du Conclave sur la table — un parchemin rouge marqué des neuf sceaux.\n\n[color=#ffcc88]{pere_name}[/color] l'avait regardé longtemps. Puis il l'avait plié. Et rendu.\n\n« Dites à votre seigneur que le [color=#cc99ff]{clan_name}[/color] ne plie pas. »\n\nL'émissaire n'avait pas répondu. Il était parti."
+      "texte": "[color=#ffcc88]{pere_name}[/color] avait reçu l'émissaire du [b][color=#ffffff]Vhalcor[/color][/b] seul, dans la salle des cartes.\n\nL'émissaire avait posé le sceau du Conclave sur la table — un parchemin rouge marqué des neuf sceaux.\n\n[color=#ffcc88]{pere_name}[/color] l'avait regardé longtemps. Puis il l'avait plié. Et rendu.\n\n« Dites à votre seigneur que le [color=#cc99ff]{clan_name}[/color] ne plie pas. »\n\nL'émissaire n'avait pas répondu. Il était parti."
     },
     {
       "id": "conclave_03",
@@ -173,7 +172,7 @@
       "type": "narration",
       "speaker": "narrateur",
       "fond_couleur": "#1f0000",
-      "texte": "Depuis les remparts, tu vis leurs bannières.\n\n[color=#ffffff]Dragon Blanc[/color]. [color=#ffcc00]Dragon d'Or[/color]. [color=#ff3300]Dragon Rouge[/color].\n\nTrois des Neuf Familles. Une décision collective, propre, bureaucratique.\n\nEt à leur tête — en armure blanche marquée d'une flamme noire, monté sur un destrier de cendres — un Chevalier Infernal.\n\nCalme. Méthodique.\n\nLa façon dont il regardait le bastion ne ressemblait pas à de la haine.\n\nC'était pire. C'était de l'indifférence."
+      "texte": "Depuis les remparts, tu vis leurs bannières.\n\n[color=#ffffff]Vhalcor[/color]. [color=#ffcc00]Orsane[/color]. [color=#ff3300]Pyrhane[/color].\n\nTrois armées des Neuf Couronnes. Une décision collective, propre, bureaucratique.\n\nEt à leur tête — en armure d’ivoire marquée d'une cicatrice noire, monté sur un destrier de cendres — un Lance de Couronne.\n\nCalme. Méthodique.\n\nLa façon dont il regardait le bastion ne ressemblait pas à de la haine.\n\nC'était pire. C'était de l'indifférence."
     },
     {
       "id": "chute_03",
@@ -201,7 +200,7 @@
       "type": "dialogue",
       "speaker": "pere",
       "fond_couleur": "#1a0000",
-      "texte": "[color=#ffcc88]{pere_name}[/color] te saisit une dernière fois par le bras.\n\nIl ne te regarda pas longtemps — comme s'il savait que si ça durait trop, il ne te laisserait pas partir.\n\n« Retiens son nom. »\n\n« Quel nom ? »\n\n« Le Chevalier dehors. Celui en armure blanche. »\n\nUne pause. Le bastion tremblait.\n\n« [b][color=#ff5555]Caëlith. Première Lance du Dragon Blanc.[/color][/b] »\n\n« Il a dit que nous étions une anomalie. »\n\nIl te lâcha.\n\n« Prouve-lui qu'il avait tort. »"
+      "texte": "[color=#ffcc88]{pere_name}[/color] te saisit une dernière fois par le bras.\n\nIl ne te regarda pas longtemps — comme s'il savait que si ça durait trop, il ne te laisserait pas partir.\n\n« Retiens son nom. »\n\n« Quel nom ? »\n\n« Le Chevalier dehors. Celui en armure d’ivoire. »\n\nUne pause. Le bastion tremblait.\n\n« [b][color=#ff5555]Seydran Vhalcor. Première Lance de Vhalcor.[/color][/b] »\n\n« Il a dit que nous étions une anomalie. »\n\nIl te lâcha.\n\n« Prouve-lui qu'il avait tort. »"
     },
     {
       "id": "chute_07",
@@ -224,21 +223,21 @@
       "speaker": "narrateur",
       "fond_couleur": "#0a000f",
       "musique": "D#U00e9chu.mp3",
-      "texte": "La faim. Le froid. Les nuits sans feu parce que la fumée attire les espions du [b][color=#ffffff]Dragon Blanc[/color][/b].\n\nKael ne parlait pas beaucoup. C'était bien.\n\nTu n'avais rien à dire qui ne soit pas dangereux à entendre."
+      "texte": "La faim. Le froid. Les nuits sans feu parce que la fumée attire les espions du [b][color=#ffffff]Vhalcor[/color][/b].\n\nKael ne parlait pas beaucoup. C'était bien.\n\nTu n'avais rien à dire qui ne soit pas dangereux à entendre."
     },
     {
       "id": "exil_02",
       "type": "dialogue",
       "speaker": "kael",
       "fond_couleur": "#080010",
-      "texte": "Un soir, autour d'un feu trop petit pour chauffer, Kael dit :\n\n[color=#88ddff]Kael[/color] : « Tu pourrais changer de nom. Disparaître vers le nord. Les Terres Grises, personne ne va chercher là-bas. »\n\nLong silence.\n\n[color=#cc99ff]{player_name}[/color] : « Non. »\n\n[color=#88ddff]Kael[/color] : « Pourquoi ? »\n\nTu le regardas. Et pour la première fois depuis la nuit du bastion, tu répondis avec quelque chose qui ressemblait à de la certitude.\n\n[color=#cc99ff]{player_name}[/color] : « Parce que [b]Caëlith[/b] est encore en vie. »"
+      "texte": "Un soir, autour d'un feu trop petit pour chauffer, Kael dit :\n\n[color=#88ddff]Kael[/color] : « Tu pourrais changer de nom. Disparaître vers le nord. Les Étendues Grises, personne ne va chercher là-bas. »\n\nLong silence.\n\n[color=#cc99ff]{player_name}[/color] : « Non. »\n\n[color=#88ddff]Kael[/color] : « Pourquoi ? »\n\nTu le regardas. Et pour la première fois depuis la nuit du bastion, tu répondis avec quelque chose qui ressemblait à de la certitude.\n\n[color=#cc99ff]{player_name}[/color] : « Parce que [b]Seydran Vhalcor[/b] est encore en vie. »"
     },
     {
       "id": "exil_03",
       "type": "dialogue",
       "speaker": "kael",
       "fond_couleur": "#080010",
-      "texte": "[color=#88ddff]Kael[/color] regarda les flammes un long moment.\n\nPuis il dit, sans te regarder :\n\n« Mon village aussi. C'était des Chevaliers du Dragon Blanc. »\n\nPause.\n\n« J'avais neuf ans. »\n\nIl n'ajouta rien. Tu n'ajoutas rien.\n\nCertaines choses n'ont pas besoin d'être dites pour être comprises."
+      "texte": "[color=#88ddff]Kael[/color] regarda les flammes un long moment.\n\nPuis il dit, sans te regarder :\n\n« Mon village aussi. C'était des Chevaliers de Vhalcor. »\n\nPause.\n\n« J'avais neuf ans. »\n\nIl n'ajouta rien. Tu n'ajoutas rien.\n\nCertaines choses n'ont pas besoin d'être dites pour être comprises."
     },
     {
       "id": "exil_04",
@@ -246,14 +245,14 @@
       "periode": "Troisième année — Quelque part dans les Terres Cendrées",
       "speaker": "narrateur",
       "fond_couleur": "#060012",
-      "texte": "Tu trouvas un maître.\n\nUne démone exilée — chassée par la [b][color=#ffcc00]Maison Dragon d'Or[/color][/b] pour avoir refusé de transmettre ses arts d'invocation au Conclave.\n\nElle vivait seule dans une tour à moitié effondrée, entourée de cristaux morts et de cartes trop vieilles pour être exactes.\n\nElle te regarda arriver. Ne dit rien pendant une minute entière. Puis :\n\n« Tu veux apprendre à te venger. »\n\nCe n'était pas une question."
+      "texte": "Tu trouvas un maître.\n\nUne Altérée exilée — chassée par la [b][color=#ffcc00]Maison Orsane[/color][/b] pour avoir refusé de transmettre ses arts d'invocation au Conclave.\n\nElle vivait seule dans une tour à moitié effondrée, entourée de cristaux morts et de cartes trop vieilles pour être exactes.\n\nElle te regarda arriver. Ne dit rien pendant une minute entière. Puis :\n\n« Tu veux apprendre à te venger. »\n\nCe n'était pas une question."
     },
     {
       "id": "exil_05",
       "type": "dialogue",
       "speaker": "narrateur",
       "fond_couleur": "#060012",
-      "texte": "Elle ne t'apprit pas à te battre — tu savais déjà.\n\nElle t'apprit à [i]attendre[/i].\n\n« La vengeance précipitée est un cadeau offert à l'ennemi. »\n\n« Les Neuf Familles sont vieilles. Patientes. Elles ont vu tomber cent clans qui les haïssaient comme tu les hais. »\n\n« La seule façon de les détruire, c'est de les dépasser à leur propre jeu. »\n\nElle posa une carte du Royaume Démoniaque devant toi.\n\n« Alors. Par où tu commences ? »"
+      "texte": "Elle ne t'apprit pas à te battre — tu savais déjà.\n\nElle t'apprit à [i]attendre[/i].\n\n« La vengeance précipitée est un cadeau offert à l'ennemi. »\n\n« Les Neuf Couronnes sont vieilles. Patientes. Elles ont vu tomber cent clans qui les haïssaient comme tu les hais. »\n\n« La seule façon de les détruire, c'est de les dépasser à leur propre jeu. »\n\nElle posa une carte du Veyr devant toi.\n\n« Alors. Par où tu commences ? »"
     },
     {
       "id": "exil_06",
@@ -261,21 +260,21 @@
       "periode": "Cinquième année",
       "speaker": "narrateur",
       "fond_couleur": "#050010",
-      "texte": "Tu avais tes premiers alliés.\n\nDes rescapés. Des exilés. Des démones et démons que les Neuf Familles avaient brisés et qui n'avaient nulle part où aller.\n\nPas une armée. Pas encore.\n\nMais un clan.\n\nLe [b][color=#cc99ff]{clan_name}[/color][/b] vivait encore."
+      "texte": "Tu avais tes premiers alliés.\n\nDes rescapés. Des exilés. Des Altérées et Altérés que les Neuf Couronnes avaient brisés et qui n'avaient nulle part où aller.\n\nPas une armée. Pas encore.\n\nMais un clan.\n\nLe [b][color=#cc99ff]{clan_name}[/color][/b] vivait encore."
     },
     {
       "id": "exil_07",
       "type": "narration",
       "speaker": "narrateur",
       "fond_couleur": "#050010",
-      "texte": "Et tu avais appris sa position.\n\n[b][color=#ff5555]Seigneur Caëlith — Première Lance du Dragon Blanc.[/color][/b]\n\nIl gouvernait désormais trois territoires conquis sur les Terres Libres — les cendres de clans comme le tien, rebâtis en garnisons.\n\nIl portait toujours cette armure blanche.\n\nEt selon les informateurs de Kael... il avait totalement oublié le nom du clan qu'il avait brûlé cette nuit-là.\n\nUne [i]anomalie[/i], avait-il dit.\n\nUne formalité."
+      "texte": "Et tu avais appris sa position.\n\n[b][color=#ff5555]Seigneur Seydran Vhalcor — Première Lance de Vhalcor.[/color][/b]\n\nIl gouvernait désormais trois territoires conquis sur les Marches Libres — les cendres de clans comme le tien, rebâtis en garnisons.\n\nIl portait toujours cette armure d’ivoire.\n\nEt selon les informateurs de Kael... il avait totalement oublié le nom du clan qu'il avait brûlé cette nuit-là.\n\nUne [i]anomalie[/i], avait-il dit.\n\nUne formalité."
     },
     {
       "id": "exil_08",
       "type": "dialogue",
       "speaker": "kael",
       "fond_couleur": "#050010",
-      "texte": "[color=#88ddff]Kael[/color] posa le rapport sur la table et te regarda.\n\n« Caëlith. On a son nom, sa position, ses garnisons. »\n\n[color=#cc99ff]{player_name}[/color] : « Oui. »\n\n[color=#88ddff]Kael[/color] : « Et les huit autres Maisons ? »\n\nTu regardas la carte. Les neuf territoires rouges. Les neuf sceaux qui avaient condamné le {clan_name}.\n\n[color=#cc99ff]{player_name}[/color] : « On commence par lui. Et quand il tombe... les huit autres sauront que l'anomalie est revenue. »"
+      "texte": "[color=#88ddff]Kael[/color] posa le rapport sur la table et te regarda.\n\n« Seydran Vhalcor. On a son nom, sa position, ses garnisons. »\n\n[color=#cc99ff]{player_name}[/color] : « Oui. »\n\n[color=#88ddff]Kael[/color] : « Et les huit autres Maisons ? »\n\nTu regardas la carte. Les neuf domaines marqués de cendre. Les neuf sceaux qui avaient condamné le {clan_name}.\n\n[color=#cc99ff]{player_name}[/color] : « On commence par lui. Et quand il tombe... les huit autres sauront que l'anomalie est revenue. »"
     },
     {
       "id": "serment_01",
@@ -283,7 +282,7 @@
       "periode": "Aujourd'hui",
       "speaker": "narrateur",
       "fond_couleur": "#0a000f",
-      "musique": "Serment d'Ingrid.mp3",
+      "musique": "Serment_des_Cendres.mp3",
       "texte": "Tu as survécu à ce que les Familles Nobles pensaient fatal.\n\nTu as appris ce qu'elles ne voulaient pas que tu saches.\n\nTu n'es plus l'enfant qui regardait brûler son bastion depuis une colline.\n\nTu es ce que cette nuit a fabriqué à la place."
     },
     {
@@ -298,7 +297,7 @@
       "type": "dialogue",
       "speaker": "personnage",
       "fond_couleur": "#050008",
-      "texte": "[color=#cc99ff]{player_name}[/color] :\n\n« Au nom du [b]{clan_name}[/b] — au nom du sang de [color=#ffaacc]{mere_name}[/color] et [color=#ffcc88]{pere_name}[/color] — »\n\n« Je jure que les [b][color=#ff5555]Neuf Familles Nobles[/color][/b] s'agenouilleront. »\n\n« Toutes. »\n\n« À commencer par [b][color=#ffffff]Caëlith[/color][/b], qui a appelé mon clan une [i]anomalie[/i]. »\n\n« Il va apprendre ce que ce mot signifie vraiment. »"
+      "texte": "[color=#cc99ff]{player_name}[/color] :\n\n« Au nom du [b]{clan_name}[/b] — au nom du sang de [color=#ffaacc]{mere_name}[/color] et [color=#ffcc88]{pere_name}[/color] — »\n\n« Je jure que les [b][color=#ff5555]Neuf Couronnes[/color][/b] s'agenouilleront. »\n\n« Toutes. »\n\n« À commencer par [b][color=#ffffff]Seydran Vhalcor[/color][/b], qui a appelé mon clan une [i]anomalie[/i]. »\n\n« Il va apprendre ce que ce mot signifie vraiment. »"
     },
     {
       "id": "serment_04",

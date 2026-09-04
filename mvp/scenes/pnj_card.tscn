@@ -12,49 +12,45 @@ layout_mode = 2
 size_flags_horizontal = 3
 separation = 8
 
-[node name="Left" type="VBoxContainer" parent="HBox"]
+[node name="Left" type="VBoxContainer" parent="Content/HBox"]
 size_flags_horizontal = 3
-[node name="Portrait" type="TextureRect" parent="HBox/Left"]
+[node name="Portrait" type="TextureRect" parent="Content/HBox/Left"]
 stretch_mode = 5
 expand_mode = 1
 custom_minimum_size = Vector2(84, 84)
 size_flags_horizontal = 0
 size_flags_vertical = 0
-[node name="LabelName" type="Label" parent="HBox/Left"]
+[node name="LabelName" type="Label" parent="Content/HBox/Left"]
 text = "PNJ Name"
-[node name="LabelRole" type="Label" parent="HBox/Left"]
+[node name="LabelRole" type="Label" parent="Content/HBox/Left"]
 text = "role (niv)"
 theme/font_size_override/size = 12
 
-[node name="Right" type="HBoxContainer" parent="HBox"]
-[node name="SpacerLeft" type="Control" parent="HBox/Right"]
+[node name="Right" type="HFlowContainer" parent="Content/HBox"]
+layout_mode = 2
 size_flags_horizontal = 3
-[node name="BtnSupport" type="Button" parent="HBox/Right"]
+theme_override_constants/h_separation = 6
+theme_override_constants/v_separation = 6
+[node name="BtnSupport" type="Button" parent="Content/HBox/Right"]
 text = "Support"
-[node name="SpacerMid1" type="Control" parent="HBox/Right"]
-size_flags_horizontal = 3
-[node name="BtnExpedition" type="Button" parent="HBox/Right"]
+[node name="BtnExpedition" type="Button" parent="Content/HBox/Right"]
 text = "Expedition"
-[node name="SpacerMid2" type="Control" parent="HBox/Right"]
-size_flags_horizontal = 3
-[node name="BtnDetails" type="Button" parent="HBox/Right"]
+[node name="BtnDetails" type="Button" parent="Content/HBox/Right"]
 text = "Details"
-[node name="SpacerRight" type="Control" parent="HBox/Right"]
-size_flags_horizontal = 3
 
 [node name="DetailsPanel" type="VBoxContainer" parent="Content"]
 visible = false
-[node name="DetailRow" type="HBoxContainer" parent="DetailsPanel"]
+[node name="DetailRow" type="HBoxContainer" parent="Content/DetailsPanel"]
 layout_mode = 2
-[node name="DetailPortrait" type="TextureRect" parent="DetailsPanel/DetailRow"]
+[node name="DetailPortrait" type="TextureRect" parent="Content/DetailsPanel/DetailRow"]
 stretch_mode = 5
 expand_mode = 1
 custom_minimum_size = Vector2(150, 180)
 size_flags_horizontal = 0
 size_flags_vertical = 0
-[node name="DetailStats" type="VBoxContainer" parent="DetailsPanel/DetailRow"]
-[node name="StatList" type="VBoxContainer" parent="DetailsPanel/DetailRow/DetailStats"]
-[node name="LabelEquip" type="Label" parent="DetailsPanel/DetailRow/DetailStats/StatList"]
+[node name="DetailStats" type="VBoxContainer" parent="Content/DetailsPanel/DetailRow"]
+[node name="StatList" type="VBoxContainer" parent="Content/DetailsPanel/DetailRow/DetailStats"]
+[node name="LabelEquip" type="Label" parent="Content/DetailsPanel/DetailRow/DetailStats/StatList"]
 text = "Equipement: -"
-[node name="LabelBehavior" type="Label" parent="DetailsPanel/DetailRow/DetailStats/StatList"]
+[node name="LabelBehavior" type="Label" parent="Content/DetailsPanel/DetailRow/DetailStats/StatList"]
 text = "Comportement: -"

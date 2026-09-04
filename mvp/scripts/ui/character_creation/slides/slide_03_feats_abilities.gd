@@ -437,9 +437,9 @@ func _stat_abbrev(stat_key: String) -> String:
 			return "DIP"
 		"commandement":
 			return "COM"
-		"taima":
+		"magie":
 			return "TAI"
-		"ninjutsu":
+		"espionnage":
 			return "NIN"
 		"divin":
 			return "DIV"
