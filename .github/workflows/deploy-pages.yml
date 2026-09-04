@@ -1,0 +1,65 @@
+name: Export Web and Deploy GitHub Pages
+
+on:
+  push:
+    branches:
+      - dev
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  export-web:
+    name: Export Godot Web build
+    runs-on: ubuntu-latest
+    container:
+      image: barichello/godot-ci:4.4
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Import project resources
+        run: |
+          godot --headless --editor --path . --quit --verbose
+
+      - name: Validate project before export
+        run: |
+          godot --headless --path . --quit --verbose
+
+      - name: Prepare build directory
+        run: mkdir -p build/web
+
+      - name: Export Web
+        shell: bash
+        run: |
+          chmod +x scripts/export_web.sh
+          ./scripts/export_web.sh
+
+      - name: Add .nojekyll
+        run: touch build/web/.nojekyll
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: build/web
+
+  deploy:
+    name: Deploy GitHub Pages
+    needs: export-web
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
