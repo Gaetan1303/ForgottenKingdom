@@ -12,6 +12,7 @@ echo "Projet Godot détecté : $PROJECT_DIR_ABS"
 cd "$PROJECT_DIR_ABS"
 
 "$REPO_ROOT/scripts/ensure_web_preset.sh"
+"$REPO_ROOT/scripts/ensure_export_templates.sh"
 
 mkdir -p "$OUTPUT_DIR"
 

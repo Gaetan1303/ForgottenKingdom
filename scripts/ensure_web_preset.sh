@@ -11,7 +11,7 @@ if [[ -f "$PRESET_FILE" ]]; then
   fi
 
   echo "ERROR: export_presets.cfg existe, mais le preset '$PRESET_NAME' est absent."
-  echo "Par sécurité, la CI ne modifie pas un fichier de presets existant."
+  echo "La CI ne modifie pas un fichier de presets existant."
   exit 1
 fi
 

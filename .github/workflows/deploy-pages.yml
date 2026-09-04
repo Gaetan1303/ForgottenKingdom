@@ -26,8 +26,11 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Show Godot version
-        run: godot --version
+      - name: Show Godot environment
+        shell: bash
+        run: |
+          echo "HOME=$HOME"
+          godot --version
 
       - name: Validate project
         shell: bash
@@ -35,10 +38,15 @@ jobs:
           chmod +x scripts/*.sh
           ./scripts/ci_test.sh
 
-      - name: Export Web
+      - name: Prepare Godot export templates
         shell: bash
         run: |
           chmod +x scripts/*.sh
+          ./scripts/ensure_export_templates.sh
+
+      - name: Export Web
+        shell: bash
+        run: |
           ./scripts/export_web.sh
 
       - name: Add .nojekyll
