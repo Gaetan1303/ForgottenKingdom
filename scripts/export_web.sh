@@ -11,15 +11,15 @@ PROJECT_DIR_ABS="$("$REPO_ROOT/scripts/find_godot_project.sh")"
 echo "Projet Godot détecté : $PROJECT_DIR_ABS"
 cd "$PROJECT_DIR_ABS"
 
-if [[ ! -f "export_presets.cfg" ]]; then
-  echo "ERROR: export_presets.cfg introuvable dans : $PROJECT_DIR_ABS"
-  echo "Crée un preset Web dans Godot : Project > Export > Add... > Web."
-  exit 1
-fi
+"$REPO_ROOT/scripts/ensure_web_preset.sh"
 
 mkdir -p "$OUTPUT_DIR"
 
-echo "Export du preset '$PRESET' vers '$OUTPUT_DIR/$OUTPUT_FILE'..."
+echo
+echo "Export du preset '$PRESET'..."
+echo "Destination : $OUTPUT_DIR/$OUTPUT_FILE"
+echo
+
 godot --headless --path . --export-release "$PRESET" "$OUTPUT_DIR/$OUTPUT_FILE"
 
 if [[ ! -f "$OUTPUT_DIR/$OUTPUT_FILE" ]]; then
@@ -27,4 +27,9 @@ if [[ ! -f "$OUTPUT_DIR/$OUTPUT_FILE" ]]; then
   exit 1
 fi
 
-echo "Export Web terminé."
+echo
+echo "Fichiers exportés :"
+find "$OUTPUT_DIR" -maxdepth 1 -type f -printf ' - %f\n' | sort
+
+echo
+echo "Export Web terminé avec succès."

@@ -32,13 +32,13 @@ jobs:
       - name: Validate project
         shell: bash
         run: |
-          chmod +x scripts/ci_test.sh
+          chmod +x scripts/*.sh
           ./scripts/ci_test.sh
 
       - name: Export Web
         shell: bash
         run: |
-          chmod +x scripts/export_web.sh
+          chmod +x scripts/*.sh
           ./scripts/export_web.sh
 
       - name: Add .nojekyll
