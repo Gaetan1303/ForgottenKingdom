@@ -3,7 +3,7 @@ name: Export Web and Deploy GitHub Pages
 on:
   push:
     branches:
-      - Dev
+      - dev
   workflow_dispatch:
 
 permissions:
@@ -26,16 +26,14 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Import project resources
-        run: |
-          godot --headless --editor --path . --quit --verbose
+      - name: Show Godot version
+        run: godot --version
 
-      - name: Validate project before export
+      - name: Validate project
+        shell: bash
         run: |
-          godot --headless --path . --quit --verbose
-
-      - name: Prepare build directory
-        run: mkdir -p build/web
+          chmod +x scripts/ci_test.sh
+          ./scripts/ci_test.sh
 
       - name: Export Web
         shell: bash
