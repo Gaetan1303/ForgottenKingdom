@@ -73,7 +73,8 @@ size_flags_horizontal = 3
 
 [node name="IconeClanJoueur" type="TextureRect" parent="PanneauCentre/PanneauStats/ContenuStats/ColJoueur"]
 layout_mode = 2
-stretch_mode = 2
+expand_mode = 1
+stretch_mode = 5
 custom_minimum_size = Vector2(48, 48)
 name = "IconeClanJoueur"
 
@@ -113,7 +114,8 @@ size_flags_horizontal = 3
 
 [node name="IconeClanCible" type="TextureRect" parent="PanneauCentre/PanneauStats/ContenuStats/ColResistance"]
 layout_mode = 2
-stretch_mode = 2
+expand_mode = 1
+stretch_mode = 5
 custom_minimum_size = Vector2(48, 48)
 name = "IconeClanCible"
 

@@ -37,7 +37,7 @@ func _test_paths(failures: Array[String]) -> void:
 func _test_corruption(failures: Array[String]) -> void:
 	var service: Object = CorruptionServiceScript.new()
 	service.call("register_character", "test", 60.0, ["loyal"])
-	var result: Dictionary = service.call("apply_corruption", "source", "test", 70.0) as Dictionary
+	var result: Dictionary = service.call("apply_corruption", "test", 70.0, "source") as Dictionary
 	if not bool(result.get("ok", false)):
 		failures.append("CorruptionService: corruption refusée")
 		return

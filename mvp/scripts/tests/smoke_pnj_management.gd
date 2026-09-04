@@ -15,7 +15,7 @@ func _run() -> void:
 
 	var planner: Variant = service_script.new()
 	var roster := [
-		planner.make_pnj_profile("pnj_story_ingrid", "Ingrid", "scenario", "stratege", 4, {
+		planner.make_pnj_profile("pnj_story_aren", "Aren", "scenario", "stratege", 4, {
 			"force": 6,
 			"magie": 8,
 			"espionnage": 7,
@@ -44,14 +44,14 @@ func _run() -> void:
 	else:
 		planning = soldats_ok.get("planning", planning) as Dictionary
 
-	var support_ok: Dictionary = planner.assign_pnj_support(roster, planning, "pnj_story_ingrid", "attaquer")
+	var support_ok: Dictionary = planner.assign_pnj_support(roster, planning, "pnj_story_aren", "attaquer")
 	if not bool(support_ok.get("ok", false)):
 		failures.append("support PNJ: affectation valide refusee")
 	else:
 		planning = support_ok.get("planning", planning) as Dictionary
 		roster = support_ok.get("roster", roster) as Array
 
-	var support_double: Dictionary = planner.assign_pnj_support(roster, planning, "pnj_story_ingrid", "espionner")
+	var support_double: Dictionary = planner.assign_pnj_support(roster, planning, "pnj_story_aren", "espionner")
 	if bool(support_double.get("ok", true)):
 		failures.append("support PNJ: double affectation non bloquee")
 

@@ -3,13 +3,8 @@
 ## Chargé depuis game/clan/etat_clan_defaut.json + sauvegarde utilisateur.
 extends Node
 
-# Critical dependencies are preloaded explicitly so direct game startup also works
-# before the editor has rebuilt the global class cache.
-const StatDefs = preload("res://scripts/data/stat_defs.gd")
-const PnjDailyPlannerServiceClass = preload("res://scripts/services/pnj_daily_planner_service.gd")
-const PnjGeneratorClass = preload("res://scripts/services/pnj_generator.gd")
-const JsonPersistenceService = preload("res://scripts/services/json_persistence_service.gd")
-const CharacterBuildService = preload("res://scripts/data/character_build_service.gd")
+## rely on the script's class_name (StatDefs) instead of preloading it here
+## Use the service classes registered by class_name (PnjDailyPlannerService, PnjGenerator, JsonPersistenceService)
 const FKHelpers = preload("res://scripts/utils/fk_helpers.gd")
 
 # ── Chemins ────────────────────────────────────────────────────────────
@@ -112,7 +107,7 @@ var historique_tours: Array = []
 var pnj_gestion: Dictionary = {}
 
 # ── Services (instanciation unique — DRY / SRP) ────────────────────────
-var _planner: RefCounted = null
+var _planner: PnjDailyPlannerService = null
 
 # Bonus de classe chargés depuis les données
 var _bonus_par_action: Dictionary = {}
@@ -127,7 +122,7 @@ const SOLDATS_MAX := 600
 
 
 func _ready() -> void:
-	_planner = PnjDailyPlannerServiceClass.new()
+	_planner = PnjDailyPlannerService.new()
 	_charger_etat_defaut()
 
 
@@ -511,7 +506,7 @@ func get_resume_traits_actifs() -> String:
 
 
 func _get_traits_caps() -> Dictionary:
-	var traits_cfg := GameDataLoader.get_character_traits()
+	var traits_cfg: Dictionary = GameDataLoader.get_character_traits()
 	return (traits_cfg.get("caps", {}) as Dictionary).duplicate(true)
 
 
@@ -569,7 +564,7 @@ func ajouter_pnj_gere(
 	pnj_stats: Dictionary,
 	traits: Array = []
 ) -> Dictionary:
-	var fiche: Dictionary = _planner.make_pnj_profile(pnj_id, pnj_name, pnj_type, role, niveau, pnj_stats, traits)
+	var fiche := _planner.make_pnj_profile(pnj_id, pnj_name, pnj_type, role, niveau, pnj_stats, traits)
 	var state := get_pnj_gestion_state()
 	var roster: Array = (state.get("roster", []) as Array).duplicate(true)
 	var index := _find_managed_pnj_index(roster, pnj_id)
@@ -1078,8 +1073,8 @@ func _appliquer_effets(effets: Dictionary) -> void:
 		var role_hint := str(effets.get("pnj_role", ""))
 		print("[DEBUG] _appliquer_effets: pnj_recrute=%d role_hint=%s moment=%s magie=%s" % [count, role_hint, str(moment_journee), str(magie_pactes_active())])
 		for i in range(count):
-			var gen: RefCounted = PnjGeneratorClass.new()
-			var added: Dictionary = (gen as Object).generate_and_register_pnj(role_hint, "recrute")
+			var gen := PnjGenerator.new()
+			var added := gen.generate_and_register_pnj(role_hint, "recrute")
 			if added == null:
 				print("[DEBUG] generate_and_register_pnj returned null for hint=%s" % role_hint)
 			else:
@@ -1137,7 +1132,7 @@ func evaluer_etat_partie() -> Dictionary:
 		return {
 			"terminee": true,
 			"etat": "defaite",
-			"message": "Barre d'âme épuisée. Ingrid est consumée par le dragon.",
+			"message": "Barre d’âme épuisée. L’héritier est consumé par l’Éther de Cendre.",
 		}
 
 	if maisons_soumises() >= 9:
@@ -1414,23 +1409,23 @@ func apply_profile_sheet_update(stats_update: Dictionary, points_remaining: int,
 	var class_stats_bonus: Dictionary = {}
 	if classe != "":
 		# Get class data from centralized GameDataLoader
-		var class_entry := GameDataLoader.get_class_by_id(classe)
+		var class_entry: Dictionary = GameDataLoader.get_class_by_id(classe)
 		if class_entry and not class_entry.is_empty():
 			class_stats_bonus = class_entry.get("stats_bonus", {}) as Dictionary
 
-	# aggregate flat stat bonuses from feats
-	var feats_defs = GameDataLoader.get_feats()
+	# Aggregate flat stat bonuses from feats through the canonical loader API.
+	# feats.json is namespaced under "dons"/"capacites", so direct root lookup is invalid.
 	var feats_bonus_stats: Dictionary = {}
-	var current_feats = (profil_personnage.get("feats", []) as Array)
+	var current_feats: Array = profil_personnage.get("feats", []) as Array
 	for f in current_feats:
-		var fdef := (feats_defs.get(str(f), {}) as Dictionary)
+		var fdef: Dictionary = GameDataLoader.get_feat(str(f))
 		var eff := (fdef.get("effects", {}) as Dictionary)
 		var stats_eff := (eff.get("stats", {}) as Dictionary)
 		for sk in stats_eff.keys():
 			feats_bonus_stats[sk] = int(feats_bonus_stats.get(sk, 0)) + int(stats_eff[sk])
 
 	# Compute final stats using CharacterBuildService
-	var final_stats := CharacterBuildService.compute_final_stats(
+	var final_stats: Dictionary = CharacterBuildService.compute_final_stats(
 		class_stats_bonus,
 		raw_stats,
 		{},
@@ -1597,13 +1592,12 @@ func _compute_and_apply_profil_effects(profil: Dictionary, do_save: bool = false
 	# Eviter double-application
 	if bool(profil.get("computed_effects_applied", false)):
 		return
-	var feats_data := GameDataLoader.get_feats()
 	var total_pv_bonus := 0
 	var total_mana_bonus := 0
 	if profil.has("feats") and (profil.get("feats") is Array):
 		for f in (profil.get("feats") as Array):
 			var fid := str(f)
-			var fdef := feats_data.get(fid, {}) as Dictionary
+			var fdef: Dictionary = GameDataLoader.get_feat(fid)
 			var eff := fdef.get("effects", {}) as Dictionary
 			if eff.has("pv_bonus"):
 				total_pv_bonus += int(eff.get("pv_bonus", 0))

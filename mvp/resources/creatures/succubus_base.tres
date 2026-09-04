@@ -1,0 +1,25 @@
+[gd_resource type="Resource" script_class="CreatureProfile" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/data/creature_profile.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = "succubus_lilith"
+display_name = "Lilith"
+description = "Succube spécialisée dans l'influence et le training."
+species_id = "succubus"
+creature_type = 1
+roles = Array[int]([0, 1])
+capabilities = Array[int]([0, 7, 3])
+role = "trainer"
+corruption_aura = 25.0
+domination_power = 40.0
+training_efficiency = 1.25
+loyalty = 50.0
+pheromone_strength = 75.0
+technique_level = 4
+preferred_trainings = Array[int]([1, 5, 3])
+portrait_path = "res://assets/images/Creatures/succubus_lilith.png"
+aggression = 35.0
+patience = 70.0
+creativity = 80.0

@@ -22,14 +22,14 @@ func _run() -> void:
 		_finish(failures)
 		return
 
-	clan_manager.nouvelle_partie("Ingrid", "Clan Test", "mage_du_pacte", {"magie": 1}, {})
+	clan_manager.nouvelle_partie("Aren", "Clan Test", "hellcaster", {"magie": 1}, {})
 
 	if not clan_manager.has_method("ajouter_pnj_gere"):
 		failures.append("ClanManager: API ajouter_pnj_gere manquante")
 		_finish(failures)
 		return
 
-	var pnj_story: Dictionary = clan_manager.ajouter_pnj_gere("pnj_story_ingrid", "Ingrid", "scenario", "stratege", 4, {
+	var pnj_story: Dictionary = clan_manager.ajouter_pnj_gere("pnj_story_aren", "Aren", "scenario", "stratege", 4, {
 		"force": 6,
 		"magie": 8,
 		"espionnage": 7,
@@ -54,7 +54,7 @@ func _run() -> void:
 	if not bool(mission_soldats.get("ok", false)):
 		failures.append("ClanManager: planification soldats invalide")
 
-	var support: Dictionary = clan_manager.assigner_pnj_support_journee("pnj_story_ingrid", "attaquer")
+	var support: Dictionary = clan_manager.assigner_pnj_support_journee("pnj_story_aren", "attaquer")
 	if not bool(support.get("ok", false)):
 		failures.append("ClanManager: support PNJ invalide")
 

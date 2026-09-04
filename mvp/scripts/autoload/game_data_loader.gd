@@ -12,6 +12,7 @@ const PATH_FEATS := "res://data/feats.json"
 const PATH_ABILITIES := "res://data/abilities.json"
 const PATH_EQUIPMENT := "res://data/equipment.json"
 const PATH_PROGRESSION_DIR := "res://data/progression"
+const PATH_HOUSES := "res://data/world/houses.json"
 
 # ── Caches ───────────────────────────────────────────────────────────
 var _config_tour:  Dictionary = {}
@@ -23,6 +24,7 @@ var _feats:         Dictionary = {}
 var _abilities:     Dictionary = {}
 var _equipment:     Dictionary = {}
 var _class_progressions: Dictionary = {}
+var _world_houses: Array = []
 signal reloaded
 
 
@@ -32,7 +34,9 @@ func _ready() -> void:
 	_charger_library_entries()
 	_charger_classes()
 	_charger_class_progressions()
+	_charger_abilities()
 	_charger_feats()
+	_charger_world_houses()
 	_charger_equipment()
 
 
@@ -246,6 +250,16 @@ func _charger_config_tour_fallback() -> void:
 	}
 
 
+func _charger_world_houses() -> void:
+	_world_houses = []
+	var data := _lire_json(PATH_HOUSES)
+	if data.is_empty():
+		return
+	for house in data.get("houses", []) as Array:
+		if house is Dictionary:
+			_world_houses.append((house as Dictionary).duplicate(true))
+
+
 # ─────────────────────────────────────────────────────────────────────
 #  ACCÈS AUX DONNÉES
 # ─────────────────────────────────────────────────────────────────────
@@ -376,7 +390,14 @@ func get_feats() -> Dictionary:
 
 ## Retourne la définition d'un don par son id
 func get_feat(id: String) -> Dictionary:
-	return _feats.get(str(id), {}) as Dictionary
+	var target := str(id)
+	var dons: Dictionary = _feats.get("dons", {}) as Dictionary
+	if dons.has(target):
+		return (dons.get(target, {}) as Dictionary).duplicate(true)
+	var capacites := _feats.get("capacites", {}) as Dictionary
+	if capacites.has(target) and capacites.get(target) is Dictionary:
+		return (capacites.get(target, {}) as Dictionary).duplicate(true)
+	return {}
 
 
 ## Retourne toutes les capacités connues (id -> definition)
@@ -454,16 +475,70 @@ func get_feats_for_ability(ability_id: String) -> Dictionary:
 	var abil := get_ability_by_id(ability_id)
 	var aname := str(abil.get("name", "")).to_lower()
 	var out: Dictionary = {}
-	for fid in _feats.keys():
-		var f := _feats[fid] as Dictionary
+	var feat_pool := _feats.get("dons", {}) as Dictionary
+	for fid in feat_pool.keys():
+		var f := feat_pool[fid] as Dictionary
 		var fname := str(f.get("name", "")).to_lower()
 		var fdesc := str(f.get("description", "")).to_lower()
 		if aname != "" and (fname.find(aname) != -1 or fdesc.find(aname) != -1):
 			out[fid] = f
 
 	if out.size() == 0:
-		return _feats.duplicate(true)
+		return feat_pool.duplicate(true)
 	return out.duplicate(true)
+
+
+func get_world_houses() -> Array:
+	return _world_houses.duplicate(true)
+
+
+func get_compendium_sections() -> Array:
+	var sections: Array = (_library_entries.get("sections", []) as Array).duplicate(true)
+
+	var house_entries: Array = []
+	for house_data in _world_houses:
+		var house := house_data as Dictionary
+		house_entries.append({
+			"title": "%s — %s" % [str(house.get("nom", "Maison")), str(house.get("titre", ""))],
+			"text": "Chef : %s\nDoctrine : %s\nCombativité : %d/100" % [str(house.get("chef", "Inconnu")), str(house.get("doctrine", "Inconnue")), int(house.get("combativite", 50))],
+		})
+	sections.append({"id":"houses", "title":"Les Neuf Couronnes", "entries":house_entries})
+
+	var class_entries: Array = []
+	for class_id in _classes.keys():
+		var c := _classes[class_id] as Dictionary
+		var primary_labels: Array[String] = []
+		for stat_id in c.get("primary", []) as Array:
+			primary_labels.append(str(stat_id))
+		class_entries.append({
+			"title": str(c.get("name", class_id)),
+			"text": "%s\nStatistiques principales : %s\nDé de vie : d%d" % [str(c.get("description", "")), ", ".join(primary_labels), int(c.get("hit_die", 0))],
+		})
+	sections.append({"id":"classes", "title":"Classes", "entries":class_entries})
+
+	var feat_entries: Array = []
+	var dons: Dictionary = _feats.get("dons", {}) as Dictionary
+	for feat_id in dons.keys():
+		var feat := dons[feat_id] as Dictionary
+		feat_entries.append({"title":str(feat.get("nom", feat_id)), "text":str(feat.get("description", ""))})
+	sections.append({"id":"feats", "title":"Talents", "entries":feat_entries})
+
+	var ability_entries: Array = []
+	var ability_map: Dictionary = get_abilities()
+	for ability_id in ability_map.keys():
+		var ability := ability_map[ability_id] as Dictionary
+		ability_entries.append({"title":str(ability.get("name", ability_id)), "text":str(ability.get("description", ""))})
+	sections.append({"id":"abilities", "title":"Capacités", "entries":ability_entries})
+
+	var traits_entries: Array = []
+	for category in ["dons", "pouvoirs", "competences"]:
+		var pool: Dictionary = _character_traits.get(category, {}) as Dictionary
+		for trait_id in pool.keys():
+			var trait_data: Dictionary = pool[trait_id] as Dictionary
+			traits_entries.append({"title":str(trait_data.get("label", trait_id)), "text":str(trait_data.get("description", ""))})
+	sections.append({"id":"traits", "title":"Traits & compétences", "entries":traits_entries})
+
+	return sections
 
 
 ## Helpers internes
@@ -493,6 +568,7 @@ func reload() -> void:
 	_charger_abilities()
 	_charger_feats()
 	_charger_equipment()
+	_charger_world_houses()
 	# Re-indexer les actions au cas où config_tour a changé
 	_indexer_actions(_config_tour.get("actions", []) as Array)
 	print("GameDataLoader: données rechargées.")
@@ -516,6 +592,9 @@ func get_class_icon_path(class_id: String) -> String:
 			var cand := "res://" + explicit.strip_edges()
 			if ResourceLoader.exists(cand):
 				return cand
+			var cand2 := "res://" + explicit.strip_edges().trim_prefix("mvp/")
+			if ResourceLoader.exists(cand2):
+				return cand2
 
 	# Cherche automatiquement dans des dossiers d'assets communs
 	var icon_dirs: Array = [
@@ -544,9 +623,7 @@ func get_class_icon_path(class_id: String) -> String:
 				if ResourceLoader.exists(p):
 					return p
 
-	# Toutes les classes du build courant ont une icône dédiée.
-	# Si une nouvelle classe n'en a pas encore, on préfère une carte sans image
-	# à un emblème de jeu sans rapport avec la classe.
+	# fallback global (si présent)
 	return ""
 
 

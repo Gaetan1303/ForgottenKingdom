@@ -1,0 +1,19 @@
+# Carte de Veyr — points de repère
+# Les cartes visuelles seront créées séparément via ComfyUI puis placées dans assets/maps/.
+
+maps:
+  world: assets/maps/veyr_world.png
+  marches: assets/maps/marches_cendrees.png
+
+locations:
+  - refuge_des_cendres
+  - cendrepont
+  - citadelle_ivoire
+  - forge_rouge
+  - palais_du_voile
+  - bibliotheque_fendue
+  - haut_fourneau_morcant
+  - ossuaire_couronne
+  - tour_du_silence
+  - palais_des_comptes
+  - fort_des_lames

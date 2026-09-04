@@ -1,23 +1,23 @@
 {
-  "_commentaire": "Pack d'evenements jour/nuit aligne sur le canon Ingrid (Yomihara, Nomad, 9 Nobles, Grenier)",
+  "_commentaire": "Pack d'evenements jour/nuit aligne sur le canon l’Héritier (Cendrepont, Compagnie du Voile, Neuf Couronnes, Vhal, la Braise-Source)",
   "version": "1.0",
   "factions": [
-    "nomad",
-    "nobles",
-    "independants_yomihara",
-    "interferences"
+    "neuf_couronnes",
+    "marches_libres",
+    "guildes_de_cendre",
+    "entites_de_la_faille"
   ],
   "variables_recommandees": {
-    "dette_grenier": 0,
-    "pression_nomad": 0,
-    "ordre_yomihara": 0,
-    "suspicion_nobles": 0
+    "dette_de_pacte": 0,
+    "pression_couronnes": 0,
+    "stabilite_marches": 0,
+    "suspicion_synode": 0
   },
   "evenements_jour": [
     {
-      "id": "jour_audit_nomad",
-      "titre": "Audit Nomad",
-      "description": "Des emissaires demandent des resultats immediats sur la securite de quartier.",
+      "id": "jour_inspection_couronnes",
+      "titre": "Inspection des Couronnes",
+      "description": "Des émissaires demandent des resultats immediats sur la securite de quartier.",
       "priorite": 2,
       "conditions": {
         "tour_min": 2,
@@ -28,18 +28,36 @@
           "id": "alignement_total",
           "texte": "Executer les ordres sans discussion",
           "effets": {
-            "ressources": { "or": 80, "reputation": -1 },
-            "affinites_pnj": { "intendant": 1, "arcaniste": -1 },
-            "variables": { "pression_nomad": 2, "ordre_yomihara": 1 }
+            "ressources": {
+              "or": 80,
+              "reputation": -1
+            },
+            "affinites_pnj": {
+              "intendant": 1,
+              "arcaniste": -1
+            },
+            "variables": {
+              "pression_couronnes": 2,
+              "stabilite_marches": 1
+            }
           }
         },
         {
           "id": "negociation_locale",
           "texte": "Negocier un delai au profit des habitants",
           "effets": {
-            "ressources": { "or": -20, "reputation": 2 },
-            "affinites_pnj": { "intendant": 1, "forgeron": 1 },
-            "variables": { "pression_nomad": -1, "ordre_yomihara": 2 }
+            "ressources": {
+              "or": -20,
+              "reputation": 2
+            },
+            "affinites_pnj": {
+              "intendant": 1,
+              "forgeron": 1
+            },
+            "variables": {
+              "pression_couronnes": -1,
+              "stabilite_marches": 2
+            }
           }
         }
       ]
@@ -58,23 +76,34 @@
           "id": "garantie_formelle",
           "texte": "Signer une garantie diplomatique",
           "effets": {
-            "ressources": { "mana": -10, "reputation": 1 },
-            "variables": { "suspicion_nobles": -2 }
+            "ressources": {
+              "mana": -10,
+              "reputation": 1
+            },
+            "variables": {
+              "suspicion_synode": -2
+            }
           }
         },
         {
           "id": "posture_ferme",
           "texte": "Refuser et afficher la force",
           "effets": {
-            "ressources": { "soldats": -5, "reputation": 1 },
-            "variables": { "suspicion_nobles": 2, "ordre_yomihara": -1 }
+            "ressources": {
+              "soldats": -5,
+              "reputation": 1
+            },
+            "variables": {
+              "suspicion_synode": 2,
+              "stabilite_marches": -1
+            }
           }
         }
       ]
     },
     {
-      "id": "jour_marche_yomihara",
-      "titre": "Marche des Independants",
+      "id": "jour_marche_des_marches",
+      "titre": "Marché des Marches",
       "description": "Les guildes locales proposent un accord logistique discret.",
       "priorite": 1,
       "conditions": {
@@ -86,18 +115,35 @@
           "id": "accepter_accord",
           "texte": "Accepter l'accord",
           "effets": {
-            "ressources": { "bois": 12, "fer": 8, "nourriture": 10 },
-            "affinites_pnj": { "forgeron": 1, "intendant": 1 },
-            "variables": { "ordre_yomihara": 1 }
+            "ressources": {
+              "bois": 12,
+              "fer": 8,
+              "nourriture": 10
+            },
+            "affinites_pnj": {
+              "forgeron": 1,
+              "intendant": 1
+            },
+            "variables": {
+              "stabilite_marches": 1
+            }
           }
         },
         {
           "id": "taxer_accord",
           "texte": "Accepter mais imposer une taxe",
           "effets": {
-            "ressources": { "or": 60, "nourriture": -6 },
-            "affinites_pnj": { "intendant": 1, "alchimiste": -1 },
-            "variables": { "ordre_yomihara": -1 }
+            "ressources": {
+              "or": 60,
+              "nourriture": -6
+            },
+            "affinites_pnj": {
+              "intendant": 1,
+              "alchimiste": -1
+            },
+            "variables": {
+              "stabilite_marches": -1
+            }
           }
         }
       ]
@@ -112,24 +158,38 @@
       "conditions": {
         "tour_min": 2,
         "moment": "nuit",
-        "ressources_min": { "essence": 6 }
+        "ressources_min": {
+          "essence": 6
+        }
       },
       "choix": [
         {
           "id": "conclure_pacte",
           "texte": "Conclure le pacte",
           "effets": {
-            "ressources": { "essence": -6, "mana": 30 },
-            "affinites_pnj": { "arcaniste": 2 },
-            "variables": { "dette_grenier": 1, "pression_nomad": 1 }
+            "ressources": {
+              "essence": -6,
+              "mana": 30
+            },
+            "affinites_pnj": {
+              "arcaniste": 2
+            },
+            "variables": {
+              "dette_de_pacte": 1,
+              "pression_couronnes": 1
+            }
           }
         },
         {
           "id": "refuser_pacte",
           "texte": "Refuser",
           "effets": {
-            "ressources": { "reputation": 1 },
-            "variables": { "dette_grenier": -1 }
+            "ressources": {
+              "reputation": 1
+            },
+            "variables": {
+              "dette_de_pacte": -1
+            }
           }
         }
       ]
@@ -137,7 +197,7 @@
     {
       "id": "nuit_recrutement_milice",
       "titre": "Recrutement de Milice Locale",
-      "description": "Des volontaires de Yomihara demandent protection et integration.",
+      "description": "Des volontaires des Marches demandent protection et integration.",
       "priorite": 2,
       "conditions": {
         "tour_min": 1,
@@ -148,24 +208,36 @@
           "id": "integrer_volontaires",
           "texte": "Integrer la milice",
           "effets": {
-            "ressources": { "soldats": 18, "nourriture": -8 },
-            "affinites_pnj": { "forgeron": 1, "intendant": 1 },
-            "variables": { "ordre_yomihara": 2 }
+            "ressources": {
+              "soldats": 18,
+              "nourriture": -8
+            },
+            "affinites_pnj": {
+              "forgeron": 1,
+              "intendant": 1
+            },
+            "variables": {
+              "stabilite_marches": 2
+            }
           }
         },
         {
           "id": "refuser_integration",
           "texte": "Refuser l'integration",
           "effets": {
-            "ressources": { "reputation": -1 },
-            "variables": { "ordre_yomihara": -2 }
+            "ressources": {
+              "reputation": -1
+            },
+            "variables": {
+              "stabilite_marches": -2
+            }
           }
         }
       ]
     },
     {
-      "id": "nuit_murmure_grenier",
-      "titre": "Murmure de Grenier",
+      "id": "nuit_murmure_faille",
+      "titre": "Murmure de la Faille",
       "description": "Une vague de puissance draconique offre un avantage immediat, mais le prix est reel.",
       "priorite": 4,
       "conditions": {
@@ -177,19 +249,32 @@
           "id": "canaliser_puissance",
           "texte": "Canaliser la puissance",
           "effets": {
-            "ressources": { "mana": 40, "soldats": 8, "reputation": -1 },
-            "variables": { "dette_grenier": 3, "suspicion_nobles": 1 }
+            "ressources": {
+              "mana": 40,
+              "soldats": 8,
+              "reputation": -1
+            },
+            "variables": {
+              "dette_de_pacte": 3,
+              "suspicion_synode": 1
+            }
           }
         },
         {
           "id": "sceller_a_nouveau",
           "texte": "Maintenir le sceau",
           "effets": {
-            "ressources": { "mana": -10, "reputation": 2 },
-            "variables": { "dette_grenier": -1 }
+            "ressources": {
+              "mana": -10,
+              "reputation": 2
+            },
+            "variables": {
+              "dette_de_pacte": -1
+            }
           }
         }
       ]
     }
-  ]
+  ],
+  "univers": "Veyr — Marches Cendrées"
 }

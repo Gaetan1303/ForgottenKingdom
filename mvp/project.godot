@@ -14,11 +14,11 @@ compatibility/default_parent_skeleton_in_mesh_instance_3d=true
 
 [application]
 
-config/name="Royaumes Démoniques — Histoire d'Ingrid"
-config/description="Parcours narratif interactif retraçant l'histoire d'Ingrid (イングリッド), Chevalière de l'Enfer."
+config/name="Royaume Déchu — Les Cendres de Veyr"
+config/description="RPG de gestion dark fantasy dans le monde brisé de Veyr."
 config/version="0.1.0"
 run/main_scene="res://scenes/main_menu.tscn"
-config/features=PackedStringArray("4.6", "Forward Plus")
+config/features=PackedStringArray("4.4", "Forward Plus")
 config/icon="res://icon.png"
 
 [autoload]

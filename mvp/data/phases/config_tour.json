@@ -1,6 +1,5 @@
 {
   "_commentaire": "Configuration des actions disponibles par tour — toutes en français",
-
   "actions": [
     {
       "id": "attaquer",
@@ -58,20 +57,22 @@
         }
       },
       "classes_bonus": {
-        "chevalier_sombre": 3,
-        "mage_du_pacte": 0,
-        "stratege_des_ombres": -1
+        "demon_blade": 3,
+        "berserker_demon": 3,
+        "warlord": 2,
+        "abyss_paladin": 2,
+        "hellranger": 1,
+        "shadowfang": 1
       },
       "requis": {
         "soldats_min": 10
       }
     },
-
     {
       "id": "espionner",
-      "nom": "Espionner une Famille Noble",
+      "nom": "Espionner une Couronne",
       "icone": "🕵",
-      "description": "Infiltrez les rangs d'une famille noble pour révéler ses bastions, son chef et ses ressources. Espionnage + Magie vs contre-espionnage.",
+      "description": "Infiltrez les rangs d'une Maison de la Couronne pour révéler ses bastions, son chef et ses ressources. Espionnage + Magie vs contre-espionnage.",
       "cout": {
         "soldats": 0,
         "or": 50,
@@ -123,12 +124,13 @@
         }
       },
       "classes_bonus": {
-        "chevalier_sombre": -1,
-        "mage_du_pacte": 1,
-        "stratege_des_ombres": 4
+        "shadowfang": 4,
+        "hellranger": 3,
+        "void_monk": 2,
+        "echo_bard": 1,
+        "warlord": 1
       }
     },
-
     {
       "id": "recruter",
       "nom": "Recruter des Soldats",
@@ -156,20 +158,21 @@
         }
       },
       "classes_bonus": {
-        "chevalier_sombre": 2,
-        "mage_du_pacte": 0,
-        "stratege_des_ombres": 1
+        "warlord": 3,
+        "echo_bard": 2,
+        "abyss_paladin": 2,
+        "demon_blade": 1,
+        "pactbound": 1
       },
       "requis": {
         "mana_min": 35
       }
     },
-
     {
       "id": "diplomatie",
       "nom": "Proposer une Alliance",
       "icone": "🤝",
-      "description": "Négociez avec une Famille Noble pour obtenir un accord de non-agression ou une alliance active. Diplomatie + Réputation vs résistance politique.",
+      "description": "Négociez avec une Maison de la Couronne pour obtenir un accord de non-agression ou une alliance active. Diplomatie + Réputation vs résistance politique.",
       "cout": {
         "soldats": 0,
         "or": 100,
@@ -187,7 +190,7 @@
       },
       "resultats": {
         "succes_critique": {
-          "texte": "Alliance conclue ! Cette famille noble est désormais votre alliée.",
+          "texte": "Alliance conclue ! Cette Maison est désormais votre alliée.",
           "effets": {
             "relation": "alliee",
             "non_agression": true,
@@ -212,16 +215,17 @@
         }
       },
       "classes_bonus": {
-        "chevalier_sombre": -1,
-        "mage_du_pacte": 1,
-        "stratege_des_ombres": 2
+        "echo_bard": 4,
+        "warlord": 3,
+        "pactbound": 2,
+        "soulwarden": 2,
+        "abyss_paladin": 1
       },
       "requis": {
         "famille_revelee": true,
         "or_min": 100
       }
     },
-
     {
       "id": "fortifier",
       "nom": "Fortifier le Clan",
@@ -246,15 +250,15 @@
         }
       },
       "classes_bonus": {
-        "chevalier_sombre": 0,
-        "mage_du_pacte": 0,
-        "stratege_des_ombres": 1
+        "infernal_artificer": 4,
+        "warlord": 2,
+        "soulwarden": 1,
+        "wild_druid": 1
       },
       "requis": {
         "or_min": 300
       }
     },
-
     {
       "id": "recuperer",
       "nom": "Repos et Régénération",
@@ -277,12 +281,13 @@
         }
       },
       "classes_bonus": {
-        "chevalier_sombre": 0,
-        "mage_du_pacte": 1,
-        "stratege_des_ombres": 0
+        "soulwarden": 3,
+        "wild_druid": 2,
+        "void_monk": 2,
+        "hellcaster": 1,
+        "blood_sorcerer": 1
       }
     },
-
     {
       "id": "recruter_pnj",
       "nom": "Recruter un PNJ de Domaine",
@@ -305,16 +310,16 @@
         }
       },
       "classes_bonus": {
-        "chevalier_sombre": 0,
-        "mage_du_pacte": 2,
-        "stratege_des_ombres": 1
+        "pactbound": 3,
+        "echo_bard": 2,
+        "warlord": 2,
+        "soulwarden": 1
       },
       "requis": {
         "mana_min": 45
       }
     }
   ],
-
   "production_par_tour": {
     "_commentaire": "Production de base par tour, avant bonus de bastion",
     "or": 120,
@@ -323,23 +328,27 @@
     "reputation": 0,
     "renseignements": 0
   },
-
   "evenements_aleatoires": [
     {
       "id": "embuscade_nuit",
       "probabilite": 0.1,
       "condition": "tour > 3",
       "titre": "Embuscade Nocturne",
-      "texte": "Des créatures de la nuit ont attaqué votre camp. Vous perdez des soldats.",
-      "effets": { "soldats_perte_pct": 10 }
+      "texte": "Des prédateurs altérés attaquent votre camp. Vous perdez des soldats.",
+      "effets": {
+        "soldats_perte_pct": 10
+      }
     },
     {
-      "id": "marchand_demon",
+      "id": "marchand_des_ruines",
       "probabilite": 0.15,
       "condition": "or > 300",
-      "titre": "Marchand Démoniaque",
-      "texte": "Un marchand mystérieux propose des équipements rares en échange d'Or.",
-      "effets": { "ouvre_boutique_speciale": true, "tours_disponibilite": 1 }
+      "titre": "Marchand des Ruines",
+      "texte": "Un récupérateur itinérant propose des équipements rares contre de l’Or.",
+      "effets": {
+        "ouvre_boutique_speciale": true,
+        "tours_disponibilite": 1
+      }
     },
     {
       "id": "brume_mana",
@@ -347,7 +356,9 @@
       "condition": null,
       "titre": "Brume de Mana",
       "texte": "Une concentration de Mana traversant la région recharge vos réserves.",
-      "effets": { "mana_gain": 40 }
+      "effets": {
+        "mana_gain": 40
+      }
     },
     {
       "id": "desertion",
@@ -355,20 +366,22 @@
       "condition": "soldats > 100 AND reputation < 5",
       "titre": "Désertion",
       "texte": "La faible réputation du clan pousse certains soldats à fuir.",
-      "effets": { "soldats_perte_pct": 15, "reputation_perte": 2 }
+      "effets": {
+        "soldats_perte_pct": 15,
+        "reputation_perte": 2
+      }
     }
   ],
-
   "conditions_victoire": {
-    "principale": "Conquérir tous les bastions de la Maison 9 (Famille Γ)",
+    "principale": "Neutraliser la Maison Eryndor et briser l'autorité du Synode sur les Marches Libres",
     "secondaires": [
-      "Conclure des alliances avec au moins 3 familles nobles",
-      "Espionner toutes les familles nobles",
-      "Terminer le jeu avec la barre d'âme d'Ingrid > 50%"
+      "Conclure des alliances avec au moins 3 Couronnes",
+      "Espionner les Neuf Couronnes",
+      "Terminer la campagne avec une barre d'âme supérieure à 50%"
     ],
     "defaite": [
       "Soldats = 0 ET Or < 50 ET aucune alliance active",
-      "Barre d'âme d'Ingrid = 0 (Ingrid absorbée par le dragon Grenier)"
+      "Barre d'âme = 0 (l’Éther de Cendre consume définitivement l’héritier)"
     ]
   }
 }

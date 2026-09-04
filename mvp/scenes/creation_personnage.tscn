@@ -64,7 +64,7 @@ visible = false
 [node name="NomPersonnage" type="LineEdit" parent="PanneauCentre/LigneNoms/ColNomPerso"]
 layout_mode = 2
 custom_minimum_size = Vector2(0, 34)
-placeholder_text = "Ex : Ingrid von Schwarzwald"
+placeholder_text = "Ex : Aren"
 max_length = 40
 name = "NomPersonnage"
 

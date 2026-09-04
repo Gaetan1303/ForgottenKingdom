@@ -65,31 +65,23 @@ func _mettre_a_jour_entete() -> void:
 
 	var maison := ClanManager.get_maison(_maison_id)
 
-	# --- Portrait du héros (portrait réellement choisi, puis fallback de genre) ---
-	var profil := ClanManager.profil_personnage as Dictionary
-	var portrait_payload: Dictionary = profil.get("portrait", {}) as Dictionary
-	var hero_texture: Texture2D = VisualAssetCatalog.texture_from_portrait_payload(portrait_payload)
-	if hero_texture == null:
+	# --- Portrait du héros (jamais remplacé par le symbole du clan) ---
+	var hero_img_path: String = str(ClanManager.get_personnage_portrait_path())
+	if hero_img_path.is_empty():
+		var profil := ClanManager.profil_personnage as Dictionary
+		var appearance := str(profil.get("apparence", "")).to_lower()
 		var genre := str(profil.get("genre", "")).to_lower()
-		if genre.is_empty():
-			var appearance := str(profil.get("apparence", "")).to_lower()
-			if appearance.contains("femme"):
-				genre = "femme"
-			elif appearance.contains("homme"):
-				genre = "homme"
-		var hero_img_path: String = VisualAssetCatalog.person_path("player_default")
-		if genre == "femme":
+		if appearance.contains("femme") or genre in ["femme", "female"]:
 			hero_img_path = VisualAssetCatalog.person_path("player_female")
-		elif genre == "homme":
+		elif appearance.contains("homme") or genre in ["homme", "male"]:
 			hero_img_path = VisualAssetCatalog.person_path("player_male")
-		hero_texture = ResourcePathResolver.load_texture(hero_img_path, "res://assets/images")
 	var joueur_icon := $PanneauCentre/PanneauStats/ContenuStats/ColJoueur/IconeClanJoueur as TextureRect
-	joueur_icon.texture = hero_texture
+	joueur_icon.texture = ResourcePathResolver.load_texture(hero_img_path, "res://assets/images") if not hero_img_path.is_empty() else null
 	VisualAssetCatalog.apply_fit(joueur_icon, "portrait")
 	joueur_icon.custom_minimum_size = CLAN_ICON_SIZE
 
 	# --- Image de la cible (dépend de l'action) ---
-	var icone_cible_path = "res://assets/images/clan/nine_nobles.png"
+	var icone_cible_path = "res://assets/icon/jeu.png"
 	if _action_id in ["attaquer", "espionner"]:
 		if maison.has("icone"):
 			icone_cible_path = maison["icone"]
@@ -99,7 +91,7 @@ func _mettre_a_jour_entete() -> void:
 			if ResourceLoader.exists(tentative):
 				icone_cible_path = tentative
 	if not ResourceLoader.exists(icone_cible_path):
-		icone_cible_path = "res://assets/images/clan/nine_nobles.png"
+		icone_cible_path = "res://assets/icon/jeu.png"
 	var cible_icon = $PanneauCentre/PanneauStats/ContenuStats/ColResistance/IconeClanCible
 	cible_icon.texture = load(icone_cible_path)
 	cible_icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
