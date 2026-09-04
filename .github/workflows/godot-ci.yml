@@ -29,5 +29,5 @@ jobs:
       - name: Run runtime validation and tests
         shell: bash
         run: |
-          chmod +x scripts/ci_test.sh
+          chmod +x scripts/*.sh
           ./scripts/ci_test.sh
