@@ -1,0 +1,41 @@
+name: Godot CI
+
+on:
+  push:
+    branches:
+      - dev
+  pull_request:
+    branches:
+      - dev
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    name: Validate Godot project
+    runs-on: ubuntu-latest
+    container:
+      image: barichello/godot-ci:4.4
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Show Godot version
+        run: godot --version
+
+      - name: Import project resources
+        run: |
+          godot --headless --editor --path . --quit --verbose
+
+      - name: Validate project startup
+        run: |
+          godot --headless --path . --quit --verbose
+
+      - name: Run project tests
+        shell: bash
+        run: |
+          chmod +x scripts/ci_test.sh
+          ./scripts/ci_test.sh
