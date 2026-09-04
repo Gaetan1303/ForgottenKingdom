@@ -19,7 +19,7 @@ func _run() -> void:
             "stats_brutes": {"force": 12, "magie": 14, "espionnage": 8, "artisanat": 8, "diplomatie": 8, "commandement": 8}
         }
     }
-    clan_mgr.nouvelle_partie("E2E", "E2EClan", "mage_du_pacte", {}, profil)
+    clan_mgr.nouvelle_partie("E2E", "E2EClan", "hellcaster", {}, profil)
     print("Called nouvelle_partie; now instantiating clan_hub scene to check UI flow")
     var hub_path := "res://scenes/clan_hub.tscn"
     if not ResourceLoader.exists(hub_path):

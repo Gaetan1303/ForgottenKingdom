@@ -15,6 +15,7 @@ const SCENES := {
 	"resolution_action":    "res://scenes/resolution_action.tscn",
 	"dungeon_view":         "res://scenes/dungeon_view.tscn",
 	"pnj_manager":          "res://scenes/pnj_manager.tscn",
+	"library_view":         "res://scenes/library_view.tscn",
 }
 
 # État global de la session
@@ -41,7 +42,7 @@ func _try_run_smoke_tests() -> void:
 
 	var args_user := OS.get_cmdline_user_args()
 	var args_all := OS.get_cmdline_args()
-	var run_smoke := args_user.has("--smoke-game-loop") or args_all.has("--smoke-game-loop") or OS.get_environment("INGRID_SMOKE") == "1"
+	var run_smoke := args_user.has("--smoke-game-loop") or args_all.has("--smoke-game-loop") or OS.get_environment("FK_SMOKE") == "1"
 	if not run_smoke:
 		return
 
@@ -60,7 +61,7 @@ func _try_run_smoke_tests() -> void:
 	var profil := {
 		"genre": "Femme",
 		"apparence": "Noble exile",
-		"pouvoir_magique": "Invocation Demoniaque",
+		"pouvoir_magique": "Invocation de Faille",
 		"pouvoir_magique_id": "demon_invocation",
 		"archetype_pathfinder": "Ensorceleur abyssal (inspiration Magicien)",
 		"don": "Tacticien de Champ de Bataille",
@@ -79,7 +80,7 @@ func _try_run_smoke_tests() -> void:
 		},
 	}
 
-	ClanManager.nouvelle_partie("Ingrid", "Clan Test", "mage_du_pacte", stats_bonus, profil)
+	ClanManager.nouvelle_partie("Aren", "Clan Test", "hellcaster", stats_bonus, profil)
 	if ClanManager.nom_clan != "Clan Test":
 		failures.append("nom_clan non initialise")
 
@@ -171,6 +172,10 @@ func open_slot_select() -> void:
 	go_to("slot_select")
 
 
+func open_library() -> void:
+	go_to("library_view")
+
+
 ## ── Gameplay : gestion du clan ──────────────────────────────────────
 
 ## Lance une nouvelle partie → écran de création de personnage.
@@ -215,7 +220,7 @@ func _deferred_connect_stop(stop_inst: Node) -> void:
 	var btn := stop_inst.get_node_or_null("BtnStopMusicGlobal")
 	if btn:
 		# try load icon at runtime for raster formats; skip SVG (import needed in editor)
-		var icon_path := "res://assets/ui/stop_icon.png"
+		var icon_path := "res://assets/ui/stop_icon.svg"
 		var ext := icon_path.get_extension().to_lower()
 		if ext != "svg" and FileAccess.file_exists(icon_path):
 			var tex := ResourceLoader.load(icon_path)

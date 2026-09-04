@@ -2,85 +2,127 @@
   "second_souffle": {
     "name": "Second souffle",
     "description": "Récupère une partie de vie après un effort intense, utile pour tenir plus longtemps.",
-    "effects": { "pv_restore": 6, "endurance": 1 },
+    "effects": {
+      "pv_restore": 6,
+      "endurance": 1
+    },
     "type": "passive"
   },
   "recuperation_arcanique": {
     "name": "Récupération arcanique",
     "description": "Recharge graduellement l'énergie magique entre les sorts pour rester opérationnel plus longtemps.",
-    "effects": { "mana_regen": 4, "magie": 1 },
+    "effects": {
+      "mana_regen": 4,
+      "magie": 1
+    },
     "type": "passive"
   },
   "attaque_sournoise": {
     "name": "Attaque sournoise",
     "description": "Augmente les dégâts lorsqu'une attaque est portée contre une cible surprise ou mal positionnée.",
-    "effects": { "degats": 2, "espionnage": 1 },
+    "effects": {
+      "degats": 2,
+      "espionnage": 1
+    },
     "type": "active"
   },
   "canalisation_divine": {
     "name": "Canalisation divine",
     "description": "Canalise la foi pour soigner ou protéger les alliés en puisant dans une puissance supérieure.",
-    "effects": { "soins": 5, "magie": 1 },
+    "effects": {
+      "soins": 5,
+      "magie": 1
+    },
     "type": "active"
   },
   "ennemi_favori": {
     "name": "Ennemi favori",
     "description": "Identifie un adversaire prioritaire et améliore la précision contre cette cible.",
-    "effects": { "precision": 2, "commandement": 1 },
+    "effects": {
+      "precision": 2,
+      "commandement": 1
+    },
     "type": "passive"
   },
   "imposition_des_mains": {
     "name": "Imposition des mains",
     "description": "Soigne un allié par un toucher sacré, restaurant des points de vie indispensables.",
-    "effects": { "soins": 8, "commandement": 1 },
+    "effects": {
+      "soins": 8,
+      "commandement": 1
+    },
     "type": "active"
   },
   "explosion_occulte": {
     "name": "Explosion occulte",
     "description": "Projette une onde de force magique qui blesse les ennemis à proximité.",
-    "effects": { "degats_magiques": 6, "magie": 1 },
+    "effects": {
+      "degats_magiques": 6,
+      "magie": 1
+    },
     "type": "active"
   },
   "inspiration": {
     "name": "Inspiration",
     "description": "Donne un élan moral aux alliés et améliore temporairement leurs chances de réussite.",
-    "effects": { "moral": 3, "diplomatie": 1 },
+    "effects": {
+      "moral": 3,
+      "diplomatie": 1
+    },
     "type": "active"
   },
   "rage": {
     "name": "Rage",
     "description": "Déchaîne une furie combattante qui augmente la puissance d'attaque au prix du contrôle.",
-    "effects": { "force": 2, "resistance": 1 },
+    "effects": {
+      "force": 2,
+      "resistance": 1
+    },
     "type": "active"
   },
   "enchaînement_de_frappes": {
     "name": "Enchaînement de frappes",
     "description": "Permet d'enchaîner plusieurs attaques rapides contre un même ennemi.",
-    "effects": { "attaque_rapide": 1, "precision": 1 },
+    "effects": {
+      "attaque_rapide": 1,
+      "precision": 1
+    },
     "type": "active"
   },
   "metamorphose": {
     "name": "Métamorphose",
     "description": "Change temporairement la forme du personnage pour gagner des capacités physiques ou magiques.",
-    "effects": { "adaptabilite": 2, "magie": 1 },
+    "effects": {
+      "adaptabilite": 2,
+      "magie": 1
+    },
     "type": "active"
   },
   "impulsion_metamagique": {
     "name": "Impulsion métamagique",
     "description": "Renforce un sort en modifiant sa portée, son intensité ou sa vitesse d'exécution.",
-    "effects": { "magie": 2, "vitesse": 1 },
+    "effects": {
+      "magie": 2,
+      "vitesse": 1
+    },
     "type": "active"
   },
   "infuser_un_objet": {
     "name": "Infuser un objet",
     "description": "Imprègne un objet d'énergie magique pour lui conférer un effet utile en combat ou en exploration.",
-    "effects": { "artisanat": 1, "magie": 1 },
+    "effects": {
+      "artisanat": 1,
+      "magie": 1
+    },
     "type": "active"
   },
   "ordre_tactique": {
     "name": "Ordre tactique",
     "description": "Donne un commandement précis qui améliore l'efficacité des alliés sur le champ de bataille.",
-    "effects": { "commandement": 2, "coordination": 1 },
+    "effects": {
+      "commandement": 2,
+      "coordination": 1
+    },
     "type": "active"
   }
 }

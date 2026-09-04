@@ -28,17 +28,17 @@ func _get_node_fallback(primary_path: String, fallback_path: String):
 	return get_node_or_null(fallback_path)
 
 func _ready() -> void:
-	_lbl_name = _get_node_fallback("HBox/Left/LabelName", "Left/LabelName")
-	_lbl_role = _get_node_fallback("HBox/Left/LabelRole", "Left/LabelRole")
-	_portrait = _get_node_fallback("HBox/Left/Portrait", "Left/Portrait")
-	_btn_support = _get_node_fallback("HBox/Right/BtnSupport", "Right/BtnSupport")
-	_btn_exped = _get_node_fallback("HBox/Right/BtnExpedition", "Right/BtnExpedition")
-	_btn_details = _get_node_fallback("HBox/Right/BtnDetails", "Right/BtnDetails")
-	_details_panel = get_node_or_null("DetailsPanel")
-	_lbl_equip = get_node_or_null("DetailsPanel/DetailRow/DetailStats/StatList/LabelEquip")
-	_lbl_behavior = get_node_or_null("DetailsPanel/DetailRow/DetailStats/StatList/LabelBehavior")
-	_detail_portrait = get_node_or_null("DetailsPanel/DetailRow/DetailPortrait")
-	_detail_stats = get_node_or_null("DetailsPanel/DetailRow/DetailStats/StatList")
+	_lbl_name = _get_node_fallback("Content/HBox/Left/LabelName", "HBox/Left/LabelName")
+	_lbl_role = _get_node_fallback("Content/HBox/Left/LabelRole", "HBox/Left/LabelRole")
+	_portrait = _get_node_fallback("Content/HBox/Left/Portrait", "HBox/Left/Portrait")
+	_btn_support = _get_node_fallback("Content/HBox/Right/BtnSupport", "HBox/Right/BtnSupport")
+	_btn_exped = _get_node_fallback("Content/HBox/Right/BtnExpedition", "HBox/Right/BtnExpedition")
+	_btn_details = _get_node_fallback("Content/HBox/Right/BtnDetails", "HBox/Right/BtnDetails")
+	_details_panel = get_node_or_null("Content/DetailsPanel")
+	_lbl_equip = get_node_or_null("Content/DetailsPanel/DetailRow/DetailStats/StatList/LabelEquip")
+	_lbl_behavior = get_node_or_null("Content/DetailsPanel/DetailRow/DetailStats/StatList/LabelBehavior")
+	_detail_portrait = get_node_or_null("Content/DetailsPanel/DetailRow/DetailPortrait")
+	_detail_stats = get_node_or_null("Content/DetailsPanel/DetailRow/DetailStats/StatList")
 
 	if _btn_support and not _btn_support.is_connected("pressed", Callable(self, "_on_support_pressed")):
 		_btn_support.connect("pressed", Callable(self, "_on_support_pressed"))
@@ -175,9 +175,9 @@ func _apply_profile_to_ui() -> void:
 		var gender_val := str(_profile.get("sexe", _profile.get("gender", _profile.get("genre", "")))).to_lower()
 		var fallback_path := ""
 		if gender_val.contains("femme") or gender_val.contains("female"):
-			fallback_path = VisualAssetCatalog.person_path("pnj_female")
+			fallback_path = VisualAssetCatalog.person_path("generic_female")
 		elif gender_val.contains("homme") or gender_val.contains("male"):
-			fallback_path = VisualAssetCatalog.person_path("pnj_male")
+			fallback_path = VisualAssetCatalog.person_path("generic_male")
 		if not fallback_path.is_empty() and _portrait:
 			var tex2 := ResourcePathResolver.load_texture(fallback_path, "res://assets/images/PNJ")
 			if tex2 != null:

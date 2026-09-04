@@ -54,45 +54,54 @@ text = "ORDRES DU JOUR"
 [node name="PlanList" type="VBoxContainer" parent="Body/PlanningSummary/PlanVBox"]
 layout_mode = 2
 
-[node name="Footer" type="HBoxContainer" parent="."]
+[node name="Footer" type="VBoxContainer" parent="."]
 layout_mode = 2
-custom_minimum_size = Vector2(0, 56)
+custom_minimum_size = Vector2(0, 96)
+theme_override_constants/separation = 6
 
 [node name="Status" type="Label" parent="Footer"]
 layout_mode = 2
 text = "Prêt à donner les ordres"
+autowrap_mode = 3
 
-[node name="Spacer" type="Control" parent="Footer"]
+[node name="FooterControls" type="HFlowContainer" parent="Footer"]
 layout_mode = 2
 size_flags_horizontal = 3
+theme_override_constants/h_separation = 8
+theme_override_constants/v_separation = 6
 
-[node name="TaskSelector" type="OptionButton" parent="Footer"]
+[node name="TaskSelector" type="OptionButton" parent="Footer/FooterControls"]
+custom_minimum_size = Vector2(220, 40)
 layout_mode = 2
 
-[node name="SoldierCount" type="SpinBox" parent="Footer"]
+[node name="SoldierCount" type="SpinBox" parent="Footer/FooterControls"]
+custom_minimum_size = Vector2(110, 40)
 layout_mode = 2
 min_value = 0.0
 max_value = 999.0
 step = 1.0
 value = 0.0
 
-[node name="ApplyNow" type="CheckBox" parent="Footer"]
+[node name="ApplyNow" type="CheckBox" parent="Footer/FooterControls"]
 layout_mode = 2
 text = "Exécuter immédiatement"
 button_pressed = false
 
-[node name="BtnsRight" type="HBoxContainer" parent="Footer"]
+[node name="BtnsRight" type="HFlowContainer" parent="Footer/FooterControls"]
 layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/h_separation = 8
+theme_override_constants/v_separation = 6
 
-[node name="BtnAssignSoldiers" type="Button" parent="Footer/BtnsRight"]
+[node name="BtnAssignSoldiers" type="Button" parent="Footer/FooterControls/BtnsRight"]
 layout_mode = 2
 text = "Affecter les soldats"
 
-[node name="BtnResolve" type="Button" parent="Footer/BtnsRight"]
+[node name="BtnResolve" type="Button" parent="Footer/FooterControls/BtnsRight"]
 layout_mode = 2
 text = "Résoudre les tâches"
 
-[node name="BtnBack" type="Button" parent="Footer/BtnsRight"]
+[node name="BtnBack" type="Button" parent="Footer/FooterControls/BtnsRight"]
 layout_mode = 2
 text = "◀  Retour au clan"
 

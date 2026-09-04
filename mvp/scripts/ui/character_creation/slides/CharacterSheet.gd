@@ -2,7 +2,6 @@
 extends CreationSlideBase
 
 const CharacterCreationFlowType = preload("res://scripts/ui/character_creation/creation_flow_controller.gd")
-const VisualAssetCatalog = preload("res://scripts/ui/visual_asset_catalog.gd")
 const MALE_PORTRAIT = preload("res://assets/images/hero/homme/male.png")
 const FEMALE_PORTRAIT = preload("res://assets/images/hero/femme/female.png")
 
@@ -105,16 +104,11 @@ func _apply_sheet_data() -> void:
 func _refresh_portrait() -> void:
 	if _portrait_texture == null:
 		return
-	var portrait_payload: Dictionary = _snapshot.get("portrait_payload", {}) as Dictionary
-	var selected_texture: Texture2D = VisualAssetCatalog.texture_from_portrait_payload(portrait_payload)
-	if selected_texture != null:
-		_portrait_texture.texture = selected_texture
+	var appearance = str(_snapshot.get("appearance_id", "")).to_lower()
+	if appearance.find("femme") != -1:
+		_portrait_texture.texture = FEMALE_PORTRAIT
 	else:
-		var appearance: String = str(_snapshot.get("appearance_id", "")).to_lower()
-		if appearance.find("femme") != -1:
-			_portrait_texture.texture = FEMALE_PORTRAIT
-		else:
-			_portrait_texture.texture = MALE_PORTRAIT
+		_portrait_texture.texture = MALE_PORTRAIT
 
 	if _class_tag_label != null:
 		var cid = str(_snapshot.get("class_id", ""))

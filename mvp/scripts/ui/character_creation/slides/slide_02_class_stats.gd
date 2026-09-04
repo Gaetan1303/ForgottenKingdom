@@ -395,3 +395,4 @@ func _make_progression_cell_style(heading: bool) -> StyleBoxFlat:
 
 func _make_card_style(selected: bool) -> StyleBoxFlat:
 	return FallenUI.card_style(selected)
+

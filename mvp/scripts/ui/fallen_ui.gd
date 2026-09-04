@@ -1,4 +1,4 @@
-## Cohesive visual language for Royaume déchu / Chroniques des Neuf Nobles.
+## Cohesive visual language for Royaume déchu / Royaume Déchu — Les Cendres de Veyr.
 ## Pure presentation helper: no gameplay state, navigation or signals live here.
 extends RefCounted
 

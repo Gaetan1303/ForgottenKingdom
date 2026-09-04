@@ -1,20 +1,20 @@
 {
-  "_commentaire": "Associations visuelles explicites relues scene par scene depuis intro_vn.json. Une image n'est affichee que si elle represente le personnage, le lieu, l'objet ou le groupe mentionne. '@none' est volontaire quand aucun asset exact n'existe.",
+  "_commentaire": "Associations visuelles de Veyr. Les slots sans asset original exact restent volontairement vides jusqu’aux générations ComfyUI.",
   "intro_vn": {
     "prologue_01": {
-      "visual": "@nobles_group",
-      "mode": "group",
-      "reason": "Les Neuf Familles Nobles sont le sujet central du cadre politique."
+      "visual": "@none",
+      "mode": "none",
+      "reason": "Les Neuf Couronnes sont le sujet central du cadre politique."
     },
     "prologue_02": {
-      "visual": "@map",
-      "mode": "map",
-      "reason": "Le texte situe geographiquement les Terres Libres a l'est des domaines nobles."
+      "visual": "@none",
+      "mode": "none",
+      "reason": "Le texte situe geographiquement les Marches Libres a l'est des domaines nobles."
     },
     "famille_01": {
-      "visual": "@child",
+      "visual": "@heir_child",
       "mode": "portrait",
-      "reason": "Le souvenir s'ouvre sur le protagoniste enfant."
+      "reason": "Le protagoniste a dix ans : portrait de l’héritier enfant correspondant au genre choisi."
     },
     "famille_02": {
       "visual": "@mother",
@@ -22,27 +22,32 @@
       "reason": "Dialogue et action de la mere."
     },
     "famille_03": {
-      "visual": "@father_alone",
+      "visual": "@father",
       "mode": "portrait",
       "reason": "Dialogue et action du pere."
     },
     "famille_04": {
-      "visual": "@child",
-      "mode": "portrait",
-      "reason": "Souvenir de la vie quotidienne vu par le protagoniste enfant."
+      "visual": "@clan",
+      "mode": "symbol",
+      "reason": "Souvenir de la vie quotidienne du clan dans son ensemble."
     },
     "lecon_01": {
-      "visual": "@father_alone",
-      "mode": "portrait",
-      "reason": "Le pere accompagne le protagoniste et lui donne la lecon."
+      "visual": "@none",
+      "mode": "none",
+      "reason": "Le pere montre explicitement une carte du Royaume Demonique."
     },
     "lecon_02": {
-      "visual": "@father_alone",
-      "mode": "portrait",
-      "reason": "Le pere enseigne les ressources au protagoniste."
+      "visual": "@resources",
+      "mode": "resources",
+      "resources": [
+        "or",
+        "soldats",
+        "mana"
+      ],
+      "reason": "Le texte nomme explicitement l'or, les soldats et le mana."
     },
     "lecon_03": {
-      "visual": "@father_alone",
+      "visual": "@father",
       "mode": "portrait",
       "reason": "Le pere enseigne les choix d'action."
     },
@@ -57,14 +62,14 @@
       "reason": "La mere enseigne la valeur des alliances et du recrutement."
     },
     "lecon_06": {
-      "visual": "@child",
-      "mode": "portrait",
-      "reason": "Souvenir familial centre sur ce que le protagoniste enfant retient."
+      "visual": "@clan",
+      "mode": "symbol",
+      "reason": "Souvenir familial et identite du clan; aucun portrait double exact n'existe."
     },
     "kael_01": {
-      "visual": "@mother",
+      "visual": "@kael",
       "mode": "portrait",
-      "reason": "La mere prend la parole pour introduire Kael."
+      "reason": "La mere introduit Kael; Kael est le sujet du propos."
     },
     "kael_02": {
       "visual": "@kael",
@@ -82,14 +87,14 @@
       "reason": "Kael est accueilli a la table et devient membre du clan."
     },
     "conclave_01": {
-      "visual": "@nobles_symbol",
-      "mode": "symbol",
-      "reason": "Verdict collectif du Grand Conclave des Neuf Familles."
+      "visual": "@none",
+      "mode": "none",
+      "reason": "Verdict collectif du Grand Synode des Neuf Couronnes."
     },
     "conclave_02": {
-      "visual": "@father_alone",
-      "mode": "portrait",
-      "reason": "Le pere refuse l'ultimatum du Conclave."
+      "visual": "@none",
+      "mode": "none",
+      "reason": "Le sceau du Synode et l'emissaire sont au centre de la scene."
     },
     "conclave_03": {
       "visual": "@mother",
@@ -102,12 +107,12 @@
       "reason": "Alerte dans le bastion; aucun asset exact de cette situation."
     },
     "chute_02": {
-      "visual": "@hell_knight",
-      "mode": "group",
-      "reason": "Le texte montre les bannieres et un Chevalier Infernal en tete de l'assaut."
+      "visual": "@none",
+      "mode": "none",
+      "reason": "Le texte montre les bannieres et un Lance de Couronne en tete de l'assaut."
     },
     "chute_03": {
-      "visual": "@father_alone",
+      "visual": "@father",
       "mode": "portrait",
       "reason": "Le pere blesse donne ses instructions."
     },
@@ -122,7 +127,7 @@
       "reason": "Dernier adieu de la mere."
     },
     "chute_06": {
-      "visual": "@father_alone",
+      "visual": "@father",
       "mode": "portrait",
       "reason": "Dernieres paroles du pere."
     },
@@ -132,14 +137,14 @@
       "reason": "Les deux parents sont ensemble; aucun asset double exact n'existe."
     },
     "chute_08": {
-      "visual": "@clan",
-      "mode": "symbol",
-      "reason": "Le bastion et l'identite du clan sont detruits; le sceau represente ici le clan, pas un personnage."
+      "visual": "@heir_child",
+      "mode": "portrait",
+      "reason": "L’héritier enfant observe la destruction du bastion : le protagoniste est le sujet émotionnel de la scène."
     },
     "exil_01": {
-      "visual": "@none",
-      "mode": "none",
-      "reason": "Faim, froid et fuite; aucun decor exact disponible."
+      "visual": "@heir_child",
+      "mode": "portrait",
+      "reason": "L’héritier est encore enfant pendant la fuite : portrait enfant cohérent avec cette période."
     },
     "exil_02": {
       "visual": "@kael",
@@ -157,9 +162,9 @@
       "reason": "Le maitre exile n'a aucun portrait associe dans les donnees/assets."
     },
     "exil_05": {
-      "visual": "@nobles_symbol",
-      "mode": "symbol",
-      "reason": "L'enseignement porte explicitement sur la patience des Neuf Familles."
+      "visual": "@none",
+      "mode": "none",
+      "reason": "Le maître pose explicitement une carte sur la table et demande où commencer."
     },
     "exil_06": {
       "visual": "@clan",
@@ -167,9 +172,9 @@
       "reason": "Formation des premiers allies et renaissance du clan."
     },
     "exil_07": {
-      "visual": "@nobles_symbol",
-      "mode": "symbol",
-      "reason": "Caelith appartient au Dragon Blanc mais aucun portrait exact de Caelith n'existe."
+      "visual": "@none",
+      "mode": "none",
+      "reason": "Caëlith est le sujet, mais aucun portrait explicitement identifié de Caëlith n'existe dans les assets du MVP."
     },
     "exil_08": {
       "visual": "@kael",

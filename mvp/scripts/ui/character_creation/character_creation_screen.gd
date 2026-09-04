@@ -19,7 +19,7 @@ const STEP_SUBTITLES: Array[String] = [
 	"Choisissez votre voie et répartissez les forces qui définiront votre règne.",
 	"Affinez votre style de jeu par les dons et aptitudes qui vous distinguent.",
 	"Préparez ce que vous emporterez pour survivre à la reconquête.",
-	"Relisez votre destinée avant de l’inscrire dans les Chroniques.",
+	"Relisez votre destinée avant de l’inscrire dans les Bibliothèque.",
 ]
 
 @export var slide_scene_paths: Array[String] = [
@@ -144,15 +144,6 @@ func _clear_error_label() -> void:
 		error_label.text = ""
 
 
-func _genre_from_appearance(appearance_id: String) -> String:
-	var normalized: String = appearance_id.strip_edges().to_lower()
-	if normalized.contains("femme") or normalized.contains("female"):
-		return "Femme"
-	if normalized.contains("homme") or normalized.contains("male"):
-		return "Homme"
-	return ""
-
-
 func _on_creation_completed(final_payload: Dictionary) -> void:
 	var error_label := get_node_or_null("Main/ErrorLabel") as Label
 	if error_label:
@@ -198,26 +189,25 @@ func _on_creation_completed(final_payload: Dictionary) -> void:
 
 	var feat_labels: Array = []
 	for feat_id in feats:
-		var feat := GameDataLoader.get_feat(str(feat_id))
+		var feat: Dictionary = GameDataLoader.get_feat(str(feat_id))
 		var feat_name = str(feat["name"]) if feat.has("name") else str(feat_id)
 		feat_labels.append(feat_name)
 
 	var ability_labels: Array = []
 	for ability_id in abilities:
-		var ability := GameDataLoader.get_ability_by_id(str(ability_id))
+		var ability: Dictionary = GameDataLoader.get_ability_by_id(str(ability_id))
 		var ability_name = str(ability["name"]) if ability.has("name") else str(ability_id)
 		ability_labels.append(ability_name)
 
 	var full_name := "%s de %s" % [nom_perso, nom_clan]
 	var appearance_value := str(character["appearance_id"]) if character.has("appearance_id") else ""
-	var genre_value: String = _genre_from_appearance(appearance_value)
 	var portrait_value: Dictionary = {}
 	if character.has("portrait_payload"):
 		portrait_value = (character["portrait_payload"] as Dictionary).duplicate(true)
 	var pouvoir_value := str(character["racial_power_id"]) if character.has("racial_power_id") else ""
 	var profil := {
 		"nom_complet": full_name,
-		"genre": genre_value,
+		"genre": "",
 		"apparence": appearance_value,
 		"portrait": portrait_value,
 		"pouvoir_magique": pouvoir_value,

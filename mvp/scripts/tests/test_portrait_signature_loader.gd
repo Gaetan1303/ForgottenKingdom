@@ -1,6 +1,6 @@
 extends SceneTree
 
-const TEST_IMAGE_PATH := "/home/billy/Work/Ingrid/docs/lore/images_taimanin/25_Ingrid.png"
+const TEST_IMAGE_PATH := "res://assets/images/hero/defaut.png"
 
 func _init() -> void:
 	call_deferred("_run")

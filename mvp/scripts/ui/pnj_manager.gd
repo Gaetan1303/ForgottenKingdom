@@ -179,9 +179,9 @@ func _ensure_ui_nodes() -> void:
 
     var footer := get_node_or_null("Footer")
     if not footer:
-        footer = HBoxContainer.new()
+        footer = VBoxContainer.new()
         footer.name = "Footer"
-        footer.custom_minimum_size = Vector2(0, 56)
+        footer.custom_minimum_size = Vector2(0, 96)
         add_child(footer)
 
     _status = footer.get_node_or_null("Status")
@@ -191,20 +191,20 @@ func _ensure_ui_nodes() -> void:
         _status.text = "Pret"
         footer.add_child(_status)
 
-    var spacer := footer.get_node_or_null("Spacer")
-    if not spacer:
-        spacer = Control.new()
-        spacer.name = "Spacer"
-        spacer.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-        footer.add_child(spacer)
+    var controls := footer.get_node_or_null("FooterControls")
+    if not controls:
+        controls = HFlowContainer.new()
+        controls.name = "FooterControls"
+        controls.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+        footer.add_child(controls)
 
-    _task_selector = footer.get_node_or_null("TaskSelector")
+    _task_selector = controls.get_node_or_null("TaskSelector")
     if not _task_selector:
         _task_selector = OptionButton.new()
         _task_selector.name = "TaskSelector"
-        footer.add_child(_task_selector)
+        controls.add_child(_task_selector)
 
-    _soldier_count = footer.get_node_or_null("SoldierCount")
+    _soldier_count = controls.get_node_or_null("SoldierCount")
     if not _soldier_count:
         _soldier_count = SpinBox.new()
         _soldier_count.name = "SoldierCount"
@@ -212,22 +212,23 @@ func _ensure_ui_nodes() -> void:
         _soldier_count.max_value = 999
         _soldier_count.step = 1
         _soldier_count.value = 0
-        footer.add_child(_soldier_count)
+        controls.add_child(_soldier_count)
 
-    _apply_now = footer.get_node_or_null("ApplyNow")
+    _apply_now = controls.get_node_or_null("ApplyNow")
     if not _apply_now:
         _apply_now = CheckBox.new()
         _apply_now.name = "ApplyNow"
         _apply_now.text = "Appliquer maintenant"
-        footer.add_child(_apply_now)
+        controls.add_child(_apply_now)
 
-    var right_buttons = footer.get_node_or_null("BtnsRight")
+    var right_buttons := controls.get_node_or_null("BtnsRight")
     if not right_buttons:
-        right_buttons = HBoxContainer.new()
+        right_buttons = HFlowContainer.new()
         right_buttons.name = "BtnsRight"
-        footer.add_child(right_buttons)
+        right_buttons.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+        controls.add_child(right_buttons)
 
-    # Place the 'PNJ recruté' button into the right buttons area at the bottom
+    # Place the 'PNJ recruté' button into the responsive action area.
     if _btn_show_recruited and not _btn_show_recruited.get_parent():
         right_buttons.add_child(_btn_show_recruited)
 
@@ -433,9 +434,9 @@ func _make_pnj_row(pnj: Dictionary) -> Control:
         var gender_val := str(pnj.get("sexe", pnj.get("gender", pnj.get("genre", "")))).to_lower()
         var fallback_path := ""
         if gender_val.contains("femme") or gender_val.contains("female"):
-            fallback_path = VisualAssetCatalog.person_path("pnj_female")
+            fallback_path = VisualAssetCatalog.person_path("generic_female")
         elif gender_val.contains("homme") or gender_val.contains("male"):
-            fallback_path = VisualAssetCatalog.person_path("pnj_male")
+            fallback_path = VisualAssetCatalog.person_path("generic_male")
         if not fallback_path.is_empty():
             selected_tex = ResourcePathResolver.load_texture(fallback_path, "res://assets/images/PNJ")
 
@@ -749,3 +750,4 @@ func _handle_result(result: Dictionary, success_message: String) -> void:
         ClanManager.sauvegarder()
     else:
         _set_status("Erreur : %s" % str(result.get("error", "inconnue")))
+

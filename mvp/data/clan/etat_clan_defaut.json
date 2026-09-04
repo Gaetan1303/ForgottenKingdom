@@ -1,19 +1,21 @@
 {
-  "_commentaire": "État initial du clan du joueur — chargé au début d'une nouvelle partie",
+  "_commentaire": "État initial du clan du joueur — Veyr, monde des Neuf Couronnes",
   "clan": {
     "nom": "",
     "personnage": {
       "nom": "",
       "classe": "",
       "genre": "Homme",
-      "apparence": "Vétéran balafré",
-      "pouvoir_magique": "Pyromancie",
-      "archetype_pathfinder": "Lame jurée (inspiration Guerrier)",
+      "apparence": "Héritier des Marches",
+      "pouvoir_magique": "Résonance de Cendre",
+      "archetype_pathfinder": "Lame jurée",
       "don": "Volonté de fer",
       "competence": "Maîtrise martiale",
-      "equipement_depart": "Arme lourde + bouclier",
+      "equipement_depart": "Arme de clan + protection légère",
       "magie_pactes": true,
-      "competences_depart": ["Magie des Pactes"],
+      "competences_depart": [
+        "Art des Pactes"
+      ],
       "stats": {
         "force": 5,
         "magie": 5,
@@ -72,7 +74,9 @@
     "fiche_hero": {},
     "fiches_domaine": {},
     "territoire": {
-      "bastions_tenus": ["palais_tenebres_yomihara"],
+      "bastions_tenus": [
+        "refuge_des_cendres"
+      ],
       "bonus_production": {}
     },
     "tour_actuel": 1,
@@ -82,133 +86,255 @@
   "maisons_nobles": [
     {
       "id": 1,
-      "nom": "Famille du Sang",
-      "titre": "Seigneure du Sang",
-      "chef": "Cara Cromwell",
-      "statut": "inconnue",
-      "relation": "neutre",
+      "slug": "vhalcor",
+      "nom": "Maison Vhalcor",
+      "titre": "Couronne d’Ivoire",
+      "chef": "Seydran Vhalcor",
+      "statut": "hostile",
+      "relation": "hostile",
+      "revelee": true,
+      "espionnee": false,
+      "archetype": "militaire",
+      "doctrine": "Ordre, expansion, obéissance",
+      "combativite": 92,
       "bastions": [
-        { "id": "manoir_cromwell",   "nom": "Manoir Cromwell",                "defense": 5, "conquis": false },
-        { "id": "forteresse_vampires","nom": "Forteresse Côtière des Vampires","defense": 7, "conquis": false }
-      ],
-      "revelee": false,
-      "espionnee": false
+        {
+          "id": "citadelle_ivoire",
+          "nom": "Citadelle d’Ivoire",
+          "defense": 16,
+          "conquis": false
+        },
+        {
+          "id": "marche_de_verre",
+          "nom": "Marche de Verre",
+          "defense": 12,
+          "conquis": false
+        }
+      ]
     },
     {
       "id": 2,
-      "nom": "Famille du Cadavre",
-      "titre": "Seigneur Cadavre (VACANT)",
-      "chef": "Vacant",
-      "statut": "desstabilisee",
+      "slug": "orsane",
+      "nom": "Maison Orsane",
+      "titre": "Couronne Dorée",
+      "chef": "Maëlys Orsane",
+      "statut": "active",
       "relation": "neutre",
-      "bastions": [
-        { "id": "forteresse_wraiths","nom": "Forteresse des Wraiths",   "defense": 9,  "conquis": false },
-        { "id": "tour_ames_liees",   "nom": "Tour des Âmes Liées",      "defense": 11, "conquis": false }
-      ],
       "revelee": false,
-      "espionnee": false
+      "espionnee": false,
+      "archetype": "marchand",
+      "doctrine": "Contrats, dette, influence",
+      "combativite": 46,
+      "bastions": [
+        {
+          "id": "palais_des_comptes",
+          "nom": "Palais des Comptes",
+          "defense": 10,
+          "conquis": false
+        },
+        {
+          "id": "pont_des_dimes",
+          "nom": "Pont des Dîmes",
+          "defense": 8,
+          "conquis": false
+        }
+      ]
     },
     {
       "id": 3,
-      "nom": "Famille Fantôme",
-      "titre": "Seigneure Fantôme",
-      "chef": "Mizuki Shiranui",
-      "statut": "active",
-      "relation": "neutre",
-      "bastions": [
-        { "id": "domaine_illusion",     "nom": "Domaine de l'Illusion",         "defense": 7, "conquis": false },
-        { "id": "palais_plaisirs",      "nom": "Palais des Plaisirs Sombres",   "defense": 9, "conquis": false }
-      ],
+      "slug": "pyrhane",
+      "nom": "Maison Pyrhane",
+      "titre": "Couronne des Braises",
+      "chef": "Rhaz Pyrhane",
+      "statut": "hostile",
+      "relation": "hostile",
       "revelee": false,
-      "espionnee": false
+      "espionnee": false,
+      "archetype": "forge",
+      "doctrine": "Force, forge, siège",
+      "combativite": 86,
+      "bastions": [
+        {
+          "id": "forge_rouge",
+          "nom": "Forge Rouge",
+          "defense": 14,
+          "conquis": false
+        },
+        {
+          "id": "rempart_de_scorie",
+          "nom": "Rempart de Scorie",
+          "defense": 13,
+          "conquis": false
+        }
+      ]
     },
     {
       "id": 4,
-      "nom": "Famille des Sages",
-      "titre": "Seigneure Sage",
-      "chef": "Marjaana",
-      "statut": "hostile",
-      "relation": "hostile",
+      "slug": "nyssara",
+      "nom": "Maison Nyssara",
+      "titre": "Couronne du Voile",
+      "chef": "Ilyne Nyssara",
+      "statut": "active",
+      "relation": "neutre",
+      "revelee": false,
+      "espionnee": false,
+      "archetype": "espionnage",
+      "doctrine": "Secrets, réseaux, faux-semblants",
+      "combativite": 58,
       "bastions": [
-        { "id": "tour_grimoires",       "nom": "Tour des Grimoires",                 "defense": 11, "conquis": false },
-        { "id": "sanctuaire_interdit",  "nom": "Sanctuaire de la Connaissance Interdite","defense": 14,"conquis": false },
-        { "id": "labyrinthe_mental",    "nom": "Labyrinthe Mental de Marjaana",       "defense": 16, "conquis": false }
-      ],
-      "revelee": true,
-      "espionnee": false
+        {
+          "id": "palais_du_voile",
+          "nom": "Palais du Voile",
+          "defense": 11,
+          "conquis": false
+        },
+        {
+          "id": "observatoire_noir",
+          "nom": "Observatoire Noir",
+          "defense": 12,
+          "conquis": false
+        }
+      ]
     },
     {
       "id": 5,
-      "nom": "Famille Assassine",
-      "titre": "Seigneure Assassine",
-      "chef": "Ceres (Vasuki)",
+      "slug": "kharven",
+      "nom": "Maison Kharven",
+      "titre": "Couronne des Lames",
+      "chef": "Darek Kharven",
       "statut": "active",
       "relation": "neutre",
-      "bastions": [
-        { "id": "tour_ombres",          "nom": "Tour des Ombres (King's Rock)", "defense": 13, "conquis": false },
-        { "id": "repaire_assassins",    "nom": "Repaire des Assassins",         "defense": 10, "conquis": false },
-        { "id": "temple_nagas",         "nom": "Temple des Nagas",              "defense": 12, "conquis": false }
-      ],
       "revelee": false,
-      "espionnee": false
+      "espionnee": false,
+      "archetype": "assassinat",
+      "doctrine": "Précision, dette de sang, mobilité",
+      "combativite": 79,
+      "bastions": [
+        {
+          "id": "fort_des_lames",
+          "nom": "Fort des Lames",
+          "defense": 13,
+          "conquis": false
+        },
+        {
+          "id": "cour_des_sans_noms",
+          "nom": "Cour des Sans-Noms",
+          "defense": 11,
+          "conquis": false
+        }
+      ]
     },
     {
       "id": 6,
-      "nom": "Famille Flamme",
-      "titre": "Seigneur Flamme (VACANT)",
-      "chef": "Vacant (Astaroth de facto)",
-      "statut": "desstabilisee",
+      "slug": "osselune",
+      "nom": "Maison Osselune",
+      "titre": "Couronne des Ossuaires",
+      "chef": "Sereva Osselune",
+      "statut": "active",
       "relation": "neutre",
-      "bastions": [
-        { "id": "pyrovalcan",           "nom": "Pyrovalcan — Forteresse Volcanique","defense": 8, "conquis": false },
-        { "id": "champs_lave",          "nom": "Champs de Lave",                    "defense": 6, "conquis": false }
-      ],
       "revelee": false,
-      "espionnee": false
+      "espionnee": false,
+      "archetype": "rituels",
+      "doctrine": "Mémoire, rites, endurance",
+      "combativite": 61,
+      "bastions": [
+        {
+          "id": "ossuaire_couronne",
+          "nom": "Ossuaire de la Couronne",
+          "defense": 15,
+          "conquis": false
+        },
+        {
+          "id": "tour_des_memoires",
+          "nom": "Tour des Mémoires",
+          "defense": 12,
+          "conquis": false
+        }
+      ]
     },
     {
       "id": 7,
-      "nom": "Famille Inconnue Α",
-      "titre": "Inconnue",
-      "chef": "???",
-      "statut": "inconnue",
+      "slug": "vaelor",
+      "nom": "Maison Vaelor",
+      "titre": "Couronne des Archives",
+      "chef": "Thaïs Vaelor",
+      "statut": "active",
       "relation": "neutre",
+      "revelee": true,
+      "espionnee": false,
+      "archetype": "savoir",
+      "doctrine": "Connaissance, contrôle, prédiction",
+      "combativite": 37,
       "bastions": [
-        { "id": "bastion_alpha_1", "nom": "Bastion Inconnu Α-1", "defense": 10, "conquis": false },
-        { "id": "bastion_alpha_2", "nom": "Bastion Inconnu Α-2", "defense": 13, "conquis": false }
-      ],
-      "revelee": false,
-      "espionnee": false
+        {
+          "id": "bibliotheque_fendue",
+          "nom": "Bibliothèque Fendue",
+          "defense": 10,
+          "conquis": false
+        },
+        {
+          "id": "tour_des_astres_morts",
+          "nom": "Tour des Astres Morts",
+          "defense": 14,
+          "conquis": false
+        }
+      ]
     },
     {
       "id": 8,
-      "nom": "Famille Inconnue Β",
-      "titre": "Inconnue",
-      "chef": "???",
-      "statut": "inconnue",
+      "slug": "morcant",
+      "nom": "Maison Morcant",
+      "titre": "Couronne des Forges",
+      "chef": "Hadran Morcant",
+      "statut": "active",
       "relation": "neutre",
-      "bastions": [
-        { "id": "bastion_beta_1", "nom": "Bastion Inconnu Β-1", "defense": 12, "conquis": false },
-        { "id": "bastion_beta_2", "nom": "Bastion Inconnu Β-2", "defense": 15, "conquis": false }
-      ],
       "revelee": false,
-      "espionnee": false
+      "espionnee": false,
+      "archetype": "industrie",
+      "doctrine": "Production, fortification, discipline",
+      "combativite": 66,
+      "bastions": [
+        {
+          "id": "haut_fourneau_morcant",
+          "nom": "Haut-Fourneau Morcant",
+          "defense": 15,
+          "conquis": false
+        },
+        {
+          "id": "bastion_des_chainons",
+          "nom": "Bastion des Chaînons",
+          "defense": 12,
+          "conquis": false
+        }
+      ]
     },
     {
       "id": 9,
-      "nom": "Famille Inconnue Γ",
-      "titre": "Le Grand Adversaire",
-      "chef": "???",
+      "slug": "eryndor",
+      "nom": "Maison Eryndor",
+      "titre": "Couronne Brisée",
+      "chef": "Avar Eryndor",
       "statut": "inconnue",
       "relation": "hostile",
-      "bastions": [
-        { "id": "avantposte_traitres",  "nom": "Avant-Poste des Traîtres",    "defense": 16, "conquis": false },
-        { "id": "tour_conspiration",    "nom": "Tour de la Conspiration",      "defense": 19, "conquis": false },
-        { "id": "donjon_serments",      "nom": "Donjon des Serments Brisés",   "defense": 21, "conquis": false },
-        { "id": "citadelle_finale",     "nom": "Citadelle de l'Antagoniste",   "defense": 25, "conquis": false }
-      ],
       "revelee": false,
-      "espionnee": false
+      "espionnee": false,
+      "archetype": "conspiration",
+      "doctrine": "Patience, infiltration, effondrement",
+      "combativite": 74,
+      "bastions": [
+        {
+          "id": "tour_du_silence",
+          "nom": "Tour du Silence",
+          "defense": 17,
+          "conquis": false
+        },
+        {
+          "id": "bastion_de_la_faille",
+          "nom": "Bastion de la Faille",
+          "defense": 19,
+          "conquis": false
+        }
+      ]
     }
   ],
   "evenements_declenches": [],

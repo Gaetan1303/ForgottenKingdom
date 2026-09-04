@@ -58,9 +58,10 @@ text = "Tour 1"
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="RessourcesHeader" type="HBoxContainer" parent="Header/BgHeader/InfoClan"]
+[node name="RessourcesHeader" type="HFlowContainer" parent="Header/BgHeader/InfoClan"]
 layout_mode = 2
-theme_override_constants/separation = 20
+theme_override_constants/h_separation = 12
+theme_override_constants/v_separation = 4
 
 [node name="LabelOr" type="Label" parent="Header/BgHeader/InfoClan/RessourcesHeader"]
 layout_mode = 2
@@ -242,7 +243,7 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_colors/font_color = Color(0.85, 0.85, 0.85, 1)
 theme_override_font_sizes/font_size = 13
-text = "Bienvenue dans les Royaumes Démoniques. Choisissez votre première action."
+text = "Bienvenue dans les Veyr. Choisissez votre première action."
 vertical_alignment = 1
 autowrap_mode = 3
 

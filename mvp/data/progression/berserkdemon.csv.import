@@ -15,3 +15,5 @@ dest_files=["res://data/progression/berserkdemon.Force.translation", "res://data
 
 compress=1
 delimiter=0
+unescape_keys=false
+unescape_translations=true

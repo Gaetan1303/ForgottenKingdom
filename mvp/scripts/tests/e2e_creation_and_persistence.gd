@@ -22,7 +22,7 @@ func _run_test() -> void:
         }
     }
 
-    clan_mgr.nouvelle_partie("E2E", "E2EClan", "mage_du_pacte", {}, profil)
+    clan_mgr.nouvelle_partie("E2E", "E2EClan", "hellcaster", {}, profil)
     print("Called ClanManager.nouvelle_partie(...)")
 
     # Force save and reload via ClanManager API to ensure persistence path executed
@@ -73,7 +73,7 @@ func _post_ready(inst: Node) -> void:
 
     # Choose a class via exposed helper if available
     if inst.has_method("_choisir_classe"):
-        inst._choisir_classe("mage_du_pacte")
+        inst._choisir_classe("hellcaster")
 
     # Instead of triggering full navigation (which may replace scenes and stop this test),
     # build the profile and call ClanManager.nouvelle_partie directly so we can verify save.
@@ -91,7 +91,7 @@ func _post_ready(inst: Node) -> void:
         quit(20)
         return
     # Pass empty stats_bonus (actual raw stats are in profil.fiche_complete.stats_brutes)
-    clan_mgr.nouvelle_partie("E2E", "E2EClan", "mage_du_pacte", {}, profil)
+    clan_mgr.nouvelle_partie("E2E", "E2EClan", "hellcaster", {}, profil)
     print("Called ClanManager.nouvelle_partie(...)")
 
     # Wait a few frames to let autoloads persist files

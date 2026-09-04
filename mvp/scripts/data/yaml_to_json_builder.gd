@@ -13,8 +13,8 @@
 @tool
 extends EditorScript
 
-const YAML_CHAPTERS := "res://story/chapitres_ingrid.yaml"
-const YAML_LOCATIONS := "res://story/carte_lieux.yaml"
+const YAML_CHAPTERS := "res://story/chroniques_veyr.yaml"
+const YAML_LOCATIONS := "res://story/carte_veyr.yaml"
 const OUTPUT_JSON    := "res://resources/chapters/data.json"
 
 

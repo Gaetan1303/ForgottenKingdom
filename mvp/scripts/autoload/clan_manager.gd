@@ -3,18 +3,9 @@
 ## Chargé depuis game/clan/etat_clan_defaut.json + sauvegarde utilisateur.
 extends Node
 
-# Critical dependencies are preloaded explicitly so direct game startup also works
-# before the editor has rebuilt the global class cache.
-const StatDefs = preload("res://scripts/data/stat_defs.gd")
-const PnjDailyPlannerServiceClass = preload("res://scripts/services/pnj_daily_planner_service.gd")
-const PnjGeneratorClass = preload("res://scripts/services/pnj_generator.gd")
-const JsonPersistenceService = preload("res://scripts/services/json_persistence_service.gd")
-const CharacterBuildService = preload("res://scripts/data/character_build_service.gd")
+## rely on the script's class_name (StatDefs) instead of preloading it here
+## Use the service classes registered by class_name (PnjDailyPlannerService, PnjGenerator, JsonPersistenceService)
 const FKHelpers = preload("res://scripts/utils/fk_helpers.gd")
-const CorruptionServiceClass = preload("res://scripts/services/corruption_service.gd")
-const CreatureRosterServiceClass = preload("res://scripts/services/creature_roster_service.gd")
-const PactServiceClass = preload("res://scripts/services/pact_service.gd")
-const CreatureProfileClass = preload("res://scripts/data/creature_profile.gd")
 
 # ── Chemins ────────────────────────────────────────────────────────────
 const DEFAULT_STATE_PATH := "res://data/clan/etat_clan_defaut.json"
@@ -114,13 +105,9 @@ var maisons_nobles: Array   = []
 var evenements_declenches: Array = []
 var historique_tours: Array = []
 var pnj_gestion: Dictionary = {}
-var _dernier_resultat_evenement: Dictionary = {}
 
 # ── Services (instanciation unique — DRY / SRP) ────────────────────────
-var _planner: RefCounted = null
-var _corruption_service: RefCounted = null
-var _creature_roster: RefCounted = null
-var _pact_service: RefCounted = null
+var _planner: PnjDailyPlannerService = null
 
 # Bonus de classe chargés depuis les données
 var _bonus_par_action: Dictionary = {}
@@ -135,9 +122,8 @@ const SOLDATS_MAX := 600
 
 
 func _ready() -> void:
-	_planner = PnjDailyPlannerServiceClass.new()
+	_planner = PnjDailyPlannerService.new()
 	_charger_etat_defaut()
-	_setup_corruption_system()
 
 
 # ─────────────────────────────────────────────────────────────────────
@@ -193,7 +179,6 @@ func nouvelle_partie(
 	evenements_declenches = []
 	historique_tours = []
 	pnj_gestion = _make_default_pnj_gestion_state()
-	_setup_corruption_system()
 
 	# Initialiser la pool de soldats (IDs) à partir de la ressource initiale
 	_soldat_next_id = 1
@@ -521,7 +506,7 @@ func get_resume_traits_actifs() -> String:
 
 
 func _get_traits_caps() -> Dictionary:
-	var traits_cfg := GameDataLoader.get_character_traits()
+	var traits_cfg: Dictionary = GameDataLoader.get_character_traits()
 	return (traits_cfg.get("caps", {}) as Dictionary).duplicate(true)
 
 
@@ -579,7 +564,7 @@ func ajouter_pnj_gere(
 	pnj_stats: Dictionary,
 	traits: Array = []
 ) -> Dictionary:
-	var fiche: Dictionary = _planner.make_pnj_profile(pnj_id, pnj_name, pnj_type, role, niveau, pnj_stats, traits)
+	var fiche := _planner.make_pnj_profile(pnj_id, pnj_name, pnj_type, role, niveau, pnj_stats, traits)
 	var state := get_pnj_gestion_state()
 	var roster: Array = (state.get("roster", []) as Array).duplicate(true)
 	var index := _find_managed_pnj_index(roster, pnj_id)
@@ -589,8 +574,6 @@ func ajouter_pnj_gere(
 		roster.append(fiche)
 	state["roster"] = roster
 	pnj_gestion = state
-	if _corruption_service != null:
-		_corruption_service.call("register_character", pnj_id, 50.0, traits, 0, {}, str(fiche.get("portrait_path", fiche.get("image_path", ""))))
 	return fiche.duplicate(true)
 
 
@@ -1090,8 +1073,8 @@ func _appliquer_effets(effets: Dictionary) -> void:
 		var role_hint := str(effets.get("pnj_role", ""))
 		print("[DEBUG] _appliquer_effets: pnj_recrute=%d role_hint=%s moment=%s magie=%s" % [count, role_hint, str(moment_journee), str(magie_pactes_active())])
 		for i in range(count):
-			var gen: RefCounted = PnjGeneratorClass.new()
-			var added: Dictionary = (gen as Object).generate_and_register_pnj(role_hint, "recrute")
+			var gen := PnjGenerator.new()
+			var added := gen.generate_and_register_pnj(role_hint, "recrute")
 			if added == null:
 				print("[DEBUG] generate_and_register_pnj returned null for hint=%s" % role_hint)
 			else:
@@ -1110,7 +1093,6 @@ func _appliquer_effets(effets: Dictionary) -> void:
 ## Tire au plus un événement aléatoire pour le tour et applique ses effets.
 ## Retourne un message à afficher dans le log, ou une chaîne vide.
 func tirer_et_appliquer_evenement(evenements: Array) -> String:
-	_dernier_resultat_evenement = {}
 	if evenements.is_empty():
 		return ""
 
@@ -1131,30 +1113,17 @@ func tirer_et_appliquer_evenement(evenements: Array) -> String:
 			continue
 
 		if rng.randf() <= probabilite:
-			var event_effects := (d.get("effets", {}) as Dictionary).duplicate(true)
-			_appliquer_effets(event_effects)
+			_appliquer_effets((d.get("effets", {}) as Dictionary).duplicate(true))
 			var id_evt := str(d.get("id", ""))
 			if not id_evt.is_empty() and not evenements_declenches.has(id_evt):
 				evenements_declenches.append(id_evt)
 			var titre := str(d.get("titre", "Événement"))
 			var texte := str(d.get("texte", ""))
-			_dernier_resultat_evenement = {
-				"title": titre,
-				"description": texte,
-				"illustration_path": str(d.get("illustration_path", d.get("illustration", d.get("image", "")))),
-				"effects": event_effects,
-				"severity": str(d.get("severity", "event")),
-				"effects_applied": true,
-			}
 			if texte.is_empty():
 				return "Événement: %s." % titre
 			return "Événement: %s — %s" % [titre, texte]
 
 	return ""
-
-
-func get_dernier_resultat_evenement() -> Dictionary:
-	return _dernier_resultat_evenement.duplicate(true)
 
 
 ## Évalue l'état de la partie (en cours / victoire / défaite).
@@ -1163,7 +1132,7 @@ func evaluer_etat_partie() -> Dictionary:
 		return {
 			"terminee": true,
 			"etat": "defaite",
-			"message": "Barre d'âme épuisée. Ingrid est consumée par le dragon.",
+			"message": "Barre d’âme épuisée. L’héritier est consumé par l’Éther de Cendre.",
 		}
 
 	if maisons_soumises() >= 9:
@@ -1309,9 +1278,6 @@ func sauvegarder() -> void:
 		"historique_tours": historique_tours.duplicate(true),
 		"soldats_disponibles": _soldats_disponibles.duplicate(true),
 		"soldat_next_id": _soldat_next_id,
-		"corruption_data": _corruption_service.call("export_state") if _corruption_service != null else {},
-		"creature_roster": _creature_roster.call("export_state") if _creature_roster != null else {},
-		"pact_data": _pact_service.call("export_state") if _pact_service != null else {},
 	}
 	var save_path := _get_clan_save_path()
 	if not JsonPersistenceService.write_json_atomic(save_path, data):
@@ -1357,103 +1323,11 @@ func charger_sauvegarde() -> bool:
 	_soldat_next_id = int(data.get("soldat_next_id", _soldat_next_id))
 	_sanitizer_pnj_et_domaines()
 	_sanitizer_pnj_gestion()
-	_setup_corruption_system(data)
 	if moment_journee not in ["jour", "nuit"]:
 		moment_journee = "jour"
 
 	emit_signal("ressources_mises_a_jour")
 	return true
-
-
-# ─────────────────────────────────────────────────────────────────────
-#  CORRUPTION / CRÉATURES / PACTES — FAÇADE SHADOW MODE
-# ─────────────────────────────────────────────────────────────────────
-
-func _setup_corruption_system(saved_state: Dictionary = {}) -> void:
-	_corruption_service = CorruptionServiceClass.new()
-	_creature_roster = CreatureRosterServiceClass.new()
-	_pact_service = PactServiceClass.new()
-	set_meta("corruption_service", _corruption_service)
-	set_meta("creature_roster", _creature_roster)
-	set_meta("pact_service", _pact_service)
-	_corruption_service.call("setup", self)
-	_load_default_creatures()
-	if saved_state.has("corruption_data"):
-		_corruption_service.call("import_state", saved_state.get("corruption_data", {}) as Dictionary)
-	if saved_state.has("creature_roster"):
-		_creature_roster.call("import_state", saved_state.get("creature_roster", {}) as Dictionary)
-	if saved_state.has("pact_data"):
-		_pact_service.call("import_state", saved_state.get("pact_data", {}) as Dictionary)
-	_register_roster_creatures_for_corruption()
-
-
-func _load_default_creatures() -> void:
-	for path in [
-		"res://resources/creatures/succubus_base.tres",
-		"res://resources/creatures/incubus_base.tres",
-		"res://resources/creatures/tentacle_beast.tres",
-		"res://resources/creatures/mind_flayer.tres",
-	]:
-		var profile: Resource = ResourceLoader.load(path)
-		if profile == null:
-			continue
-		_creature_roster.call("add_available_creature", profile)
-		_corruption_service.call("register_creature", profile)
-
-
-func _register_roster_creatures_for_corruption() -> void:
-	for entry in _creature_roster.call("get_captured_list") as Array:
-		var profile_data := (entry as Dictionary).get("profile", {}) as Dictionary
-		var profile: Resource = CreatureProfileClass.from_dict(profile_data)
-		_corruption_service.call("register_creature", profile)
-
-
-func get_corruption_profile(char_id: String) -> Dictionary:
-	return {} if _corruption_service == null else _corruption_service.call("get_profile", char_id) as Dictionary
-
-
-func get_corruption_service() -> RefCounted:
-	return _corruption_service
-
-
-func get_creature_roster_service() -> RefCounted:
-	return _creature_roster
-
-
-func get_pact_service() -> RefCounted:
-	return _pact_service
-
-
-func assign_creature_to_pnj(creature_id: String, pnj_id: String, assignment_type: int) -> Dictionary:
-	if _corruption_service == null or _creature_roster == null:
-		return {"ok": false, "error": "corruption_system_unavailable"}
-	var creature: Resource = _creature_roster.call("get_profile_by_id", creature_id) as Resource
-	if creature == null:
-		return {"ok": false, "error": "creature_not_found"}
-	_corruption_service.call("register_creature", creature)
-	var result := _corruption_service.call("assign_creature_to_target", creature_id, pnj_id, assignment_type) as Dictionary
-	if bool(result.get("ok", false)):
-		_creature_roster.call("set_assignment", creature_id, result.get("assignment", {}) as Dictionary)
-	return result
-
-
-func start_pnj_training(pnj_id: String, training_type: int) -> Dictionary:
-	if _corruption_service == null:
-		return {"ok": false, "error": "corruption_system_unavailable"}
-	return _corruption_service.call("start_training", pnj_id, training_type) as Dictionary
-
-
-func process_corruption_tick(delta: float) -> void:
-	if _corruption_service != null:
-		_corruption_service.call("process_tick", delta, _managed_pnj_ids())
-
-
-func _managed_pnj_ids() -> Array:
-	var result: Array = []
-	for raw in pnj_gestion.get("roster", []) as Array:
-		if raw is Dictionary:
-			result.append(str((raw as Dictionary).get("id", "")))
-	return result
 
 
 func get_profil_personnage() -> Dictionary:
@@ -1535,23 +1409,23 @@ func apply_profile_sheet_update(stats_update: Dictionary, points_remaining: int,
 	var class_stats_bonus: Dictionary = {}
 	if classe != "":
 		# Get class data from centralized GameDataLoader
-		var class_entry := GameDataLoader.get_class_by_id(classe)
+		var class_entry: Dictionary = GameDataLoader.get_class_by_id(classe)
 		if class_entry and not class_entry.is_empty():
 			class_stats_bonus = class_entry.get("stats_bonus", {}) as Dictionary
 
-	# aggregate flat stat bonuses from feats
-	var feats_defs = GameDataLoader.get_feats()
+	# Aggregate flat stat bonuses from feats through the canonical loader API.
+	# feats.json is namespaced under "dons"/"capacites", so direct root lookup is invalid.
 	var feats_bonus_stats: Dictionary = {}
-	var current_feats = (profil_personnage.get("feats", []) as Array)
+	var current_feats: Array = profil_personnage.get("feats", []) as Array
 	for f in current_feats:
-		var fdef := (feats_defs.get(str(f), {}) as Dictionary)
+		var fdef: Dictionary = GameDataLoader.get_feat(str(f))
 		var eff := (fdef.get("effects", {}) as Dictionary)
 		var stats_eff := (eff.get("stats", {}) as Dictionary)
 		for sk in stats_eff.keys():
 			feats_bonus_stats[sk] = int(feats_bonus_stats.get(sk, 0)) + int(stats_eff[sk])
 
 	# Compute final stats using CharacterBuildService
-	var final_stats := CharacterBuildService.compute_final_stats(
+	var final_stats: Dictionary = CharacterBuildService.compute_final_stats(
 		class_stats_bonus,
 		raw_stats,
 		{},
@@ -1693,15 +1567,6 @@ func _sanitizer_pnj_gestion() -> void:
 			)
 		)
 		sanitized_roster[-1]["etat"] = str(pnj.get("etat", "disponible"))
-		# Ces champs peuvent déjà exister dans une sauvegarde intermédiaire. Ils
-		# restent lisibles jusqu'à leur import dans CorruptionService.
-		for shadow_key in [
-			"resistance_mentale", "resistance", "corruption", "corruption_level",
-			"corruption_stage", "obedience", "perversion", "arousal", "orientation",
-			"virginity", "fetishes", "image_path", "portrait_path",
-		]:
-			if pnj.has(shadow_key):
-				sanitized_roster[-1][shadow_key] = (pnj[shadow_key] as Dictionary).duplicate(true) if pnj[shadow_key] is Dictionary else pnj[shadow_key]
 	pnj_gestion["roster"] = sanitized_roster
 
 	var planning := (pnj_gestion.get("planning", _planner.make_daily_plan()) as Dictionary).duplicate(true)
@@ -1727,13 +1592,12 @@ func _compute_and_apply_profil_effects(profil: Dictionary, do_save: bool = false
 	# Eviter double-application
 	if bool(profil.get("computed_effects_applied", false)):
 		return
-	var feats_data := GameDataLoader.get_feats()
 	var total_pv_bonus := 0
 	var total_mana_bonus := 0
 	if profil.has("feats") and (profil.get("feats") is Array):
 		for f in (profil.get("feats") as Array):
 			var fid := str(f)
-			var fdef := feats_data.get(fid, {}) as Dictionary
+			var fdef: Dictionary = GameDataLoader.get_feat(fid)
 			var eff := fdef.get("effects", {}) as Dictionary
 			if eff.has("pv_bonus"):
 				total_pv_bonus += int(eff.get("pv_bonus", 0))
