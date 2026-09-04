@@ -1,17 +1,18 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+REPO_ROOT="$(pwd)"
 PRESET="${GODOT_WEB_PRESET:-Web}"
-OUTPUT_DIR="${GODOT_WEB_OUTPUT_DIR:-build/web}"
+OUTPUT_DIR="$REPO_ROOT/build/web"
 OUTPUT_FILE="${GODOT_WEB_OUTPUT_FILE:-index.html}"
 
-if [[ ! -f "project.godot" ]]; then
-  echo "ERROR: project.godot introuvable."
-  exit 1
-fi
+PROJECT_DIR_ABS="$("$REPO_ROOT/scripts/find_godot_project.sh")"
+
+echo "Projet Godot détecté : $PROJECT_DIR_ABS"
+cd "$PROJECT_DIR_ABS"
 
 if [[ ! -f "export_presets.cfg" ]]; then
-  echo "ERROR: export_presets.cfg introuvable."
+  echo "ERROR: export_presets.cfg introuvable dans : $PROJECT_DIR_ABS"
   echo "Crée un preset Web dans Godot : Project > Export > Add... > Web."
   exit 1
 fi

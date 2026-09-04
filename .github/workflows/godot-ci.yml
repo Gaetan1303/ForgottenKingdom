@@ -26,15 +26,7 @@ jobs:
       - name: Show Godot version
         run: godot --version
 
-      - name: Import project resources
-        run: |
-          godot --headless --editor --path . --quit --verbose
-
-      - name: Validate project startup
-        run: |
-          godot --headless --path . --quit --verbose
-
-      - name: Run project tests
+      - name: Run runtime validation and tests
         shell: bash
         run: |
           chmod +x scripts/ci_test.sh
