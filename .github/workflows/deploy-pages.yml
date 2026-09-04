@@ -3,7 +3,7 @@ name: Export Web and Deploy GitHub Pages
 on:
   push:
     branches:
-      - dev
+      - Dev
   workflow_dispatch:
 
 permissions:
