@@ -8,7 +8,6 @@ const CharacterCreationRules = preload("res://scripts/services/character_creatio
 const CharacterBuildService = preload("res://scripts/data/character_build_service.gd")
 const FallenUI = preload("res://scripts/ui/fallen_ui.gd")
 
-const CARD_COLUMNS := 2
 const POINTS_POOL_TOTAL: int = 10
 const STAT_LABELS := {
 	"force": "Force", "magie": "Magie", "espionnage": "Espionnage",
@@ -105,6 +104,10 @@ func _configure_tooltip_for_stat_row(stat_key: String, stat_label: Label, stat_c
 	if modifier_label:
 		modifier_label.mouse_filter = Control.MOUSE_FILTER_STOP
 		modifier_label.tooltip_text = tooltip
+	var info_label := find_child("Info_%s" % stat_key, true, false) as Label
+	if info_label:
+		info_label.mouse_filter = Control.MOUSE_FILTER_STOP
+		info_label.tooltip_text = tooltip
 
 
 func _configure_tooltip_for_secondary_row(stat_key: String, stat_label: Label, value_label: Label) -> void:
@@ -113,6 +116,10 @@ func _configure_tooltip_for_secondary_row(stat_key: String, stat_label: Label, v
 		if control:
 			control.mouse_filter = Control.MOUSE_FILTER_STOP
 			control.tooltip_text = tooltip
+	var info_label := find_child("Info_%s" % stat_key, true, false) as Label
+	if info_label:
+		info_label.mouse_filter = Control.MOUSE_FILTER_STOP
+		info_label.tooltip_text = tooltip
 
 
 func _refresh_secondary_stats() -> void:
@@ -140,14 +147,16 @@ func _populate_class_cards() -> void:
 	var grid := find_child("ClassesGrid", true, false) as GridContainer
 	if grid == null:
 		return
-	grid.columns = CARD_COLUMNS
-	grid.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	if grid.get_child_count() > 0:
 		return
 
 	var classes: Dictionary = GameDataLoader.get_classes()
 	var keys: Array = classes.keys()
 	keys.sort()
+	# Disposition en T : toutes les classes sur une seule bande horizontale.
+	# Le ScrollContainer prend le relais sur les écrans étroits.
+	grid.columns = maxi(1, keys.size())
+	grid.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
 	for key in keys:
 		var cdef := classes[key] as Dictionary
 		grid.add_child(_build_class_card(str(key), cdef))
@@ -159,7 +168,7 @@ func _build_class_card(class_id: String, class_data: Dictionary) -> Button:
 	var card: Button = ClassCardFactory.create(class_id, str(class_data.get("icon", "")))
 	card.name = "ClassCard_%s" % class_id
 	card.text = ""
-	card.custom_minimum_size = Vector2(205, 148)
+	card.custom_minimum_size = Vector2(168, 94)
 	card.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	card.size_flags_vertical = Control.SIZE_SHRINK_BEGIN
 	card.focus_mode = Control.FOCUS_NONE
@@ -299,9 +308,14 @@ func _refresh_stat_controls() -> void:
 			node.max_value = float(final_value + remaining)
 			node.value = float(final_value)
 			node.tooltip_text = _stat_breakdown_tooltip(key, final_value)
+		var detailed_tooltip := _stat_breakdown_tooltip(key, final_value)
 		var modifier_label := find_child("Modifier_%s" % key, true, false) as Label
 		if modifier_label:
 			modifier_label.text = "(%s)" % _format_signed(StatDefs.score_to_modifier(final_value))
+			modifier_label.tooltip_text = detailed_tooltip
+		var info_label := find_child("Info_%s" % key, true, false) as Label
+		if info_label:
+			info_label.tooltip_text = detailed_tooltip
 	_updating_controls = false
 	_update_derived_stats()
 

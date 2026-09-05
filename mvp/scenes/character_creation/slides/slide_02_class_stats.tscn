@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://pnabbmojcynf" path="res://scripts/ui/character_creation/slides/slide_02_class_stats.gd" id="1_slide"]
 
-[node name="Slide02ClassStats" type="Control" unique_id=1001780743]
+[node name="Slide02ClassStats" type="Control"]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -11,310 +11,384 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_slide")
 
-[node name="Content" type="VBoxContainer" parent="." unique_id=1434443040]
+[node name="Content" type="VBoxContainer" parent="."]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 12.0
+offset_left = 14.0
 offset_top = 12.0
-offset_right = -12.0
+offset_right = -14.0
 offset_bottom = -12.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_constants/separation = 8
+theme_override_constants/separation = 10
 
-[node name="StepTitle" type="Label" parent="Content" unique_id=349396851]
+[node name="StepTitle" type="Label" parent="Content"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 18
 text = "Choisir une voie et définir ses forces"
 
-[node name="MainSplit" type="HBoxContainer" parent="Content" unique_id=233840170]
+[node name="ClassesBand" type="VBoxContainer" parent="Content"]
+custom_minimum_size = Vector2(0, 142)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 6
+
+[node name="ClassesHeader" type="Label" parent="Content/ClassesBand"]
+layout_mode = 2
+text = "Choisissez une classe"
+
+[node name="ClassesScroll" type="ScrollContainer" parent="Content/ClassesBand"]
+custom_minimum_size = Vector2(0, 112)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+horizontal_scroll_mode = 1
+vertical_scroll_mode = 0
+
+[node name="ClassesGrid" type="GridContainer" parent="Content/ClassesBand/ClassesScroll"]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 3
+theme_override_constants/h_separation = 8
+columns = 1
+
+[node name="BottomSplit" type="HBoxContainer" parent="Content"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_constants/separation = 12
 
-[node name="ProgressionPanel" type="VBoxContainer" parent="Content/MainSplit" unique_id=54404524]
-custom_minimum_size = Vector2(280, 0)
+[node name="StatsFrame" type="PanelContainer" parent="Content/BottomSplit"]
+custom_minimum_size = Vector2(380, 0)
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_constants/separation = 6
-
-[node name="ProgressionHeader" type="Label" parent="Content/MainSplit/ProgressionPanel" unique_id=1278410625]
-layout_mode = 2
-text = "Progression • Niveaux 1 à 10"
-
-[node name="ProgressionSummary" type="ScrollContainer" parent="Content/MainSplit/ProgressionPanel" unique_id=2030761527]
-custom_minimum_size = Vector2(0, 130)
-layout_mode = 2
-size_flags_horizontal = 3
+size_flags_stretch_ratio = 1.0
 size_flags_vertical = 3
 
-[node name="ProgressionGrid" type="GridContainer" parent="Content/MainSplit/ProgressionPanel/ProgressionSummary" unique_id=1292512383]
+[node name="StatsMargin" type="MarginContainer" parent="Content/BottomSplit/StatsFrame"]
 layout_mode = 2
-size_flags_horizontal = 3
-theme_override_constants/h_separation = 8
-theme_override_constants/v_separation = 12
-columns = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 8
 
-[node name="StatsPanel" type="VBoxContainer" parent="Content/MainSplit" unique_id=951307311]
-custom_minimum_size = Vector2(270, 0)
-layout_mode = 2
-size_flags_horizontal = 3
-theme_override_constants/separation = 6
-
-[node name="StatsHeader" type="Label" parent="Content/MainSplit/StatsPanel" unique_id=503481163]
-layout_mode = 2
-text = "Caractéristiques"
-
-[node name="PointsPoolLabel" type="Label" parent="Content/MainSplit/StatsPanel" unique_id=2000000001]
-layout_mode = 2
-text = "Points restants : 10 / 10"
-theme_override_colors/font_color = Color(0.85, 0.82, 0.72, 0.95)
-
-[node name="StatsGrid" type="GridContainer" parent="Content/MainSplit/StatsPanel" unique_id=742487701]
-layout_mode = 2
-theme_override_constants/h_separation = 8
-theme_override_constants/v_separation = 6
-columns = 3
-
-[node name="LabelForce" type="Label" parent="Content/MainSplit/StatsPanel/StatsGrid" unique_id=452058459]
-layout_mode = 2
-tooltip_text = "Force\n\nMesure la puissance physique du personnage."
-text = "Force"
-
-[node name="Stat_force" type="SpinBox" parent="Content/MainSplit/StatsPanel/StatsGrid" unique_id=2004690763]
-layout_mode = 2
-tooltip_text = "Force\n\nMesure la puissance physique du personnage."
-min_value = 8.0
-max_value = 18.0
-value = 8.0
-
-[node name="Modifier_force" type="Label" parent="Content/MainSplit/StatsPanel/StatsGrid"]
-layout_mode = 2
-text = "(-1)"
-
-[node name="LabelMagie" type="Label" parent="Content/MainSplit/StatsPanel/StatsGrid" unique_id=384652215]
-layout_mode = 2
-tooltip_text = "Magie\n\nMesure sa maîtrise de l’Éther de Cendre."
-text = "Magie"
-
-[node name="Stat_magie" type="SpinBox" parent="Content/MainSplit/StatsPanel/StatsGrid" unique_id=1963440997]
-layout_mode = 2
-tooltip_text = "Magie\n\nMesure sa maîtrise de l’Éther de Cendre."
-min_value = 8.0
-max_value = 18.0
-value = 8.0
-
-[node name="Modifier_magie" type="Label" parent="Content/MainSplit/StatsPanel/StatsGrid"]
-layout_mode = 2
-text = "(-1)"
-
-[node name="LabelEspionnage" type="Label" parent="Content/MainSplit/StatsPanel/StatsGrid" unique_id=1679518261]
-layout_mode = 2
-tooltip_text = "Espionnage\n\nMesure la furtivité et la vivacité du personnage."
-text = "Espionnage"
-
-[node name="Stat_espionnage" type="SpinBox" parent="Content/MainSplit/StatsPanel/StatsGrid" unique_id=107536262]
-layout_mode = 2
-tooltip_text = "Espionnage\n\nMesure la furtivité et la vivacité du personnage."
-min_value = 8.0
-max_value = 18.0
-value = 8.0
-
-[node name="Modifier_espionnage" type="Label" parent="Content/MainSplit/StatsPanel/StatsGrid"]
-layout_mode = 2
-text = "(-1)"
-
-[node name="LabelArtisanat" type="Label" parent="Content/MainSplit/StatsPanel/StatsGrid" unique_id=1737930892]
-layout_mode = 2
-tooltip_text = "Artisanat\n\nMesure la maîtrise de la forge et des vestiges."
-text = "Artisanat"
-
-[node name="Stat_artisanat" type="SpinBox" parent="Content/MainSplit/StatsPanel/StatsGrid" unique_id=489366622]
-layout_mode = 2
-tooltip_text = "Artisanat\n\nMesure la maîtrise de la forge et des vestiges."
-min_value = 8.0
-max_value = 18.0
-value = 8.0
-
-[node name="Modifier_artisanat" type="Label" parent="Content/MainSplit/StatsPanel/StatsGrid"]
-layout_mode = 2
-text = "(-1)"
-
-[node name="LabelDiplomatie" type="Label" parent="Content/MainSplit/StatsPanel/StatsGrid" unique_id=459570220]
-layout_mode = 2
-tooltip_text = "Diplomatie\n\nMesure l’influence et le talent de négociation du personnage."
-text = "Diplomatie"
-
-[node name="Stat_diplomatie" type="SpinBox" parent="Content/MainSplit/StatsPanel/StatsGrid" unique_id=672173993]
-layout_mode = 2
-tooltip_text = "Diplomatie\n\nMesure l’influence et le talent de négociation du personnage."
-min_value = 8.0
-max_value = 18.0
-value = 8.0
-
-[node name="Modifier_diplomatie" type="Label" parent="Content/MainSplit/StatsPanel/StatsGrid"]
-layout_mode = 2
-text = "(-1)"
-
-[node name="LabelCommandement" type="Label" parent="Content/MainSplit/StatsPanel/StatsGrid" unique_id=1723094071]
-layout_mode = 2
-tooltip_text = "Commandement\n\nMesure l’autorité et la discipline du personnage."
-text = "Commandement"
-
-[node name="Stat_commandement" type="SpinBox" parent="Content/MainSplit/StatsPanel/StatsGrid" unique_id=1083071402]
-layout_mode = 2
-tooltip_text = "Commandement\n\nMesure l’autorité et la discipline du personnage."
-min_value = 8.0
-max_value = 18.0
-value = 8.0
-
-[node name="Modifier_commandement" type="Label" parent="Content/MainSplit/StatsPanel/StatsGrid"]
-layout_mode = 2
-text = "(-1)"
-
-[node name="SecondaryHeader" type="Label" parent="Content/MainSplit/StatsPanel"]
-layout_mode = 2
-text = "Caractéristiques secondaires"
-
-[node name="SecondaryGrid" type="GridContainer" parent="Content/MainSplit/StatsPanel"]
-layout_mode = 2
-theme_override_constants/h_separation = 8
-theme_override_constants/v_separation = 6
-columns = 2
-
-[node name="Label_ESP" type="Label" parent="Content/MainSplit/StatsPanel/SecondaryGrid"]
-layout_mode = 2
-tooltip_text = "Esprit\n\nMesure la force mentale et la stabilité psychique du personnage.\n\nPeut influencer :\n• la résistance mentale ;\n• certains jets de volonté ;\n• certains prérequis."
-text = "Esprit"
-
-[node name="Secondary_ESP" type="Label" parent="Content/MainSplit/StatsPanel/SecondaryGrid"]
-layout_mode = 2
-tooltip_text = "Esprit\n\nMesure la force mentale et la stabilité psychique du personnage.\n\nPeut influencer :\n• la résistance mentale ;\n• certains jets de volonté ;\n• certains prérequis."
-text = "0"
-horizontal_alignment = 2
-
-[node name="Label_TRA" type="Label" parent="Content/MainSplit/StatsPanel/SecondaryGrid"]
-layout_mode = 2
-tooltip_text = "Transfuge\n\nMesure l'affinité du personnage avec la magi-tech.\n\nUtilisé pour :\n• les technologies occultes ;\n• les équipements magi-tech ;\n• certaines capacités spécialisées."
-text = "Transfuge"
-
-[node name="Secondary_TRA" type="Label" parent="Content/MainSplit/StatsPanel/SecondaryGrid"]
-layout_mode = 2
-tooltip_text = "Transfuge\n\nMesure l'affinité du personnage avec la magi-tech.\n\nUtilisé pour :\n• les technologies occultes ;\n• les équipements magi-tech ;\n• certaines capacités spécialisées."
-text = "0"
-horizontal_alignment = 2
-
-[node name="Label_ESE" type="Label" parent="Content/MainSplit/StatsPanel/SecondaryGrid"]
-layout_mode = 2
-tooltip_text = "Essence\n\nMesure la pureté et la puissance de l'héritage sanguin.\n\nPeut être utilisée pour :\n• les prérequis de lignée ;\n• certaines capacités raciales ;\n• les mécaniques liées au sang."
-text = "Essence"
-
-[node name="Secondary_ESE" type="Label" parent="Content/MainSplit/StatsPanel/SecondaryGrid"]
-layout_mode = 2
-tooltip_text = "Essence\n\nMesure la pureté et la puissance de l'héritage sanguin.\n\nPeut être utilisée pour :\n• les prérequis de lignée ;\n• certaines capacités raciales ;\n• les mécaniques liées au sang."
-text = "0"
-horizontal_alignment = 2
-
-[node name="DerivedHeader" type="Label" parent="Content/MainSplit/StatsPanel" unique_id=727925578]
-layout_mode = 2
-text = "Valeurs dérivées"
-
-[node name="DerivedGrid" type="GridContainer" parent="Content/MainSplit/StatsPanel" unique_id=1409784501]
-layout_mode = 2
-theme_override_constants/h_separation = 8
-theme_override_constants/v_separation = 6
-columns = 2
-
-[node name="DerivedAttaqueLabel" type="Label" parent="Content/MainSplit/StatsPanel/DerivedGrid" unique_id=2000000101]
-layout_mode = 2
-text = "Attaque"
-
-[node name="DerivedAttaqueValue" type="Label" parent="Content/MainSplit/StatsPanel/DerivedGrid" unique_id=2000000102]
-layout_mode = 2
-text = "0"
-
-[node name="DerivedDefenseLabel" type="Label" parent="Content/MainSplit/StatsPanel/DerivedGrid" unique_id=2000000103]
-layout_mode = 2
-text = "Défense"
-
-[node name="DerivedDefenseValue" type="Label" parent="Content/MainSplit/StatsPanel/DerivedGrid" unique_id=941827725]
-layout_mode = 2
-text = "0"
-
-[node name="DerivedResistanceLabel" type="Label" parent="Content/MainSplit/StatsPanel/DerivedGrid" unique_id=1596006141]
-layout_mode = 2
-text = "Résistance"
-
-[node name="DerivedResistanceValue" type="Label" parent="Content/MainSplit/StatsPanel/DerivedGrid" unique_id=2138714788]
-layout_mode = 2
-text = "0"
-
-[node name="DerivedInitiativeLabel" type="Label" parent="Content/MainSplit/StatsPanel/DerivedGrid" unique_id=947709270]
-layout_mode = 2
-text = "Initiative"
-
-[node name="DerivedInitiativeValue" type="Label" parent="Content/MainSplit/StatsPanel/DerivedGrid" unique_id=1140650672]
-layout_mode = 2
-text = "0"
-
-[node name="DerivedVigueurLabel" type="Label" parent="Content/MainSplit/StatsPanel/DerivedGrid" unique_id=538455331]
-layout_mode = 2
-text = "Jet de Vigueur"
-
-[node name="DerivedVigueurValue" type="Label" parent="Content/MainSplit/StatsPanel/DerivedGrid" unique_id=1420470318]
-layout_mode = 2
-text = "0"
-
-[node name="DerivedVolonteLabel" type="Label" parent="Content/MainSplit/StatsPanel/DerivedGrid" unique_id=932312757]
-layout_mode = 2
-text = "Jet de Volonté"
-
-[node name="DerivedVolonteValue" type="Label" parent="Content/MainSplit/StatsPanel/DerivedGrid" unique_id=1936898047]
-layout_mode = 2
-text = "0"
-
-[node name="DerivedReflexesLabel" type="Label" parent="Content/MainSplit/StatsPanel/DerivedGrid" unique_id=1264579089]
-layout_mode = 2
-text = "Jet de Réflexes"
-
-[node name="DerivedReflexesValue" type="Label" parent="Content/MainSplit/StatsPanel/DerivedGrid" unique_id=2000000104]
-layout_mode = 2
-text = "0"
-
-[node name="ClassesPanel" type="VBoxContainer" parent="Content/MainSplit" unique_id=1837221198]
-custom_minimum_size = Vector2(455, 0)
-layout_mode = 2
-size_flags_horizontal = 3
-theme_override_constants/separation = 6
-
-[node name="ClassesHeader" type="Label" parent="Content/MainSplit/ClassesPanel" unique_id=1344111443]
-layout_mode = 2
-text = "Choisissez une classe"
-
-[node name="ClassesScroll" type="ScrollContainer" parent="Content/MainSplit/ClassesPanel" unique_id=1133388011]
+[node name="StatsScroll" type="ScrollContainer" parent="Content/BottomSplit/StatsFrame/StatsMargin"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 horizontal_scroll_mode = 0
 
-[node name="ClassesGrid" type="GridContainer" parent="Content/MainSplit/ClassesPanel/ClassesScroll" unique_id=1970453944]
+[node name="StatsPanel" type="VBoxContainer" parent="Content/BottomSplit/StatsFrame/StatsMargin/StatsScroll"]
 layout_mode = 2
 size_flags_horizontal = 3
-size_flags_vertical = 0
+theme_override_constants/separation = 7
+
+[node name="StatsHeader" type="Label" parent="Content/BottomSplit/StatsFrame/StatsMargin/StatsScroll/StatsPanel"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+text = "Caractéristiques"
+
+[node name="PointsPoolLabel" type="Label" parent="Content/BottomSplit/StatsFrame/StatsMargin/StatsScroll/StatsPanel"]
+layout_mode = 2
+text = "Points restants : 10 / 10"
+theme_override_colors/font_color = Color(0.85, 0.82, 0.72, 0.95)
+
+[node name="StatsGrid" type="GridContainer" parent="Content/BottomSplit/StatsFrame/StatsMargin/StatsScroll/StatsPanel"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/h_separation = 8
+theme_override_constants/v_separation = 6
+columns = 4
+
+[node name="LabelForce" type="Label" parent="Content/BottomSplit/StatsFrame/StatsMargin/StatsScroll/StatsPanel/StatsGrid"]
+layout_mode = 2
+text = "Force"
+
+[node name="Stat_force" type="SpinBox" parent="Content/BottomSplit/StatsFrame/StatsMargin/StatsScroll/StatsPanel/StatsGrid"]
+custom_minimum_size = Vector2(92, 0)
+layout_mode = 2
+min_value = 8.0
+max_value = 18.0
+value = 8.0
+
+[node name="Modifier_force" type="Label" parent="Content/BottomSplit/StatsFrame/StatsMargin/StatsScroll/StatsPanel/StatsGrid"]
+layout_mode = 2
+text = "(-1)"
+
+[node name="Info_force" type="Label" parent="Content/BottomSplit/StatsFrame/StatsMargin/StatsScroll/StatsPanel/StatsGrid"]
+layout_mode = 2
+mouse_default_cursor_shape = 2
+text = "ⓘ"
+
+[node name="LabelMagie" type="Label" parent="Content/BottomSplit/StatsFrame/StatsMargin/StatsScroll/StatsPanel/StatsGrid"]
+layout_mode = 2
+text = "Magie"
+
+[node name="Stat_magie" type="SpinBox" parent="Content/BottomSplit/StatsFrame/StatsMargin/StatsScroll/StatsPanel/StatsGrid"]
+custom_minimum_size = Vector2(92, 0)
+layout_mode = 2
+min_value = 8.0
+max_value = 18.0
+value = 8.0
+
+[node name="Modifier_magie" type="Label" parent="Content/BottomSplit/StatsFrame/StatsMargin/StatsScroll/StatsPanel/StatsGrid"]
+layout_mode = 2
+text = "(-1)"
+
+[node name="Info_magie" type="Label" parent="Content/BottomSplit/StatsFrame/StatsMargin/StatsScroll/StatsPanel/StatsGrid"]
+layout_mode = 2
+mouse_default_cursor_shape = 2
+text = "ⓘ"
+
+[node name="LabelEspionnage" type="Label" parent="Content/BottomSplit/StatsFrame/StatsMargin/StatsScroll/StatsPanel/StatsGrid"]
+layout_mode = 2
+text = "Espionnage"
+
+[node name="Stat_espionnage" type="SpinBox" parent="Content/BottomSplit/StatsFrame/StatsMargin/StatsScroll/StatsPanel/StatsGrid"]
+custom_minimum_size = Vector2(92, 0)
+layout_mode = 2
+min_value = 8.0
+max_value = 18.0
+value = 8.0
+
+[node name="Modifier_espionnage" type="Label" parent="Content/BottomSplit/StatsFrame/StatsMargin/StatsScroll/StatsPanel/StatsGrid"]
+layout_mode = 2
+text = "(-1)"
+
+[node name="Info_espionnage" type="Label" parent="Content/BottomSplit/StatsFrame/StatsMargin/StatsScroll/StatsPanel/StatsGrid"]
+layout_mode = 2
+mouse_default_cursor_shape = 2
+text = "ⓘ"
+
+[node name="LabelArtisanat" type="Label" parent="Content/BottomSplit/StatsFrame/StatsMargin/StatsScroll/StatsPanel/StatsGrid"]
+layout_mode = 2
+text = "Artisanat"
+
+[node name="Stat_artisanat" type="SpinBox" parent="Content/BottomSplit/StatsFrame/StatsMargin/StatsScroll/StatsPanel/StatsGrid"]
+custom_minimum_size = Vector2(92, 0)
+layout_mode = 2
+min_value = 8.0
+max_value = 18.0
+value = 8.0
+
+[node name="Modifier_artisanat" type="Label" parent="Content/BottomSplit/StatsFrame/StatsMargin/StatsScroll/StatsPanel/StatsGrid"]
+layout_mode = 2
+text = "(-1)"
+
+[node name="Info_artisanat" type="Label" parent="Content/BottomSplit/StatsFrame/StatsMargin/StatsScroll/StatsPanel/StatsGrid"]
+layout_mode = 2
+mouse_default_cursor_shape = 2
+text = "ⓘ"
+
+[node name="LabelDiplomatie" type="Label" parent="Content/BottomSplit/StatsFrame/StatsMargin/StatsScroll/StatsPanel/StatsGrid"]
+layout_mode = 2
+text = "Diplomatie"
+
+[node name="Stat_diplomatie" type="SpinBox" parent="Content/BottomSplit/StatsFrame/StatsMargin/StatsScroll/StatsPanel/StatsGrid"]
+custom_minimum_size = Vector2(92, 0)
+layout_mode = 2
+min_value = 8.0
+max_value = 18.0
+value = 8.0
+
+[node name="Modifier_diplomatie" type="Label" parent="Content/BottomSplit/StatsFrame/StatsMargin/StatsScroll/StatsPanel/StatsGrid"]
+layout_mode = 2
+text = "(-1)"
+
+[node name="Info_diplomatie" type="Label" parent="Content/BottomSplit/StatsFrame/StatsMargin/StatsScroll/StatsPanel/StatsGrid"]
+layout_mode = 2
+mouse_default_cursor_shape = 2
+text = "ⓘ"
+
+[node name="LabelCommandement" type="Label" parent="Content/BottomSplit/StatsFrame/StatsMargin/StatsScroll/StatsPanel/StatsGrid"]
+layout_mode = 2
+text = "Commandement"
+
+[node name="Stat_commandement" type="SpinBox" parent="Content/BottomSplit/StatsFrame/StatsMargin/StatsScroll/StatsPanel/StatsGrid"]
+custom_minimum_size = Vector2(92, 0)
+layout_mode = 2
+min_value = 8.0
+max_value = 18.0
+value = 8.0
+
+[node name="Modifier_commandement" type="Label" parent="Content/BottomSplit/StatsFrame/StatsMargin/StatsScroll/StatsPanel/StatsGrid"]
+layout_mode = 2
+text = "(-1)"
+
+[node name="Info_commandement" type="Label" parent="Content/BottomSplit/StatsFrame/StatsMargin/StatsScroll/StatsPanel/StatsGrid"]
+layout_mode = 2
+mouse_default_cursor_shape = 2
+text = "ⓘ"
+
+[node name="SecondaryHeader" type="Label" parent="Content/BottomSplit/StatsFrame/StatsMargin/StatsScroll/StatsPanel"]
+layout_mode = 2
+text = "Caractéristiques secondaires"
+
+[node name="SecondaryGrid" type="GridContainer" parent="Content/BottomSplit/StatsFrame/StatsMargin/StatsScroll/StatsPanel"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/h_separation = 8
+theme_override_constants/v_separation = 6
+columns = 3
+
+[node name="Label_ESP" type="Label" parent="Content/BottomSplit/StatsFrame/StatsMargin/StatsScroll/StatsPanel/SecondaryGrid"]
+layout_mode = 2
+text = "Esprit"
+
+[node name="Secondary_ESP" type="Label" parent="Content/BottomSplit/StatsFrame/StatsMargin/StatsScroll/StatsPanel/SecondaryGrid"]
+layout_mode = 2
+text = "0"
+horizontal_alignment = 2
+
+[node name="Info_ESP" type="Label" parent="Content/BottomSplit/StatsFrame/StatsMargin/StatsScroll/StatsPanel/SecondaryGrid"]
+layout_mode = 2
+mouse_default_cursor_shape = 2
+text = "ⓘ"
+
+[node name="Label_TRA" type="Label" parent="Content/BottomSplit/StatsFrame/StatsMargin/StatsScroll/StatsPanel/SecondaryGrid"]
+layout_mode = 2
+text = "Transfuge"
+
+[node name="Secondary_TRA" type="Label" parent="Content/BottomSplit/StatsFrame/StatsMargin/StatsScroll/StatsPanel/SecondaryGrid"]
+layout_mode = 2
+text = "0"
+horizontal_alignment = 2
+
+[node name="Info_TRA" type="Label" parent="Content/BottomSplit/StatsFrame/StatsMargin/StatsScroll/StatsPanel/SecondaryGrid"]
+layout_mode = 2
+mouse_default_cursor_shape = 2
+text = "ⓘ"
+
+[node name="Label_ESE" type="Label" parent="Content/BottomSplit/StatsFrame/StatsMargin/StatsScroll/StatsPanel/SecondaryGrid"]
+layout_mode = 2
+text = "Essence"
+
+[node name="Secondary_ESE" type="Label" parent="Content/BottomSplit/StatsFrame/StatsMargin/StatsScroll/StatsPanel/SecondaryGrid"]
+layout_mode = 2
+text = "0"
+horizontal_alignment = 2
+
+[node name="Info_ESE" type="Label" parent="Content/BottomSplit/StatsFrame/StatsMargin/StatsScroll/StatsPanel/SecondaryGrid"]
+layout_mode = 2
+mouse_default_cursor_shape = 2
+text = "ⓘ"
+
+[node name="DerivedHeader" type="Label" parent="Content/BottomSplit/StatsFrame/StatsMargin/StatsScroll/StatsPanel"]
+layout_mode = 2
+text = "Valeurs dérivées"
+
+[node name="DerivedGrid" type="GridContainer" parent="Content/BottomSplit/StatsFrame/StatsMargin/StatsScroll/StatsPanel"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/h_separation = 10
+theme_override_constants/v_separation = 5
 columns = 2
 
-[node name="Nav" type="HBoxContainer" parent="Content" unique_id=875117468]
+[node name="DerivedAttaqueLabel" type="Label" parent="Content/BottomSplit/StatsFrame/StatsMargin/StatsScroll/StatsPanel/DerivedGrid"]
+layout_mode = 2
+text = "Attaque"
+[node name="DerivedAttaqueValue" type="Label" parent="Content/BottomSplit/StatsFrame/StatsMargin/StatsScroll/StatsPanel/DerivedGrid"]
+layout_mode = 2
+text = "0"
+horizontal_alignment = 2
+[node name="DerivedDefenseLabel" type="Label" parent="Content/BottomSplit/StatsFrame/StatsMargin/StatsScroll/StatsPanel/DerivedGrid"]
+layout_mode = 2
+text = "Défense"
+[node name="DerivedDefenseValue" type="Label" parent="Content/BottomSplit/StatsFrame/StatsMargin/StatsScroll/StatsPanel/DerivedGrid"]
+layout_mode = 2
+text = "0"
+horizontal_alignment = 2
+[node name="DerivedResistanceLabel" type="Label" parent="Content/BottomSplit/StatsFrame/StatsMargin/StatsScroll/StatsPanel/DerivedGrid"]
+layout_mode = 2
+text = "Résistance"
+[node name="DerivedResistanceValue" type="Label" parent="Content/BottomSplit/StatsFrame/StatsMargin/StatsScroll/StatsPanel/DerivedGrid"]
+layout_mode = 2
+text = "0"
+horizontal_alignment = 2
+[node name="DerivedInitiativeLabel" type="Label" parent="Content/BottomSplit/StatsFrame/StatsMargin/StatsScroll/StatsPanel/DerivedGrid"]
+layout_mode = 2
+text = "Initiative"
+[node name="DerivedInitiativeValue" type="Label" parent="Content/BottomSplit/StatsFrame/StatsMargin/StatsScroll/StatsPanel/DerivedGrid"]
+layout_mode = 2
+text = "0"
+horizontal_alignment = 2
+[node name="DerivedVigueurLabel" type="Label" parent="Content/BottomSplit/StatsFrame/StatsMargin/StatsScroll/StatsPanel/DerivedGrid"]
+layout_mode = 2
+text = "Jet de Vigueur"
+[node name="DerivedVigueurValue" type="Label" parent="Content/BottomSplit/StatsFrame/StatsMargin/StatsScroll/StatsPanel/DerivedGrid"]
+layout_mode = 2
+text = "0"
+horizontal_alignment = 2
+[node name="DerivedVolonteLabel" type="Label" parent="Content/BottomSplit/StatsFrame/StatsMargin/StatsScroll/StatsPanel/DerivedGrid"]
+layout_mode = 2
+text = "Jet de Volonté"
+[node name="DerivedVolonteValue" type="Label" parent="Content/BottomSplit/StatsFrame/StatsMargin/StatsScroll/StatsPanel/DerivedGrid"]
+layout_mode = 2
+text = "0"
+horizontal_alignment = 2
+[node name="DerivedReflexesLabel" type="Label" parent="Content/BottomSplit/StatsFrame/StatsMargin/StatsScroll/StatsPanel/DerivedGrid"]
+layout_mode = 2
+text = "Jet de Réflexes"
+[node name="DerivedReflexesValue" type="Label" parent="Content/BottomSplit/StatsFrame/StatsMargin/StatsScroll/StatsPanel/DerivedGrid"]
+layout_mode = 2
+text = "0"
+horizontal_alignment = 2
+
+[node name="ProgressionFrame" type="PanelContainer" parent="Content/BottomSplit"]
+custom_minimum_size = Vector2(380, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 1.15
+size_flags_vertical = 3
+
+[node name="ProgressionMargin" type="MarginContainer" parent="Content/BottomSplit/ProgressionFrame"]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 8
+
+[node name="ProgressionPanel" type="VBoxContainer" parent="Content/BottomSplit/ProgressionFrame/ProgressionMargin"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/separation = 6
+
+[node name="ProgressionHeader" type="Label" parent="Content/BottomSplit/ProgressionFrame/ProgressionMargin/ProgressionPanel"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+text = "Progression de classe • Niveaux 1 à 10"
+
+[node name="ProgressionHint" type="Label" parent="Content/BottomSplit/ProgressionFrame/ProgressionMargin/ProgressionPanel"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.72, 0.7, 0.66, 0.9)
+text = "Ce panneau se met à jour avec la classe sélectionnée."
+autowrap_mode = 2
+
+[node name="ProgressionSummary" type="ScrollContainer" parent="Content/BottomSplit/ProgressionFrame/ProgressionMargin/ProgressionPanel"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+
+[node name="ProgressionGrid" type="GridContainer" parent="Content/BottomSplit/ProgressionFrame/ProgressionMargin/ProgressionPanel/ProgressionSummary"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/h_separation = 8
+theme_override_constants/v_separation = 8
+columns = 2
+
+[node name="Nav" type="HBoxContainer" parent="Content"]
 layout_mode = 2
 alignment = 2
 
-[node name="BtnPrev" type="Button" parent="Content/Nav" unique_id=1683952528]
+[node name="BtnPrev" type="Button" parent="Content/Nav"]
 layout_mode = 2
 text = "◀  Précédent"
 
-[node name="BtnNext" type="Button" parent="Content/Nav" unique_id=291634004]
+[node name="BtnNext" type="Button" parent="Content/Nav"]
 layout_mode = 2
 text = "Continuer  ▶"
 
