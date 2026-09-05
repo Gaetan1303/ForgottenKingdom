@@ -27,11 +27,13 @@ const PROGRESSION_TALENT_LABELS := {
 var _selected_class_id: String = ""
 var _invested_points: Dictionary = {}
 var _class_bonus_stats: Dictionary = {}
+var _secondary_stats: Dictionary = {}
 var _updating_controls := false
 
 func _ready() -> void:
 	_invested_points = StatDefs.make_default_stats(0)
 	_class_bonus_stats = StatDefs.make_default_stats(0)
+	_secondary_stats = StatDefs.make_default_secondary_stats()
 	for key in StatDefs.STAT_KEYS:
 		var node := find_child("Stat_%s" % key, true, false) as SpinBox
 		if node:
@@ -40,14 +42,19 @@ func _ready() -> void:
 			node.max_value = StatDefs.CHARACTER_MIN_STAT + POINTS_POOL_TOTAL
 			node.value_changed.connect(Callable(self, "_on_stat_value_changed").bind(key))
 		var stat_label := find_child("Label%s" % str(key).capitalize(), true, false) as Label
-		if stat_label:
-			stat_label.tooltip_text = _stat_rules_tooltip(key)
+		_configure_tooltip_for_stat_row(key, stat_label, node)
+	for key in StatDefs.SECONDARY_STAT_KEYS:
+		var secondary_label := find_child("Label_%s" % key, true, false) as Label
+		var secondary_value := find_child("Secondary_%s" % key, true, false) as Label
+		_configure_tooltip_for_secondary_row(key, secondary_label, secondary_value)
 	_refresh_stat_controls()
+	_refresh_secondary_stats()
 
 func enter_slide(data: Resource) -> void:
 	_populate_class_cards()
 	var class_id := ""
 	var incoming_stats: Dictionary = {}
+	var incoming_secondary_stats: Dictionary = {}
 
 	if data != null and data.has_method("get"):
 		var tmp_id: Variant = data.get("class_id")
@@ -56,11 +63,16 @@ func enter_slide(data: Resource) -> void:
 		var tmp_stats: Variant = data.get("stats")
 		if tmp_stats != null:
 			incoming_stats = tmp_stats as Dictionary
+		var tmp_secondary_stats: Variant = data.get("secondary_stats")
+		if tmp_secondary_stats != null and tmp_secondary_stats is Dictionary:
+			incoming_secondary_stats = tmp_secondary_stats as Dictionary
 
 	_invested_points = StatDefs.make_default_stats(0)
 	if not incoming_stats.is_empty():
 		for key in StatDefs.STAT_KEYS:
 			_invested_points[key] = maxi(0, int(incoming_stats.get(key, StatDefs.CHARACTER_MIN_STAT)) - StatDefs.CHARACTER_MIN_STAT)
+	_secondary_stats = StatDefs.sanitize_secondary_stats(incoming_secondary_stats)
+	_refresh_secondary_stats()
 
 	if class_id == "":
 		# default to first class if none selected yet
@@ -76,7 +88,38 @@ func collect_payload() -> Dictionary:
 	return {
 		"class_id": _selected_class_id,
 		"stats": _collect_stats(),
+		"secondary_stats": _secondary_stats.duplicate(true),
 	}
+
+
+func _configure_tooltip_for_stat_row(stat_key: String, stat_label: Label, stat_control: SpinBox) -> void:
+	var tooltip := _stat_rules_tooltip(stat_key)
+	if stat_label:
+		stat_label.mouse_filter = Control.MOUSE_FILTER_STOP
+		stat_label.tooltip_text = tooltip
+	if stat_control:
+		stat_control.tooltip_text = tooltip
+		# The embedded LineEdit is the actual hovered control over the number.
+		stat_control.get_line_edit().tooltip_text = tooltip
+	var modifier_label := find_child("Modifier_%s" % stat_key, true, false) as Label
+	if modifier_label:
+		modifier_label.mouse_filter = Control.MOUSE_FILTER_STOP
+		modifier_label.tooltip_text = tooltip
+
+
+func _configure_tooltip_for_secondary_row(stat_key: String, stat_label: Label, value_label: Label) -> void:
+	var tooltip := _secondary_stat_tooltip(stat_key)
+	for control in [stat_label, value_label]:
+		if control:
+			control.mouse_filter = Control.MOUSE_FILTER_STOP
+			control.tooltip_text = tooltip
+
+
+func _refresh_secondary_stats() -> void:
+	for key in StatDefs.SECONDARY_STAT_KEYS:
+		var value_label := find_child("Secondary_%s" % key, true, false) as Label
+		if value_label:
+			value_label.text = str(int(_secondary_stats.get(key, StatDefs.SECONDARY_STAT_DEFAULT)))
 
 
 func _collect_stats() -> Dictionary:
@@ -309,6 +352,15 @@ func _stat_rules_tooltip(stat_key: String) -> String:
 	return "%s\n\n%s\n\nUtilisée comme prérequis par certains dons." % [
 		str(STAT_LABELS.get(stat_key, stat_key.capitalize())), str(descriptions.get(stat_key, "")),
 	]
+
+
+func _secondary_stat_tooltip(stat_key: String) -> String:
+	var tooltips := {
+		"ESP": "Esprit\n\nMesure la force mentale et la stabilité psychique du personnage.\n\nPeut influencer :\n• la résistance mentale ;\n• certains jets de volonté ;\n• certains prérequis.",
+		"TRA": "Transfuge\n\nMesure l'affinité du personnage avec la magi-tech.\n\nUtilisé pour :\n• les technologies occultes ;\n• les équipements magi-tech ;\n• certaines capacités spécialisées.",
+		"ESE": "Essence\n\nMesure la pureté et la puissance de l'héritage sanguin.\n\nPeut être utilisée pour :\n• les prérequis de lignée ;\n• certaines capacités raciales ;\n• les mécaniques liées au sang.",
+	}
+	return str(tooltips.get(stat_key, ""))
 
 
 func _format_signed(value: int) -> String:

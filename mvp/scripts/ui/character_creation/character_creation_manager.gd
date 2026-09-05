@@ -132,6 +132,10 @@ func _apply_slide2(payload: Dictionary) -> void:
 		StatDefs.CHARACTER_MAX_STAT,
 		StatDefs.CHARACTER_MIN_STAT
 	)
+	var incoming_secondary_stats: Dictionary = {}
+	if payload.has("secondary_stats") and payload["secondary_stats"] is Dictionary:
+		incoming_secondary_stats = payload["secondary_stats"] as Dictionary
+	data.secondary_stats = StatDefs.sanitize_secondary_stats(incoming_secondary_stats)
 
 
 func _apply_slide3(payload: Dictionary) -> void:

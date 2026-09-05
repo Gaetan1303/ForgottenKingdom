@@ -4,6 +4,16 @@ extends RefCounted
 
 const STAT_KEYS := ["force", "magie", "espionnage", "artisanat", "diplomatie", "commandement"]
 
+const SECONDARY_STAT_KEYS := ["ESP", "TRA", "ESE"]
+const SECONDARY_STAT_LABELS := {
+	"ESP": "Esprit",
+	"TRA": "Transfuge",
+	"ESE": "Essence",
+}
+const SECONDARY_STAT_DEFAULT: int = 0
+const SECONDARY_STAT_MIN: int = 0
+const SECONDARY_STAT_MAX: int = 20
+
 const CHARACTER_MIN_STAT: int = 8
 const CHARACTER_MAX_STAT: int = 18
 const CLAN_MIN_STAT: int = 1
@@ -14,6 +24,24 @@ static func make_default_stats(default_value: int) -> Dictionary:
 	var out := {}
 	for key in STAT_KEYS:
 		out[key] = int(default_value)
+	return out
+
+
+static func make_default_secondary_stats(default_value: int = SECONDARY_STAT_DEFAULT) -> Dictionary:
+	var out := {}
+	for key in SECONDARY_STAT_KEYS:
+		out[key] = int(default_value)
+	return out
+
+
+static func sanitize_secondary_stats(input: Dictionary) -> Dictionary:
+	var out := make_default_secondary_stats()
+	for key in SECONDARY_STAT_KEYS:
+		out[key] = clampi(
+			int(input.get(key, SECONDARY_STAT_DEFAULT)),
+			SECONDARY_STAT_MIN,
+			SECONDARY_STAT_MAX
+		)
 	return out
 
 

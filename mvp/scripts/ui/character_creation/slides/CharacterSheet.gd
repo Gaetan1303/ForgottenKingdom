@@ -168,6 +168,16 @@ func _fill_stats() -> void:
 	for key in STAT_UI_ORDER:
 		var value = int(stats.get(key, StatDefs.CHARACTER_MIN_STAT))
 		_stats_grid.add_child(_build_stat_row(key, value))
+	var secondary_heading := Label.new()
+	secondary_heading.text = "Caractéristiques secondaires"
+	secondary_heading.modulate = Color(0.68, 0.77, 1.0)
+	_stats_grid.add_child(secondary_heading)
+	var secondary_stats := _snapshot.get("secondary_stats", {}) as Dictionary
+	for key in StatDefs.SECONDARY_STAT_KEYS:
+		_stats_grid.add_child(_build_secondary_stat_row(
+			str(StatDefs.SECONDARY_STAT_LABELS.get(key, "")),
+			int(secondary_stats.get(key, StatDefs.SECONDARY_STAT_DEFAULT))
+		))
 
 
 func _build_stat_row(stat_key: String, stat_value: int) -> Control:
@@ -198,6 +208,22 @@ func _build_stat_row(stat_key: String, stat_value: int) -> Control:
 
 	row.add_child(top)
 	row.add_child(bar)
+	return row
+
+
+func _build_secondary_stat_row(display_name: String, stat_value: int) -> Control:
+	var row := HBoxContainer.new()
+	row.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	var label := Label.new()
+	label.text = display_name
+	label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	label.modulate = Color(0.81, 0.9, 1.0)
+	var value := Label.new()
+	value.text = str(stat_value)
+	value.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+	value.modulate = Color(0.9, 0.95, 1.0)
+	row.add_child(label)
+	row.add_child(value)
 	return row
 
 

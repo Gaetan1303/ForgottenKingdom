@@ -190,6 +190,9 @@ func _on_creation_completed(final_payload: Dictionary) -> void:
 	var raw_stats: Dictionary = {}
 	if character.has("stats"):
 		raw_stats = (character["stats"] as Dictionary).duplicate(true)
+	var secondary_stats: Dictionary = {}
+	if character.has("secondary_stats"):
+		secondary_stats = (character["secondary_stats"] as Dictionary).duplicate(true)
 
 	var feat_labels: Array = []
 	for feat_id in feats:
@@ -236,6 +239,7 @@ func _on_creation_completed(final_payload: Dictionary) -> void:
 		},
 		"fiche_complete": {
 			"stats_brutes": raw_stats,
+			"secondary_stats": secondary_stats,
 			"points_restants": maxi(0, int(character.get("stats_points_pool", 10)) - _creation_points_spent(raw_stats)),
 		},
 	}

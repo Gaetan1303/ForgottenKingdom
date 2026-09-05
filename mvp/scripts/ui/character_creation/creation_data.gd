@@ -15,6 +15,7 @@ const CREATION_POINTS_TOTAL := 10
 @export var class_id: String = ""
 @export var stats_points_pool: int = CREATION_POINTS_TOTAL
 @export var stats: Dictionary = {}
+@export var secondary_stats: Dictionary = {}
 
 @export var selected_feats: Array = []
 @export var selected_abilities: Array = []
@@ -28,6 +29,8 @@ const CREATION_POINTS_TOTAL := 10
 func _init() -> void:
 	if stats.is_empty():
 		stats = StatDefs.make_default_stats(StatDefs.CHARACTER_MIN_STAT)
+	if secondary_stats.is_empty():
+		secondary_stats = StatDefs.make_default_secondary_stats()
 
 
 func to_dict() -> Dictionary:
@@ -41,6 +44,7 @@ func to_dict() -> Dictionary:
 		"class_id": class_id,
 		"stats_points_pool": stats_points_pool,
 		"stats": stats.duplicate(true),
+		"secondary_stats": secondary_stats.duplicate(true),
 		"selected_feats": selected_feats.duplicate(true),
 		"selected_abilities": selected_abilities.duplicate(true),
 		"inventory_items": inventory_items.duplicate(true),
@@ -85,6 +89,10 @@ func load_dict(payload: Dictionary) -> void:
 		StatDefs.CHARACTER_MAX_STAT,
 		StatDefs.CHARACTER_MIN_STAT
 	)
+	var raw_secondary_stats: Dictionary = {}
+	if payload.has("secondary_stats") and payload["secondary_stats"] is Dictionary:
+		raw_secondary_stats = payload["secondary_stats"] as Dictionary
+	secondary_stats = StatDefs.sanitize_secondary_stats(raw_secondary_stats)
 	selected_feats = []
 	if payload.has("selected_feats"):
 		selected_feats = (payload["selected_feats"] as Array).duplicate(true)

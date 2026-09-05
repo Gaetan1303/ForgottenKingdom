@@ -46,6 +46,24 @@ func _test_slide_2_state_and_persistence() -> void:
 	await process_frame
 	var label := slide.find_child("PointsPoolLabel", true, false) as Label
 	_expect(label.text == "Points restants : 10 / 10", "compteur initial incorrect : %s" % label.text)
+	for key in StatDefs.STAT_KEYS:
+		var primary_label := slide.find_child("Label%s" % str(key).capitalize(), true, false) as Label
+		var primary_control := slide.find_child("Stat_%s" % key, true, false) as SpinBox
+		_expect(primary_label != null and not primary_label.tooltip_text.is_empty(), "%s doit avoir une infobulle réelle" % key)
+		_expect(primary_control != null and not primary_control.tooltip_text.is_empty(), "la valeur %s doit avoir une infobulle réelle" % key)
+	var expected_secondary_labels := {
+		"ESP": "Esprit",
+		"TRA": "Transfuge",
+		"ESE": "Essence",
+	}
+	for key in StatDefs.SECONDARY_STAT_KEYS:
+		var secondary_label := slide.find_child("Label_%s" % key, true, false) as Label
+		var secondary_value := slide.find_child("Secondary_%s" % key, true, false) as Label
+		_expect(secondary_label != null and secondary_label.text == expected_secondary_labels[key], "%s ne doit pas exposer son ID" % key)
+		_expect(secondary_label != null and not secondary_label.tooltip_text.is_empty(), "%s doit avoir une infobulle réelle" % expected_secondary_labels[key])
+		_expect(secondary_value != null and not secondary_value.tooltip_text.is_empty(), "la valeur %s doit avoir une infobulle réelle" % expected_secondary_labels[key])
+	var initial_secondary := slide.collect_payload().get("secondary_stats", {}) as Dictionary
+	_expect(initial_secondary.keys().size() == 3 and initial_secondary.has("ESP") and initial_secondary.has("TRA") and initial_secondary.has("ESE"), "les IDs internes secondaires doivent être conservés dans les données")
 	var progression_text := _collect_label_text(slide.find_child("ProgressionGrid", true, false))
 	_expect(progression_text.find("Caractéristiques") != -1, "la progression doit afficher Caractéristiques")
 	_expect(progression_text.find("Attaque :") != -1 and progression_text.find("ATK") == -1, "les caractéristiques secondaires doivent être écrites en français")
@@ -85,12 +103,14 @@ func _test_slide_2_state_and_persistence() -> void:
 	var restored_data := CreationData.new()
 	restored_data.class_id = "demon_blade"
 	restored_data.stats = before_class_change.duplicate(true)
+	restored_data.secondary_stats = {"ESP": 3, "TRA": 4, "ESE": 5}
 	var restored := packed.instantiate()
 	root.add_child(restored)
 	await process_frame
 	restored.enter_slide(restored_data)
 	await process_frame
 	_expect(restored.collect_payload()["stats"] == before_class_change, "un retour à l’étape 2 doit restaurer les investissements")
+	_expect(restored.collect_payload()["secondary_stats"] == restored_data.secondary_stats, "un retour à l’étape 2 doit restaurer les caractéristiques secondaires")
 	_expect((restored.find_child("PointsPoolLabel", true, false) as Label).text == "Points restants : 1 / 10", "le compteur doit survivre à l’aller-retour")
 	slide.queue_free()
 	restored.queue_free()

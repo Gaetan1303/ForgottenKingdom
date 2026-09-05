@@ -3,12 +3,12 @@
 importer="mp3"
 type="AudioStreamMP3"
 uid="uid://bgfokytaxqyyl"
-path="res://.godot/imported/renaissance-des-neuf-couronnes.mp3-c3cdb71191eedba1e227565c8b15cd7b.mp3str"
+path="res://.godot/imported/renaissance-des-neuf-couronnes.mp3-107bea10516181eea7c8c820f9dd3c69.mp3str"
 
 [deps]
 
 source_file="res://assets/audio/music/renaissance-des-neuf-couronnes.mp3"
-dest_files=["res://.godot/imported/renaissance-des-neuf-couronnes.mp3-c3cdb71191eedba1e227565c8b15cd7b.mp3str"]
+dest_files=["res://.godot/imported/renaissance-des-neuf-couronnes.mp3-107bea10516181eea7c8c820f9dd3c69.mp3str"]
 
 [params]
 

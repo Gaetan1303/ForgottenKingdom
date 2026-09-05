@@ -81,10 +81,12 @@ columns = 3
 
 [node name="LabelForce" type="Label" parent="Content/MainSplit/StatsPanel/StatsGrid" unique_id=452058459]
 layout_mode = 2
+tooltip_text = "Force\n\nMesure la puissance physique du personnage."
 text = "Force"
 
 [node name="Stat_force" type="SpinBox" parent="Content/MainSplit/StatsPanel/StatsGrid" unique_id=2004690763]
 layout_mode = 2
+tooltip_text = "Force\n\nMesure la puissance physique du personnage."
 min_value = 8.0
 max_value = 18.0
 value = 8.0
@@ -95,10 +97,12 @@ text = "(-1)"
 
 [node name="LabelMagie" type="Label" parent="Content/MainSplit/StatsPanel/StatsGrid" unique_id=384652215]
 layout_mode = 2
+tooltip_text = "Magie\n\nMesure sa maîtrise de l’Éther de Cendre."
 text = "Magie"
 
 [node name="Stat_magie" type="SpinBox" parent="Content/MainSplit/StatsPanel/StatsGrid" unique_id=1963440997]
 layout_mode = 2
+tooltip_text = "Magie\n\nMesure sa maîtrise de l’Éther de Cendre."
 min_value = 8.0
 max_value = 18.0
 value = 8.0
@@ -109,10 +113,12 @@ text = "(-1)"
 
 [node name="LabelEspionnage" type="Label" parent="Content/MainSplit/StatsPanel/StatsGrid" unique_id=1679518261]
 layout_mode = 2
+tooltip_text = "Espionnage\n\nMesure la furtivité et la vivacité du personnage."
 text = "Espionnage"
 
 [node name="Stat_espionnage" type="SpinBox" parent="Content/MainSplit/StatsPanel/StatsGrid" unique_id=107536262]
 layout_mode = 2
+tooltip_text = "Espionnage\n\nMesure la furtivité et la vivacité du personnage."
 min_value = 8.0
 max_value = 18.0
 value = 8.0
@@ -123,10 +129,12 @@ text = "(-1)"
 
 [node name="LabelArtisanat" type="Label" parent="Content/MainSplit/StatsPanel/StatsGrid" unique_id=1737930892]
 layout_mode = 2
+tooltip_text = "Artisanat\n\nMesure la maîtrise de la forge et des vestiges."
 text = "Artisanat"
 
 [node name="Stat_artisanat" type="SpinBox" parent="Content/MainSplit/StatsPanel/StatsGrid" unique_id=489366622]
 layout_mode = 2
+tooltip_text = "Artisanat\n\nMesure la maîtrise de la forge et des vestiges."
 min_value = 8.0
 max_value = 18.0
 value = 8.0
@@ -137,10 +145,12 @@ text = "(-1)"
 
 [node name="LabelDiplomatie" type="Label" parent="Content/MainSplit/StatsPanel/StatsGrid" unique_id=459570220]
 layout_mode = 2
+tooltip_text = "Diplomatie\n\nMesure l’influence et le talent de négociation du personnage."
 text = "Diplomatie"
 
 [node name="Stat_diplomatie" type="SpinBox" parent="Content/MainSplit/StatsPanel/StatsGrid" unique_id=672173993]
 layout_mode = 2
+tooltip_text = "Diplomatie\n\nMesure l’influence et le talent de négociation du personnage."
 min_value = 8.0
 max_value = 18.0
 value = 8.0
@@ -151,10 +161,12 @@ text = "(-1)"
 
 [node name="LabelCommandement" type="Label" parent="Content/MainSplit/StatsPanel/StatsGrid" unique_id=1723094071]
 layout_mode = 2
+tooltip_text = "Commandement\n\nMesure l’autorité et la discipline du personnage."
 text = "Commandement"
 
 [node name="Stat_commandement" type="SpinBox" parent="Content/MainSplit/StatsPanel/StatsGrid" unique_id=1083071402]
 layout_mode = 2
+tooltip_text = "Commandement\n\nMesure l’autorité et la discipline du personnage."
 min_value = 8.0
 max_value = 18.0
 value = 8.0
@@ -163,9 +175,52 @@ value = 8.0
 layout_mode = 2
 text = "(-1)"
 
+[node name="SecondaryHeader" type="Label" parent="Content/MainSplit/StatsPanel"]
+layout_mode = 2
+text = "Caractéristiques secondaires"
+
+[node name="SecondaryGrid" type="GridContainer" parent="Content/MainSplit/StatsPanel"]
+layout_mode = 2
+theme_override_constants/h_separation = 8
+theme_override_constants/v_separation = 6
+columns = 2
+
+[node name="Label_ESP" type="Label" parent="Content/MainSplit/StatsPanel/SecondaryGrid"]
+layout_mode = 2
+tooltip_text = "Esprit\n\nMesure la force mentale et la stabilité psychique du personnage.\n\nPeut influencer :\n• la résistance mentale ;\n• certains jets de volonté ;\n• certains prérequis."
+text = "Esprit"
+
+[node name="Secondary_ESP" type="Label" parent="Content/MainSplit/StatsPanel/SecondaryGrid"]
+layout_mode = 2
+tooltip_text = "Esprit\n\nMesure la force mentale et la stabilité psychique du personnage.\n\nPeut influencer :\n• la résistance mentale ;\n• certains jets de volonté ;\n• certains prérequis."
+text = "0"
+horizontal_alignment = 2
+
+[node name="Label_TRA" type="Label" parent="Content/MainSplit/StatsPanel/SecondaryGrid"]
+layout_mode = 2
+tooltip_text = "Transfuge\n\nMesure l'affinité du personnage avec la magi-tech.\n\nUtilisé pour :\n• les technologies occultes ;\n• les équipements magi-tech ;\n• certaines capacités spécialisées."
+text = "Transfuge"
+
+[node name="Secondary_TRA" type="Label" parent="Content/MainSplit/StatsPanel/SecondaryGrid"]
+layout_mode = 2
+tooltip_text = "Transfuge\n\nMesure l'affinité du personnage avec la magi-tech.\n\nUtilisé pour :\n• les technologies occultes ;\n• les équipements magi-tech ;\n• certaines capacités spécialisées."
+text = "0"
+horizontal_alignment = 2
+
+[node name="Label_ESE" type="Label" parent="Content/MainSplit/StatsPanel/SecondaryGrid"]
+layout_mode = 2
+tooltip_text = "Essence\n\nMesure la pureté et la puissance de l'héritage sanguin.\n\nPeut être utilisée pour :\n• les prérequis de lignée ;\n• certaines capacités raciales ;\n• les mécaniques liées au sang."
+text = "Essence"
+
+[node name="Secondary_ESE" type="Label" parent="Content/MainSplit/StatsPanel/SecondaryGrid"]
+layout_mode = 2
+tooltip_text = "Essence\n\nMesure la pureté et la puissance de l'héritage sanguin.\n\nPeut être utilisée pour :\n• les prérequis de lignée ;\n• certaines capacités raciales ;\n• les mécaniques liées au sang."
+text = "0"
+horizontal_alignment = 2
+
 [node name="DerivedHeader" type="Label" parent="Content/MainSplit/StatsPanel" unique_id=727925578]
 layout_mode = 2
-text = "Statistiques secondaires"
+text = "Valeurs dérivées"
 
 [node name="DerivedGrid" type="GridContainer" parent="Content/MainSplit/StatsPanel" unique_id=1409784501]
 layout_mode = 2
