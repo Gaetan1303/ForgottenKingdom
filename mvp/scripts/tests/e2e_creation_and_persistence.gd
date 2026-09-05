@@ -59,6 +59,20 @@ func _run_test() -> void:
         quit(5)
         return
 
+    var saved_clan_id := str(saved.get("clan_id", ""))
+    if saved_clan_id.is_empty():
+        print("FAIL: clan_id missing in saved data")
+        quit(6)
+        return
+    if str(saved.get("nom_clan", "")) != "E2EClan":
+        print("FAIL: nom_clan does not match the created character clan")
+        quit(7)
+        return
+    if str(profil.get("clan_id", "")) != saved_clan_id or str(profil.get("clan_name", "")) != "E2EClan":
+        print("FAIL: character profile clan reference is inconsistent")
+        quit(8)
+        return
+
     print("PASS: fiche_complete.stats_brutes saved:", fiche.get("stats_brutes"))
     quit(0)
 

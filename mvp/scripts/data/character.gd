@@ -7,15 +7,19 @@ extends RefCounted
 const STAT_KEYS := StatDefs.STAT_KEYS
 const MIN_STAT: int = StatDefs.CHARACTER_MIN_STAT
 const MAX_STAT: int = StatDefs.CHARACTER_MAX_STAT
+const ClanIdentityType = preload("res://scripts/data/clan_identity.gd")
 
 var name: String = ""
+# `clan` reste disponible pour les anciens profils et sauvegardes.
 var clan: String = ""
+var clan_id: String = ""
+var clan_name: String = ""
 var char_class: String = ""
 var level: int = 1
 var stats: Dictionary = {}
 var feats: Array = []
 var abilities: Array = []
-var points_pool: int = 15
+var points_pool: int = 10
 
 func _init(_name: String = "") -> void:
     name = _name
@@ -24,9 +28,9 @@ func _init(_name: String = "") -> void:
 func _reset_stats() -> void:
     stats = StatDefs.make_default_stats(MIN_STAT)
 
-func cost_for_increment(current_value: int) -> int:
-    # Simple cost curve: +1 cost while current < 13, then +2 beyond.
-    return 1 if current_value < 13 else 2
+func cost_for_increment(_current_value: int) -> int:
+    # Règle canonique : chaque point de caractéristique coûte exactement 1 point.
+    return 1
 
 func points_spent() -> int:
     var spent := 0
@@ -116,9 +120,13 @@ func add_feat_checked(feat_id: String, feats_defs: Dictionary) -> bool:
     return false
 
 func to_dict() -> Dictionary:
+    var resolved_clan_name := clan_name if not clan_name.is_empty() else clan
+    var resolved_clan_id := clan_id if not clan_id.is_empty() else ClanIdentityType.id_from_name(resolved_clan_name)
     return {
         "name": name,
-        "clan": clan,
+        "clan": resolved_clan_name,
+        "clan_id": resolved_clan_id,
+        "clan_name": resolved_clan_name,
         "class": char_class,
         "level": level,
         "stats": stats.duplicate(true),
@@ -129,7 +137,11 @@ func to_dict() -> Dictionary:
 
 func from_dict(d: Dictionary) -> void:
     name = str(d.get("name", ""))
-    clan = str(d.get("clan", ""))
+    clan_name = str(d.get("clan_name", d.get("clan", "")))
+    clan = clan_name
+    clan_id = str(d.get("clan_id", "")).strip_edges()
+    if clan_id.is_empty():
+        clan_id = ClanIdentityType.id_from_name(clan_name)
     char_class = str(d.get("class", ""))
     level = int(d.get("level", 1))
     var loaded_stats := (d.get("stats", {}) as Dictionary).duplicate(true)

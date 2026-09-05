@@ -2,14 +2,18 @@
 class_name CharacterCreationData
 extends Resource
 
+const ClanIdentityType = preload("res://scripts/data/clan_identity.gd")
+const CREATION_POINTS_TOTAL := 10
+
 @export var character_name: String = ""
+@export var clan_id: String = ""
 @export var clan_name: String = ""
 @export var portrait_payload: Dictionary = {}
 @export var appearance_id: String = ""
 @export var racial_power_id: String = ""
 
 @export var class_id: String = ""
-@export var stats_points_pool: int = 10
+@export var stats_points_pool: int = CREATION_POINTS_TOTAL
 @export var stats: Dictionary = {}
 
 @export var selected_feats: Array = []
@@ -29,6 +33,7 @@ func _init() -> void:
 func to_dict() -> Dictionary:
 	return {
 		"character_name": character_name,
+		"clan_id": clan_id,
 		"clan_name": clan_name,
 		"portrait_payload": portrait_payload.duplicate(true),
 		"appearance_id": appearance_id,
@@ -49,10 +54,10 @@ func load_dict(payload: Dictionary) -> void:
 		character_name = str(payload["character_name"])
 	else:
 		character_name = ""
-	if payload.has("clan_name"):
-		clan_name = str(payload["clan_name"])
-	else:
-		clan_name = ""
+	clan_name = str(payload.get("clan_name", payload.get("clan", "")))
+	clan_id = str(payload.get("clan_id", "")).strip_edges()
+	if clan_id.is_empty():
+		clan_id = ClanIdentityType.id_from_name(clan_name)
 	if payload.has("portrait_payload"):
 		portrait_payload = (payload["portrait_payload"] as Dictionary).duplicate(true)
 	else:
@@ -69,10 +74,8 @@ func load_dict(payload: Dictionary) -> void:
 		class_id = str(payload["class_id"])
 	else:
 		class_id = ""
-	if payload.has("stats_points_pool"):
-		stats_points_pool = int(payload["stats_points_pool"])
-	else:
-		stats_points_pool = 10
+	# Les anciens brouillons peuvent encore contenir 18 : la règle canonique est 10.
+	stats_points_pool = CREATION_POINTS_TOTAL
 	var raw_stats: Dictionary = {}
 	if payload.has("stats"):
 		raw_stats = payload["stats"] as Dictionary
@@ -95,6 +98,11 @@ func load_dict(payload: Dictionary) -> void:
 	if payload.has("equipped_items_by_slot"):
 		equipped_items_by_slot = (payload["equipped_items_by_slot"] as Dictionary).duplicate(true)
 	confirmation_accepted = payload.has("confirmation_accepted") and bool(payload["confirmation_accepted"])
+
+
+func set_clan_name(value: String) -> void:
+	clan_name = value
+	clan_id = ClanIdentityType.id_from_name(value)
 
 
 func points_spent() -> int:

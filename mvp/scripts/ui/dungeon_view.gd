@@ -37,13 +37,13 @@ func _refresh_room() -> void:
 	var f := int(run.get("current_floor", 0)) + 1
 	var r := int(run.get("current_room", 0)) + 1
 	lbl_floor_room.text = "Étage %d — Salle %d" % [f, r]
-	lbl_type.text = "Type: %s" % str(room.get("type", "combat"))
+	lbl_type.text = "Type : %s" % str(room.get("type", "combat"))
 
 	var enemies: Array = room.get("enemies", [])
 	if enemies.is_empty():
 		lbl_enemies.text = "[i]Aucun ennemi[/i]"
 	else:
-		lbl_enemies.text = "[b]Ennemis:[/b] " + FKHelpers.join_array(enemies, ", ")
+		lbl_enemies.text = "[b]Ennemis :[/b] " + FKHelpers.join_array(enemies, ", ")
 
 	btn_resolve.disabled = bool(room.get("cleared", false))
 	btn_next.disabled = not bool(room.get("cleared", false))
@@ -62,16 +62,16 @@ func _on_resolve() -> void:
 
 	if room_type == "treasure":
 		ClanManager.gagner({"or": 45, "essence": 2})
-		lbl_result.text = "Trésor récupéré: +45 or, +2 essence."
+		lbl_result.text = "Trésor récupéré : +45 or, +2 essence."
 	elif room_type == "rest":
 		ClanManager.gagner({"mana": 20, "soldats": 3})
-		lbl_result.text = "Repos réussi: +20 mana, +3 soldats."
+		lbl_result.text = "Repos réussi : +20 mana, +3 soldats."
 	elif diff >= 0:
 		ClanManager.gagner({"or": 20, "renseignements": 2})
 		lbl_result.text = "Victoire dans la salle (%d vs %d)." % [score, power]
 	else:
 		ClanManager.payer({"soldats": 6, "mana": 8})
-		lbl_result.text = "Combat difficile (%d vs %d). Pertes: -6 soldats, -8 mana." % [score, power]
+		lbl_result.text = "Combat difficile (%d contre %d). Pertes : -6 soldats, -8 mana." % [score, power]
 
 	DungeonGenerator.clear_current_room()
 	btn_resolve.disabled = true

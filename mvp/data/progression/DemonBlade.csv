@@ -1,9 +1,9 @@
 ﻿Niveau,Force,Magie,Espionnage,Artisanat,Diplomatie,Commandement,Attaque,Défense,Résistance,Initiative,Jet de Vigueur,Jet de Volonté,Jet de Réflexes,Nouveaux Talents,Lore
-1,8,8,8,8,8,8,10,8,8,8,8,8,8,blood_edge, Frappe cendré,"Ton épée brille d'une lueur violette, signe de ta malédiction."
-2,9,8,8,8,8,8,11,8,9,8,9,8,8,+1 Force, Coup tranchant,"Le sang de tes ennemis alimente ta lame."
-3,10,8,8,8,8,8,12,9,9,8,10,9,8,Frappe cendré +1,"Ta malédiction te rend plus résistant."
+1,8,8,8,8,8,8,10,8,8,8,8,8,8,"blood_edge, Frappe cendrée","Ton épée brille d'une lueur violette, signe de ta malédiction."
+2,9,8,8,8,8,8,11,8,9,8,9,8,8,"+1 Force, Coup tranchant","Le sang de tes ennemis alimente ta lame."
+3,10,8,8,8,8,8,12,9,9,8,10,9,8,Frappe cendrée +1,"Ta malédiction te rend plus résistant."
 4,11,8,8,8,8,9,13,9,10,9,11,9,9,Lame empoisonnée (Dégâts +10%),"Ton épée suinte un venin noir."
-5,12,8,8,8,8,9,14,10,10,9,12,10,9,Fureur cendré (Attaque +20%),"La rage de Vhal, la Braise-Source t’envahit."
+5,12,8,8,8,8,9,14,10,10,9,12,10,9,Fureur cendrée (Attaque +20%),"La rage de Vhal, la Braise-Source t’envahit."
 6,13,9,8,8,8,10,15,10,11,9,13,10,10,Résistance cendrée (+1 Résistance),"Ta peau résiste aux flammes des enfers."
 7,14,9,8,8,8,10,16,11,11,10,14,11,10,Lame vorace (Récupère 5 PV par kill),"Ton épée se nourrit de la vie de tes ennemis."
 8,15,10,8,8,8,11,17,11,12,10,15,11,11,Coup fatal (20% de chance de one-shot),"Un coup bien placé peut achever un ennemi d’un seul coup."

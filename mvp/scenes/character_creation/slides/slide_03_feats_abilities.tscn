@@ -27,7 +27,7 @@ theme_override_constants/separation = 8
 [node name="StepTitle" type="Label" parent="Content" unique_id=1452183111]
 layout_mode = 2
 theme_override_font_sizes/font_size = 18
-text = "Slide 3 - Dons et capacites"
+text = "Étape 3 — Dons et capacités"
 
 [node name="CardScroll" type="ScrollContainer" parent="Content" unique_id=812345678]
 layout_mode = 2
@@ -63,7 +63,7 @@ alignment = 2
 
 [node name="BtnPrev" type="Button" parent="Content/Nav" unique_id=310657000]
 layout_mode = 2
-text = "Precedent"
+text = "Précédent"
 
 [node name="BtnNext" type="Button" parent="Content/Nav" unique_id=185586417]
 layout_mode = 2

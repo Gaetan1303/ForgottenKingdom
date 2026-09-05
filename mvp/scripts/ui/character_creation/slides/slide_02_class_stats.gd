@@ -9,25 +9,40 @@ const CharacterBuildService = preload("res://scripts/data/character_build_servic
 const FallenUI = preload("res://scripts/ui/fallen_ui.gd")
 
 const CARD_COLUMNS := 2
+const POINTS_POOL_TOTAL: int = 10
+const STAT_LABELS := {
+	"force": "Force", "magie": "Magie", "espionnage": "Espionnage",
+	"artisanat": "Artisanat", "diplomatie": "Diplomatie", "commandement": "Commandement",
+}
+const PROGRESSION_TALENT_LABELS := {
+	"blood_edge": "Lame de sang", "abyss_focus": "Focalisation abyssale",
+	"blood_fury": "Fureur sanguinaire", "cendré_tactician": "Tacticien cendré",
+	"crimson_focus": "Focalisation écarlate", "feral_bond": "Lien sauvage",
+	"hellforge_engineer": "Ingénieur de la forge infernale", "mind_echo": "Écho mental",
+	"predator_instinct": "Instinct du prédateur", "silent_killer": "Tueur silencieux",
+	"soul_anchor": "Ancre spirituelle", "unyielding_oath": "Serment inébranlable",
+	"void_step": "Pas du vide", "void_tongue": "Langue du vide",
+}
 
 var _selected_class_id: String = ""
-const POINTS_POOL_TOTAL: int = 18
-var _class_base_stats: Dictionary = {}
+var _invested_points: Dictionary = {}
+var _class_bonus_stats: Dictionary = {}
+var _updating_controls := false
 
 func _ready() -> void:
+	_invested_points = StatDefs.make_default_stats(0)
+	_class_bonus_stats = StatDefs.make_default_stats(0)
 	for key in StatDefs.STAT_KEYS:
 		var node := find_child("Stat_%s" % key, true, false) as SpinBox
 		if node:
-			# ensure spinbox has sane min/step/max so allocation is constrained
 			node.min_value = StatDefs.CHARACTER_MIN_STAT
 			node.step = 1
-			# give a generous initial max; will be tightened by _update_points_pool()
 			node.max_value = StatDefs.CHARACTER_MIN_STAT + POINTS_POOL_TOTAL
 			node.value_changed.connect(Callable(self, "_on_stat_value_changed").bind(key))
-	_update_derived_stats()
-	_update_points_pool()
-	# initialize class base stats to the default min so point calculations work
-	_class_base_stats = StatDefs.make_default_stats(StatDefs.CHARACTER_MIN_STAT)
+		var stat_label := find_child("Label%s" % str(key).capitalize(), true, false) as Label
+		if stat_label:
+			stat_label.tooltip_text = _stat_rules_tooltip(key)
+	_refresh_stat_controls()
 
 func enter_slide(data: Resource) -> void:
 	_populate_class_cards()
@@ -42,26 +57,19 @@ func enter_slide(data: Resource) -> void:
 		if tmp_stats != null:
 			incoming_stats = tmp_stats as Dictionary
 
-	if class_id != "":
-		_select_class_card(class_id)
-	else:
+	_invested_points = StatDefs.make_default_stats(0)
+	if not incoming_stats.is_empty():
+		for key in StatDefs.STAT_KEYS:
+			_invested_points[key] = maxi(0, int(incoming_stats.get(key, StatDefs.CHARACTER_MIN_STAT)) - StatDefs.CHARACTER_MIN_STAT)
+
+	if class_id == "":
 		# default to first class if none selected yet
 		var classes: Dictionary = GameDataLoader.get_classes()
 		var keys: Array = classes.keys()
 		keys.sort()
 		if keys.size() > 0:
-			_select_class_card(str(keys[0]))
-
-	if incoming_stats.is_empty():
-		_update_derived_stats()
-		return
-	for key in StatDefs.STAT_KEYS:
-		var node := find_child("Stat_%s" % key, true, false) as SpinBox
-		if node:
-			var default_stat := StatDefs.CHARACTER_MIN_STAT
-			var stat_value := int(incoming_stats[key]) if incoming_stats.has(key) else default_stat
-			node.value = float(stat_value)
-	_update_derived_stats()
+			class_id = str(keys[0])
+	_select_class_card(class_id)
 
 
 func collect_payload() -> Dictionary:
@@ -74,9 +82,14 @@ func collect_payload() -> Dictionary:
 func _collect_stats() -> Dictionary:
 	var out := StatDefs.make_default_stats(StatDefs.CHARACTER_MIN_STAT)
 	for key in StatDefs.STAT_KEYS:
-		var node := find_child("Stat_%s" % key, true, false) as SpinBox
-		if node:
-			out[key] = int(node.value)
+		out[key] = StatDefs.CHARACTER_MIN_STAT + int(_invested_points.get(key, 0))
+	return out
+
+
+func _collect_display_stats() -> Dictionary:
+	var out := _collect_stats()
+	for key in StatDefs.STAT_KEYS:
+		out[key] = int(out[key]) + int(_class_bonus_stats.get(key, 0))
 	return out
 
 
@@ -150,7 +163,7 @@ func _build_class_card(class_id: String, class_data: Dictionary) -> Button:
 	var progression_rows := GameDataLoader.get_class_progression(class_id)
 	if progression_rows.size() > 0:
 		var lvl_info := Label.new()
-		lvl_info.text = "Niveaux: %d" % progression_rows.size()
+		lvl_info.text = "Niveaux : %d" % progression_rows.size()
 		lvl_info.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 		lvl_info.modulate = Color(0.85, 0.82, 0.72, 0.95)
 		lvl_info.add_theme_font_size_override("font_size", 12)
@@ -184,41 +197,14 @@ func _on_class_card_pressed(class_id: String) -> void:
 
 func _select_class_card(class_id: String) -> void:
 	_selected_class_id = class_id
-	_reset_stat_spinboxes()
 	_apply_class_stats(class_id)
 	_refresh_class_selection()
 	_refresh_progression_summary(class_id)
 
 
 func _apply_class_stats(class_id: String) -> void:
-	var stats := StatDefs.make_default_stats(StatDefs.CHARACTER_MIN_STAT)
-	if class_id != "":
-		var point_buy := CharacterCreationRules.apply_point_buy_for_class(class_id, 10)
-		if point_buy.has("stats"):
-			stats = point_buy["stats"] as Dictionary
-			# remember class base stats so allocated points are computed relative to them
-			_class_base_stats = stats.duplicate(true)
-
-	for key in StatDefs.STAT_KEYS:
-		var node := find_child("Stat_%s" % key, true, false) as SpinBox
-		if node:
-			var default_stat := StatDefs.CHARACTER_MIN_STAT
-			var stat_value := int(stats[key]) if stats.has(key) else default_stat
-			# set bounds before value so the value is clamped to the class base if needed
-			node.min_value = float(stat_value)
-			node.step = 1
-			node.max_value = float(stat_value + POINTS_POOL_TOTAL)
-			node.value = float(stat_value)
-	_update_derived_stats()
-
-func _reset_stat_spinboxes() -> void:
-	for key in StatDefs.STAT_KEYS:
-		var node := find_child("Stat_%s" % key, true, false) as SpinBox
-		if node:
-			node.min_value = StatDefs.CHARACTER_MIN_STAT
-			node.step = 1
-			node.max_value = StatDefs.CHARACTER_MIN_STAT + POINTS_POOL_TOTAL
-			node.value = float(StatDefs.CHARACTER_MIN_STAT)
+	_class_bonus_stats = CharacterCreationRules.get_creation_class_score_bonus(class_id)
+	_refresh_stat_controls()
 
 
 func _refresh_class_selection() -> void:
@@ -237,10 +223,47 @@ func _refresh_class_selection() -> void:
 			card.add_theme_stylebox_override("focus", style)
 
 func _on_stat_value_changed(value: float, stat_key: String) -> void:
+	if _updating_controls:
+		return
+	var class_bonus := int(_class_bonus_stats.get(stat_key, 0))
+	var requested := maxi(0, int(value) - StatDefs.CHARACTER_MIN_STAT - class_bonus)
+	var previous := int(_invested_points.get(stat_key, 0))
+	_invested_points[stat_key] = mini(requested, previous + _points_remaining())
+	_refresh_stat_controls()
+
+
+func _points_spent() -> int:
+	var spent := 0
+	for key in StatDefs.STAT_KEYS:
+		spent += maxi(0, int(_invested_points.get(key, 0)))
+	return spent
+
+
+func _points_remaining() -> int:
+	return maxi(0, POINTS_POOL_TOTAL - _points_spent())
+
+
+func _refresh_stat_controls() -> void:
+	_updating_controls = true
+	var remaining := _points_remaining()
+	for key in StatDefs.STAT_KEYS:
+		var invested := int(_invested_points.get(key, 0))
+		var class_bonus := int(_class_bonus_stats.get(key, 0))
+		var final_value := StatDefs.CHARACTER_MIN_STAT + invested + class_bonus
+		var node := find_child("Stat_%s" % key, true, false) as SpinBox
+		if node:
+			node.min_value = float(StatDefs.CHARACTER_MIN_STAT + class_bonus)
+			node.max_value = float(final_value + remaining)
+			node.value = float(final_value)
+			node.tooltip_text = _stat_breakdown_tooltip(key, final_value)
+		var modifier_label := find_child("Modifier_%s" % key, true, false) as Label
+		if modifier_label:
+			modifier_label.text = "(%s)" % _format_signed(StatDefs.score_to_modifier(final_value))
+	_updating_controls = false
 	_update_derived_stats()
 
 func _update_derived_stats() -> void:
-	var stats := _collect_stats()
+	var stats := _collect_display_stats()
 	var mods := CharacterBuildService.build_modifiers(stats)
 	var derived := CharacterBuildService.build_derived_stats(mods)
 
@@ -259,41 +282,37 @@ func _set_derived_label(node_name: String, value: int) -> void:
 		node.text = str(value)
 
 func _update_points_pool() -> void:
-	var stats: Dictionary = _collect_stats()
-	var spent: int = 0
-	# compute spent using the same stat cost curve as the rest of the UI
-	for key in StatDefs.STAT_KEYS:
-		var value: int = int(stats.get(key, StatDefs.CHARACTER_MIN_STAT))
-		var base_val: int = int(_class_base_stats.get(key, StatDefs.CHARACTER_MIN_STAT))
-		if value > base_val:
-			spent += _compute_stat_cost(base_val, value)
-	var remaining: int = max(0, POINTS_POOL_TOTAL - spent)
+	var remaining := _points_remaining()
 	var label: Label = find_child("PointsPoolLabel", true, false) as Label
 	if label:
-		label.text = "Points restants: %d / %d" % [remaining, POINTS_POOL_TOTAL]
-
-	for key in StatDefs.STAT_KEYS:
-		var node := find_child("Stat_%s" % key, true, false) as SpinBox
-		if node:
-			var value: int = int(node.value)
-			node.max_value = float(_calculate_max_stat_value(value, remaining))
-
-func _calculate_max_stat_value(current_value: int, remaining_points: int) -> int:
-	var max_value := current_value
-	while max_value < StatDefs.CHARACTER_MAX_STAT:
-		var next_cost := CharacterCreationRules.stat_upgrade_cost_preview(max_value)
-		if next_cost > remaining_points:
-			break
-		remaining_points -= next_cost
-		max_value += 1
-	return max_value
+		label.text = "Points restants : %d / %d" % [remaining, POINTS_POOL_TOTAL]
 
 
-func _compute_stat_cost(from_value: int, to_value: int) -> int:
-	var cost := 0
-	for value in range(from_value, to_value):
-		cost += CharacterCreationRules.stat_upgrade_cost_preview(value)
-	return cost
+func _stat_breakdown_tooltip(stat_key: String, final_value: int) -> String:
+	return "%s : %d\n\nValeur de base : %d\nPoints investis : %s\nBonus de classe : %s\nBonus de clan : 0\n\nTotal : %d\nModificateur : %s" % [
+		str(STAT_LABELS.get(stat_key, stat_key.capitalize())), final_value,
+		StatDefs.CHARACTER_MIN_STAT, _format_signed(int(_invested_points.get(stat_key, 0))),
+		_format_signed(int(_class_bonus_stats.get(stat_key, 0))), final_value,
+		_format_signed(StatDefs.score_to_modifier(final_value)),
+	]
+
+
+func _stat_rules_tooltip(stat_key: String) -> String:
+	var descriptions := {
+		"force": "Mesure la puissance physique du personnage.\n\nInfluence :\n• l’Attaque\n• le jet de Vigueur",
+		"magie": "Mesure sa maîtrise de l’Éther de Cendre.\n\nInfluence :\n• la Résistance\n• le jet de Volonté\n• la réserve de mana",
+		"espionnage": "Mesure sa furtivité et sa vivacité.\n\nInfluence :\n• la Défense\n• l’Initiative\n• le jet de Réflexes",
+		"artisanat": "Mesure sa maîtrise de la forge et des vestiges.",
+		"diplomatie": "Mesure son influence et son talent de négociation.",
+		"commandement": "Mesure son autorité et sa discipline.\n\nInfluence :\n• l’Attaque\n• les points de vie maximaux",
+	}
+	return "%s\n\n%s\n\nUtilisée comme prérequis par certains dons." % [
+		str(STAT_LABELS.get(stat_key, stat_key.capitalize())), str(descriptions.get(stat_key, "")),
+	]
+
+
+func _format_signed(value: int) -> String:
+	return "+%d" % value if value >= 0 else str(value)
 
 
 func _refresh_progression_summary(class_id: String) -> void:
@@ -306,7 +325,7 @@ func _refresh_progression_summary(class_id: String) -> void:
 	_clear_progression_grid(grid)
 
 	if class_id == "":
-		_add_progression_message(grid, "Selectionnez une classe pour afficher sa progression.")
+		_add_progression_message(grid, "Sélectionnez une classe pour afficher sa progression.")
 		return
 
 	var rows := GameDataLoader.get_class_progression(class_id)
@@ -314,22 +333,30 @@ func _refresh_progression_summary(class_id: String) -> void:
 		_add_progression_message(grid, "Aucune progression disponible pour cette classe.")
 		return
 
-	var headers := ["Stats", "Talents"]
+	var headers := ["Caractéristiques", "Talents"]
 	for header in headers:
 		_add_progression_grid_cell(grid, header, true)
 
 	for row in rows:
 		var d := row as Dictionary
-		var stats_text := "Niv %d\nATK %d\nDEF %d\nRES %d" % [
+		var stats_text := "Niveau %d\nAttaque : %d\nDéfense : %d\nRésistance : %d" % [
 			int(d.get("niveau", 0)),
 			int(d.get("attaque", 0)),
 			int(d.get("defense", 0)),
 			int(d.get("resistance", 0)),
 		]
-		var talents_text := str(d.get("talents", ""))
+		var talents_text := _resolve_progression_talents(str(d.get("talents", "")))
 
 		_add_progression_grid_cell(grid, stats_text, false)
 		_add_progression_grid_cell(grid, talents_text, false)
+
+
+func _resolve_progression_talents(raw_text: String) -> String:
+	var resolved: Array[String] = []
+	for raw_part in raw_text.split(",", false):
+		var part := str(raw_part).strip_edges()
+		resolved.append(str(PROGRESSION_TALENT_LABELS.get(part, part)))
+	return ", ".join(resolved)
 
 
 func _clear_progression_grid(grid: GridContainer) -> void:
@@ -395,4 +422,3 @@ func _make_progression_cell_style(heading: bool) -> StyleBoxFlat:
 
 func _make_card_style(selected: bool) -> StyleBoxFlat:
 	return FallenUI.card_style(selected)
-

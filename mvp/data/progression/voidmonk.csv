@@ -1,6 +1,6 @@
 ﻿Niveau,Force,Magie,Espionnage,Artisanat,Diplomatie,Commandement,Attaque,Défense,Résistance,Initiative,Jet de Vigueur,Jet de Volonté,Jet de Réflexes,Nouveaux Talents,Lore
-1,10,8,10,8,8,8,10,10,8,10,10,10,10,void_step, Enchaînement du néant,"Tu te déplaces comme si le temps n’avait pas de prise sur toi."
-2,11,8,11,8,8,8,11,10,8,11,11,10,11,+1 Espionnage, Coup du vide (+1 Attaque),"Tes attaques traversent les défenses comme si elles n’existaient pas."
+1,10,8,10,8,8,8,10,10,8,10,10,10,10,"void_step, Enchaînement du néant","Tu te déplaces comme si le temps n’avait pas de prise sur toi."
+2,11,8,11,8,8,8,11,10,8,11,11,10,11,"+1 Espionnage, Coup du vide (+1 Attaque)","Tes attaques traversent les défenses comme si elles n’existaient pas."
 3,12,8,12,8,8,8,12,11,9,12,12,11,12,Enchaînement du néant +1,"Tes enchaînements deviennent plus fluides."
 4,13,8,13,8,8,8,13,11,9,13,13,11,13,Équilibre parfait (+1 Défense),"Tu es aussi solide que le vide lui-même."
 5,14,8,14,8,8,8,14,12,10,14,14,12,14,Frappe du néant (Ignore 30% de la défense),"Tes coups frappent là où il n’y a rien."

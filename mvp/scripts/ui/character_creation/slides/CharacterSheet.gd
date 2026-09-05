@@ -2,6 +2,7 @@
 extends CreationSlideBase
 
 const CharacterCreationFlowType = preload("res://scripts/ui/character_creation/creation_flow_controller.gd")
+const CharacterCreationRules = preload("res://scripts/services/character_creation_rules_service.gd")
 const MALE_PORTRAIT = preload("res://assets/images/hero/homme/male.png")
 const FEMALE_PORTRAIT = preload("res://assets/images/hero/femme/female.png")
 
@@ -16,11 +17,11 @@ const STAT_UI_ORDER = [
 
 const STAT_LABELS = {
 	"force": "Force",
-	"espionnage": "Agilite",
-	"magie": "Intelligence",
-	"commandement": "Endurance",
-	"diplomatie": "Charisme",
-	"artisanat": "Chance",
+	"espionnage": "Espionnage",
+	"magie": "Magie",
+	"commandement": "Commandement",
+	"diplomatie": "Diplomatie",
+	"artisanat": "Artisanat",
 }
 
 @onready var _sheet_panel = get_node_or_null("CharacterSheetPanel") as PanelContainer
@@ -114,7 +115,7 @@ func _refresh_portrait() -> void:
 		var cid = str(_snapshot.get("class_id", ""))
 		var cdef = GameDataLoader.get_class_by_id(cid)
 		var role_label = str(cdef.get("name", cid))
-		_class_tag_label.text = "Classe: %s" % role_label
+		_class_tag_label.text = "Classe : %s" % role_label
 	if _level_label != null:
 		_level_label.text = "Niveau 1"
 
@@ -136,7 +137,7 @@ func _fill_identity() -> void:
 	_add_identity_pair("Nom", str(_snapshot.get("character_name", "Sans nom")))
 	_add_identity_pair("Race/Origine", race_name)
 	_add_identity_pair("Classe", role_label)
-	_add_identity_pair("Age", age)
+	_add_identity_pair("Âge", age)
 	_add_identity_pair("Origine", origin)
 
 
@@ -144,7 +145,7 @@ func _add_identity_pair(label_text: String, value_text: String) -> void:
 	if _identity_grid == null:
 		return
 	var key = Label.new()
-	key.text = "%s:" % label_text
+	key.text = "%s :" % label_text
 	key.modulate = Color(0.68, 0.77, 1.0)
 	key.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	var value = Label.new()
@@ -162,7 +163,8 @@ func _fill_stats() -> void:
 	for child in _stats_grid.get_children():
 		child.queue_free()
 
-	var stats = _snapshot.get("stats", {}) as Dictionary
+	var purchased_stats = _snapshot.get("stats", {}) as Dictionary
+	var stats := CharacterCreationRules.compute_creation_display_stats(str(_snapshot.get("class_id", "")), purchased_stats)
 	for key in STAT_UI_ORDER:
 		var value = int(stats.get(key, StatDefs.CHARACTER_MIN_STAT))
 		_stats_grid.add_child(_build_stat_row(key, value))
@@ -180,7 +182,8 @@ func _build_stat_row(stat_key: String, stat_value: int) -> Control:
 	label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	label.modulate = Color(0.81, 0.9, 1.0)
 	var value = Label.new()
-	value.text = str(stat_value)
+	var modifier := StatDefs.score_to_modifier(stat_value)
+	value.text = "%d (%s%d)" % [stat_value, "+" if modifier >= 0 else "", modifier]
 	value.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 	value.modulate = _score_color(stat_value)
 	top.add_child(label)
@@ -225,7 +228,7 @@ func _fill_skills() -> void:
 		_skills_list.add_child(_build_skill_row(title, _stars_for_text(title)))
 
 	if _skills_list.get_child_count() == 0:
-		_skills_list.add_child(_build_skill_row("Aucune competence", "[.....]"))
+		_skills_list.add_child(_build_skill_row("Aucune compétence", "[.....]"))
 
 
 func _build_skill_row(skill_name: String, stars: String) -> Control:
@@ -288,7 +291,7 @@ func _fill_equipment() -> void:
 	_equipment_grid.add_child(_build_equipment_slot("Arme principale", weapon))
 	_equipment_grid.add_child(_build_equipment_slot("Armure", armor))
 	_equipment_grid.add_child(_build_equipment_slot("Accessoire", accessory))
-	_equipment_grid.add_child(_build_equipment_slot("Objet special", special))
+	_equipment_grid.add_child(_build_equipment_slot("Objet spécial", special))
 
 
 func _build_equipment_slot(slot_name: String, item_name: String) -> Control:
@@ -309,7 +312,7 @@ func _build_equipment_slot(slot_name: String, item_name: String) -> Control:
 	value.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 
 	var rarity = Label.new()
-	rarity.text = "Rarete: %s" % _rarity_from_name(clean_name)
+	rarity.text = "Rareté : %s" % _rarity_from_name(clean_name)
 	rarity.modulate = Color(0.99, 0.78, 0.42)
 	rarity.add_theme_font_size_override("font_size", 11)
 
@@ -322,7 +325,7 @@ func _build_equipment_slot(slot_name: String, item_name: String) -> Control:
 func _rarity_from_name(item_name: String) -> String:
 	var lowered = item_name.to_lower()
 	if lowered.find("obsidienne") != -1:
-		return "Epique"
+		return "Épique"
 	if lowered.find("runique") != -1:
 		return "Rare"
 	if lowered == "(vide)":
@@ -346,16 +349,16 @@ func _fill_lore() -> void:
 	var role_label = str(cdef.get("name", cid))
 	var hero = str(_snapshot.get("character_name", "Sans nom"))
 	var clan = str(_snapshot.get("clan_name", "Errant"))
-	var origin = str(_snapshot.get("racial_power_id", "heritage inconnu"))
+	var origin = str(_snapshot.get("racial_power_id", "héritage inconnu"))
 	var alignment = _compute_alignment()
 
 	var text = ""
 	text += "[b]Contexte[/b]\n"
-	text += "%s, de la lignee %s, a embrasse la voie de %s.\n\n" % [hero, clan, role_label]
-	text += "Origine mystique: %s.\n" % origin
-	text += "Alignement moral: [color=#8BD6FF]%s[/color].\n\n" % alignment
-	text += "[b]Resume dynamique[/b]\n"
-	text += "Ce personnage combine discipline tactique, adaptation en combat et maitrise de ses choix d'equipement."
+	text += "%s, héritier du clan %s, a embrassé la voie de %s.\n\n" % [hero, clan, role_label]
+	text += "Origine mystique : %s.\n" % origin
+	text += "Alignement moral : [color=#8BD6FF]%s[/color].\n\n" % alignment
+	text += "[b]Résumé[/b]\n"
+	text += "Ce personnage conjugue discipline tactique, adaptation au combat et maîtrise de son équipement."
 	_lore_text.text = text
 
 
@@ -367,7 +370,7 @@ func _compute_alignment() -> String:
 		return "Loyal"
 	if stealth - social >= 6:
 		return "Neutre pragmatique"
-	return "Equilibre"
+	return "Équilibré"
 
 
 func _play_intro_animation() -> void:
@@ -419,7 +422,7 @@ func _on_export_pressed() -> void:
 
 	var file = FileAccess.open(json_path, FileAccess.WRITE)
 	if file == null:
-		_set_status("Echec export JSON.", Color(1.0, 0.6, 0.6))
+		_set_status("Échec de l’export JSON.", Color(1.0, 0.6, 0.6))
 		return
 	file.store_string(JSON.stringify(_build_export_payload(), "\t"))
 	file.close()
@@ -427,7 +430,7 @@ func _on_export_pressed() -> void:
 	var image = get_viewport().get_texture().get_image()
 	var png_error = image.save_png(png_path)
 	if png_error != OK:
-		_set_status("JSON exporte, PNG en echec.", Color(1.0, 0.75, 0.5))
+		_set_status("JSON exporté, échec de l’export PNG.", Color(1.0, 0.75, 0.5))
 		return
 	_set_status("Export OK: PNG + JSON dans user://exports", Color(0.62, 1.0, 0.73))
 

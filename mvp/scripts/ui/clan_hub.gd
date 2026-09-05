@@ -339,7 +339,7 @@ func _rafraichir_liste_maisons() -> void:
 		if revelee:
 			titre.text = "[%d] %s" % [id, maison.get("nom", "???")]
 		else:
-			titre.text = "[%d] Famille Inconnue" % id
+			titre.text = "[%d] Famille inconnue" % id
 
 		var puissance := int(maison.get("puissance", 0))
 		if puissance <= 0:
@@ -1120,10 +1120,10 @@ func _texture_from_file_any(path: String) -> Texture2D:
 func _texte_statut(statut: String) -> String:
 	match statut:
 		"inconnue":   return "Inconnue"
-		"revelee":    return "Revelee"
+		"revelee":    return "Révélée"
 		"hostile":    return "Hostile"
 		"neutre":     return "Neutre"
-		"alliee":     return "Alliee"
+		"alliee":     return "Alliée"
 		"soumise":    return "Soumise"
 	return "Statut inconnu"
 
@@ -1153,7 +1153,7 @@ func _lancer_action(action_id: String) -> void:
 		return
 
 	if action_id == "recruter_pnj" and not ClanManager.magie_pactes_active():
-		_afficher_message("Magie des Pactes inactive: impossible de recruter un PNJ.")
+		_afficher_message("Magie des Pactes inactive : impossible de recruter un PNJ.")
 		return
 	if action_id == "recruter_pnj" and not ClanManager.peut_recruter_pnj_domaine():
 		_afficher_message("Tous les rôles de domaine sont déjà pourvus.")
@@ -1213,7 +1213,7 @@ func _ouvrir_dialogue_cible(action_id: String) -> void:
 		return
 
 	for m in maisons_valides:
-		var nom: String = m.get("nom", "???") if bool(m.get("revelee", false)) else "Famille Inconnue"
+		var nom: String = m.get("nom", "???") if bool(m.get("revelee", false)) else "Famille inconnue"
 		liste_cibles.add_item("%s (statut : %s)" % [nom, m.get("statut", "?")])
 		liste_cibles.set_item_metadata(liste_cibles.item_count - 1, int(m.get("id", -1)))
 

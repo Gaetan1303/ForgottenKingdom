@@ -48,7 +48,7 @@ theme_override_constants/separation = 10
 [node name="Title" type="Label" parent="CharacterSheetPanel/Margin/Main" unique_id=1735836534]
 layout_mode = 2
 theme_override_font_sizes/font_size = 26
-text = "Slide 6 - Fiche de Personnage Finale"
+text = "Fiche finale du personnage"
 horizontal_alignment = 1
 
 [node name="Body" type="HBoxContainer" parent="CharacterSheetPanel/Margin/Main" unique_id=145544651]
@@ -83,7 +83,7 @@ stretch_mode = 5
 [node name="ClassTag" type="Label" parent="CharacterSheetPanel/Margin/Main/Body/Left/PortraitContainer/PortraitVBox" unique_id=572053621]
 layout_mode = 2
 theme_override_font_sizes/font_size = 16
-text = "Classe: -"
+text = "Classe : —"
 
 [node name="LevelTag" type="Label" parent="CharacterSheetPanel/Margin/Main/Body/Left/PortraitContainer/PortraitVBox" unique_id=2009511256]
 layout_mode = 2
@@ -110,7 +110,7 @@ theme_override_constants/separation = 6
 [node name="IdentityTitle" type="Label" parent="CharacterSheetPanel/Margin/Main/Body/RightScroll/Right/IdentitySection/IdentityVBox" unique_id=368995238]
 layout_mode = 2
 theme_override_font_sizes/font_size = 18
-text = "Identite"
+text = "Identité"
 
 [node name="IdentityGrid" type="GridContainer" parent="CharacterSheetPanel/Margin/Main/Body/RightScroll/Right/IdentitySection/IdentityVBox" unique_id=1331314989]
 layout_mode = 2
@@ -152,7 +152,7 @@ theme_override_constants/separation = 6
 [node name="SkillsTitle" type="Label" parent="CharacterSheetPanel/Margin/Main/Body/RightScroll/Right/MidSections/SkillsSection/SkillsVBox" unique_id=1076778024]
 layout_mode = 2
 theme_override_font_sizes/font_size = 17
-text = "Competences"
+text = "Compétences"
 
 [node name="SkillsList" type="VBoxContainer" parent="CharacterSheetPanel/Margin/Main/Body/RightScroll/Right/MidSections/SkillsSection/SkillsVBox" unique_id=1351778747]
 layout_mode = 2
@@ -170,7 +170,7 @@ theme_override_constants/separation = 6
 [node name="EquipTitle" type="Label" parent="CharacterSheetPanel/Margin/Main/Body/RightScroll/Right/MidSections/EquipmentSection/EquipVBox" unique_id=2092424188]
 layout_mode = 2
 theme_override_font_sizes/font_size = 17
-text = "Equipement"
+text = "Équipement"
 
 [node name="EquipmentGrid" type="GridContainer" parent="CharacterSheetPanel/Margin/Main/Body/RightScroll/Right/MidSections/EquipmentSection/EquipVBox" unique_id=1760891105]
 layout_mode = 2
@@ -190,7 +190,7 @@ theme_override_constants/separation = 6
 [node name="LoreTitle" type="Label" parent="CharacterSheetPanel/Margin/Main/Body/RightScroll/Right/LoreSection/LoreVBox" unique_id=855054818]
 layout_mode = 2
 theme_override_font_sizes/font_size = 17
-text = "Background"
+text = "Histoire"
 
 [node name="LoreScroll" type="ScrollContainer" parent="CharacterSheetPanel/Margin/Main/Body/RightScroll/Right/LoreSection/LoreVBox" unique_id=1699228450]
 custom_minimum_size = Vector2(0, 132)
@@ -231,7 +231,7 @@ text = "Valider"
 [node name="BtnExport" type="Button" parent="CharacterSheetPanel/Margin/Main/ActionButtons/ButtonsRow" unique_id=375454319]
 custom_minimum_size = Vector2(150, 36)
 layout_mode = 2
-text = "Exporter fiche"
+text = "Exporter la fiche"
 
 [node name="ConfirmCheckBox" type="CheckBox" parent="CharacterSheetPanel/Margin/Main/ActionButtons" unique_id=1514182640]
 layout_mode = 2

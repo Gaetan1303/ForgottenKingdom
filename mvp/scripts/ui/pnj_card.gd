@@ -72,15 +72,15 @@ func _apply_profile_to_ui() -> void:
 	if _lbl_equip:
 		var eq = _profile.get("equipment", [])
 		if typeof(eq) == TYPE_ARRAY:
-			_lbl_equip.text = "Equipement: %s" % FKHelpers.join_array(eq, ", ")
+			_lbl_equip.text = "Équipement : %s" % FKHelpers.join_array(eq, ", ")
 		else:
-			_lbl_equip.text = "Equipement: -"
+			_lbl_equip.text = "Équipement : —"
 	if _lbl_behavior:
 		var beh = _profile.get("behavior", {})
 		if typeof(beh) == TYPE_DICTIONARY:
-			_lbl_behavior.text = "Comportement: %s" % str(beh.get("behavior", "-"))
+			_lbl_behavior.text = "Comportement : %s" % str(beh.get("behavior", "—"))
 		else:
-			_lbl_behavior.text = "Comportement: -"
+			_lbl_behavior.text = "Comportement : —"
 
 	# Load portrait: exact match, then any file in class folder, then gender default
 	# Load portrait: try PNJ-id based images first, then class folder, then gender default

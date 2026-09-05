@@ -41,7 +41,7 @@ theme_override_font_sizes/font_size = 18
 
 [node name="TypeRoom" type="Label" parent="VBox"]
 layout_mode = 2
-text = "Type: Combat"
+text = "Type : Combat"
 name = "TypeRoom"
 
 [node name="Enemies" type="RichTextLabel" parent="VBox"]
@@ -49,7 +49,7 @@ layout_mode = 2
 size_flags_vertical = 3
 bbcode_enabled = true
 fit_content = true
-text = "Ennemis:"
+text = "Ennemis :"
 name = "Enemies"
 
 [node name="Result" type="Label" parent="VBox"]
@@ -75,5 +75,5 @@ disabled = true
 
 [node name="BtnExit" type="Button" parent="VBox/Buttons"]
 layout_mode = 2
-text = "Retour clan"
+text = "Retour au clan"
 name = "BtnExit"

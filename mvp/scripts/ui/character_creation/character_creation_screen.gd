@@ -5,10 +5,11 @@ const FallenUI = preload("res://scripts/ui/fallen_ui.gd")
 
 const ManagerType = preload("res://scripts/ui/character_creation/character_creation_manager.gd")
 const CharacterCreationFlowType = preload("res://scripts/ui/character_creation/creation_flow_controller.gd")
+const ClanIdentityType = preload("res://scripts/data/clan_identity.gd")
 
 const STEP_TITLES: Array[String] = [
 	"IDENTITÉ & HÉRITAGE",
-	"CLASSE & ATTRIBUTS",
+	"CLASSE & CARACTÉRISTIQUES",
 	"DONS & CAPACITÉS",
 	"ARSENAL & ÉQUIPEMENT",
 	"SERMENT DE L’HÉRITIER",
@@ -19,7 +20,7 @@ const STEP_SUBTITLES: Array[String] = [
 	"Choisissez votre voie et répartissez les forces qui définiront votre règne.",
 	"Affinez votre style de jeu par les dons et aptitudes qui vous distinguent.",
 	"Préparez ce que vous emporterez pour survivre à la reconquête.",
-	"Relisez votre destinée avant de l’inscrire dans les Bibliothèque.",
+	"Relisez votre destinée avant de l’inscrire dans la Bibliothèque.",
 ]
 
 @export var slide_scene_paths: Array[String] = [
@@ -162,13 +163,16 @@ func _on_creation_completed(final_payload: Dictionary) -> void:
 	var nom_clan := ""
 	if character.has("clan_name"):
 		nom_clan = str(character["clan_name"]).strip_edges()
+	var clan_id := str(character.get("clan_id", "")).strip_edges()
+	if clan_id.is_empty():
+		clan_id = ClanIdentityType.id_from_name(nom_clan)
 	var class_id := ""
 	if character.has("class_id"):
 		class_id = str(character["class_id"]).strip_edges()
 
 	if nom_perso.length() < 2 or nom_clan.length() < 2 or class_id.is_empty():
 		if error_label:
-			error_label.text = "Creation incomplete: nom, clan ou classe invalide."
+			error_label.text = "Création incomplète : nom, clan ou classe invalide."
 		return
 
 	var feats: Array = []
@@ -207,6 +211,8 @@ func _on_creation_completed(final_payload: Dictionary) -> void:
 	var pouvoir_value := str(character["racial_power_id"]) if character.has("racial_power_id") else ""
 	var profil := {
 		"nom_complet": full_name,
+		"clan_id": clan_id,
+		"clan_name": nom_clan,
 		"genre": "",
 		"apparence": appearance_value,
 		"portrait": portrait_value,
@@ -230,7 +236,7 @@ func _on_creation_completed(final_payload: Dictionary) -> void:
 		},
 		"fiche_complete": {
 			"stats_brutes": raw_stats,
-			"points_restants": 0,
+			"points_restants": maxi(0, int(character.get("stats_points_pool", 10)) - _creation_points_spent(raw_stats)),
 		},
 	}
 
@@ -243,3 +249,10 @@ func _on_creation_completed(final_payload: Dictionary) -> void:
 
 	clan_mgr.nouvelle_partie(nom_perso, nom_clan, class_id, final_stats, profil)
 	game_mgr.go_to("intro_vn")
+
+
+func _creation_points_spent(raw_stats: Dictionary) -> int:
+	var spent := 0
+	for key in StatDefs.STAT_KEYS:
+		spent += maxi(0, int(raw_stats.get(key, StatDefs.CHARACTER_MIN_STAT)) - StatDefs.CHARACTER_MIN_STAT)
+	return spent

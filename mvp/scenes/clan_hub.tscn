@@ -171,7 +171,7 @@ text = "Fortifier le clan"
 
 [node name="BtnRecuperer" type="Button" parent="ContenuPrincipal/PanneauActions/ContenuActions/BoutonActions"]
 layout_mode = 2
-text = "Repos et regeneration"
+text = "Repos et régénération"
 
 [node name="SepFinTour" type="HSeparator" parent="ContenuPrincipal/PanneauActions/ContenuActions"]
 layout_mode = 2
@@ -243,7 +243,7 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_colors/font_color = Color(0.85, 0.85, 0.85, 1)
 theme_override_font_sizes/font_size = 13
-text = "Bienvenue dans les Veyr. Choisissez votre première action."
+text = "Bienvenue dans le Veyr. Choisissez votre première action."
 vertical_alignment = 1
 autowrap_mode = 3
 

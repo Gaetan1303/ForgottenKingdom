@@ -21,9 +21,9 @@ custom_minimum_size = Vector2(84, 84)
 size_flags_horizontal = 0
 size_flags_vertical = 0
 [node name="LabelName" type="Label" parent="Content/HBox/Left"]
-text = "PNJ Name"
+text = "Nom du PNJ"
 [node name="LabelRole" type="Label" parent="Content/HBox/Left"]
-text = "role (niv)"
+text = "Rôle (niv.)"
 theme/font_size_override/size = 12
 
 [node name="Right" type="HFlowContainer" parent="Content/HBox"]
@@ -34,9 +34,9 @@ theme_override_constants/v_separation = 6
 [node name="BtnSupport" type="Button" parent="Content/HBox/Right"]
 text = "Support"
 [node name="BtnExpedition" type="Button" parent="Content/HBox/Right"]
-text = "Expedition"
+text = "Expédition"
 [node name="BtnDetails" type="Button" parent="Content/HBox/Right"]
-text = "Details"
+text = "Détails"
 
 [node name="DetailsPanel" type="VBoxContainer" parent="Content"]
 visible = false
@@ -51,6 +51,6 @@ size_flags_vertical = 0
 [node name="DetailStats" type="VBoxContainer" parent="Content/DetailsPanel/DetailRow"]
 [node name="StatList" type="VBoxContainer" parent="Content/DetailsPanel/DetailRow/DetailStats"]
 [node name="LabelEquip" type="Label" parent="Content/DetailsPanel/DetailRow/DetailStats/StatList"]
-text = "Equipement: -"
+text = "Équipement : —"
 [node name="LabelBehavior" type="Label" parent="Content/DetailsPanel/DetailRow/DetailStats/StatList"]
-text = "Comportement: -"
+text = "Comportement : —"

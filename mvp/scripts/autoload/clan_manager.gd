@@ -6,6 +6,7 @@ extends Node
 ## rely on the script's class_name (StatDefs) instead of preloading it here
 ## Use the service classes registered by class_name (PnjDailyPlannerService, PnjGenerator, JsonPersistenceService)
 const FKHelpers = preload("res://scripts/utils/fk_helpers.gd")
+const ClanIdentityType = preload("res://scripts/data/clan_identity.gd")
 
 # ── Chemins ────────────────────────────────────────────────────────────
 const DEFAULT_STATE_PATH := "res://data/clan/etat_clan_defaut.json"
@@ -18,6 +19,7 @@ const ROLE_DOMAINES := ["forgeron", "alchimiste", "intendant", "arcaniste"]
 
 # ── État du clan ────────────────────────────────────────────────────────
 var nom_clan:       String     = ""
+var clan_id:        String     = ""
 var nom_personnage: String     = ""
 var classe:         String     = ""
 var profil_personnage: Dictionary = {
@@ -141,9 +143,14 @@ func nouvelle_partie(
 	_charger_etat_defaut()
 	nom_personnage = p_nom_personnage
 	nom_clan       = p_nom_clan
+	clan_id        = str(p_profil_personnage.get("clan_id", "")).strip_edges()
+	if clan_id.is_empty():
+		clan_id = ClanIdentityType.id_from_name(nom_clan)
 	classe         = p_classe
 	if not p_profil_personnage.is_empty():
 		profil_personnage = p_profil_personnage.duplicate(true)
+	profil_personnage["clan_id"] = clan_id
+	profil_personnage["clan_name"] = nom_clan
 	_forcer_magie_pactes()
 
 	# If the creation profile already contains raw character scores (stats_brutes),
@@ -1254,6 +1261,7 @@ func _comparer_condition(a: Variant, b: Variant, op: String) -> bool:
 
 func sauvegarder() -> void:
 	var data := {
+		"clan_id": clan_id,
 		"nom_clan": nom_clan,
 		"nom_personnage": nom_personnage,
 		"classe": classe,
@@ -1293,10 +1301,15 @@ func charger_sauvegarde() -> bool:
 	if data.is_empty():
 		return false
 
-	nom_clan             = data.get("nom_clan", "")
+	nom_clan             = str(data.get("nom_clan", data.get("clan_name", "")))
+	clan_id              = str(data.get("clan_id", "")).strip_edges()
+	if clan_id.is_empty():
+		clan_id = ClanIdentityType.id_from_name(nom_clan)
 	nom_personnage       = data.get("nom_personnage", "")
 	classe               = data.get("classe", "")
 	profil_personnage    = (data.get("profil_personnage", profil_personnage) as Dictionary).duplicate(true)
+	profil_personnage["clan_id"] = clan_id
+	profil_personnage["clan_name"] = nom_clan
 	_forcer_magie_pactes()
 	caracteristiques_hero = (data.get("caracteristiques_hero", caracteristiques_hero) as Dictionary).duplicate(true)
 	stats_clan           = (data.get("stats_clan", stats_clan) as Dictionary).duplicate(true)

@@ -66,18 +66,18 @@ theme_override_constants/separation = 6
 
 [node name="StatsHeader" type="Label" parent="Content/MainSplit/StatsPanel" unique_id=503481163]
 layout_mode = 2
-text = "Statistiques"
+text = "Caractéristiques"
 
 [node name="PointsPoolLabel" type="Label" parent="Content/MainSplit/StatsPanel" unique_id=2000000001]
 layout_mode = 2
-text = "Points restants: 18 / 18"
+text = "Points restants : 10 / 10"
 theme_override_colors/font_color = Color(0.85, 0.82, 0.72, 0.95)
 
 [node name="StatsGrid" type="GridContainer" parent="Content/MainSplit/StatsPanel" unique_id=742487701]
 layout_mode = 2
 theme_override_constants/h_separation = 8
 theme_override_constants/v_separation = 6
-columns = 2
+columns = 3
 
 [node name="LabelForce" type="Label" parent="Content/MainSplit/StatsPanel/StatsGrid" unique_id=452058459]
 layout_mode = 2
@@ -89,6 +89,10 @@ min_value = 8.0
 max_value = 18.0
 value = 8.0
 
+[node name="Modifier_force" type="Label" parent="Content/MainSplit/StatsPanel/StatsGrid"]
+layout_mode = 2
+text = "(-1)"
+
 [node name="LabelMagie" type="Label" parent="Content/MainSplit/StatsPanel/StatsGrid" unique_id=384652215]
 layout_mode = 2
 text = "Magie"
@@ -98,6 +102,10 @@ layout_mode = 2
 min_value = 8.0
 max_value = 18.0
 value = 8.0
+
+[node name="Modifier_magie" type="Label" parent="Content/MainSplit/StatsPanel/StatsGrid"]
+layout_mode = 2
+text = "(-1)"
 
 [node name="LabelEspionnage" type="Label" parent="Content/MainSplit/StatsPanel/StatsGrid" unique_id=1679518261]
 layout_mode = 2
@@ -109,6 +117,10 @@ min_value = 8.0
 max_value = 18.0
 value = 8.0
 
+[node name="Modifier_espionnage" type="Label" parent="Content/MainSplit/StatsPanel/StatsGrid"]
+layout_mode = 2
+text = "(-1)"
+
 [node name="LabelArtisanat" type="Label" parent="Content/MainSplit/StatsPanel/StatsGrid" unique_id=1737930892]
 layout_mode = 2
 text = "Artisanat"
@@ -118,6 +130,10 @@ layout_mode = 2
 min_value = 8.0
 max_value = 18.0
 value = 8.0
+
+[node name="Modifier_artisanat" type="Label" parent="Content/MainSplit/StatsPanel/StatsGrid"]
+layout_mode = 2
+text = "(-1)"
 
 [node name="LabelDiplomatie" type="Label" parent="Content/MainSplit/StatsPanel/StatsGrid" unique_id=459570220]
 layout_mode = 2
@@ -129,6 +145,10 @@ min_value = 8.0
 max_value = 18.0
 value = 8.0
 
+[node name="Modifier_diplomatie" type="Label" parent="Content/MainSplit/StatsPanel/StatsGrid"]
+layout_mode = 2
+text = "(-1)"
+
 [node name="LabelCommandement" type="Label" parent="Content/MainSplit/StatsPanel/StatsGrid" unique_id=1723094071]
 layout_mode = 2
 text = "Commandement"
@@ -138,6 +158,10 @@ layout_mode = 2
 min_value = 8.0
 max_value = 18.0
 value = 8.0
+
+[node name="Modifier_commandement" type="Label" parent="Content/MainSplit/StatsPanel/StatsGrid"]
+layout_mode = 2
+text = "(-1)"
 
 [node name="DerivedHeader" type="Label" parent="Content/MainSplit/StatsPanel" unique_id=727925578]
 layout_mode = 2

@@ -85,7 +85,7 @@ func _build_drag_preview() -> Control:
 	style.bg_color = Color(0.23, 0.15, 0.10, 0.95)
 	preview.add_theme_stylebox_override("panel", style)
 	var name_label := Label.new()
-	name_label.text = str(equipped_item.get("label", "Objet equipe"))
+	name_label.text = str(equipped_item.get("label", "Objet équipé"))
 	name_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	name_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	name_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
