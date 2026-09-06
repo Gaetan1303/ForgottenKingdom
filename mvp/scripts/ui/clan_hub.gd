@@ -9,6 +9,9 @@
 extends Control
 const FallenUI = preload("res://scripts/ui/fallen_ui.gd")
 
+const RefugePanel = preload("res://scripts/ui/refuge_panel.gd")
+const Refuge = preload("res://scripts/services/refuge_service.gd")
+
 const FKHelpers = preload("res://scripts/utils/fk_helpers.gd")
 const ResourcePathResolver = preload("res://scripts/utils/resource_path_resolver.gd")
 const VisualAssetCatalog = preload("res://scripts/ui/visual_asset_catalog.gd")
@@ -40,7 +43,7 @@ var _actions_nuit := [
 ]
 
 var _actions_actuelles: Array = []
-var _vue_gauche: String = "maisons"
+var _vue_gauche: String = "domaine"
 
 const PORTRAIT_HINTS := {}
 
@@ -75,21 +78,31 @@ const ICON_RES_AVANCEES := [
 # ─────────────────────────────────────────────────────────────────────
 
 func _ready() -> void:
+	if ClanManager.campaign.is_empty():
+		_vue_gauche = "maisons"
 	ClanManager.ressources_mises_a_jour.connect(_rafraichir_header)
 	_connecter_boutons()
 	_preparer_layout_actions()
 	_rafraichir_tout()
 	_init_resource_icons()
+	_prepare_header_layout()
 
 	# Accès à l'intendance PNJ dans le panneau défilable de la Maison.
 	var action_container := $ContenuPrincipal/PanneauActions/ContenuActions/BoutonActions
 	if action_container != null and action_container.get_node_or_null("BtnPlanPNJ") == null:
 		var btn := Button.new()
 		btn.name = "BtnPlanPNJ"
-		btn.text = "Intendance PNJ"
+		btn.text = "Intendance"
 		btn.toggle_mode = false
 		btn.pressed.connect(_on_open_pnj_manager)
 		action_container.add_child(btn)
+	var base_button := Button.new()
+	base_button.text = "La Brèche-Sèche"
+	base_button.pressed.connect(func():
+		_vue_gauche = "domaine"
+		_rafraichir_colonne_gauche()
+	)
+	action_container.add_child(base_button)
 	FallenUI.apply(self, "clan")
 
 
@@ -151,6 +164,11 @@ func _rafraichir_tout() -> void:
 
 func _rafraichir_colonne_gauche() -> void:
 	match _vue_gauche:
+		"domaine":
+			var list := _vider_colonne_gauche()
+			var refuge := RefugePanel.new()
+			list.add_child(refuge)
+			refuge.changed.connect(_rafraichir_tout, CONNECT_DEFERRED)
 		"profil":
 			_afficher_vue_profil()
 		"coffre":
@@ -207,8 +225,8 @@ func _rafraichir_header() -> void:
 	$Header/BgHeader/InfoClan/RessourcesHeader/LabelOr.text       = "Or: %d" % int(res.get("or", 0))
 	$Header/BgHeader/InfoClan/RessourcesHeader/LabelSoldats.text  = "Soldats: %d" % int(res.get("soldats", 0))
 	$Header/BgHeader/InfoClan/RessourcesHeader/LabelMana.text     = "Mana: %d" % int(res.get("mana", 0))
-	$Header/BgHeader/InfoClan/RessourcesHeader/LabelReputation.text = "Rep: %d" % int(res.get("reputation", 0))
-	$Header/BgHeader/InfoClan/RessourcesHeader/LabelAme.text      = "Ame: %d%%" % ClanManager.barre_ame
+	$Header/BgHeader/InfoClan/RessourcesHeader/LabelReputation.text = "Réputation : %d" % int(res.get("reputation", 0))
+	$Header/BgHeader/InfoClan/RessourcesHeader/LabelAme.text      = "Âme : %d%%" % ClanManager.barre_ame
 	var phase_action := "Action utilisée" if ClanManager.action_deja_utilisee_pour_moment() else "Action disponible"
 	$Header/BgHeader/InfoClan/LabelTour.text    = "Tour %d — %s (%s)" % [ClanManager.tour_actuel, moment, phase_action]
 	$ContenuPrincipal/PanneauActions/ContenuActions/BtnFinTour.text = (
@@ -1278,6 +1296,7 @@ func _on_fin_tour() -> void:
 		msg_tour = "%s | %s" % [msg_tour, msg_event]
 	_afficher_message(msg_tour)
 
+	Refuge.dawn(ClanManager)
 	ClanManager.tour_actuel += 1
 	ClanManager.moment_journee = "jour"
 	ClanManager.reset_actions_nouveau_tour()
@@ -1313,7 +1332,11 @@ func _on_menu_principal() -> void:
 
 
 func _on_donjon() -> void:
-	GameManager.open_dungeon()
+	if not ClanManager.campaign.is_empty():
+		_vue_gauche = "domaine"
+		_rafraichir_colonne_gauche()
+	else:
+		GameManager.open_dungeon()
 
 
 
@@ -1339,3 +1362,19 @@ func _on_coffre() -> void:
 func _on_bibliotheque() -> void:
 	_vue_gauche = "bibliotheque"
 	_rafraichir_colonne_gauche()
+
+
+func _prepare_header_layout() -> void:
+	var info := $Header/BgHeader/InfoClan
+	info.add_theme_constant_override("separation", 16)
+	info.get_node("Spacer").hide()
+	var name_label := info.get_node("LabelNomClan") as Label
+	name_label.custom_minimum_size.x = 150
+	name_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	name_label.clip_text = true
+	name_label.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
+	name_label.tooltip_text = ClanManager.nom_clan
+	var resources := info.get_node("RessourcesHeader") as HFlowContainer
+	resources.custom_minimum_size.x = 380
+	resources.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	resources.size_flags_stretch_ratio = 2

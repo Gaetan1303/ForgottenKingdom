@@ -92,6 +92,7 @@ func collect_payload() -> Dictionary:
 
 
 func _configure_tooltip_for_stat_row(stat_key: String, stat_label: Label, stat_control: SpinBox) -> void:
+	preload("res://scripts/ui/components/keyboard_tooltip.gd").bind(stat_label)
 	var tooltip := _stat_rules_tooltip(stat_key)
 	if stat_label:
 		stat_label.mouse_filter = Control.MOUSE_FILTER_STOP
@@ -111,6 +112,7 @@ func _configure_tooltip_for_stat_row(stat_key: String, stat_label: Label, stat_c
 
 
 func _configure_tooltip_for_secondary_row(stat_key: String, stat_label: Label, value_label: Label) -> void:
+	preload("res://scripts/ui/components/keyboard_tooltip.gd").bind(stat_label)
 	var tooltip := _secondary_stat_tooltip(stat_key)
 	for control in [stat_label, value_label]:
 		if control:
@@ -309,6 +311,8 @@ func _refresh_stat_controls() -> void:
 			node.value = float(final_value)
 			node.tooltip_text = _stat_breakdown_tooltip(key, final_value)
 		var detailed_tooltip := _stat_breakdown_tooltip(key, final_value)
+		var stat_name := find_child("Label%s" % str(key).capitalize(), true, false) as Label
+		if stat_name: stat_name.tooltip_text = detailed_tooltip
 		var modifier_label := find_child("Modifier_%s" % key, true, false) as Label
 		if modifier_label:
 			modifier_label.text = "(%s)" % _format_signed(StatDefs.score_to_modifier(final_value))
@@ -346,7 +350,7 @@ func _update_points_pool() -> void:
 
 
 func _stat_breakdown_tooltip(stat_key: String, final_value: int) -> String:
-	return "%s : %d\n\nValeur de base : %d\nPoints investis : %s\nBonus de classe : %s\nBonus de clan : 0\n\nTotal : %d\nModificateur : %s" % [
+	return StatDefs.description(stat_key) + "\n\n" + "%s : %d\n\nValeur de base : %d\nPoints investis : %s\nBonus de classe : %s\nBonus de clan : 0\nMalus actif : 0\n\nTotal : %d\nModificateur : %s" % [
 		str(STAT_LABELS.get(stat_key, stat_key.capitalize())), final_value,
 		StatDefs.CHARACTER_MIN_STAT, _format_signed(int(_invested_points.get(stat_key, 0))),
 		_format_signed(int(_class_bonus_stats.get(stat_key, 0))), final_value,

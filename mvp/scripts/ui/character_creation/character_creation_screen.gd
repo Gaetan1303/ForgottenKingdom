@@ -252,6 +252,7 @@ func _on_creation_completed(final_payload: Dictionary) -> void:
 		return
 
 	clan_mgr.nouvelle_partie(nom_perso, nom_clan, class_id, final_stats, profil)
+	preload("res://scripts/services/refuge_service.gd").initialize(clan_mgr)
 	game_mgr.go_to("intro_vn")
 
 

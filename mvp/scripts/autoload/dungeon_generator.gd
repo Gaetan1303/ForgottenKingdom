@@ -4,7 +4,22 @@ extends Node
 
 const FLOORS_TOTAL := 10
 
-var current_run: Dictionary = {}
+const Combat = preload("res://scripts/services/tactical_combat_service.gd")
+const Refuge = preload("res://scripts/services/refuge_service.gd")
+var _legacy_run: Dictionary = {}
+var _legacy_slot := ""
+var current_run: Dictionary:
+	get:
+		if _legacy_slot != SaveSystem.get_active_slot():
+			_legacy_run = {}
+			_legacy_slot = SaveSystem.get_active_slot()
+		return ClanManager.campaign.get("run", {}) if not ClanManager.campaign.is_empty() else _legacy_run
+	set(value):
+		if ClanManager.campaign.is_empty():
+			_legacy_slot = SaveSystem.get_active_slot()
+			_legacy_run = value
+		else:
+			ClanManager.campaign["run"] = value
 var _rng := RandomNumberGenerator.new()
 
 var _monstres := ["Goule", "Harpie", "Ogre", "Loup infernal", "Chevalier corrompu"]
@@ -124,7 +139,7 @@ func clear_current_room() -> void:
 
 
 func advance_room() -> bool:
-	if current_run.is_empty() or bool(current_run.get("completed", false)):
+	if current_run.is_empty() or bool(current_run.get("completed", false)) or not bool(get_current_room().get("cleared", false)):
 		return false
 	var f := int(current_run.get("current_floor", 0))
 	var r := int(current_run.get("current_room", 0))
@@ -140,3 +155,126 @@ func advance_room() -> bool:
 	current_run["current_floor"] = f
 	current_run["current_room"] = r
 	return true
+
+
+## Préparation commune aux galeries et aux futures sorties du domaine.
+func start_expedition(ids: Array) -> String:
+	if not current_run.is_empty() and not bool(current_run.get("returned", false)):
+		return "Une sortie est déjà en cours."
+	if ids.is_empty() or ids.size() > 2 or ids.size() != _unique_count(ids):
+		return "Choisissez un ou deux compagnons différents."
+	var party: Array = [{"id": "hero", "nom": ClanManager.nom_personnage, "stats": ClanManager.get_stats()}]
+	for id in ids:
+		var person := Refuge.find_person(ClanManager, str(id))
+		if person.is_empty() or str(person.get("etat", "")) != "disponible":
+			return "Un compagnon est blessé ou déjà affecté."
+		party.append(person.duplicate(true))
+	var short_run := not Refuge.has(ClanManager, "salvage")
+	if short_run:
+		current_run = {"floors": [{"floor": 1, "rooms": [
+			{"id": "gallery_threshold", "type": "rest", "enemies": [], "cleared": false},
+			{"id": "gallery_guards", "type": "combat", "enemies": ["Goule affamée", "Goule des pierres"], "cleared": false},
+			{"id": "gallery_cache", "type": "treasure", "enemies": [], "cleared": false}
+		]}], "current_floor": 0, "current_room": 0, "completed": false, "short": true}
+	else:
+		generate_run()
+	current_run["party"] = party
+	current_run["loot"] = {}
+	for id in ids:
+		Refuge.set_person_state(ClanManager, str(id), "en_expedition")
+	Refuge.mark(ClanManager, "assignment")
+	Refuge.log_entry(ClanManager, "Sous la Brèche-Sèche", "L’équipe emporte ses armes. Les compagnons seront indisponibles au domaine jusqu’au retour.")
+	ClanManager.sauvegarder()
+	return ""
+
+func _unique_count(ids: Array) -> int:
+	var found := {}
+	for id in ids: found[id] = true
+	return found.size()
+
+func ensure_battle() -> Dictionary:
+	var room := get_current_room()
+	if room.is_empty() or bool(room.get("cleared", false)) or (room.get("enemies", []) as Array).is_empty():
+		return {}
+	if not room.has("battle"):
+		room["battle"] = Combat.create(current_run.get("party", []), room.get("enemies", []), int(current_run.get("current_floor", 0)))
+		ClanManager.sauvegarder()
+	return room.battle
+
+func combat_command(kind: String, x: int = 0, y: int = 0) -> Dictionary:
+	var battle := ensure_battle()
+	if battle.is_empty():
+		return {"ok": false, "message": "Aucun combat en cours."}
+	var result := Combat.command(battle, kind, x, y, ClanManager.get_ressource("mana"))
+	if not bool(result.get("ok", false)):
+		return result
+	ClanManager.payer({"mana": int(result.get("cost", 0))})
+	for unit in battle.units:
+		if str(unit.team) == "ally":
+			for person in current_run.party:
+				if str(person.id) == str(unit.id):
+					person["hp"] = int(unit.hp)
+					person["max_hp"] = int(unit.max_hp)
+	if str(battle.outcome) == "victory":
+		clear_current_room()
+		_add_loot({"or": 12, "nourriture": 4})
+		current_run["experience"] = int(current_run.get("experience", 0)) + 20
+		Refuge.mark(ClanManager, "combat")
+	elif str(battle.outcome) == "defeat":
+		current_run["completed"] = true
+		current_run["defeat"] = true
+	ClanManager.sauvegarder()
+	return result
+
+func resolve_quiet_room() -> String:
+	var room := get_current_room()
+	if room.is_empty() or bool(room.get("cleared", false)) or not (room.get("enemies", []) as Array).is_empty():
+		return "Cette salle ne peut pas être fouillée maintenant."
+	var message := ""
+	if str(room.get("type", "")) == "treasure":
+		_add_loot({"bois": 8, "fer": 6, "essence": 1})
+		current_run["tools_found"] = true
+		message = "Outils, 8 bois, 6 fer et 1 essence placés dans les sacs. Sous le coffre, un sceau a été gratté. La Cicatrice de Sang brûle un instant."
+	else:
+		if not bool(current_run.get("short", false)):
+			for person in current_run.get("party", []):
+				if int(person.get("hp", 0)) > 0:
+					person["hp"] = mini(int(person.get("max_hp", 30)), int(person.hp) + 8)
+		message = "Vous retrouvez les empreintes décrites par Miri. Au départ, Kael vous a prévenu : « Deux silhouettes au fond. Approchez ensemble, puis choisissez votre angle. »"
+	if str(room.get("type", "")) == "rest" and not bool(current_run.get("short", false)):
+		message = "Halte : les compagnons encore debout récupèrent jusqu’à 8 PV."
+	clear_current_room()
+	ClanManager.sauvegarder()
+	return message
+
+func _add_loot(gains: Dictionary) -> void:
+	var loot: Dictionary = current_run.get("loot", {})
+	for key in gains:
+		loot[key] = int(loot.get(key, 0)) + int(gains[key])
+	current_run["loot"] = loot
+
+func return_to_refuge() -> String:
+	if current_run.is_empty() or bool(current_run.get("returned", false)):
+		return "L’équipe est déjà rentrée."
+	var wounds: PackedStringArray = []
+	for person in current_run.get("party", []):
+		if str(person.id) == "hero":
+			continue
+		var wounded := int(person.get("hp", 30)) <= int(person.get("max_hp", 30)) / 2
+		Refuge.set_person_state(ClanManager, str(person.id), "blesse" if wounded else "disponible")
+		if wounded: wounds.append(str(person.nom))
+	var loot: Dictionary = current_run.get("loot", {})
+	ClanManager.gagner(loot)
+	if bool(current_run.get("tools_found", false)):
+		Refuge.mark(ClanManager, "salvage")
+	Refuge.mark(ClanManager, "return")
+	current_run["returned"] = true
+	current_run["completed"] = true
+	var message := "Retour à la Brèche-Sèche. Ressources déposées : " + (Refuge.resources_text(loot) if not loot.is_empty() else "aucune") + "."
+	if not wounds.is_empty():
+		message += " Blessures : " + ", ".join(wounds) + ". Soins ou repos jusqu’à l’aube nécessaires."
+	message += " Expérience de l’héritier : +%d." % int(current_run.get("experience", 0))
+	Refuge.log_entry(ClanManager, "Le retour", message)
+	ClanManager.donner_experience(int(current_run.get("experience", 0)))
+	ClanManager.sauvegarder()
+	return message

@@ -1,0 +1,17 @@
+# FICHIER LORE : L'Abysse Souverain et le Trône Cendré
+**Classification :** Dimension Géopolitique Majeure / Faction Dirigeante
+**Anciennes dénominations de référence :** Royaume Démoniaque, Trône Vide, Chancelier Bismarck, Chevaliers Infernaux, Terres Libres.
+
+## I. La Structure de l'Abysse
+L'Abysse Souverain n'est pas un chaos informe, mais une dimension d'une rigueur cauchemardesque, régie par un système féodal où la faiblesse est le seul véritable crime. Les cieux y sont perpétuellement voilés d'une brume écarlate et les paysages varient selon l'influence de la famille noble qui les contrôle. Au centre absolu de cette dimension s'élève la Capitale d'Airain, une métropole colossale construite autour du Trône Cendré. Ce trône est le siège du pouvoir absolu, forgé à partir des restes calcifiés du Premier Souverain. 
+
+## II. Le Vide de Pouvoir et le Haut-Régent
+Depuis la mort inexpliquée du dernier Roi de l'Abysse, qui n'a laissé aucun héritier marqué par le sceau du sang, le Trône Cendré est vide. Cette vacance aurait dû déclencher une guerre d'annihilation totale entre les Neuf Lignées Nobles. Cependant, l'effondrement a été évité par l'ascension fulgurante du Haut-Régent Malakor. Puissant Archidémon à l'intellect terrifiant et grand maître de la diplomatie coercitive, Malakor ne s'assoit jamais sur le trône, mais gouverne dans son ombre. Il maintient une paix fragile en dressant les familles les unes contre les autres, s'assurant qu'aucune ne devienne assez puissante pour contester son autorité transitoire qui dure maintenant depuis des siècles.
+
+## III. Le Bras Armé : La Garde d'Obsidienne
+Pour faire respecter les édits du Conclave et écraser toute sédition, Malakor s'appuie sur la Garde d'Obsidienne. Cette caste militaire d'élite n'a d'allégeance qu'envers le maintien de l'ordre abyssal. Ces chevaliers corrompus, engoncés dans des armures fusionnées à leur chair et imprégnées de magie de sang, sont les juges, jurés et bourreaux de l'Abysse. Leur simple déploiement suffit généralement à faire capituler une province entière.
+
+## IV. L'Événement Fondateur : La Purge des Marches Sauvages
+L'histoire contemporaine de l'Abysse est marquée au fer rouge par un événement survenu il y a quinze ans : La Purge des Marches Sauvages. Les Marches Sauvages étaient un conglomérat de territoires frontaliers habités par des clans indépendants qui rejetaient l'autorité du Trône Cendré. Officiellement, le Conclave, sous l'impulsion de Malakor, les a déclarés comme des "anomalies sociétales à éradiquer" pour cause de sédition. 
+
+Une coalition dévastatrice fut formée, menée par la Garde d'Obsidienne et appuyée par les armées des Drakes de Givre (la famille du Dragon Blanc) et d'autres lignées draconiques. Les Marches furent vitrifiées, des millions d'âmes oblitérées et la culture des clans indépendants effacée des mémoires. Toutefois, la véritable raison, classée secret absolu, était motivée par la paranoïa de Malakor : des prophéties laissaient entendre que le Trône Cendré s'apprêtait à résonner avec l'âme d'un guerrier issu de ces territoires libres, le désignant comme le nouveau Roi légitime. Pour conserver le pouvoir, le Haut-Régent a préféré noyer le monde dans le sang plutôt que de céder sa place.

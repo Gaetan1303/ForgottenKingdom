@@ -69,3 +69,18 @@ static func build_modifiers(raw_stats: Dictionary) -> Dictionary:
 	for key in STAT_KEYS:
 		mods[key] = score_to_modifier(int(raw_stats.get(key, CHARACTER_MIN_STAT)))
 	return mods
+
+
+static func description(key: String) -> String:
+	var descriptions := {
+		"force": "Force — Puissance physique. Intervient dans les attaques au contact et la vigueur.",
+		"magie": "Magie — Maîtrise de l’Éther. Intervient dans les capacités et la résistance surnaturelle.",
+		"espionnage": "Espionnage — Vivacité, discrétion et observation. Détermine l’initiative en combat.",
+		"artisanat": "Artisanat — Compréhension des matériaux et maîtrise des outils. Intervient dans le soutien aux fortifications.",
+		"diplomatie": "Diplomatie — Écoute, persuasion et négociation. Intervient dans les relations et les soutiens.",
+		"commandement": "Commandement — Autorité et coordination. Intervient dans les soutiens et les points de vie en expédition.",
+		"ESP": "ESP — Esprit. Volonté, concentration et résistance mentale ; intervient dans les prérequis psychiques et occultes.",
+		"TRA": "TRA — Transfuge. Affinité avec les technologies étrangères, hybrides et magi-tech ; intervient dans leurs prérequis d’utilisation ou d’assimilation.",
+		"ESE": "ESE — Essence. Stabilité, pureté et nature de l’héritage sanguin ; intervient dans les prérequis de lignée et d’interaction avec le sang.",
+	}
+	return str(descriptions.get(key, key))

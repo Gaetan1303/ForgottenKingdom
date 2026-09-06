@@ -374,7 +374,22 @@ func get_character_traits() -> Dictionary:
 
 
 func get_library_entries() -> Dictionary:
+	if not ClanManager.campaign.is_empty():
+		return {"sections": _refuge_archive_sections()}
 	return _library_entries.duplicate(true)
+
+func _refuge_archive_sections() -> Array:
+	var rules: Array = []
+	var tutorial = preload("res://scripts/autoload/tutorial_director.gd")
+	var state: Dictionary = ClanManager.campaign
+	var objective: Dictionary = tutorial.current(state)
+	for step in tutorial.STEPS:
+		if str(step.id) in state.get("milestones", []) or str(step.id) == str(objective.id):
+			rules.append({"title": str(step.objective), "text": str(step.hint)})
+	for key in StatDefs.STAT_KEYS + StatDefs.SECONDARY_STAT_KEYS:
+		rules.append({"title": str(key).capitalize(), "text": StatDefs.description(str(key))})
+	return [{"id": "refuge", "title": "Chronique du refuge", "entries": state.get("journal", []).duplicate(true)}, {"id": "rules", "title": "Aides connues", "entries": rules}]
+
 
 
 ## Retourne toutes les classes chargées (id -> definition)
@@ -505,6 +520,8 @@ func get_world_houses() -> Array:
 
 
 func get_compendium_sections() -> Array:
+	if not ClanManager.campaign.is_empty():
+		return _refuge_archive_sections()
 	var sections: Array = (_library_entries.get("sections", []) as Array).duplicate(true)
 
 	var house_entries: Array = []

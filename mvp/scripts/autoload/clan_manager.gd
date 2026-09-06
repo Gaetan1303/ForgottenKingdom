@@ -107,6 +107,8 @@ var maisons_nobles: Array   = []
 var evenements_declenches: Array = []
 var historique_tours: Array = []
 var pnj_gestion: Dictionary = {}
+## Progression du refuge et expédition : même transaction que ressources et habitants.
+var campaign: Dictionary = {}
 
 # ── Services (instanciation unique — DRY / SRP) ────────────────────────
 var _planner: PnjDailyPlannerService = null
@@ -141,6 +143,7 @@ func nouvelle_partie(
 	p_profil_personnage: Dictionary = {}
 ) -> void:
 	_charger_etat_defaut()
+	campaign = {}
 	nom_personnage = p_nom_personnage
 	nom_clan       = p_nom_clan
 	clan_id        = str(p_profil_personnage.get("clan_id", "")).strip_edges()
@@ -418,7 +421,7 @@ func peut_recruter_pnj_domaine() -> bool:
 
 
 func get_production_totale(base_production: Dictionary) -> Dictionary:
-	var total := base_production.duplicate(true)
+	var total := ressources_par_tour.duplicate(true) if not campaign.is_empty() else base_production.duplicate(true)
 	for cle in RESSOURCE_KEYS:
 		if not total.has(cle):
 			total[cle] = 0
@@ -1272,6 +1275,7 @@ func sauvegarder() -> void:
 		"fiche_hero": fiche_hero.duplicate(true),
 		"fiches_domaine": fiches_domaine.duplicate(true),
 		"pnj_gestion": pnj_gestion.duplicate(true),
+		"campaign": campaign.duplicate(true),
 		"stats": stats.duplicate(),
 		"ressources": ressources.duplicate(),
 		"ressources_par_tour": ressources_par_tour.duplicate(),
@@ -1317,6 +1321,7 @@ func charger_sauvegarde() -> bool:
 	fiche_hero           = (data.get("fiche_hero", fiche_hero) as Dictionary).duplicate(true)
 	fiches_domaine       = (data.get("fiches_domaine", fiches_domaine) as Dictionary).duplicate(true)
 	pnj_gestion          = (data.get("pnj_gestion", _make_default_pnj_gestion_state()) as Dictionary).duplicate(true)
+	campaign             = (data.get("campaign", {}) as Dictionary).duplicate(true)
 	stats                = (data.get("stats", {}) as Dictionary).duplicate()
 	ressources           = (data.get("ressources", {}) as Dictionary).duplicate()
 	ressources_par_tour  = (data.get("ressources_par_tour", {}) as Dictionary).duplicate()
