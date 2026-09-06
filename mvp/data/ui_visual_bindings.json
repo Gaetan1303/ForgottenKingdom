@@ -205,6 +205,31 @@
       "visual": "@clan",
       "mode": "symbol",
       "reason": "Cloture sur la Maison et son histoire a reconstruire."
+    },
+    "fragment_01": {
+      "visual": "@none",
+      "mode": "none",
+      "reason": "Kael seule au réveil ; souvenirs fragmentaires sans révéler les secrets."
+    },
+    "fragment_02": {
+      "visual": "@none",
+      "mode": "none",
+      "reason": "Kael seule au réveil ; souvenirs fragmentaires sans révéler les secrets."
+    },
+    "awakening_01": {
+      "visual": "@kael",
+      "mode": "portrait",
+      "reason": "Kael seule au réveil ; souvenirs fragmentaires sans révéler les secrets."
+    },
+    "awakening_02": {
+      "visual": "@kael",
+      "mode": "portrait",
+      "reason": "Kael seule au réveil ; souvenirs fragmentaires sans révéler les secrets."
+    },
+    "awakening_03": {
+      "visual": "@kael",
+      "mode": "portrait",
+      "reason": "Kael seule au réveil ; souvenirs fragmentaires sans révéler les secrets."
     }
   },
   "resource_cards": [

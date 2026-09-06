@@ -157,6 +157,10 @@ func _preparer_layout_actions() -> void:
 # ─────────────────────────────────────────────────────────────────────
 
 func _rafraichir_tout() -> void:
+	var initial := int(ClanManager.campaign.get("version", 1)) >= 2 and not bool(ClanManager.campaign.get("initial_tutorial_done", false))
+	var actions := $ContenuPrincipal/PanneauActions/ContenuActions
+	for key in ["BoutonActions", "BtnMaisons", "BtnBibliotheque"]:
+		actions.get_node(key).visible = not initial
 	_configurer_actions_moment()
 	_rafraichir_header()
 	_rafraichir_colonne_gauche()
@@ -220,7 +224,7 @@ func _init_resource_icons() -> void:
 func _rafraichir_header() -> void:
 	var res := ClanManager.get_ressources()
 	$Header/BgHeader/InfoClan/LabelNomClan.text = ClanManager.nom_clan
-	var moment := "Jour" if ClanManager.moment_journee == "jour" else "Nuit"
+	var moment := str({"matin": "Matin", "apres_midi": "Après-midi", "soir": "Nuit"}.get(ClanManager.daily_phase, "Matin"))
 	$Header/BgHeader/InfoClan/LabelTour.text    = "Tour %d — %s" % [ClanManager.tour_actuel, moment]
 	$Header/BgHeader/InfoClan/RessourcesHeader/LabelOr.text       = "Or: %d" % int(res.get("or", 0))
 	$Header/BgHeader/InfoClan/RessourcesHeader/LabelSoldats.text  = "Soldats: %d" % int(res.get("soldats", 0))
@@ -230,7 +234,7 @@ func _rafraichir_header() -> void:
 	var phase_action := "Action utilisée" if ClanManager.action_deja_utilisee_pour_moment() else "Action disponible"
 	$Header/BgHeader/InfoClan/LabelTour.text    = "Tour %d — %s (%s)" % [ClanManager.tour_actuel, moment, phase_action]
 	$ContenuPrincipal/PanneauActions/ContenuActions/BtnFinTour.text = (
-		"Passer à la Nuit" if ClanManager.moment_journee == "jour" else "Terminer le Tour"
+		{"matin": "Résoudre la journée", "apres_midi": "Passer à la nuit", "soir": "Accueillir l’aube"}.get(ClanManager.daily_phase, "Continuer")
 	)
 	_mettre_a_jour_infos_avancees(res)
 
@@ -1262,48 +1266,9 @@ func _aller_resolution(cible_id: int) -> void:
 # ─────────────────────────────────────────────────────────────────────
 
 func _on_fin_tour() -> void:
-	if ClanManager.moment_journee == "jour":
-		# Avant de passer à la nuit, résoudre les missions planifiées (après-midi)
-		var report: Dictionary = ClanManager.resoudre_planning_pnj_journee()
-		# Appliquer et sauvegarder est géré par ClanManager.resoudre_planning_pnj_journee
-		var gains := report.get("resource_gains", {}) as Dictionary
-		var report_msg := "Après-midi:"
-		if not gains.is_empty():
-			var parts := []
-			for k in gains.keys():
-				parts.append("%s %+d" % [str(k), int(gains.get(k, 0))])
-			report_msg = "%s %s" % [report_msg, FKHelpers.join_array(parts, ", ")]
-
-		ClanManager.moment_journee = "nuit"
-		ClanManager.reset_actions_pour_nuit()
-		var msg_passifs := ClanManager.appliquer_passifs_nuit()
-		ClanManager.sauvegarder()
-		var msg_nuit := "La nuit tombe sur les Marches Libres. Les actions nocturnes sont disponibles."
-		if not msg_passifs.is_empty():
-			msg_nuit = "%s | %s" % [msg_nuit, msg_passifs]
-		# Affiche d'abord le rapport d'après-midi puis le message de nuit
-		_afficher_message("%s \n%s" % [report_msg, msg_nuit])
-		_rafraichir_tout()
-		return
-
-	var production_base := GameDataLoader.get_production_par_tour()
-	var production := ClanManager.get_production_totale(production_base)
-	ClanManager.gagner(production)
-	var msg_event := ClanManager.tirer_et_appliquer_evenement(GameDataLoader.get_evenements_aleatoires())
-
-	var msg_tour := _construire_resume_tour(production)
-	if not msg_event.is_empty():
-		msg_tour = "%s | %s" % [msg_tour, msg_event]
-	_afficher_message(msg_tour)
-
-	Refuge.dawn(ClanManager)
-	ClanManager.tour_actuel += 1
-	ClanManager.moment_journee = "jour"
-	ClanManager.reset_actions_nouveau_tour()
-	ClanManager.sauvegarder()
+	var result := ClanManager.advance_day_phase()
+	_afficher_message(str(result.get("message", "")))
 	_rafraichir_tout()
-
-	# Vérification des conditions de victoire / défaite
 	_verifier_fin_de_partie()
 
 

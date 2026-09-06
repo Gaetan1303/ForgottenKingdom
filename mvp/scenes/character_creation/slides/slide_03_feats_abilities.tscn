@@ -30,6 +30,7 @@ theme_override_font_sizes/font_size = 18
 text = "Étape 3 — Dons et capacités"
 
 [node name="CardScroll" type="ScrollContainer" parent="Content" unique_id=812345678]
+follow_focus = true
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3

@@ -1,9 +1,12 @@
 extends SceneTree
 
-const SCENE := preload("res://scenes/character_creation/slides/slide_02_class_stats.tscn")
+const SCENE_PATH := "res://scenes/character_creation/slides/slide_02_class_stats.tscn"
 
 func _init() -> void:
-	var slide := SCENE.instantiate()
+	call_deferred("_run")
+
+func _run() -> void:
+	var slide: Control = load(SCENE_PATH).instantiate()
 	root.add_child(slide)
 
 	_assert(slide.find_child("ClassesBand", true, false) != null, "bande horizontale des classes absente")

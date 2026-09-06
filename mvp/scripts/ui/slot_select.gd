@@ -123,19 +123,16 @@ func _on_load_pressed() -> void:
 		return
 	SaveSystem.set_active_slot(_selected_slot_id)
 	SaveSystem.load_save()
+	if bool(SaveSystem.get_value("opening", {}).get("active", false)):
+		GameManager.resume_campaign()
+		return
 	if not SaveSystem.slot_has_clan_save(_selected_slot_id):
 		_status("Ce slot ne contient pas de campagne complète. Utilisez 'Nouvelle / Écraser'.")
 		return
 	if not ClanManager.charger_sauvegarde():
 		_status("Impossible de charger l'état du clan pour ce slot.")
 		return
-	var campaign: Dictionary = ClanManager.campaign
-	if not campaign.is_empty() and not bool(campaign.get("intro_done", false)):
-		GameManager.go_to("intro_vn")
-	elif not campaign.get("run", {}).is_empty() and not bool(campaign.get("run", {}).get("returned", false)):
-		GameManager.go_to("dungeon_view")
-	else:
-		GameManager.go_to("clan_hub")
+	GameManager.resume_campaign()
 
 
 func _on_new_overwrite_pressed() -> void:

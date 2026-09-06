@@ -11,8 +11,9 @@ static func create(party: Array, enemies: Array, floor_index: int = 0) -> Dictio
 	for i in range(party.size()):
 		var member: Dictionary = party[i]
 		var stats: Dictionary = member.get("stats", {})
-		var max_hp := 18 + int(stats.get("commandement", 8))
-		units.append({"id": str(member.id), "name": str(member.nom), "team": "ally", "x": 0, "y": i, "hp": int(member.get("hp", max_hp)), "max_hp": max_hp, "force": int(stats.get("force", 8)), "magie": int(stats.get("magie", 8)), "initiative": int(stats.get("espionnage", 8))})
+		var modifiers: Dictionary = member.get("corruption_modifiers", {})
+		var max_hp := maxi(1, 18 + int(stats.get("commandement", 8)) + int(modifiers.get("max_hp", 0)))
+		units.append({"id": str(member.id), "name": str(member.nom), "team": "ally", "x": 0, "y": i, "hp": mini(max_hp, int(member.get("hp", max_hp))), "max_hp": max_hp, "force": int(stats.get("force", 8)), "magie": maxi(0, int(stats.get("magie", 8)) + int(modifiers.get("magie", 0))), "initiative": maxi(0, int(stats.get("espionnage", 8)) + int(modifiers.get("initiative", 0))), "corruption_modifiers": modifiers.duplicate()})
 	for i in range(mini(enemies.size(), HEIGHT)):
 		units.append({"id": "enemy_%d" % i, "name": str(enemies[i]), "team": "enemy", "x": WIDTH - 1, "y": i, "hp": 10 + floor_index * 3, "max_hp": 10 + floor_index * 3, "force": 6 + floor_index * 2, "magie": 0, "initiative": 6 + floor_index})
 	units.sort_custom(func(a: Dictionary, b: Dictionary) -> bool: return int(a.initiative) > int(b.initiative))

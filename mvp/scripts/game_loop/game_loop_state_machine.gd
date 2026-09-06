@@ -1,33 +1,28 @@
+## Cycle journalier réellement utilisé par le hub, avec reprise sans effets d’entrée.
 extends RefCounted
 class_name GameLoopStateMachine
+const Matin = preload("res://scripts/game_loop/matin_state.gd")
+const ApresMidi = preload("res://scripts/game_loop/apres_midi_state.gd")
+const Soir = preload("res://scripts/game_loop/soir_state.gd")
+var machine: StateMachine
+var clan_manager: Node
 
-const MatinState = preload("res://scripts/game_loop/matin_state.gd")
-const ApresMidiState = preload("res://scripts/game_loop/apres_midi_state.gd")
-const SoirState = preload("res://scripts/game_loop/soir_state.gd")
-const StateMachine = preload("res://scripts/state_machine/state_machine.gd")
-
-var machine: StateMachine = null
-var clan_manager = null
-
-func _init(_clan_manager = null, _debug: bool = false) -> void:
-    clan_manager = _clan_manager
-    machine = StateMachine.new(_debug)
-    machine.add_state("matin", MatinState.new())
-    machine.add_state("apres_midi", ApresMidiState.new())
-    machine.add_state("soir", SoirState.new())
-    machine.set_initial("matin")
+func _init(cm: Node = null, debug: bool = false) -> void:
+	clan_manager = cm
+	machine = StateMachine.new(debug)
+	machine.add_state("matin", Matin.new())
+	machine.add_state("apres_midi", ApresMidi.new())
+	machine.add_state("soir", Soir.new())
+	machine.allow("matin", "advance", "apres_midi")
+	machine.allow("apres_midi", "advance", "soir")
+	machine.allow("soir", "advance", "matin")
 
 func start() -> void:
-    machine.start({"clan_manager": clan_manager})
+	machine.restore(str(clan_manager.daily_phase) if clan_manager != null else "matin")
 
-func tick_to_next() -> void:
-    # advance in loop: matin -> apres_midi -> soir -> matin
-    var cur = machine.current
-    var next_name = "matin"
-    if cur:
-        match cur.name:
-            "matin": next_name = "apres_midi"
-            "apres_midi": next_name = "soir"
-            "soir": next_name = "matin"
-            _: next_name = "matin"
-    machine._goto(next_name, {"clan_manager": clan_manager, "event":"loop_advance"})
+func tick_to_next() -> bool:
+	if clan_manager == null: return false
+	if machine.current == null: start()
+	var run: Dictionary = clan_manager.campaign.get("run", {})
+	if not run.is_empty() and not bool(run.get("returned", false)): return false
+	return machine.handle_event("advance", {"clan_manager": clan_manager})

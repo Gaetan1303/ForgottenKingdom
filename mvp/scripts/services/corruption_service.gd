@@ -411,13 +411,7 @@ func import_state(state: Dictionary) -> void:
 
 
 static func level_to_stage(level: float) -> int:
-	var value := clampf(level, MIN_LEVEL, MAX_LEVEL)
-	if value < 20.0: return Enums.CorruptionStage.PURE
-	if value < 40.0: return Enums.CorruptionStage.TAINTED
-	if value < 60.0: return Enums.CorruptionStage.BREAKING
-	if value < 80.0: return Enums.CorruptionStage.SUBMISSIVE
-	if value < 95.0: return Enums.CorruptionStage.CORRUPTED
-	return Enums.CorruptionStage.LOST
+	return int(CorruptionStage.from_level(level))
 
 
 static func stage_to_string(stage: int) -> String:
@@ -493,3 +487,16 @@ static func _dictionary(value: Variant) -> Dictionary:
 
 static func _error(code: String) -> Dictionary:
 	return {"ok": false, "error": code}
+
+## Effets de l’exposition à l’Éther dans les expéditions. Ne modifie pas les stats de base.
+func expedition_modifiers(char_id: String) -> Dictionary:
+	var stage := get_corruption_stage(char_id)
+	return {"initiative": -stage, "magie": -[0, 0, 1, 1, 2, 3][stage], "max_hp": -[0, 0, 0, 4, 8, 12][stage]}
+
+static func stage_display_name(stage: int) -> String:
+	return ["Stable", "Altéré", "Fragilisé", "Submergé", "Corrompu", "Critique"][clampi(stage, 0, 5)]
+
+func expedition_description(char_id: String) -> String:
+	var profile := get_profile(char_id)
+	var modifiers := expedition_modifiers(char_id)
+	return "Corruption : %.1f / 100 · %s\nRésistance à l’exposition : %.0f %% ; gain = exposition × (1 − résistance / 100).\nProchain combat : initiative %d, magie %d, PV maximum %d. Les caractéristiques de base restent intactes.\nAu refuge : purifier jusqu’à 10 points pour 4 mana et 1 nourriture. L’Architecture de l’Âme reste verrouillée." % [float(profile.get("level", 0.0)), stage_display_name(get_corruption_stage(char_id)), float(profile.get("resistance", 50.0)), int(modifiers.initiative), int(modifiers.magie), int(modifiers.max_hp)]

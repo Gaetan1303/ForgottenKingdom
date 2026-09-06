@@ -6,6 +6,7 @@ extends Control
 const Refuge = preload("res://scripts/services/refuge_service.gd")
 var _choices: VBoxContainer
 var _finishing := false
+var _opening_mode := false
 var _text_tween: Tween
 
 const FallenUI = preload("res://scripts/ui/fallen_ui.gd")
@@ -92,7 +93,8 @@ func _inject_icons(text: String) -> String:
 
 
 func _ready() -> void:
-	Refuge.initialize(ClanManager)
+	_opening_mode = bool(SaveSystem.get_value("opening", {}).get("active", false))
+	if not _opening_mode: Refuge.initialize(ClanManager)
 	_resolve_player_data()
 	_load_visual_bindings()
 	_build_ui()
@@ -102,10 +104,11 @@ func _ready() -> void:
 		push_error("IntroVN: aucune scène chargée — vérifier data/intro_vn.json")
 		GameManager.go_to("clan_hub")
 		return
-	_show_scene(clampi(int(ClanManager.campaign.get("intro_index", 0)), 0, _scenes.size() - 1))
+	_show_scene(clampi(int(SaveSystem.get_value("opening", {}).get("index", 0)) if _opening_mode else int(ClanManager.campaign.get("intro_index", 0)), 0, _scenes.size() - 1))
 
 
 func _resolve_player_data() -> void:
+	if _opening_mode: return
 	var cm: Node = get_node_or_null("/root/ClanManager")
 	if cm == null:
 		return
@@ -554,8 +557,14 @@ func _show_scene(idx: int) -> void:
 		_finish()
 		return
 	_idx = idx
-	ClanManager.campaign["intro_index"] = idx
-	ClanManager.sauvegarder()
+	if _opening_mode:
+		var opening: Dictionary = SaveSystem.get_value("opening", {})
+		opening["index"] = idx
+		SaveSystem.set_value("opening", opening)
+		SaveSystem.save()
+	else:
+		ClanManager.campaign["intro_index"] = idx
+		ClanManager.sauvegarder()
 	var s: Dictionary = _scenes[idx]
 	$TextBox.offset_top = -340.0 if str(s.get("type", "")) == "choice" else -280.0
 	$TextBox/InnerVBox/NarrationNav.visible = str(s.get("type", "")) != "choice"
@@ -584,7 +593,7 @@ func _show_scene(idx: int) -> void:
 	var type: String = str(s.get("type", "narration"))
 	match type:
 		"fin":
-			_btn_continue.text = "Entrer dans le refuge ▶"
+			_btn_continue.text = "Évaluer mon état avec Kael ▶" if _opening_mode else "Entrer dans le refuge ▶"
 			_show_narration(s)
 		"recrutement":
 			_show_narration(s)
@@ -601,7 +610,13 @@ func _show_scene(idx: int) -> void:
 			button.text = str(choice.label)
 			button.custom_minimum_size.y = 36
 			button.pressed.connect(func():
-				Refuge.intro_choice(ClanManager, str(s.id), choice)
+				if _opening_mode:
+					var opening: Dictionary = SaveSystem.get_value("opening", {})
+					opening["choices"][str(s.id)] = choice.get("consequence", "")
+					SaveSystem.set_value("opening", opening)
+					SaveSystem.save()
+				else:
+					Refuge.intro_choice(ClanManager, str(s.id), choice)
 				_advance()
 			)
 			_choices.add_child(button)
@@ -644,6 +659,7 @@ func _resolve_speaker(raw: String) -> String:
 
 func _typewrite(text: String) -> void:
 	_animating = true
+	_btn_continue.disabled = false
 	_story_text.bbcode_enabled = true
 	_story_text.text = ""
 	_story_text.append_text(text)
@@ -777,6 +793,7 @@ func _on_continue() -> void:
 		return
 	# Si l'animation est en cours → révèle instantanément
 	if _animating:
+		if _text_tween != null: _text_tween.kill()
 		_story_text.visible_ratio = 1.0
 		_animating = false
 		_btn_continue.disabled = false
@@ -1003,12 +1020,17 @@ func _finish() -> void:
 	if _finishing: return
 	_finishing = true
 	_btn_continue.disabled = true
-	ClanManager.campaign["intro_done"] = true
-	ClanManager.sauvegarder()
+	if _opening_mode:
+		var opening: Dictionary = SaveSystem.get_value("opening", {})
+		opening["finished"] = true
+		SaveSystem.set_value("opening", opening)
+	else:
+		ClanManager.campaign["intro_done"] = true
+		ClanManager.sauvegarder()
 	SaveSystem.set_value("intro_done", true)
 	SaveSystem.save()
 	# Fondu léger avant la transition
 	var tween: Tween = create_tween()
 	tween.tween_property(_bg, "color", Color(0, 0, 0, 1), 1.2)
 	await tween.finished
-	GameManager.go_to("clan_hub")
+	GameManager.go_to("creation_personnage" if _opening_mode else "clan_hub")

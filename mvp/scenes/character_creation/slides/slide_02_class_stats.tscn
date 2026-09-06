@@ -30,7 +30,7 @@ theme_override_font_sizes/font_size = 18
 text = "Choisir une voie et définir ses forces"
 
 [node name="ClassesBand" type="VBoxContainer" parent="Content"]
-custom_minimum_size = Vector2(0, 142)
+custom_minimum_size = Vector2(0, 190)
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = 6
@@ -39,15 +39,24 @@ theme_override_constants/separation = 6
 layout_mode = 2
 text = "Choisissez une classe"
 
-[node name="ClassesScroll" type="ScrollContainer" parent="Content/ClassesBand"]
-custom_minimum_size = Vector2(0, 112)
+[node name="ClassesMargin" type="MarginContainer" parent="Content/ClassesBand"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_bottom = 12
+
+[node name="ClassesScroll" type="ScrollContainer" parent="Content/ClassesBand/ClassesMargin"]
+follow_focus = true
+custom_minimum_size = Vector2(0, 152)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 horizontal_scroll_mode = 1
 vertical_scroll_mode = 0
 
-[node name="ClassesGrid" type="GridContainer" parent="Content/ClassesBand/ClassesScroll"]
+[node name="ClassesGrid" type="GridContainer" parent="Content/ClassesBand/ClassesMargin/ClassesScroll"]
 layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 3
@@ -75,6 +84,7 @@ theme_override_constants/margin_right = 10
 theme_override_constants/margin_bottom = 8
 
 [node name="StatsScroll" type="ScrollContainer" parent="Content/BottomSplit/StatsFrame/StatsMargin"]
+follow_focus = true
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -368,6 +378,7 @@ text = "Ce panneau se met à jour avec la classe sélectionnée."
 autowrap_mode = 2
 
 [node name="ProgressionSummary" type="ScrollContainer" parent="Content/BottomSplit/ProgressionFrame/ProgressionMargin/ProgressionPanel"]
+follow_focus = true
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3

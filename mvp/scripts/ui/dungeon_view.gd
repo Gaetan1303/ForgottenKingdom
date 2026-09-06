@@ -14,6 +14,7 @@ var _grid: GridContainer
 var _commands: HBoxContainer
 var _hint: Label
 var _mode := "move"
+var _arrival: Control
 
 func _ready() -> void:
 	FallenUI.apply(self, "dungeon")
@@ -28,7 +29,10 @@ func _ready() -> void:
 			GameManager.go_to.call_deferred("clan_hub")
 			return
 		_build_tactical_ui()
-	_refresh_room()
+	if DungeonGenerator.Expedition.state_of(DungeonGenerator.current_run) == "arrival":
+		_show_arrival()
+	else:
+		_refresh_room()
 
 func _build_tactical_ui() -> void:
 	$VBox/Title.text = "SOUS LA BRÈCHE-SÈCHE"
@@ -56,6 +60,8 @@ func _build_tactical_ui() -> void:
 	for definition in [["move", "Déplacement · 3 cases"], ["attack", "Attaque · portée 1"], ["ability", "Trait d’Éther · portée 3 · 3 mana"], ["end", "Fin du tour"]]:
 		var button := Button.new()
 		button.text = definition[1]
+		button.tooltip_text = {"move": "Parcourir au maximum 3 cases libres, une fois par tour.", "attack": "Cible adjacente. Dégâts : Force ÷ 3 + 2. Utilise l’action du tour.", "ability": "Cible à 3 cases au maximum. Dégâts : Magie ÷ 2 + 3. Coût : 3 mana du domaine. Utilise l’action du tour.", "end": "Terminer ce tour et laisser agir le suivant dans l’ordre d’initiative."}[definition[0]]
+		preload("res://scripts/ui/components/keyboard_tooltip.gd").bind(button)
 		button.pressed.connect(_select_command.bind(str(definition[0])))
 		_commands.add_child(button)
 	_hint = Label.new()
@@ -64,6 +70,7 @@ func _build_tactical_ui() -> void:
 	$VBox.move_child(_hint, _commands.get_index())
 	btn_exit.text = "Revenir au refuge avec les sacs"
 	btn_exit.tooltip_text = "Quitter termine cette sortie. Les objets récupérés sont déposés et les blessures conservées."
+	preload("res://scripts/ui/components/keyboard_tooltip.gd").bind(btn_exit)
 
 func _refresh_room() -> void:
 	var room := DungeonGenerator.get_current_room()
@@ -112,7 +119,8 @@ func _refresh_room() -> void:
 			if not unit.is_empty():
 				cell.text = ("▶ " if not actor.is_empty() and str(actor.id) == str(unit.id) else "") + str(unit.name) + "\n%d/%d PV" % [int(unit.hp), int(unit.max_hp)]
 				cell.tooltip_text = "%s · %s · Force %d · Magie %d · Initiative %d" % [unit.name, "Allié" if str(unit.team) == "ally" else "Adversaire", int(unit.force), int(unit.magie), int(unit.initiative)]
-				cell.tooltip_text += "\nAttaque : force ÷ 3 + 2 ; Trait d’Éther : magie ÷ 2 + 3. Malus actif : 0." if str(unit.team) == "ally" else "\nAttaque : force ÷ 3 + 1. Malus actif : 0."
+				cell.tooltip_text += "\nAttaque : force ÷ 3 + 2 ; Trait d’Éther : magie ÷ 2 + 3. Les scores affichés incluent les malus de corruption." if str(unit.team) == "ally" else "\nAttaque : force ÷ 3 + 1. Malus actif : 0."
+				if str(unit.team) == "ally": cell.tooltip_text += "\nPV maximum : 18 + Commandement, puis malus de corruption. À 0 PV, cette unité ne joue plus.\n" + ClanManager.get_corruption_service().expedition_description(str(unit.id))
 				cell.modulate = Color(0.75, 0.9, 1) if str(unit.team) == "ally" else Color(1, 0.8, 0.75)
 			elif not actor.is_empty() and _mode == "move" and not bool(battle.moved) and Combat.can_move(battle, x, y):
 				cell.text = "· Accessible ·"
@@ -191,3 +199,68 @@ func _on_next() -> void:
 func _on_exit() -> void:
 	if _grid != null: DungeonGenerator.return_to_refuge()
 	GameManager.go_to("clan_hub")
+
+func _show_arrival() -> void:
+	$VBox.hide()
+	var margin := MarginContainer.new()
+	margin.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	for side in ["left", "right", "top", "bottom"]: margin.add_theme_constant_override("margin_" + side, 32)
+	add_child(margin)
+	_arrival = margin
+	var column := VBoxContainer.new()
+	column.add_theme_constant_override("separation", 20)
+	margin.add_child(column)
+	var title := Label.new()
+	title.text = "AU SEUIL DU DONJON"
+	title.add_theme_font_size_override("font_size", 30)
+	column.add_child(title)
+	var description := Label.new()
+	description.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	description.text = "La lumière du refuge disparaît derrière vous. Un escalier descend sous la Brèche-Sèche. Kael lève une main : « Attendez. Regardons où nous mettons les pieds. »"
+	description.text += "\nBrume d’Éther : exposition de 8 par personne en descendant, réduite par la résistance. La purification sera possible au retour."
+	column.add_child(description)
+	var scene_row := HBoxContainer.new()
+	scene_row.add_theme_constant_override("separation", 24)
+	scene_row.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	column.add_child(scene_row)
+	var portrait := TextureRect.new()
+	portrait.texture = load("res://assets/images/PNJ/defaut/Kael.png")
+	portrait.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	portrait.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	portrait.custom_minimum_size = Vector2(150, 140)
+	scene_row.add_child(portrait)
+	var result := Label.new()
+	result.text = "Kael garde l’escalier. Vous pouvez examiner les lieux sans toucher au sceau.\nObjectif : vérifier le passage avant de descendre."
+	result.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	result.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	result.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	scene_row.add_child(result)
+	var enter := Button.new()
+	enter.text = "Descendre avec Kael"
+	enter.disabled = not bool(DungeonGenerator.current_run.get("inspected", {}).get("passage", false))
+	for definition in [["inscription", "Examiner l’inscription"], ["passage", "Vérifier le passage avec Kael"]]:
+		var button := Button.new()
+		button.text = definition[1]
+		button.pressed.connect(func():
+			result.text = DungeonGenerator.inspect_arrival(str(definition[0]))
+			enter.disabled = not bool(DungeonGenerator.current_run.get("inspected", {}).get("passage", false)))
+		column.add_child(button)
+	var touch := Button.new()
+	touch.text = "Toucher le sceau · risque de corruption : exposition 16"
+	touch.disabled = bool(DungeonGenerator.current_run.get("exposures", {}).get("inscription", false))
+	touch.pressed.connect(func():
+		result.text = DungeonGenerator.touch_inscription()
+		touch.disabled = true)
+	column.add_child(touch)
+	enter.tooltip_text = "Vérifiez d’abord le passage avec Kael. Descendre expose l’équipe à l’Éther ; la résistance réduit la corruption reçue."
+	preload("res://scripts/ui/components/keyboard_tooltip.gd").bind(enter)
+	column.add_child(enter)
+	enter.pressed.connect(func():
+		if DungeonGenerator.enter_dungeon():
+			_arrival.queue_free()
+			$VBox.show()
+			_refresh_room())
+	var retreat := Button.new()
+	retreat.text = "Retourner au refuge"
+	retreat.pressed.connect(_on_exit)
+	column.add_child(retreat)

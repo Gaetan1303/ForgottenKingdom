@@ -32,6 +32,7 @@ func enter_slide(data: Resource) -> void:
 			_current_class_id = str(tmp_class_id)
 	_current_stats = CharacterCreationRules.compute_creation_display_stats(_current_class_id, _current_stats)
 
+	_show_summary(data)
 	_build_feat_cards()
 	_build_ability_cards()
 	_update_card_selection()
@@ -84,7 +85,9 @@ func _create_card(kind: String, id: String, data: Dictionary) -> Button:
 	button.toggle_mode = true
 	button.text = ""
 	button.name = "%sCard_%s" % [kind, id]
-	button.focus_mode = Control.FOCUS_NONE
+	button.focus_mode = Control.FOCUS_ALL
+	button.tooltip_text = _get_entry_name(data, id) + "\n" + str(data.get("description", "")) + "\nPrérequis : " + _get_prerequis_text(data) + "\n" + _get_effects_text(data)
+	preload("res://scripts/ui/components/keyboard_tooltip.gd").bind(button)
 	# reduce card width so more cards fit per row (3 columns)
 	button.custom_minimum_size = Vector2(260, 280)
 	button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
@@ -104,6 +107,11 @@ func _create_card(kind: String, id: String, data: Dictionary) -> Button:
 	# ensure inner layout reserves enough horizontal room for card content
 	# use a smaller minimum to allow multiple cards per row
 	layout.custom_minimum_size = Vector2(240, 0)
+	layout.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	layout.offset_left = 10
+	layout.offset_right = -10
+	layout.offset_top = 10
+	layout.offset_bottom = -10
 	layout.add_theme_constant_override("separation", 6)
 	button.add_child(layout)
 
@@ -114,7 +122,7 @@ func _create_card(kind: String, id: String, data: Dictionary) -> Button:
 	title.add_theme_color_override("font_color", title_color)
 	title.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	title.custom_minimum_size = Vector2(0, 28)
-	title.clip_text = true
+	title.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	layout.add_child(title)
 
 	var info_box = HBoxContainer.new()
@@ -162,12 +170,12 @@ func _create_card(kind: String, id: String, data: Dictionary) -> Button:
 	effect.custom_minimum_size = Vector2(0, 28)
 	layout.add_child(effect)
 
-	var description_box = Control.new()
+	var description_box = VBoxContainer.new()
 	# make the description area wide enough for the reduced card width
-	description_box.custom_minimum_size = Vector2(240, 150)
+	description_box.custom_minimum_size = Vector2(240, 0)
 	description_box.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	description_box.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	description_box.clip_contents = true
+	description_box.clip_contents = false
 	layout.add_child(description_box)
 
 	var description = Label.new()
@@ -177,13 +185,16 @@ func _create_card(kind: String, id: String, data: Dictionary) -> Button:
 	description.add_theme_font_size_override("font_size", 12)
 	description.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	description.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	description.clip_text = true
+	description.clip_text = false
 	description.set_anchors_preset(Control.PRESET_FULL_RECT)
 	description.offset_left = 0
 	description.offset_top = 0
 	description.offset_right = 0
 	description.offset_bottom = 0
 	description_box.add_child(description)
+	layout.minimum_size_changed.connect(func(): button.custom_minimum_size.y = maxf(280, layout.get_combined_minimum_size().y + 20))
+	prereq_label.tooltip_text = button.tooltip_text
+	preload("res://scripts/ui/components/keyboard_tooltip.gd").bind(prereq_label)
 
 	button.set_pressed(_is_entry_selected(kind, id))
 	var available := _is_prereq_met(data)
@@ -533,3 +544,28 @@ func _slugify(text: String) -> String:
 	if out == "":
 		return "id"
 	return out
+
+func _show_summary(data: Resource) -> void:
+	var content := $Content/CardScroll/CardScrollContent
+	var summary := content.get_node_or_null("CharacterSummary") as Label
+	if summary == null:
+		summary = Label.new()
+		summary.name = "CharacterSummary"
+		summary.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+		content.add_child(summary)
+		content.move_child(summary, 0)
+	var lines: PackedStringArray = []
+	var classes: Dictionary = GameDataLoader.get_classes()
+	lines.append("%s · %s · %s" % [str(data.get("character_name")), str(data.get("clan_name")), str(classes.get(_current_class_id, {}).get("name", _current_class_id))])
+	var spent := 0
+	for key in StatDefs.STAT_KEYS:
+		lines.append("%s : %d" % [str(key).capitalize(), int(_current_stats.get(key, 8))])
+		spent += maxi(0, int(data.get("stats").get(key, 8)) - 8)
+	for key in StatDefs.SECONDARY_STAT_KEYS:
+		lines.append("%s : %d" % [StatDefs.SECONDARY_STAT_LABELS[key], int(data.get("secondary_stats").get(key, 0))])
+	summary.text = "BILAN AVEC KAEL\n" + " · ".join(lines) + "\nPoints restants : %d / 10. Choisissez ensuite vos dons et capacités." % maxi(0, 10 - spent)
+	for grid_name in ["FeatCardGrid", "AbilityCardGrid"]:
+		var grid := content.get_node(grid_name) as GridContainer
+		grid.columns = maxi(1, int((get_viewport_rect().size.x - 80) / 280))
+	var next := find_child("BtnNext", true, false) as Button
+	if next: next.text = "Valider ces choix et préparer l’équipement ▶"

@@ -30,16 +30,24 @@ static func bind(control: Control) -> void:
 	text.add_theme_color_override("default_color", Color.WHITE)
 	text.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	panel.add_child(text)
-	control.focus_entered.connect(func():
+	var show_tooltip := func():
+		if not control.has_focus() or not control.is_visible_in_tree(): return
 		text.text = control.tooltip_text
 		var viewport := control.get_viewport_rect().size
 		var width := minf(480, viewport.x - 56)
 		var estimated_lines := text.text.split("\n").size() + int(ceil(float(text.text.length()) / 60.0))
 		text.custom_minimum_size = Vector2(width, minf(viewport.y - 72, maxf(100, estimated_lines * 24)))
 		panel.size = text.custom_minimum_size + Vector2(24, 24)
-		panel.position = Vector2(maxf(16, viewport.x - panel.size.x - 16), 24)
+		var target := control.get_global_rect()
+		var candidates := [Vector2(target.end.x + 12, target.position.y), Vector2(target.position.x - panel.size.x - 12, target.position.y), Vector2(target.position.x, target.end.y + 12), Vector2(target.position.x, target.position.y - panel.size.y - 12)]
+		panel.position = Vector2(16, 16)
+		for candidate in candidates:
+			var bounded := Vector2(clampf(candidate.x, 16, maxf(16, viewport.x - panel.size.x - 16)), clampf(candidate.y, 16, maxf(16, viewport.y - panel.size.y - 16)))
+			if not Rect2(bounded, panel.size).intersects(target):
+				panel.position = bounded
+				break
 		panel.visible = not text.text.is_empty()
-	)
+	control.focus_entered.connect(func(): show_tooltip.call_deferred())
 	control.focus_exited.connect(func(): panel.hide())
 	control.visibility_changed.connect(func():
 		if not control.is_visible_in_tree(): panel.hide()

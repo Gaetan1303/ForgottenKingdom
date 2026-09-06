@@ -9,21 +9,19 @@ const BUILDINGS := {
 }
 const COMPANIONS := [
 	{"id": "pnj_kael", "nom": "Kael", "role": "garde", "stats": {"force": 14, "magie": 8, "espionnage": 10, "artisanat": 9, "diplomatie": 10, "commandement": 13}},
-	{"id": "pnj_vaelen", "nom": "Vaelen", "role": "diplomate", "stats": {"force": 9, "magie": 10, "espionnage": 10, "artisanat": 10, "diplomatie": 14, "commandement": 12}},
-	{"id": "pnj_miri", "nom": "Miri", "role": "eclaireur", "stats": {"force": 10, "magie": 8, "espionnage": 15, "artisanat": 11, "diplomatie": 10, "commandement": 9}},
-	{"id": "pnj_sylas", "nom": "Sylas", "role": "mage", "stats": {"force": 8, "magie": 13, "espionnage": 10, "artisanat": 15, "diplomatie": 9, "commandement": 10}},
 ]
 
 static func initialize(cm: Node) -> void:
 	if not cm.campaign.is_empty():
 		return
-	cm.campaign = {"version": 1, "intro_index": 0, "intro_done": false, "milestones": [], "buildings": {}, "journal": [], "hints_seen": [], "help_mode": 0, "run": {}, "visibility": 0}
+	cm.campaign = {"version": 2, "intro_index": 0, "intro_done": true, "initial_tutorial_done": false, "milestones": [], "buildings": {}, "journal": [], "hints_seen": [], "help_mode": 0, "run": {}, "visibility": 0}
 	# Réserves propres à une nouvelle campagne, jamais appliquées à un ancien slot.
-	cm.payer({"or": maxi(0, cm.get_ressource("or") - 40), "soldats": maxi(0, cm.get_ressource("soldats") - 8), "mana": maxi(0, cm.get_ressource("mana") - 24), "nourriture": maxi(0, cm.get_ressource("nourriture") - 12), "bois": maxi(0, cm.get_ressource("bois") - 8), "fer": maxi(0, cm.get_ressource("fer") - 2), "pierre": maxi(0, cm.get_ressource("pierre") - 8), "essence": cm.get_ressource("essence")})
+	cm.payer({"or": maxi(0, cm.get_ressource("or") - 40), "soldats": maxi(0, cm.get_ressource("soldats")), "mana": maxi(0, cm.get_ressource("mana") - 24), "nourriture": maxi(0, cm.get_ressource("nourriture") - 12), "bois": maxi(0, cm.get_ressource("bois") - 8), "fer": maxi(0, cm.get_ressource("fer") - 2), "pierre": maxi(0, cm.get_ressource("pierre") - 8), "essence": cm.get_ressource("essence")})
 	cm.ressources_par_tour = {"or": 6, "soldats": 0, "mana": 4, "reputation": 0, "renseignements": 0, "bois": 2, "fer": 0, "pierre": 2, "nourriture": 2, "essence": 0}
+	cm.pnj_gestion["roster"] = []
 	for person in COMPANIONS:
 		cm.ajouter_pnj_gere(person.id, person.nom, "scenario", person.role, 2, person.stats)
-	log_entry(cm, "La Brèche-Sèche", "Kael compte les survivants. Vaelen partage les couvertures, Miri repère les galeries et Sylas examine les ruines. Votre Maison a encore des mains pour bâtir.")
+	log_entry(cm, "La Brèche-Sèche", "Kael pose deux couvertures près du foyer. Il n’y a personne d’autre. « Avant de relever ces murs, nous devons nous assurer que vous tiendrez debout. »")
 	cm.sauvegarder()
 
 static func has(cm: Node, milestone: String) -> bool:
@@ -89,7 +87,7 @@ static func prioritize_galleries(cm: Node) -> String:
 		return "La priorité est déjà fixée."
 	cm.marquer_action_utilisee()
 	mark(cm, "govern")
-	log_entry(cm, "Les galeries d’abord", "Vous laissez le grenier et les remparts en ruine. Kael : « Nous chercherons de quoi réparer. Mais cette nuit, personne ne dormira près du mur nord. »")
+	log_entry(cm, "Les galeries d’abord", "Vous laissez le grenier et les remparts en ruine. Kael : « Nous chercherons de quoi réparer. Mais cette nuit, nous dormirons loin du mur nord. »")
 	cm.sauvegarder()
 	return "Les galeries deviennent la priorité. Préparez une équipe."
 
@@ -99,15 +97,16 @@ static func social_choice(cm: Node, share: bool) -> String:
 	if not has(cm, "govern"):
 		return "Écoutez d’abord le rapport de Kael."
 	if share and not cm.peut_payer({"nourriture": 2}):
-		return "Il manque 2 nourriture. Vous pouvez demander à Vaelen de garder les réserves."
+		return "Il manque 2 nourriture. Vous pouvez conserver les rations pour demain."
 	if share:
 		cm.payer({"nourriture": 2})
 		cm.modifier_affinite_pnj("intendant", 2)
 	else:
 		cm.modifier_affinite_pnj("intendant", -1)
 	mark(cm, "social")
-	var message := "Vous partagez deux rations. Affinité de l’intendance : +2. Kael : « Nous mangerons moins. Mais ils se souviendront que vous les avez écoutés. »" if share else "Vaelen garde les réserves. Affinité de l’intendance : -1. Kael : « Je comprends. Allez tout de même leur parler demain. La faim ne se tait pas sur ordre. »"
-	log_entry(cm, "Une ration disparue", message)
+	var message := "Vous partagez deux rations avec Kael. Affinité de l’intendance : +2. « Je peux veiller une nuit de plus. Mais promettez-moi de vous reposer. »" if share else "Vous conservez les rations pour demain. Affinité de l’intendance : -1. Kael : « Je comprends. Mais votre corps a déjà payé assez cher. »"
+	log_entry(cm, "Deux personnes près du feu", message)
+	cm.campaign["initial_tutorial_done"] = true
 	cm.sauvegarder()
 	return message
 
@@ -148,21 +147,13 @@ static func dawn(cm: Node) -> void:
 			person["etat"] = "disponible"
 	# Les conséquences de combat durent jusqu’aux soins ou au repos de la nuit.
 
-static func study_relic(cm: Node, attune: bool) -> String:
+static func study_relic(cm: Node, _attune: bool = false) -> String:
 	if not has(cm, "rebuild") or has(cm, "soul"):
 		return "L’atelier doit être restauré et la relique encore intacte."
-	if attune and (not cm.peut_payer({"essence": 1}) or cm.barre_ame <= 5):
-		return "Il faut 1 essence et plus de 5 points d’âme. Vous pouvez aussi sceller la relique."
-	if attune:
-		cm.payer({"essence": 1})
-		cm.barre_ame -= 5
-		cm.gagner({"mana": 10})
-	else:
-		cm.gagner({"renseignements": 2})
 	mark(cm, "soul")
-	log_entry(cm, "Le siège effacé", "La Cicatrice de Sang répond au métal. Sous les sceaux connus, une place a été effacée. Kael recule : « Je ne connais pas ce signe. Mais quelqu’un a voulu qu’il disparaisse. »\n" + ("Résonance : +10 mana, -1 essence, -5 âme." if attune else "Relique scellée : +2 renseignements. Vous en différez l’assimilation.") + "\nRestaurer la Brèche-Sèche. Découvrir pourquoi votre Maison devait disparaître.")
+	log_entry(cm, "Une signature impossible", "La relique reconnaît votre sang, puis indique deux présences. Kael enveloppe le métal. « Nous n’y toucherons pas davantage aujourd’hui. »\nArchitecture de l’Âme : instable. L’anomalie empêche toute assimilation.\nSurvivre, comprendre votre passé et reconstruire la Brèche-Sèche.")
 	cm.sauvegarder()
-	return "Quelque chose vous a reconnu. La piste reste ouverte dans les archives."
+	return "L’analyse reste incomplète. La relique est conservée dans les archives."
 
 static func resources_text(values: Dictionary) -> String:
 	var parts: PackedStringArray = []

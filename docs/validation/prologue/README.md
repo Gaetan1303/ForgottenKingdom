@@ -1,3 +1,5 @@
+> Rapport historique de la première fondation. Le parcours et les validations actuels (Kael seule, automates, arrivée, corruption) sont dans [le rapport suivant](../arrival/README.md).
+
 # Socle du prologue jouable — 6 septembre 2026
 
 Implémentation sur `22-refonte-de-lintro-avec-la-nouvelle-histoire`, à partir du commit `7fdd486`, conformément à la confirmation de conserver cette branche. Aucune fusion ni modification de branche.

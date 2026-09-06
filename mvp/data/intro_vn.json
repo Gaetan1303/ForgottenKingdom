@@ -1,76 +1,61 @@
 {
-  "_commentaire": "Prologue court ; les conséquences et les premières boucles continuent dans le refuge.",
   "scenes": [
     {
-      "id": "chute_01",
+      "id": "fragment_01",
       "type": "narration",
-      "periode": "La nuit de la chute",
+      "periode": "Un souvenir — date incertaine",
       "speaker": "narrateur",
-      "fond_couleur": "#1a0000",
-      "musique": "D#U00e9chu.mp3",
-      "texte": "Le plafond tremble. Quelqu’un crie ton nom.\n\nTu es encore un enfant lorsque les portes de la Maison {clan_name} cèdent. Dans la fumée, Kael revient vers toi, la lame à la main.\n\n« Regarde-moi. Nous sortons ensemble. »"
+      "texte": "Du feu. Une main couverte de sang. Les silhouettes de tes parents derrière une porte.\n\nUne autre silhouette se retourne : ton visage, ou presque. Tu tends la main. Le souvenir se brise avant que vous vous touchiez.",
+      "fond_couleur": "#180609"
     },
     {
-      "id": "chute_03",
+      "id": "fragment_02",
+      "type": "choice",
+      "speaker": "narrateur",
+      "texte": "Tu te souviens de la chute comme d’hier. Sur une pierre, tu lis pourtant une date vieille de quinze ans.\n\nTa poitrine ne porte aucune plaie ouverte. Quelque chose y manque.",
+      "choices": [
+        {
+          "label": "Examiner la marque sur ma poitrine",
+          "consequence": "La Cicatrice de Sang ne ressemble pas à une blessure ordinaire. Sous la peau, une lueur suit un tracé inconnu."
+        },
+        {
+          "label": "Chercher la seconde silhouette",
+          "consequence": "Le visage était presque le tien. Le souvenir refuse de dire à qui il appartenait."
+        }
+      ],
+      "fond_couleur": "#100612"
+    },
+    {
+      "id": "awakening_01",
+      "type": "narration",
+      "periode": "La Brèche-Sèche — Le réveil",
+      "speaker": "kael",
+      "texte": "« Doucement. Vous êtes à la Brèche-Sèche. Je suis là. »\n\nKael pose un linge humide sur ton front. Deux couvertures. Une lampe. Personne d’autre.\n\n« La Maison est tombée. Ici, nous avons un toit qui tient encore. Ce sera notre point de départ. »",
+      "fond_couleur": "#0a0710"
+    },
+    {
+      "id": "awakening_02",
       "type": "choice",
       "speaker": "kael",
-      "fond_couleur": "#200000",
-      "texte": "La porte du bureau est ouverte. Le coffret de cristaux glisse de la table ; les registres brûlent.\n\nKael protège le passage. « Une seule chose. Puis tu cours. »",
+      "texte": "Ton bras retrouve un geste de combat que tu ne te souviens pas avoir appris. Kael le remarque.\n\n« Ce qui vous revient n’est pas toujours un souvenir. Nous allons vérifier ensemble ce que votre corps peut encore utiliser. »",
       "choices": [
         {
-          "label": "Prendre les cristaux · +4 mana",
-          "gains": {
-            "mana": 4
-          },
-          "consequence": "Tu sauves quatre cristaux de mana. Les registres disparaissent dans le feu."
+          "label": "Lui demander depuis combien de temps je dors",
+          "consequence": "Kael hésite. « Assez longtemps pour que les pierres aient refroidi. Reprenez d’abord vos forces. »"
         },
         {
-          "label": "Sauver un registre · +2 renseignements",
-          "gains": {
-            "renseignements": 2
-          },
-          "consequence": "Tu emportes un registre à moitié brûlé. Kael te tire hors du bureau avant l’effondrement."
+          "label": "Vérifier ma main et mon souffle",
+          "consequence": "La main obéit. Sous la peau, le souffle et la lueur suivent deux rythmes légèrement différents."
         }
-      ]
+      ],
+      "fond_couleur": "#0a0710"
     },
     {
-      "id": "chute_07",
-      "type": "narration",
-      "speaker": "narrateur",
-      "fond_couleur": "#120000",
-      "texte": "Tu te retournes une fois. {mere_name} et {pere_name} sont encore dans le couloir. Puis le mur les cache.\n\nUne douleur fend ta poitrine. Le sang dessine une marque qui ne ressemble à aucune blessure. La magie répond trop fort, trop vite.\n\nKael serre ton poignet. « Avec moi. Maintenant. »"
-    },
-    {
-      "id": "chute_08",
-      "type": "choice",
-      "speaker": "narrateur",
-      "fond_couleur": "#0a0000",
-      "texte": "Sous la colline, ta main éclaire la pierre sans flamme. La Cicatrice de Sang pulse au rythme d’un bruit venu des profondeurs.\n\nKael s’agenouille. Elle a peur, mais reste près de toi.",
-      "choices": [
-        {
-          "label": "Examiner la marque",
-          "consequence": "La Cicatrice de Sang semble répondre à quelque chose sous la pierre. Kael ne reconnaît pas ce phénomène."
-        },
-        {
-          "label": "Demander à Kael de rester",
-          "consequence": "« Je reste. » Kael ne promet pas de comprendre la marque. Seulement de ne pas te laisser seul face à elle."
-        }
-      ]
-    },
-    {
-      "id": "exil_01",
-      "type": "narration",
-      "periode": "Quelques jours plus tard — La Brèche-Sèche",
-      "speaker": "narrateur",
-      "fond_couleur": "#0a000f",
-      "texte": "Le refuge a un toit, à certains endroits. Douze rations, huit gardes et quelques outils.\n\nVaelen rassemble les survivants. Miri revient des galeries. Sylas essaie de sauver un établi.\n\nVotre Maison tient désormais dans cette cour en ruine."
-    },
-    {
-      "id": "serment_04",
+      "id": "awakening_03",
       "type": "fin",
       "speaker": "kael",
-      "fond_couleur": "#050008",
-      "texte": "« Le grenier prend l’eau. Le mur nord menace de tomber. Miri a trouvé un passage, mais elle y a entendu quelque chose. »\n\nKael pose les comptes devant toi.\n\n« Je peux vous conseiller. Je peux tenir une porte. Mais c’est à vous de décider ce que nous sauvons aujourd’hui. »"
+      "texte": "« Dites-moi votre nom. Le nom de notre Maison. Puis essayons quelques gestes. »\n\nKael dépose les armes à portée de ta main.\n\n« Je ne vous demande pas de redevenir ce que vous étiez. Seulement de voir ce qui est possible aujourd’hui. »",
+      "fond_couleur": "#0a0710"
     }
   ]
 }

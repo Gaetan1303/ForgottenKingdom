@@ -28,7 +28,7 @@ func _ready() -> void:
 		_label(priority, "12 rations au départ, un grenier ouvert au vent et une palissade fendue. Une réparation occupe la décision de la demi-journée ; les galeries attendent en contrebas.")
 		_button(priority, "Donner la priorité aux galeries", func(): _result(Refuge.prioritize_galleries(ClanManager)))
 	if Refuge.has(ClanManager, "govern") and not Refuge.has(ClanManager, "social"):
-		_label(priority, "Vaelen a surpris un survivant près des réserves. Il voulait nourrir une personne malade. Kael attend votre décision.")
+		_label(priority, "Il reste de quoi préparer un repas pour deux. Kael attend votre décision.")
 		_button(priority, "Partager deux rations · −2 nourriture, +2 affinité d’intendance", func(): _result(Refuge.social_choice(ClanManager, true)))
 		_button(priority, "Faire garder les réserves · −1 affinité d’intendance", func(): _result(Refuge.social_choice(ClanManager, false)))
 	var shortcuts := HFlowContainer.new()
@@ -43,18 +43,20 @@ func _ready() -> void:
 		)
 		shortcut.custom_minimum_size.x = 190
 	_build_roster()
+	_build_corruption()
 	_build_buildings()
 	_build_expedition()
 	if Refuge.has(ClanManager, "rebuild") and not Refuge.has(ClanManager, "soul"):
 		var relic := _card("Le métal se souvient")
-		_label(relic, "Sylas pose la relique sur l’établi. La Cicatrice de Sang répond. Kael : « Nous avons survécu sans elle jusqu’ici. Prenez le temps de choisir. »")
+		_label(relic, "Kael pose la relique sur l’établi. La Cicatrice de Sang répond. Kael : « Nous avons survécu sans elle jusqu’ici. Prenez le temps de choisir. »")
 		for key in StatDefs.SECONDARY_STAT_KEYS:
 			var stats: Dictionary = ClanManager.get_fiche_complete().get("secondary_stats", {})
-			var stat_button := _button(relic, "%s — %s : %d" % [key, StatDefs.SECONDARY_STAT_LABELS[key], int(stats.get(key, 0))], func(): pass)
-			stat_button.tooltip_text = StatDefs.description(key) + "\nCette première résonance a un coût fixe et ne demande pas de jet."
+			var stat_button := _label(relic, "%s — %s : %d" % [key, StatDefs.SECONDARY_STAT_LABELS[key], int(stats.get(key, 0))])
+			preload("res://scripts/ui/components/keyboard_tooltip.gd").bind(stat_button)
+			stat_button.tooltip_text = StatDefs.description(key) + "\nArchitecture de l’Âme instable : analyse complète et assimilation indisponibles."
 			stat_button.focus_entered.connect(func(): _status.text = stat_button.tooltip_text)
-		_button(relic, "Laisser résonner · −1 essence, −5 âme, +10 mana", func(): _result(Refuge.study_relic(ClanManager, true)))
-		_button(relic, "Sceller pour étudier · +2 renseignements", func(): _result(Refuge.study_relic(ClanManager, false)))
+		_button(relic, "Observer la résonance · Architecture verrouillée", func(): _result(Refuge.study_relic(ClanManager, true)))
+		_button(relic, "Examiner les marques", func(): _result(Refuge.study_relic(ClanManager, false)))
 	var archives := _card("Archives du refuge")
 	var help_row := HBoxContainer.new()
 	archives.add_child(help_row)
@@ -198,3 +200,22 @@ func _button(parent: Node, text: String, callback: Callable) -> Button:
 	button.pressed.connect(callback)
 	parent.add_child(button)
 	return button
+
+func _build_corruption() -> void:
+	var service := ClanManager.get_corruption_service()
+	var people: Array = [{"id": "hero", "nom": ClanManager.nom_personnage}]
+	people.append_array(ClanManager.get_pnj_gestion_state().get("roster", []))
+	var visible_corruption := false
+	for person in people:
+		if service.get_corruption_level(str(person.id)) > 0: visible_corruption = true
+	if not visible_corruption: return
+	var box := _card("Corruption de l’Éther")
+	_label(box, "L’exposition laisse une trace. Kael prépare de quoi retrouver votre équilibre ; cela ne déverrouille pas l’Architecture de l’Âme.")
+	for person in people:
+		var id := str(person.id)
+		var level := service.get_corruption_level(id)
+		var label := _label(box, "%s · %.1f / 100 · %s" % [person.nom, level, service.stage_display_name(service.get_corruption_stage(id))])
+		label.tooltip_text = service.expedition_description(id)
+		preload("res://scripts/ui/components/keyboard_tooltip.gd").bind(label)
+		if level > 0:
+			_button(box, "Purifier %s · −10 corruption au maximum · 4 mana, 1 nourriture" % person.nom, func(): _result(str(ClanManager.purify_character(id).get("message", "Purification impossible."))))

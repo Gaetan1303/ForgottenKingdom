@@ -30,6 +30,18 @@ var _secondary_stats: Dictionary = {}
 var _updating_controls := false
 
 func _ready() -> void:
+	$Content/StepTitle.hide()
+	var reset := Button.new()
+	reset.name = "BtnReset"
+	reset.text = "Réinitialiser les points"
+	reset.tooltip_text = "Récupérer les 10 points investis. La classe choisie et ses bonus sont conservés."
+	preload("res://scripts/ui/components/keyboard_tooltip.gd").bind(reset)
+	$Content/Nav.add_child(reset)
+	$Content/Nav.move_child(reset, 0)
+	reset.pressed.connect(func():
+		_invested_points = StatDefs.make_default_stats(0)
+		_refresh_stat_controls()
+		submit_current_data())
 	_invested_points = StatDefs.make_default_stats(0)
 	_class_bonus_stats = StatDefs.make_default_stats(0)
 	_secondary_stats = StatDefs.make_default_secondary_stats()
@@ -100,7 +112,8 @@ func _configure_tooltip_for_stat_row(stat_key: String, stat_label: Label, stat_c
 	if stat_control:
 		stat_control.tooltip_text = tooltip
 		# The embedded LineEdit is the actual hovered control over the number.
-		stat_control.get_line_edit().tooltip_text = tooltip
+		stat_control.get_line_edit().tooltip_text = tooltip + "\nFlèches haut/bas : investir ou récupérer 1 point. Budget partagé : 10 points."
+		preload("res://scripts/ui/components/keyboard_tooltip.gd").bind(stat_control.get_line_edit())
 	var modifier_label := find_child("Modifier_%s" % stat_key, true, false) as Label
 	if modifier_label:
 		modifier_label.mouse_filter = Control.MOUSE_FILTER_STOP
@@ -169,11 +182,14 @@ func _populate_class_cards() -> void:
 func _build_class_card(class_id: String, class_data: Dictionary) -> Button:
 	var card: Button = ClassCardFactory.create(class_id, str(class_data.get("icon", "")))
 	card.name = "ClassCard_%s" % class_id
+	card.set_meta("icon_height", 64)
 	card.text = ""
-	card.custom_minimum_size = Vector2(168, 94)
+	card.custom_minimum_size = Vector2(184, 132)
 	card.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	card.size_flags_vertical = Control.SIZE_SHRINK_BEGIN
-	card.focus_mode = Control.FOCUS_NONE
+	card.focus_mode = Control.FOCUS_ALL
+	card.tooltip_text = str(class_data.get("description", "")) + "\nCaractéristiques conseillées : " + ", ".join(PackedStringArray(class_data.get("primary", []))) + "\nSpécialisez vos 10 points ou compensez les caractéristiques non favorisées par votre classe."
+	preload("res://scripts/ui/components/keyboard_tooltip.gd").bind(card)
 	card.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 	card.set_meta("class_id", class_id)
 	card.add_theme_stylebox_override("normal", _make_card_style(false))
@@ -214,15 +230,6 @@ func _build_class_card(class_id: String, class_data: Dictionary) -> Button:
 	title.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	content.add_child(title)
 
-	var progression_rows := GameDataLoader.get_class_progression(class_id)
-	if progression_rows.size() > 0:
-		var lvl_info := Label.new()
-		lvl_info.text = "Niveaux : %d" % progression_rows.size()
-		lvl_info.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-		lvl_info.modulate = Color(0.85, 0.82, 0.72, 0.95)
-		lvl_info.add_theme_font_size_override("font_size", 12)
-		lvl_info.mouse_filter = Control.MOUSE_FILTER_IGNORE
-		content.add_child(lvl_info)
 
 	return card
 
@@ -341,6 +348,9 @@ func _set_derived_label(node_name: String, value: int) -> void:
 	var node := find_child(node_name, true, false) as Label
 	if node:
 		node.text = str(value)
+		var rules := {"DerivedAttaqueValue": "Attaque de la fiche : 10 + modificateurs de Force et de Commandement.", "DerivedDefenseValue": "Défense de la fiche : 10 + modificateur d’Espionnage.", "DerivedResistanceValue": "Résistance de la fiche : 10 + modificateur de Magie.", "DerivedInitiativeValue": "Initiative de la fiche : modificateur d’Espionnage. L’expédition utilise le score d’Espionnage pour l’ordre des tours.", "DerivedVigueurValue": "Jet de vigueur : modificateur de Force.", "DerivedVolonteValue": "Jet de volonté : modificateur de Magie.", "DerivedReflexesValue": "Jet de réflexes : modificateur d’Espionnage."}
+		node.tooltip_text = str(rules.get(node_name, ""))
+		preload("res://scripts/ui/components/keyboard_tooltip.gd").bind(node)
 
 func _update_points_pool() -> void:
 	var remaining := _points_remaining()
@@ -376,7 +386,7 @@ func _secondary_stat_tooltip(stat_key: String) -> String:
 	var tooltips := {
 		"ESP": "Esprit\n\nMesure la force mentale et la stabilité psychique du personnage.\n\nPeut influencer :\n• la résistance mentale ;\n• certains jets de volonté ;\n• certains prérequis.",
 		"TRA": "Transfuge\n\nMesure l'affinité du personnage avec la magi-tech.\n\nUtilisé pour :\n• les technologies occultes ;\n• les équipements magi-tech ;\n• certaines capacités spécialisées.",
-		"ESE": "Essence\n\nMesure la pureté et la puissance de l'héritage sanguin.\n\nPeut être utilisée pour :\n• les prérequis de lignée ;\n• certaines capacités raciales ;\n• les mécaniques liées au sang.",
+		"ESE": "Essence\n\nMesure la qualité, la stabilité et la nature de l’essence et du sang.\n\nPeut être utilisée pour :\n• les prérequis de lignée ;\n• certaines capacités raciales ;\n• les mécaniques liées au sang.",
 	}
 	return str(tooltips.get(stat_key, ""))
 
