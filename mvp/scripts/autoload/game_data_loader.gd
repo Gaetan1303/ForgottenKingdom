@@ -412,25 +412,21 @@ func get_class_progressions() -> Dictionary:
 
 ## Retourne toutes les définitions de feats/dons
 func get_feats() -> Dictionary:
-	return _feats.duplicate(true)
+	var out: Dictionary = {}
+	for id in (_feats.get("dons", {}) as Dictionary):
+		out[str(id)] = _normalize_feat((_feats.dons as Dictionary)[id] as Dictionary)
+	return out
 
 
 ## Retourne la définition d'un don par son id
 func get_feat(id: String) -> Dictionary:
-	var target := str(id)
-	var dons: Dictionary = _feats.get("dons", {}) as Dictionary
-	if dons.has(target):
-		return (dons.get(target, {}) as Dictionary).duplicate(true)
-	var capacites := _feats.get("capacites", {}) as Dictionary
-	if capacites.has(target) and capacites.get(target) is Dictionary:
-		return (capacites.get(target, {}) as Dictionary).duplicate(true)
-	return {}
+	return (get_feats().get(str(id), {}) as Dictionary).duplicate(true)
 
 
 ## Retourne toutes les capacités connues (id -> definition)
 func get_abilities() -> Dictionary:
 	if _abilities.size() > 0:
-		return _abilities.duplicate(true)
+		return _abilities_with_namespaced_entries()
 
 	# Si un fichier res://data/abilities.json existe, l'utiliser
 	var path := "res://data/abilities.json"
@@ -438,7 +434,7 @@ func get_abilities() -> Dictionary:
 		var parsed := _lire_json(path)
 		if not parsed.is_empty():
 			_abilities = parsed.duplicate(true)
-			return _abilities.duplicate(true)
+			return _abilities_with_namespaced_entries()
 
 	# Sinon dériver des classes (starting_abilities)
 	var out: Dictionary = {}
@@ -462,13 +458,31 @@ func get_abilities() -> Dictionary:
 					out[id]["from_classes"] = fc
 
 	_abilities = out
-	return _abilities.duplicate(true)
+	return _abilities_with_namespaced_entries()
+
+
+func get_ability(id: String) -> Dictionary:
+	return (get_abilities().get(str(id), {}) as Dictionary).duplicate(true)
 
 
 func get_ability_by_id(id: String) -> Dictionary:
-	var idn := str(id)
-	var abilities_map := get_abilities()
-	return abilities_map.get(idn, {}) as Dictionary
+	return get_ability(id)
+
+
+func _normalize_feat(raw: Dictionary) -> Dictionary:
+	var out := raw.duplicate(true)
+	if out.has("nom") and not out.has("name"): out["name"] = out.nom
+	if out.has("effets") and not out.has("effects"): out["effects"] = (out.effets as Dictionary).duplicate(true)
+	if out.has("prerequis") and not out.has("prerequisite"): out["prerequisite"] = out.prerequis
+	return out
+
+
+func _abilities_with_namespaced_entries() -> Dictionary:
+	var out := _abilities.duplicate(true)
+	for id in (_feats.get("capacites", {}) as Dictionary):
+		if not out.has(id):
+			out[id] = _normalize_feat((_feats.capacites as Dictionary)[id] as Dictionary)
+	return out
 
 
 func get_equipment() -> Dictionary:

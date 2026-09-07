@@ -293,7 +293,7 @@ func _armor_category_from_label(label: String) -> String:
 func _build_final_payload() -> Dictionary:
 	var classe_data := CharacterCreationRules.get_class_data(data.class_id)
 	var feats_defs := GameDataLoader.get_feats()
-	var stats_finales := CharacterCreationRules.compute_final_stats_for_creation(
+	var build_result := CharacterCreationRules.build_character_result_for_creation(
 		classe_data,
 		data.stats,
 		"",
@@ -306,5 +306,7 @@ func _build_final_payload() -> Dictionary:
 		"created_at_unix": Time.get_unix_time_from_system(),
 		"flow_step": _flow.current_step,
 		"character": data.to_dict(),
-		"final_stats": stats_finales,
+		"final_stats": build_result.character_scores,
+		"modifiers": build_result.modifiers,
+		"derived_stats": build_result.derived_stats,
 	}

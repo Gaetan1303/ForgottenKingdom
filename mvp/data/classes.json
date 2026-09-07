@@ -3,6 +3,7 @@
     "name": "Lame Cendrée",
     "description": "Combattant de première ligne qui canalise la résonance de Veyr dans son arme.",
     "hit_die": 10,
+    "starting_stat_bonuses": {"force": 4, "commandement": 1},
     "primary": [
       "force"
     ],
@@ -24,6 +25,7 @@
     "name": "Arcaniste des Braises",
     "description": "Mage de guerre spécialisé dans les flux instables laissés par la Fracture.",
     "hit_die": 6,
+    "starting_stat_bonuses": {"magie": 4},
     "primary": [
       "magie"
     ],
@@ -43,6 +45,7 @@
     "name": "Croc du Voile",
     "description": "Éclaireur et assassin qui exploite les ruines, l’obscurité et la désinformation.",
     "hit_die": 8,
+    "starting_stat_bonuses": {"espionnage": 3},
     "primary": [
       "espionnage"
     ],
@@ -62,6 +65,7 @@
     "name": "Gardien des Échos",
     "description": "Protecteur capable de stabiliser les âmes, les serments et les pactes fragiles.",
     "hit_die": 8,
+    "starting_stat_bonuses": {"magie": 3},
     "primary": [
       "magie"
     ],
@@ -81,6 +85,7 @@
     "name": "Pisteur des Ruines",
     "description": "Traqueur des étendues mortes, expert en reconnaissance et chasse aux Altérés.",
     "hit_die": 10,
+    "starting_stat_bonuses": {"force": 4, "espionnage": 3, "commandement": 1},
     "primary": [
       "force",
       "espionnage"
@@ -102,6 +107,7 @@
     "name": "Paladin de la Faille",
     "description": "Chevalier lié à un serment ancien, conçu pour tenir une ligne lorsque tout cède.",
     "hit_die": 10,
+    "starting_stat_bonuses": {"force": 4, "commandement": 4},
     "primary": [
       "force",
       "commandement"
@@ -124,6 +130,7 @@
     "name": "Lié du Pacte",
     "description": "Occultiste qui négocie avec les Entités de Veyr au prix de dettes toujours plus lourdes.",
     "hit_die": 8,
+    "starting_stat_bonuses": {"magie": 3, "diplomatie": 3},
     "primary": [
       "magie",
       "diplomatie"
@@ -144,6 +151,7 @@
     "name": "Chantre des Échos",
     "description": "Diplomate mystique qui manipule mémoire, morale et résonance collective.",
     "hit_die": 8,
+    "starting_stat_bonuses": {"diplomatie": 3, "magie": 3},
     "primary": [
       "diplomatie",
       "magie"
@@ -164,6 +172,7 @@
     "name": "Furie Cendrée",
     "description": "Guerrier de choc qui transforme douleur et fatigue en puissance immédiate.",
     "hit_die": 12,
+    "starting_stat_bonuses": {"force": 4, "commandement": 1},
     "primary": [
       "force"
     ],
@@ -185,6 +194,7 @@
     "name": "Moine du Vide",
     "description": "Combattant discipliné qui exploite les instants de silence entre deux flux d’Éther.",
     "hit_die": 8,
+    "starting_stat_bonuses": {"espionnage": 3, "force": 3},
     "primary": [
       "espionnage",
       "force"
@@ -205,6 +215,7 @@
     "name": "Druide des Friches",
     "description": "Gardien des formes de vie mutées qui ont survécu à la Fracture.",
     "hit_die": 8,
+    "starting_stat_bonuses": {"magie": 3, "artisanat": 3},
     "primary": [
       "magie",
       "artisanat"
@@ -225,6 +236,7 @@
     "name": "Thaumaturge Écarlate",
     "description": "Mage inné qui grave ses sorts dans sa propre vitalité.",
     "hit_die": 6,
+    "starting_stat_bonuses": {"magie": 4},
     "primary": [
       "magie"
     ],
@@ -244,6 +256,7 @@
     "name": "Artificier des Vestiges",
     "description": "Ingénieur mystique capable de réveiller les machines et reliques d’avant la Fracture.",
     "hit_die": 8,
+    "starting_stat_bonuses": {"artisanat": 3, "magie": 3},
     "primary": [
       "artisanat",
       "magie"
@@ -265,6 +278,7 @@
     "name": "Maître de Guerre",
     "description": "Chef de campagne spécialisé dans les escouades, la logistique et la pression politique.",
     "hit_die": 10,
+    "starting_stat_bonuses": {"commandement": 4, "diplomatie": 3, "force": 1},
     "primary": [
       "commandement",
       "diplomatie"

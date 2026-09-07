@@ -9,10 +9,9 @@ static func get_class_data(classe_id: String) -> Dictionary:
 	var classes := _get_classes()
 	if classes.has(classe_id):
 		var entry := classes[classe_id] as Dictionary
-		var stats_bonus := derive_stats_bonus_from_base(resolve_base_stats_for_class(entry))
 		return {
 			"nom": str(entry.get("name", classe_id)),
-			"stats_bonus": stats_bonus,
+			"stats_bonus": get_explicit_class_bonuses(entry),
 			"equipement": entry.get("starting_abilities", []),
 			"competences": entry.get("starting_feats", []),
 		}
@@ -25,50 +24,12 @@ static func get_class_data(classe_id: String) -> Dictionary:
 	}
 
 
-static func derive_stats_bonus_from_base(base_stats: Dictionary) -> Dictionary:
+static func get_explicit_class_bonuses(class_def: Dictionary) -> Dictionary:
+	var explicit := class_def.get("starting_stat_bonuses", {}) as Dictionary
 	var out := StatDefs.make_default_stats(0)
-	if base_stats.is_empty():
-		return out
 	for key in StatDefs.STAT_KEYS:
-		var score := int(base_stats.get(key, 10))
-		out[key] = score - 10
+		out[key] = int(explicit.get(key, 0))
 	return out
-
-
-static func resolve_base_stats_for_class(class_def: Dictionary) -> Dictionary:
-	var explicit_base := class_def.get("base_stats", {}) as Dictionary
-	if not explicit_base.is_empty():
-		return explicit_base
-	return build_base_stats_from_class_def(class_def)
-
-
-static func build_base_stats_from_class_def(class_def: Dictionary) -> Dictionary:
-	var out := StatDefs.make_default_stats(StatDefs.CHARACTER_MIN_STAT)
-	var primary := class_def.get("primary", []) as Array
-	var secondary := class_def.get("secondary", []) as Array
-	var hit_die := int(class_def.get("hit_die", 8))
-
-	for stat in primary:
-		var key := str(stat)
-		if out.has(key):
-			out[key] = int(out[key]) + 3
-	for stat in secondary:
-		var key := str(stat)
-		if out.has(key):
-			out[key] = int(out[key]) + 2
-
-	if hit_die >= 10:
-		out["force"] = int(out.get("force", 8)) + 1
-		out["commandement"] = int(out.get("commandement", 8)) + 1
-	elif hit_die <= 6:
-		out["magie"] = int(out.get("magie", 8)) + 1
-
-	return StatDefs.sanitize_stats(
-		out,
-		StatDefs.CHARACTER_MIN_STAT,
-		StatDefs.CHARACTER_MAX_STAT,
-		StatDefs.CHARACTER_MIN_STAT
-	)
 
 
 static func apply_point_buy_for_class(classe_id: String, target_points: int) -> Dictionary:
@@ -77,13 +38,9 @@ static func apply_point_buy_for_class(classe_id: String, target_points: int) -> 
 	var classes := _get_classes()
 	if classes.has(classe_id) and classes[classe_id] is Dictionary:
 		var class_def := classes[classe_id] as Dictionary
-		var base_stats := resolve_base_stats_for_class(class_def)
-		stats = StatDefs.sanitize_stats(
-			base_stats,
-			StatDefs.CHARACTER_MIN_STAT,
-			StatDefs.CHARACTER_MAX_STAT,
-			StatDefs.CHARACTER_MIN_STAT
-		)
+		var bonuses := get_explicit_class_bonuses(class_def)
+		for key in StatDefs.STAT_KEYS:
+			stats[key] = int(stats[key]) + int(bonuses.get(key, 0))
 		return {
 			"stats": stats,
 			"points_restants": points_restants,
@@ -219,10 +176,7 @@ static func get_creation_class_score_bonus(classe_id: String) -> Dictionary:
 	var classes := _get_classes()
 	if not classes.has(classe_id) or not classes[classe_id] is Dictionary:
 		return out
-	var class_base := resolve_base_stats_for_class(classes[classe_id] as Dictionary)
-	for key in StatDefs.STAT_KEYS:
-		out[key] = int(class_base.get(key, StatDefs.CHARACTER_MIN_STAT)) - StatDefs.CHARACTER_MIN_STAT
-	return out
+	return get_explicit_class_bonuses(classes[classe_id] as Dictionary)
 
 
 static func compute_creation_display_stats(classe_id: String, purchased_stats: Dictionary) -> Dictionary:
@@ -299,14 +253,25 @@ static func compute_final_stats_for_creation(
 	feats_defs: Dictionary,
 	selected_feats: Array
 ) -> Dictionary:
+	return build_character_result_for_creation(classe_data, raw_stats, competence_id, archetype_label, feats_defs, selected_feats).character_scores
+
+
+static func build_character_result_for_creation(
+	classe_data: Dictionary,
+	character_scores: Dictionary,
+	competence_id: String,
+	archetype_label: String,
+	feats_defs: Dictionary,
+	selected_feats: Array
+) -> Dictionary:
 	var feats_bonus := compute_feats_bonus(
 		feats_defs,
 		classe_data.get("competences", []) as Array,
 		selected_feats
 	)
-	return CharacterBuildService.compute_final_stats(
+	return CharacterBuildService.build_character_result(
 		classe_data.get("stats_bonus", {}) as Dictionary,
-		raw_stats,
+		character_scores,
 		competence_bonus(competence_id),
 		archetype_bonus(archetype_label),
 		feats_bonus

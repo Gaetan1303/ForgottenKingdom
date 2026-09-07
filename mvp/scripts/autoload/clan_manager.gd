@@ -143,7 +143,7 @@ func nouvelle_partie(
 	p_nom_personnage: String,
 	p_nom_clan: String,
 	p_classe: String,
-	stats_bonus: Dictionary,
+	final_character_scores: Dictionary,
 	p_profil_personnage: Dictionary = {}
 ) -> void:
 	_charger_etat_defaut()
@@ -163,29 +163,28 @@ func nouvelle_partie(
 	profil_personnage["clan_name"] = nom_clan
 	_forcer_magie_pactes()
 
-	# If the creation profile already contains raw character scores (stats_brutes),
-	# apply and persist them now so the character is saved at game start.
-	var fiche_in_profile := (profil_personnage.get("fiche_complete", {}) as Dictionary)
-	if fiche_in_profile.has("stats_brutes"):
-		var raw := (fiche_in_profile.get("stats_brutes", {}) as Dictionary)
-		var pts := int(fiche_in_profile.get("points_restants", 0))
-		var feats := (profil_personnage.get("feats", []) as Array)
-		# apply_profile_sheet_update will compute final stats and call sauvegarder()
-		apply_profile_sheet_update(raw, pts, feats)
-		# Ensure fiche_hero and related structures reflect the new stats
-		_initialiser_fiches_personnage_et_domaine()
-	else:
-		# No raw stats provided: fall back to previous flow (apply stats_bonus)
-		_initialiser_fiches_personnage_et_domaine()
-		# Applique les bonus de classe aux stats de base
-		for stat in stats_bonus:
-			if stats.has(stat):
-				stats[stat] = maxi(1, stats[stat] + int(stats_bonus[stat]))
-
-		_sanitizer_stats()
-
-		# Appliquer les effets non-stat provenant des dons/feats (pv_bonus, mana_bonus, etc.)
-		_compute_and_apply_profil_effects(profil_personnage, false)
+	var provided_scores := final_character_scores
+	if provided_scores.is_empty():
+		provided_scores = (profil_personnage.get("fiche_complete", {}) as Dictionary).get("character_scores", {}) as Dictionary
+	if provided_scores.is_empty():
+		provided_scores = (profil_personnage.get("fiche_complete", {}) as Dictionary).get("stats_brutes", {}) as Dictionary
+	var canonical_scores := StatDefs.sanitize_stats(
+		provided_scores,
+		StatDefs.CHARACTER_MIN_STAT,
+		StatDefs.CHARACTER_MAX_STAT,
+		StatDefs.CHARACTER_MIN_STAT
+	)
+	for key in StatDefs.STAT_KEYS:
+		stats[key] = int(canonical_scores[key])
+	var fiche := (profil_personnage.get("fiche_complete", {}) as Dictionary).duplicate(true)
+	fiche["stats_brutes"] = canonical_scores.duplicate(true)
+	fiche["character_scores"] = canonical_scores.duplicate(true)
+	fiche["modifiers"] = CharacterBuildService.build_modifiers(canonical_scores)
+	fiche["derived_stats"] = CharacterBuildService.build_derived_stats(fiche.modifiers)
+	profil_personnage["fiche_complete"] = fiche
+	_sanitizer_stats()
+	_compute_and_apply_profil_effects(profil_personnage, false)
+	_initialiser_fiches_personnage_et_domaine()
 
 	tour_actuel = 1
 	moment_journee = "jour"
@@ -1447,9 +1446,7 @@ func is_personnage_xp_full() -> bool:
 
 
 func apply_profile_sheet_update(stats_update: Dictionary, points_remaining: int, feats: Array = []) -> void:
-	print("ClanManager.apply_profile_sheet_update: called; stats_update=", JSON.stringify(stats_update), " points_remaining=", points_remaining, " feats=", JSON.stringify(feats))
-	# Store raw character stats (sanitized to character bounds)
-	var raw_stats = StatDefs.sanitize_stats(
+	var canonical_scores := StatDefs.sanitize_stats(
 		stats_update,
 		StatDefs.CHARACTER_MIN_STAT,
 		StatDefs.CHARACTER_MAX_STAT,
@@ -1459,44 +1456,17 @@ func apply_profile_sheet_update(stats_update: Dictionary, points_remaining: int,
 	_ensure_fiche_complete()
 	var fiche := (profil_personnage.get("fiche_complete", {}) as Dictionary).duplicate(true)
 	fiche["points_restants"] = maxi(0, int(points_remaining))
-	fiche["stats_brutes"] = raw_stats.duplicate(true)
+	fiche["stats_brutes"] = canonical_scores.duplicate(true)
+	fiche["character_scores"] = canonical_scores.duplicate(true)
+	fiche["modifiers"] = CharacterBuildService.build_modifiers(canonical_scores)
+	fiche["derived_stats"] = CharacterBuildService.build_derived_stats(fiche.modifiers)
 	profil_personnage["fiche_complete"] = fiche
-	print("ClanManager.apply_profile_sheet_update: stored fiche_complete=", JSON.stringify(fiche))
 
 	if not feats.is_empty():
 		profil_personnage["feats"] = feats.duplicate(true)
 
-	# Recompute clan-level stats (final values) from class, raw stats and feats
-	var class_stats_bonus: Dictionary = {}
-	if classe != "":
-		# Get class data from centralized GameDataLoader
-		var class_entry: Dictionary = GameDataLoader.get_class_by_id(classe)
-		if class_entry and not class_entry.is_empty():
-			class_stats_bonus = class_entry.get("stats_bonus", {}) as Dictionary
-
-	# Aggregate flat stat bonuses from feats through the canonical loader API.
-	# feats.json is namespaced under "dons"/"capacites", so direct root lookup is invalid.
-	var feats_bonus_stats: Dictionary = {}
-	var current_feats: Array = profil_personnage.get("feats", []) as Array
-	for f in current_feats:
-		var fdef: Dictionary = GameDataLoader.get_feat(str(f))
-		var eff := (fdef.get("effects", {}) as Dictionary)
-		var stats_eff := (eff.get("stats", {}) as Dictionary)
-		for sk in stats_eff.keys():
-			feats_bonus_stats[sk] = int(feats_bonus_stats.get(sk, 0)) + int(stats_eff[sk])
-
-	# Compute final stats using CharacterBuildService
-	var final_stats: Dictionary = CharacterBuildService.compute_final_stats(
-		class_stats_bonus,
-		raw_stats,
-		{},
-		{},
-		feats_bonus_stats
-	)
-
-	# Persist final stats into clan-level `stats` used by other systems
 	for key in StatDefs.STAT_KEYS:
-		stats[key] = int(final_stats.get(key, 0))
+		stats[key] = int(canonical_scores[key])
 
 	_sanitizer_stats()
 
