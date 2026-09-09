@@ -15,7 +15,7 @@ cd "$PROJECT_DIR_ABS"
 
 echo
 echo "1/3 - Import des ressources"
-godot --headless --editor --path . --quit
+godot --headless --path . --import
 
 echo
 echo "2/3 - Validation du démarrage/runtime"
