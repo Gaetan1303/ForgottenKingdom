@@ -46,4 +46,10 @@ else
 fi
 
 echo
+for prologue_test in test_creation_classes_ui.gd test_expedition_corruption.gd test_campaign_states.gd test_playable_prologue.gd test_prologue_navigation.gd; do
+  if [[ -f "scripts/tests/$prologue_test" ]]; then
+    godot --headless --path . -s "scripts/tests/$prologue_test"
+  fi
+done
+
 echo "Validation Godot terminée avec succès."

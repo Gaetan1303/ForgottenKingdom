@@ -103,7 +103,7 @@ func _mettre_a_jour_entete() -> void:
 	elif bool(maison.get("revelee", false)):
 		$PanneauCentre/SousTitreAction.text = "Cible : %s" % maison.get("nom", "???")
 	else:
-		$PanneauCentre/SousTitreAction.text = "Cible : Famille Inconnue"
+		$PanneauCentre/SousTitreAction.text = "Cible : famille inconnue"
 
 	_append_journal("Action: %s" % nom_action)
 	_append_journal($PanneauCentre/SousTitreAction.text)
@@ -266,14 +266,14 @@ func _afficher_resultat() -> void:
 
 func _titre_resultat() -> String:
 	match _resultat_id:
-		"victoire_eclatante": return "Victoire Éclatante !"
-		"succes_critique":    return "Succès Critique !"
+		"victoire_eclatante": return "Victoire éclatante !"
+		"succes_critique":    return "Succès critique !"
 		"victoire":           return "Victoire !"
 		"succes":             return "Succès"
-		"echec_partiel":      return "Succès Partiel"
-		"defaite_partielle":  return "Défaite Partielle"
-		"echec_detecte":      return "Échec — Vous êtes Détecté !"
-		"defaite_totale":     return "Défaite Totale"
+		"echec_partiel":      return "Succès partiel"
+		"defaite_partielle":  return "Défaite partielle"
+		"echec_detecte":      return "Échec — Vous êtes détecté !"
+		"defaite_totale":     return "Défaite totale"
 		"echec":              return "Échec"
 	return "Résultat inconnu"
 

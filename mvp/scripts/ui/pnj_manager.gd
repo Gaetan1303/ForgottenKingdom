@@ -47,14 +47,14 @@ func _ready() -> void:
 func _init_ui() -> void:
     _ensure_ui_nodes()
 
-    _title.text = "PNJ Manager - Planification"
+    _title.text = "Gestion des PNJ — Planification"
     _confirm_dialog.ok_button_text = "Confirmer"
     var _confirm_cb := Callable(self, "_on_confirmed")
     if not _confirm_dialog.is_connected("confirmed", _confirm_cb):
         _confirm_dialog.connect("confirmed", _confirm_cb)
 
     _btn_assign_soldiers.text = "Assigner tous les soldats"
-    _btn_resolve.text = "Resoudre"
+    _btn_resolve.text = "Résoudre"
     _btn_back.text = "Retour"
 
     var _assign_cb := Callable(self, "_on_assign_all_soldiers")
@@ -188,7 +188,7 @@ func _ensure_ui_nodes() -> void:
     if not _status:
         _status = Label.new()
         _status.name = "Status"
-        _status.text = "Pret"
+        _status.text = "Prêt"
         footer.add_child(_status)
 
     var controls := footer.get_node_or_null("FooterControls")
@@ -311,7 +311,7 @@ func _refresh_roster() -> void:
 
     if roster.is_empty():
         var empty := Label.new()
-        empty.text = "Aucun PNJ gere"
+        empty.text = "Aucun PNJ géré"
         _roster.add_child(empty)
         return
 
@@ -477,7 +477,7 @@ func _make_pnj_row(pnj: Dictionary) -> Control:
     row.add_child(support_button)
 
     var expedition_button := Button.new()
-    expedition_button.text = "Expedition"
+    expedition_button.text = "Expédition"
     expedition_button.disabled = not available
     expedition_button.connect("pressed", _request_action.bind({
         "type": "expedition",
@@ -515,7 +515,7 @@ func _refresh_planning_summary() -> void:
 
     if soldier_missions.is_empty() and pnj_missions.is_empty():
         var empty := Label.new()
-        empty.text = "Aucune mission planifiee"
+        empty.text = "Aucune mission planifiée"
         _plan_list.add_child(empty)
 
 
@@ -660,7 +660,7 @@ func _on_assign_all_soldiers() -> void:
 
     var avail_total := ClanManager.get_ressource("soldats", 0)
     if soldiers_to_assign <= 0:
-        _set_status("Aucun soldat selectionne")
+        _set_status("Aucun soldat sélectionné")
         return
     if soldiers_to_assign > avail_total:
         # Cap request to available to avoid crash
@@ -697,13 +697,13 @@ func _on_resolve() -> void:
     var missions_pnj := planning.get("missions_pnj", []) as Array
 
     if missions_soldats.is_empty() and missions_pnj.is_empty():
-        _set_status("Aucune mission a resoudre")
+        _set_status("Aucune mission à résoudre")
         return
 
     var report := ClanManager.resoudre_planning_pnj_journee()
     ClanManager.sauvegarder()
     var gains := report.get("resource_gains", {}) as Dictionary
-    _set_status("Resolu - bois +%d | or +%d" % [int(gains.get("bois", 0)), int(gains.get("or", 0))])
+    _set_status("Résolu — bois +%d | or +%d" % [int(gains.get("bois", 0)), int(gains.get("or", 0))])
     _refresh_roster()
     _refresh_planning_summary()
 
@@ -714,7 +714,7 @@ func _on_back() -> void:
 
 func _on_cancel_soldier(index: int) -> void:
     var result := ClanManager.annuler_mission_soldats(index)
-    _handle_result(result, "Mission soldats annulee")
+    _handle_result(result, "Mission des soldats annulée")
     _refresh_planning_summary()
 
 
@@ -722,19 +722,19 @@ func _on_adjust_soldier_count(mission_index: int, delta: int) -> void:
     var result := ClanManager.adjust_mission_soldier_count(mission_index, delta)
     if bool(result.get("ok", false)):
         if result.has("warning") and str(result.get("warning", "")) == "insufficient":
-            _set_status("Impossible d'assigner autant: stock insuffisant")
+            _set_status("Impossible d’en assigner autant : stock insuffisant")
         else:
-            _set_status("Ajustement effectue")
+            _set_status("Ajustement effectué")
         ClanManager.sauvegarder()
     else:
-        _set_status("Erreur: %s" % str(result.get("error", "inconnue")))
+        _set_status("Erreur : %s" % str(result.get("error", "inconnue")))
     _refresh_planning_summary()
     _update_soldier_ui()
 
 
 func _on_cancel_pnj(index: int) -> void:
     var result := ClanManager.annuler_mission_pnj(index)
-    _handle_result(result, "Mission PNJ annulee")
+    _handle_result(result, "Mission du PNJ annulée")
     _refresh_roster()
     _refresh_planning_summary()
 
@@ -750,4 +750,3 @@ func _handle_result(result: Dictionary, success_message: String) -> void:
         ClanManager.sauvegarder()
     else:
         _set_status("Erreur : %s" % str(result.get("error", "inconnue")))
-

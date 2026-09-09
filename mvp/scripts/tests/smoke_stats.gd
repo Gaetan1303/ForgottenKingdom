@@ -89,7 +89,7 @@ func _run_character_factory_tests(failures: Array[String]) -> void:
 		"clan": "Clan QA",
 		"classe": "hellcaster",
 		"niveau": 1,
-		"points_a_distribuer_base": 18,
+		"points_a_distribuer_base": 10,
 		"stats": {
 			"force": 17,
 			"magie": 12,

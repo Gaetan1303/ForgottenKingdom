@@ -1,6 +1,6 @@
 ﻿Niveau,Force,Magie,Espionnage,Artisanat,Diplomatie,Commandement,Attaque,Défense,Résistance,Initiative,Jet de Vigueur,Jet de Volonté,Jet de Réflexes,Nouveaux Talents,Lore
-1,10,8,10,8,8,8,10,8,8,10,10,8,10,predator_instinct, Marque du chasseur,"Tu sens la peur de tes proies."
-2,11,8,11,8,8,8,11,8,8,11,11,8,11,+1 Espionnage, Piste cendrée,"Aucune proie ne peut t’échapper."
+1,10,8,10,8,8,8,10,8,8,10,10,8,10,"predator_instinct, Marque du chasseur","Tu sens la peur de tes proies."
+2,11,8,11,8,8,8,11,8,8,11,11,8,11,"+1 Espionnage, Piste cendrée","Aucune proie ne peut t’échapper."
 3,12,8,12,8,8,8,12,9,9,12,12,9,12,Marque du chasseur +1,"Ta marque brille sur tes cibles."
 4,13,8,13,8,8,8,13,9,9,13,13,9,13,Flèche empoisonnée (Dégâts +10%),"Tes flèches sont imprégnées de venin cendré."
 5,14,8,14,8,8,9,14,10,10,14,14,10,14,Chasse en meute (Bonus si alliés présents),"Tu chasses mieux en groupe."

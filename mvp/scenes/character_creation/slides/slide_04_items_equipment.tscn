@@ -25,7 +25,7 @@ theme_override_constants/separation = 10
 
 [node name="StepTitle" type="Label" parent="Content"]
 layout_mode = 2
-text = "Slide 4 - Equipement"
+text = "Étape 4 — Équipement"
 theme_override_font_sizes/font_size = 18
 
 [node name="Body" type="HBoxContainer" parent="Content"]
@@ -70,7 +70,7 @@ theme_override_font_sizes/font_size = 16
 
 [node name="InventoryHelp" type="Label" parent="Content/Body/InventoryPanel/InventoryMargin/InventoryVBox"]
 layout_mode = 2
-text = "Glisser/deposer depuis la grille vers les slots d'equipement"
+text = "Faites glisser les objets du sac vers les emplacements d’équipement."
 autowrap_mode = 3
 theme_override_font_sizes/font_size = 10
 
@@ -114,7 +114,7 @@ custom_minimum_size = Vector2(132, 70)
 layout_mode = 2
 script = ExtResource("3_slot_card")
 slot_id = "head"
-slot_label = "Tete"
+slot_label = "Tête"
 accepted_types = PackedStringArray("head")
 
 [node name="Body" type="VBoxContainer" parent="Content/Body/EquipmentPanel/EquipmentMargin/EquipmentLayout/LeftColumn/SlotHead"]
@@ -171,7 +171,7 @@ custom_minimum_size = Vector2(132, 70)
 layout_mode = 2
 script = ExtResource("3_slot_card")
 slot_id = "legs"
-slot_label = "Jambieres"
+slot_label = "Jambières"
 accepted_types = PackedStringArray("legs")
 
 [node name="Body" type="VBoxContainer" parent="Content/Body/EquipmentPanel/EquipmentMargin/EquipmentLayout/LeftColumn/SlotRingLeft"]
@@ -332,7 +332,7 @@ theme_override_font_sizes/font_size = 11
 
 [node name="CompatibilityHint" type="Label" parent="Content"]
 layout_mode = 2
-text = "Equipe tes objets en glisser/deposer."
+text = "Équipez votre personnage en faisant glisser les objets vers les emplacements adaptés."
 theme_override_font_sizes/font_size = 10
 
 [node name="Nav" type="HBoxContainer" parent="Content"]
@@ -341,7 +341,7 @@ alignment = 2
 
 [node name="BtnPrev" type="Button" parent="Content/Nav"]
 layout_mode = 2
-text = "Precedent"
+text = "Précédent"
 
 [node name="BtnNext" type="Button" parent="Content/Nav"]
 layout_mode = 2

@@ -1,0 +1,14 @@
+MANIFEST.txt
+README.md
+archive/lore-transition-Veyr.md
+docs/lore/LORE-00-CANON.md
+docs/lore/LORE-05-Maison-Heritier.md
+docs/lore/LORE-06-Neuf-Lignees.md
+docs/lore/LORE-11-Pactes-et-Sang-Meles.md
+docs/lore/factions/LORE-01-Abysse-Souverain-Trone-Cendre.md
+docs/lore/factions/LORE-02-Tisseurs-Ombre.md
+docs/lore/factions/LORE-03-Ouroboros-Kuro-Eden.md
+docs/lore/factions/LORE-04-Alliance-Solaire-Unifiee.md
+docs/lore/histoire.md
+docs/lore/secrets/LORE-07-Le-Secret-de-la-Lignee.md
+docs/lore/secrets/LORE-08-Les-Jumeaux-Brises.md

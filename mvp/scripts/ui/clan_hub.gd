@@ -9,6 +9,9 @@
 extends Control
 const FallenUI = preload("res://scripts/ui/fallen_ui.gd")
 
+const RefugePanel = preload("res://scripts/ui/refuge_panel.gd")
+const Refuge = preload("res://scripts/services/refuge_service.gd")
+
 const FKHelpers = preload("res://scripts/utils/fk_helpers.gd")
 const ResourcePathResolver = preload("res://scripts/utils/resource_path_resolver.gd")
 const VisualAssetCatalog = preload("res://scripts/ui/visual_asset_catalog.gd")
@@ -40,7 +43,7 @@ var _actions_nuit := [
 ]
 
 var _actions_actuelles: Array = []
-var _vue_gauche: String = "maisons"
+var _vue_gauche: String = "domaine"
 
 const PORTRAIT_HINTS := {}
 
@@ -75,21 +78,31 @@ const ICON_RES_AVANCEES := [
 # ─────────────────────────────────────────────────────────────────────
 
 func _ready() -> void:
+	if ClanManager.campaign.is_empty():
+		_vue_gauche = "maisons"
 	ClanManager.ressources_mises_a_jour.connect(_rafraichir_header)
 	_connecter_boutons()
 	_preparer_layout_actions()
 	_rafraichir_tout()
 	_init_resource_icons()
+	_prepare_header_layout()
 
 	# Accès à l'intendance PNJ dans le panneau défilable de la Maison.
 	var action_container := $ContenuPrincipal/PanneauActions/ContenuActions/BoutonActions
 	if action_container != null and action_container.get_node_or_null("BtnPlanPNJ") == null:
 		var btn := Button.new()
 		btn.name = "BtnPlanPNJ"
-		btn.text = "Intendance PNJ"
+		btn.text = "Intendance"
 		btn.toggle_mode = false
 		btn.pressed.connect(_on_open_pnj_manager)
 		action_container.add_child(btn)
+	var base_button := Button.new()
+	base_button.text = "La Brèche-Sèche"
+	base_button.pressed.connect(func():
+		_vue_gauche = "domaine"
+		_rafraichir_colonne_gauche()
+	)
+	action_container.add_child(base_button)
 	FallenUI.apply(self, "clan")
 
 
@@ -144,6 +157,10 @@ func _preparer_layout_actions() -> void:
 # ─────────────────────────────────────────────────────────────────────
 
 func _rafraichir_tout() -> void:
+	var initial := int(ClanManager.campaign.get("version", 1)) >= 2 and not bool(ClanManager.campaign.get("initial_tutorial_done", false))
+	var actions := $ContenuPrincipal/PanneauActions/ContenuActions
+	for key in ["BoutonActions", "BtnMaisons", "BtnBibliotheque"]:
+		actions.get_node(key).visible = not initial
 	_configurer_actions_moment()
 	_rafraichir_header()
 	_rafraichir_colonne_gauche()
@@ -151,6 +168,11 @@ func _rafraichir_tout() -> void:
 
 func _rafraichir_colonne_gauche() -> void:
 	match _vue_gauche:
+		"domaine":
+			var list := _vider_colonne_gauche()
+			var refuge := RefugePanel.new()
+			list.add_child(refuge)
+			refuge.changed.connect(_rafraichir_tout, CONNECT_DEFERRED)
 		"profil":
 			_afficher_vue_profil()
 		"coffre":
@@ -202,17 +224,17 @@ func _init_resource_icons() -> void:
 func _rafraichir_header() -> void:
 	var res := ClanManager.get_ressources()
 	$Header/BgHeader/InfoClan/LabelNomClan.text = ClanManager.nom_clan
-	var moment := "Jour" if ClanManager.moment_journee == "jour" else "Nuit"
+	var moment := str({"matin": "Matin", "apres_midi": "Après-midi", "soir": "Nuit"}.get(ClanManager.daily_phase, "Matin"))
 	$Header/BgHeader/InfoClan/LabelTour.text    = "Tour %d — %s" % [ClanManager.tour_actuel, moment]
 	$Header/BgHeader/InfoClan/RessourcesHeader/LabelOr.text       = "Or: %d" % int(res.get("or", 0))
 	$Header/BgHeader/InfoClan/RessourcesHeader/LabelSoldats.text  = "Soldats: %d" % int(res.get("soldats", 0))
 	$Header/BgHeader/InfoClan/RessourcesHeader/LabelMana.text     = "Mana: %d" % int(res.get("mana", 0))
-	$Header/BgHeader/InfoClan/RessourcesHeader/LabelReputation.text = "Rep: %d" % int(res.get("reputation", 0))
-	$Header/BgHeader/InfoClan/RessourcesHeader/LabelAme.text      = "Ame: %d%%" % ClanManager.barre_ame
+	$Header/BgHeader/InfoClan/RessourcesHeader/LabelReputation.text = "Réputation : %d" % int(res.get("reputation", 0))
+	$Header/BgHeader/InfoClan/RessourcesHeader/LabelAme.text      = "Âme : %d%%" % ClanManager.barre_ame
 	var phase_action := "Action utilisée" if ClanManager.action_deja_utilisee_pour_moment() else "Action disponible"
 	$Header/BgHeader/InfoClan/LabelTour.text    = "Tour %d — %s (%s)" % [ClanManager.tour_actuel, moment, phase_action]
 	$ContenuPrincipal/PanneauActions/ContenuActions/BtnFinTour.text = (
-		"Passer à la Nuit" if ClanManager.moment_journee == "jour" else "Terminer le Tour"
+		{"matin": "Résoudre la journée", "apres_midi": "Passer à la nuit", "soir": "Accueillir l’aube"}.get(ClanManager.daily_phase, "Continuer")
 	)
 	_mettre_a_jour_infos_avancees(res)
 
@@ -339,7 +361,7 @@ func _rafraichir_liste_maisons() -> void:
 		if revelee:
 			titre.text = "[%d] %s" % [id, maison.get("nom", "???")]
 		else:
-			titre.text = "[%d] Famille Inconnue" % id
+			titre.text = "[%d] Famille inconnue" % id
 
 		var puissance := int(maison.get("puissance", 0))
 		if puissance <= 0:
@@ -1120,10 +1142,10 @@ func _texture_from_file_any(path: String) -> Texture2D:
 func _texte_statut(statut: String) -> String:
 	match statut:
 		"inconnue":   return "Inconnue"
-		"revelee":    return "Revelee"
+		"revelee":    return "Révélée"
 		"hostile":    return "Hostile"
 		"neutre":     return "Neutre"
-		"alliee":     return "Alliee"
+		"alliee":     return "Alliée"
 		"soumise":    return "Soumise"
 	return "Statut inconnu"
 
@@ -1153,7 +1175,7 @@ func _lancer_action(action_id: String) -> void:
 		return
 
 	if action_id == "recruter_pnj" and not ClanManager.magie_pactes_active():
-		_afficher_message("Magie des Pactes inactive: impossible de recruter un PNJ.")
+		_afficher_message("Magie des Pactes inactive : impossible de recruter un PNJ.")
 		return
 	if action_id == "recruter_pnj" and not ClanManager.peut_recruter_pnj_domaine():
 		_afficher_message("Tous les rôles de domaine sont déjà pourvus.")
@@ -1213,7 +1235,7 @@ func _ouvrir_dialogue_cible(action_id: String) -> void:
 		return
 
 	for m in maisons_valides:
-		var nom: String = m.get("nom", "???") if bool(m.get("revelee", false)) else "Famille Inconnue"
+		var nom: String = m.get("nom", "???") if bool(m.get("revelee", false)) else "Famille inconnue"
 		liste_cibles.add_item("%s (statut : %s)" % [nom, m.get("statut", "?")])
 		liste_cibles.set_item_metadata(liste_cibles.item_count - 1, int(m.get("id", -1)))
 
@@ -1244,47 +1266,9 @@ func _aller_resolution(cible_id: int) -> void:
 # ─────────────────────────────────────────────────────────────────────
 
 func _on_fin_tour() -> void:
-	if ClanManager.moment_journee == "jour":
-		# Avant de passer à la nuit, résoudre les missions planifiées (après-midi)
-		var report: Dictionary = ClanManager.resoudre_planning_pnj_journee()
-		# Appliquer et sauvegarder est géré par ClanManager.resoudre_planning_pnj_journee
-		var gains := report.get("resource_gains", {}) as Dictionary
-		var report_msg := "Après-midi:"
-		if not gains.is_empty():
-			var parts := []
-			for k in gains.keys():
-				parts.append("%s %+d" % [str(k), int(gains.get(k, 0))])
-			report_msg = "%s %s" % [report_msg, FKHelpers.join_array(parts, ", ")]
-
-		ClanManager.moment_journee = "nuit"
-		ClanManager.reset_actions_pour_nuit()
-		var msg_passifs := ClanManager.appliquer_passifs_nuit()
-		ClanManager.sauvegarder()
-		var msg_nuit := "La nuit tombe sur les Marches Libres. Les actions nocturnes sont disponibles."
-		if not msg_passifs.is_empty():
-			msg_nuit = "%s | %s" % [msg_nuit, msg_passifs]
-		# Affiche d'abord le rapport d'après-midi puis le message de nuit
-		_afficher_message("%s \n%s" % [report_msg, msg_nuit])
-		_rafraichir_tout()
-		return
-
-	var production_base := GameDataLoader.get_production_par_tour()
-	var production := ClanManager.get_production_totale(production_base)
-	ClanManager.gagner(production)
-	var msg_event := ClanManager.tirer_et_appliquer_evenement(GameDataLoader.get_evenements_aleatoires())
-
-	var msg_tour := _construire_resume_tour(production)
-	if not msg_event.is_empty():
-		msg_tour = "%s | %s" % [msg_tour, msg_event]
-	_afficher_message(msg_tour)
-
-	ClanManager.tour_actuel += 1
-	ClanManager.moment_journee = "jour"
-	ClanManager.reset_actions_nouveau_tour()
-	ClanManager.sauvegarder()
+	var result := ClanManager.advance_day_phase()
+	_afficher_message(str(result.get("message", "")))
 	_rafraichir_tout()
-
-	# Vérification des conditions de victoire / défaite
 	_verifier_fin_de_partie()
 
 
@@ -1313,7 +1297,11 @@ func _on_menu_principal() -> void:
 
 
 func _on_donjon() -> void:
-	GameManager.open_dungeon()
+	if not ClanManager.campaign.is_empty():
+		_vue_gauche = "domaine"
+		_rafraichir_colonne_gauche()
+	else:
+		GameManager.open_dungeon()
 
 
 
@@ -1339,3 +1327,19 @@ func _on_coffre() -> void:
 func _on_bibliotheque() -> void:
 	_vue_gauche = "bibliotheque"
 	_rafraichir_colonne_gauche()
+
+
+func _prepare_header_layout() -> void:
+	var info := $Header/BgHeader/InfoClan
+	info.add_theme_constant_override("separation", 16)
+	info.get_node("Spacer").hide()
+	var name_label := info.get_node("LabelNomClan") as Label
+	name_label.custom_minimum_size.x = 150
+	name_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	name_label.clip_text = true
+	name_label.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
+	name_label.tooltip_text = ClanManager.nom_clan
+	var resources := info.get_node("RessourcesHeader") as HFlowContainer
+	resources.custom_minimum_size.x = 380
+	resources.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	resources.size_flags_stretch_ratio = 2

@@ -3,12 +3,12 @@
 importer="mp3"
 type="AudioStreamMP3"
 uid="uid://b7ut621vwef5d"
-path="res://.godot/imported/D#U00e9chu.mp3-e644f77d6cffee0f882f4da7120c40a9.mp3str"
+path="res://.godot/imported/Déchu.mp3-e644f77d6cffee0f882f4da7120c40a9.mp3str"
 
 [deps]
 
-source_file="res://assets/audio/music/D#U00e9chu.mp3"
-dest_files=["res://.godot/imported/D#U00e9chu.mp3-e644f77d6cffee0f882f4da7120c40a9.mp3str"]
+source_file="res://assets/audio/music/Déchu.mp3"
+dest_files=["res://.godot/imported/Déchu.mp3-e644f77d6cffee0f882f4da7120c40a9.mp3str"]
 
 [params]
 

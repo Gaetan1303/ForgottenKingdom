@@ -63,7 +63,7 @@ func _render_summary(slot: Dictionary) -> void:
 	var has_data := bool(slot.get("has_clan", false)) or bool(slot.get("has_progress", false))
 
 	if not has_data:
-		txt.text = "Slot vide.\n\nActions disponibles:\n- Nouvelle / Écraser : démarre une nouvelle campagne dans ce slot\n- Supprimer : nettoie complètement le slot"
+		txt.text = "Slot vide.\n\nActions disponibles :\n- Nouvelle / Écraser : démarre une nouvelle campagne dans ce slot\n- Supprimer : nettoie complètement le slot"
 		portrait.texture = null
 		slot_name_edit.text = str(slot.get("slot_name", ""))
 		return
@@ -72,7 +72,7 @@ func _render_summary(slot: Dictionary) -> void:
 	var updated_str := DateTimeFormatter.format_local_datetime(updated_unix)
 	var display_slot_name := _slot_display_name(slot)
 
-	txt.text = "Nom du slot: %s\nClan: %s\nPersonnage: %s\nTour: %d\nChronique de Veyr: %d / scène %d\nTemps joué: %02dh%02d\nDernière sauvegarde: %s" % [
+	txt.text = "Nom du slot : %s\nClan : %s\nPersonnage : %s\nTour : %d\nChronique de Veyr : %d / scène %d\nTemps joué : %02dh%02d\nDernière sauvegarde : %s" % [
 		display_slot_name,
 		nom_clan if not nom_clan.is_empty() else "-",
 		nom_perso if not nom_perso.is_empty() else "-",
@@ -122,13 +122,17 @@ func _on_load_pressed() -> void:
 		_status("Sélectionnez un slot.")
 		return
 	SaveSystem.set_active_slot(_selected_slot_id)
+	SaveSystem.load_save()
+	if bool(SaveSystem.get_value("opening", {}).get("active", false)):
+		GameManager.resume_campaign()
+		return
 	if not SaveSystem.slot_has_clan_save(_selected_slot_id):
 		_status("Ce slot ne contient pas de campagne complète. Utilisez 'Nouvelle / Écraser'.")
 		return
 	if not ClanManager.charger_sauvegarde():
 		_status("Impossible de charger l'état du clan pour ce slot.")
 		return
-	GameManager.go_to("clan_hub")
+	GameManager.resume_campaign()
 
 
 func _on_new_overwrite_pressed() -> void:

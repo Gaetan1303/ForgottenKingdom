@@ -2,7 +2,12 @@ extends RefCounted
 class_name State
 
 var name: String = "State"
-var machine: StateMachine = null
+var _machine_ref: WeakRef
+var machine: StateMachine:
+    get:
+        return _machine_ref.get_ref() if _machine_ref != null else null
+    set(value):
+        _machine_ref = weakref(value) if value != null else null
 
 func _init(_name: String="State") -> void:
     name = _name

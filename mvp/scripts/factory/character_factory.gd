@@ -4,13 +4,18 @@ class_name CharacterFactory
 extends RefCounted
 
 const CLASSES_PATH := "res://data/classes.json"
+const ClanIdentityType = preload("res://scripts/data/clan_identity.gd")
 # rely on StatDefs class_name from data/stat_defs.gd
 
 func create_from_profile(profile: Dictionary) -> Character:
     var CharacterClass = preload("res://scripts/data/character.gd")
     var ch: Character = CharacterClass.new()
     ch.name = str(profile.get("name", ""))
-    ch.clan = str(profile.get("clan", ""))
+    ch.clan_name = str(profile.get("clan_name", profile.get("clan", "")))
+    ch.clan = ch.clan_name
+    ch.clan_id = str(profile.get("clan_id", "")).strip_edges()
+    if ch.clan_id.is_empty():
+        ch.clan_id = ClanIdentityType.id_from_name(ch.clan_name)
     ch.char_class = str(profile.get("classe", ""))
     ch.level = int(profile.get("niveau", 1))
     ch.points_pool = int(profile.get("points_a_distribuer_base", ch.points_pool))

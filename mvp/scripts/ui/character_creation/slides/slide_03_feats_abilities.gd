@@ -2,14 +2,19 @@
 class_name Slide03FeatsAbilities
 extends CreationSlideBase
 
+const CharacterCreationRules = preload("res://scripts/services/character_creation_rules_service.gd")
+
 var _selected_feats: Array = []
 var _selected_ability: String = ""
 var _current_stats: Dictionary = {}
+var _current_class_id: String = ""
+var _updating_selection := false
 
 func enter_slide(data: Resource) -> void:
 	_selected_feats = []
 	_selected_ability = ""
 	_current_stats = {}
+	_current_class_id = ""
 	if data != null and data.has_method("get"):
 		var tmp_feats = data.get("selected_feats")
 		if tmp_feats != null:
@@ -22,7 +27,12 @@ func enter_slide(data: Resource) -> void:
 		var tmp_stats = data.get("stats")
 		if tmp_stats != null and tmp_stats is Dictionary:
 			_current_stats = (tmp_stats as Dictionary).duplicate(true)
+		var tmp_class_id = data.get("class_id")
+		if tmp_class_id != null:
+			_current_class_id = str(tmp_class_id)
+	_current_stats = CharacterCreationRules.compute_creation_display_stats(_current_class_id, _current_stats)
 
+	_show_summary(data)
 	_build_feat_cards()
 	_build_ability_cards()
 	_update_card_selection()
@@ -75,12 +85,16 @@ func _create_card(kind: String, id: String, data: Dictionary) -> Button:
 	button.toggle_mode = true
 	button.text = ""
 	button.name = "%sCard_%s" % [kind, id]
-	button.focus_mode = Control.FOCUS_NONE
+	button.focus_mode = Control.FOCUS_ALL
+	button.tooltip_text = _get_entry_name(data, id) + "\n" + str(data.get("description", "")) + "\nPrérequis : " + _get_prerequis_text(data) + "\n" + _get_effects_text(data)
+	preload("res://scripts/ui/components/keyboard_tooltip.gd").bind(button)
 	# reduce card width so more cards fit per row (3 columns)
 	button.custom_minimum_size = Vector2(260, 280)
 	button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	button.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	button.connect("toggled", Callable(self, "_on_card_toggled").bind(kind, id))
+	button.set_meta("entry_data", data.duplicate(true))
+	button.set_meta("entry_kind", kind)
 	button.add_theme_stylebox_override("normal", _make_card_style(false))
 	button.add_theme_stylebox_override("hover", _make_card_style(false))
 	button.add_theme_stylebox_override("pressed", _make_card_style(true))
@@ -93,6 +107,11 @@ func _create_card(kind: String, id: String, data: Dictionary) -> Button:
 	# ensure inner layout reserves enough horizontal room for card content
 	# use a smaller minimum to allow multiple cards per row
 	layout.custom_minimum_size = Vector2(240, 0)
+	layout.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	layout.offset_left = 10
+	layout.offset_right = -10
+	layout.offset_top = 10
+	layout.offset_bottom = -10
 	layout.add_theme_constant_override("separation", 6)
 	button.add_child(layout)
 
@@ -103,7 +122,7 @@ func _create_card(kind: String, id: String, data: Dictionary) -> Button:
 	title.add_theme_color_override("font_color", title_color)
 	title.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	title.custom_minimum_size = Vector2(0, 28)
-	title.clip_text = true
+	title.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	layout.add_child(title)
 
 	var info_box = HBoxContainer.new()
@@ -126,22 +145,23 @@ func _create_card(kind: String, id: String, data: Dictionary) -> Button:
 	info_box.add_child(type_badge)
 
 	var prereq_label = Label.new()
+	prereq_label.name = "PrerequisiteLabel"
 	var prereq_text = _get_prerequis_text(data)
-	prereq_label.text = prereq_text
+	prereq_label.text = "Prérequis\n%s" % prereq_text if prereq_text != "" else ""
 	prereq_label.visible = prereq_text != ""
 	if prereq_text != "":
 		var prereq_color = Color(0.65, 0.90, 0.65) if _is_prereq_met(data) else Color(0.95, 0.55, 0.55)
 		prereq_label.add_theme_color_override("font_color", prereq_color)
-		prereq_label.add_theme_font_size_override("font_size", 9)
+		prereq_label.add_theme_font_size_override("font_size", 10)
 	prereq_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	prereq_label.size_flags_vertical = Control.SIZE_SHRINK_BEGIN
-	prereq_label.custom_minimum_size = Vector2(0, 24)
-	prereq_label.clip_text = true
+	prereq_label.custom_minimum_size = Vector2(0, 42)
+	prereq_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	info_box.add_child(prereq_label)
 
 	var effect_text = _get_effects_text(data)
 	var effect = Label.new()
-	effect.text = "" if effect_text == "" else "Effet: %s" % effect_text
+	effect.text = "" if effect_text == "" else "Effet\n%s" % effect_text
 	effect.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	effect.add_theme_color_override("font_color", Color(0.95, 0.95, 0.95))
 	effect.add_theme_font_size_override("font_size", 13)
@@ -150,33 +170,49 @@ func _create_card(kind: String, id: String, data: Dictionary) -> Button:
 	effect.custom_minimum_size = Vector2(0, 28)
 	layout.add_child(effect)
 
-	var description_box = Control.new()
+	var description_box = VBoxContainer.new()
 	# make the description area wide enough for the reduced card width
-	description_box.custom_minimum_size = Vector2(240, 150)
+	description_box.custom_minimum_size = Vector2(240, 0)
 	description_box.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	description_box.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	description_box.clip_contents = true
+	description_box.clip_contents = false
 	layout.add_child(description_box)
 
 	var description = Label.new()
-	description.text = "Description: %s" % str(data.get("description", "Aucune description disponible."))
+	description.text = "Description\n%s" % str(data.get("description", "Aucune description disponible."))
 	description.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	description.add_theme_color_override("font_color", Color(0.88, 0.88, 0.88))
 	description.add_theme_font_size_override("font_size", 12)
 	description.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	description.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	description.clip_text = true
+	description.clip_text = false
 	description.set_anchors_preset(Control.PRESET_FULL_RECT)
 	description.offset_left = 0
 	description.offset_top = 0
 	description.offset_right = 0
 	description.offset_bottom = 0
 	description_box.add_child(description)
+	layout.minimum_size_changed.connect(func(): button.custom_minimum_size.y = maxf(280, layout.get_combined_minimum_size().y + 20))
+	prereq_label.tooltip_text = button.tooltip_text
+	preload("res://scripts/ui/components/keyboard_tooltip.gd").bind(prereq_label)
 
 	button.set_pressed(_is_entry_selected(kind, id))
+	var available := _is_prereq_met(data)
+	button.disabled = not available and not _is_entry_selected(kind, id)
+	button.modulate = Color(1, 1, 1, 1) if available else Color(0.62, 0.62, 0.62, 0.88)
 	return button
 
 func _on_card_toggled(pressed: bool, kind: String, id: String) -> void:
+	if _updating_selection:
+		return
+	var toggled_button := _find_card_button(kind, id)
+	var entry_data := toggled_button.get_meta("entry_data", {}) as Dictionary if toggled_button else {}
+	if pressed and not _is_prereq_met(entry_data):
+		if toggled_button:
+			_updating_selection = true
+			toggled_button.set_pressed(false)
+			_updating_selection = false
+		return
 	if kind == "don":
 		if pressed:
 			if not _selected_feats.has(id):
@@ -195,6 +231,29 @@ func _on_card_toggled(pressed: bool, kind: String, id: String) -> void:
 		else:
 			if _selected_ability == id:
 				_selected_ability = ""
+	_refresh_prerequisite_states()
+
+
+func _refresh_prerequisite_states() -> void:
+	for grid_name in ["FeatCardGrid", "AbilityCardGrid"]:
+		var grid := find_child(grid_name, true, false) as GridContainer
+		if grid == null:
+			continue
+		for child in grid.get_children():
+			if not child is Button:
+				continue
+			var button := child as Button
+			var data := button.get_meta("entry_data", {}) as Dictionary
+			var kind := str(button.get_meta("entry_kind", ""))
+			var id := button.name.trim_prefix("%sCard_" % kind)
+			var available := _is_prereq_met(data)
+			button.disabled = not available and not _is_entry_selected(kind, id)
+			button.modulate = Color(1, 1, 1, 1) if available else Color(0.62, 0.62, 0.62, 0.88)
+			var prereq_label := button.find_child("PrerequisiteLabel", true, false) as Label
+			if prereq_label:
+				var text := _get_prerequis_text(data)
+				prereq_label.text = "Prérequis\n%s" % text if text != "" else ""
+				prereq_label.add_theme_color_override("font_color", Color(0.65, 0.90, 0.65) if available else Color(0.95, 0.55, 0.55))
 
 func _find_card_button(kind: String, id: String) -> Button:
 	var root_name = "%sCard_%s" % [kind, id]
@@ -265,7 +324,7 @@ func _make_type_badge_style(kind: String) -> StyleBoxFlat:
 	return style
 
 func _get_entry_name(data: Dictionary, id: String) -> String:
-	return str(data.get("name", data.get("nom", id)))
+	return str(data.get("name", data.get("nom", id.replace("_", " ").capitalize())))
 
 func _get_entry_type(data: Dictionary, kind: String) -> String:
 	var value = str(data.get("type", "")).strip_edges().to_lower()
@@ -295,17 +354,34 @@ func _format_effects(effects: Dictionary) -> String:
 			var text_value := str(value).strip_edges()
 			if text_value == "" or text_value.to_lower() == "null":
 				continue
-			parts.append("%s: %s" % [str(key).capitalize(), text_value])
+			if str(key).to_lower() == "texte":
+				parts.append(text_value)
+			else:
+				parts.append("%s : %s" % [_effect_label(str(key)), text_value])
 		else:
-			parts.append("%s: %s" % [str(key).capitalize(), str(value)])
-	return _join_parts(parts, ", ")
+			parts.append("%s : %s" % [_effect_label(str(key)), str(value)])
+	return _join_parts(parts, "\n")
+
+
+func _effect_label(key: String) -> String:
+	var labels := {
+		"details": "Détails", "pv_bonus": "Points de vie", "mana_bonus": "Mana",
+		"energie_mystique_bonus": "Énergie mystique", "cout_energie_mystique": "Coût en énergie mystique",
+		"degats": "Dégâts", "degats_magiques": "Dégâts magiques", "precision": "Précision",
+		"soins": "Soins", "resistance": "Résistance", "commandement": "Commandement",
+		"force": "Force", "magie": "Magie", "espionnage": "Espionnage",
+		"artisanat": "Artisanat", "diplomatie": "Diplomatie",
+	}
+	return str(labels.get(key.to_lower(), key.replace("_", " ").capitalize()))
 
 func _get_prerequis_text(data: Dictionary) -> String:
 	if data.has("prerequis"):
 		var prereq = data.get("prerequis")
+		if prereq == null:
+			return ""
 		match typeof(prereq):
 			TYPE_STRING:
-				return str(prereq)
+				return str(prereq).strip_edges()
 			TYPE_DICTIONARY:
 				return _format_prereq_dict(prereq)
 			TYPE_ARRAY:
@@ -314,7 +390,7 @@ func _get_prerequis_text(data: Dictionary) -> String:
 				return str(prereq)
 	if data.has("disponible_des"):
 		return str(data.get("disponible_des"))
-	return "Aucun"
+	return ""
 
 func _format_prereq_dict(prereq: Dictionary) -> String:
 	var parts: Array = []
@@ -322,20 +398,29 @@ func _format_prereq_dict(prereq: Dictionary) -> String:
 		var value = prereq[key]
 		if key == "stats" and value is Dictionary:
 			for stat_key in value.keys():
-				parts.append("%s >= %s" % [_stat_abbrev(stat_key), str(value[stat_key])])
+				var required := int(value[stat_key])
+				var actual := int(_current_stats.get(str(stat_key), StatDefs.CHARACTER_MIN_STAT))
+				parts.append("%s : %d / %d %s" % [
+					_stat_label(str(stat_key)), actual, required, "✓" if actual >= required else "✗",
+				])
+			continue
+		if (key == "dons" or key == "feats") and value is Array:
+			for feat_id in value:
+				var has_feat := str(feat_id) in _selected_feats
+				parts.append("Don : %s %s" % [_feat_display_name(str(feat_id)), "✓" if has_feat else "✗"])
 			continue
 		if value is Dictionary:
-			parts.append("%s: %s" % [str(key).capitalize(), _format_prereq_dict(value)])
+			parts.append(_format_prereq_dict(value))
 		elif value is Array:
-			parts.append("%s: %s" % [str(key).capitalize(), _format_string_list(value)])
+			parts.append(_format_string_list(value))
 		else:
-			parts.append("%s: %s" % [str(key).capitalize(), str(value)])
-	return _join_parts(parts, ", ")
+			parts.append("%s : %s" % [str(key).replace("_", " ").capitalize(), str(value)])
+	return _join_parts(parts, "\n")
 
 func _format_string_list(values: Array) -> String:
 	var parts: Array = []
 	for v in values:
-		parts.append(str(v))
+		parts.append(_feat_display_name(str(v)))
 	return _join_parts(parts, ", ")
 
 func _join_parts(parts: Array, separator: String) -> String:
@@ -368,6 +453,11 @@ func _is_prereq_dict_met(prereq: Dictionary) -> bool:
 				var required_value = int(value[stat_key])
 				var actual_value = int(_current_stats.get(str(stat_key), StatDefs.CHARACTER_MIN_STAT))
 				if actual_value < required_value:
+					return false
+			continue
+		if (key == "dons" or key == "feats") and value is Array:
+			for feat_id in value:
+				if str(feat_id) not in _selected_feats:
 					return false
 			continue
 		if value is Dictionary:
@@ -424,27 +514,21 @@ func _get_abilities_source() -> Dictionary:
 	return GameDataLoader.get_abilities()
 
 func _stat_abbrev(stat_key: String) -> String:
-	match stat_key.to_lower():
-		"force":
-			return "FOR"
-		"magie":
-			return "MAG"
-		"espionnage":
-			return "ESP"
-		"artisanat":
-			return "ART"
-		"diplomatie":
-			return "DIP"
-		"commandement":
-			return "COM"
-		"magie":
-			return "TAI"
-		"espionnage":
-			return "NIN"
-		"divin":
-			return "DIV"
-		_:
-			return str(stat_key).to_upper()
+	return _stat_label(stat_key)
+
+
+func _stat_label(stat_key: String) -> String:
+	var labels := {
+		"force": "Force", "magie": "Magie", "espionnage": "Espionnage",
+		"artisanat": "Artisanat", "diplomatie": "Diplomatie", "commandement": "Commandement",
+		"techno": "Artisanat", "technologie": "Artisanat", "divin": "Divin",
+	}
+	return str(labels.get(stat_key.to_lower(), stat_key.replace("_", " ").capitalize()))
+
+
+func _feat_display_name(feat_id: String) -> String:
+	var feat := GameDataLoader.get_feat(feat_id)
+	return str(feat.get("nom", feat.get("name", feat_id.replace("_", " ").capitalize())))
 
 func _slugify(text: String) -> String:
 	var s := text.to_lower().strip_edges()
@@ -460,3 +544,28 @@ func _slugify(text: String) -> String:
 	if out == "":
 		return "id"
 	return out
+
+func _show_summary(data: Resource) -> void:
+	var content := $Content/CardScroll/CardScrollContent
+	var summary := content.get_node_or_null("CharacterSummary") as Label
+	if summary == null:
+		summary = Label.new()
+		summary.name = "CharacterSummary"
+		summary.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+		content.add_child(summary)
+		content.move_child(summary, 0)
+	var lines: PackedStringArray = []
+	var classes: Dictionary = GameDataLoader.get_classes()
+	lines.append("%s · %s · %s" % [str(data.get("character_name")), str(data.get("clan_name")), str(classes.get(_current_class_id, {}).get("name", _current_class_id))])
+	var spent := 0
+	for key in StatDefs.STAT_KEYS:
+		lines.append("%s : %d" % [str(key).capitalize(), int(_current_stats.get(key, 8))])
+		spent += maxi(0, int(data.get("stats").get(key, 8)) - 8)
+	for key in StatDefs.SECONDARY_STAT_KEYS:
+		lines.append("%s : %d" % [StatDefs.SECONDARY_STAT_LABELS[key], int(data.get("secondary_stats").get(key, 0))])
+	summary.text = "BILAN AVEC KAEL\n" + " · ".join(lines) + "\nPoints restants : %d / 10. Choisissez ensuite vos dons et capacités." % maxi(0, 10 - spent)
+	for grid_name in ["FeatCardGrid", "AbilityCardGrid"]:
+		var grid := content.get_node(grid_name) as GridContainer
+		grid.columns = maxi(1, int((get_viewport_rect().size.x - 80) / 280))
+	var next := find_child("BtnNext", true, false) as Button
+	if next: next.text = "Valider ces choix et préparer l’équipement ▶"
