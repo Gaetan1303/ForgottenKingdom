@@ -24,6 +24,7 @@ var current_scene_index: int = 0
 
 # Référence à la scène active
 var _current_scene: Node = null
+var _navigation_pending := false
 
 
 func _ready() -> void:
@@ -121,6 +122,7 @@ func _try_run_smoke_tests() -> void:
 
 ## Change de scène avec un fondu optionnel.
 func go_to(scene_key: String, data: Dictionary = {}) -> void:
+	if _navigation_pending: return
 	if not SCENES.has(scene_key):
 		push_error("GameManager: scène inconnue '%s'" % scene_key)
 		return
@@ -128,14 +130,20 @@ func go_to(scene_key: String, data: Dictionary = {}) -> void:
 	# Sauvegarde la progression avant de changer de scène
 	SaveSystem.save()
 
-	get_tree().change_scene_to_file(SCENES[scene_key])
+	_navigation_pending = true
+	var error := get_tree().change_scene_to_file(SCENES[scene_key])
+	if error != OK:
+		_navigation_pending = false
+		push_error("Scène impossible à charger : " + scene_key)
+		return
 	# Attendre que la scène soit entièrement instanciée et _ready() exécuté
 	await get_tree().process_frame
 	await get_tree().process_frame
 	_current_scene = get_tree().current_scene
 
 	# Passe les données à la nouvelle scène si elle les accepte
-	if data.size() > 0 and _current_scene.has_method("init_data"):
+	_navigation_pending = false
+	if is_instance_valid(_current_scene) and data.size() > 0 and _current_scene.has_method("init_data"):
 		_current_scene.init_data(data)
 
 
@@ -180,7 +188,20 @@ func open_library() -> void:
 
 ## Lance une nouvelle partie → écran de création de personnage.
 func start_new_game() -> void:
-	go_to("creation_personnage")
+	SaveSystem.set_value("opening", {"active": true, "finished": false, "index": 0, "choices": {}, "draft_ready": false})
+	SaveSystem.save()
+	go_to("intro_vn")
+
+func resume_campaign() -> void:
+	var opening: Dictionary = SaveSystem.get_value("opening", {})
+	if bool(opening.get("active", false)):
+		go_to("creation_personnage" if bool(opening.get("finished", false)) else "intro_vn", {"resume": true})
+	elif not ClanManager.campaign.get("run", {}).is_empty() and not bool(ClanManager.campaign.get("run", {}).get("returned", false)):
+		go_to("dungeon_view")
+	elif not ClanManager.campaign.is_empty() and not bool(ClanManager.campaign.get("intro_done", true)):
+		go_to("intro_vn")
+	else:
+		go_to("clan_hub")
 
 
 ## Ouvre le hub de gestion du clan.

@@ -1,6 +1,6 @@
 ﻿Niveau,Force,Magie,Espionnage,Artisanat,Diplomatie,Commandement,Attaque,Défense,Résistance,Initiative,Jet de Vigueur,Jet de Volonté,Jet de Réflexes,Nouveaux Talents,Lore
-1,8,10,8,8,8,8,8,8,8,8,8,10,8,abyss_focus, Décharge cendrée,"Ton sang bouillonne d’énergie magique."
-2,8,11,8,8,8,8,8,8,8,8,8,11,9,+1 Magie, Sortilège de sang,"Chaque sort te coûte un peu de ta vie."
+1,8,10,8,8,8,8,8,8,8,8,8,10,8,"abyss_focus, Décharge cendrée","Ton sang bouillonne d’énergie magique."
+2,8,11,8,8,8,8,8,8,8,8,8,11,9,"+1 Magie, Sortilège de sang","Chaque sort te coûte un peu de ta vie."
 3,8,12,8,8,9,8,8,8,9,9,8,12,9,Décharge cendrée +1,"La magie noire coule dans tes veines."
 4,8,13,8,8,9,8,8,9,9,9,9,13,10,Rituel sanglant (Dégâts +15%),"Le prix du pouvoir est écrit dans ton sang."
 5,8,14,8,8,10,8,8,9,10,10,9,14,10,Explosion arcanique,"Tes sorts explosent en une vague de destruction."

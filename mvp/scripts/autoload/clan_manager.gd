@@ -6,6 +6,7 @@ extends Node
 ## rely on the script's class_name (StatDefs) instead of preloading it here
 ## Use the service classes registered by class_name (PnjDailyPlannerService, PnjGenerator, JsonPersistenceService)
 const FKHelpers = preload("res://scripts/utils/fk_helpers.gd")
+const ClanIdentityType = preload("res://scripts/data/clan_identity.gd")
 
 # ── Chemins ────────────────────────────────────────────────────────────
 const DEFAULT_STATE_PATH := "res://data/clan/etat_clan_defaut.json"
@@ -18,6 +19,7 @@ const ROLE_DOMAINES := ["forgeron", "alchimiste", "intendant", "arcaniste"]
 
 # ── État du clan ────────────────────────────────────────────────────────
 var nom_clan:       String     = ""
+var clan_id:        String     = ""
 var nom_personnage: String     = ""
 var classe:         String     = ""
 var profil_personnage: Dictionary = {
@@ -105,6 +107,12 @@ var maisons_nobles: Array   = []
 var evenements_declenches: Array = []
 var historique_tours: Array = []
 var pnj_gestion: Dictionary = {}
+## Progression du refuge et expédition : même transaction que ressources et habitants.
+var campaign: Dictionary = {}
+var _corruption_service: CorruptionService = CorruptionService.new()
+var daily_phase := "matin"
+var day_report := ""
+var _day_transition_pending := false
 
 # ── Services (instanciation unique — DRY / SRP) ────────────────────────
 var _planner: PnjDailyPlannerService = null
@@ -139,11 +147,20 @@ func nouvelle_partie(
 	p_profil_personnage: Dictionary = {}
 ) -> void:
 	_charger_etat_defaut()
+	campaign = {}
+	_corruption_service = CorruptionService.new()
+	daily_phase = "matin"
+	day_report = ""
 	nom_personnage = p_nom_personnage
 	nom_clan       = p_nom_clan
+	clan_id        = str(p_profil_personnage.get("clan_id", "")).strip_edges()
+	if clan_id.is_empty():
+		clan_id = ClanIdentityType.id_from_name(nom_clan)
 	classe         = p_classe
 	if not p_profil_personnage.is_empty():
 		profil_personnage = p_profil_personnage.duplicate(true)
+	profil_personnage["clan_id"] = clan_id
+	profil_personnage["clan_name"] = nom_clan
 	_forcer_magie_pactes()
 
 	# If the creation profile already contains raw character scores (stats_brutes),
@@ -343,6 +360,7 @@ func _add_soldiers(count: int) -> int:
 
 
 func action_deja_utilisee_pour_moment() -> bool:
+	if daily_phase == "apres_midi": return true
 	return action_jour_effectuee if moment_journee == "jour" else action_nuit_effectuee
 
 
@@ -411,7 +429,7 @@ func peut_recruter_pnj_domaine() -> bool:
 
 
 func get_production_totale(base_production: Dictionary) -> Dictionary:
-	var total := base_production.duplicate(true)
+	var total := ressources_par_tour.duplicate(true) if not campaign.is_empty() else base_production.duplicate(true)
 	for cle in RESSOURCE_KEYS:
 		if not total.has(cle):
 			total[cle] = 0
@@ -906,19 +924,45 @@ func resoudre_planning_pnj_journee() -> Dictionary:
 	return result
 
 
-func on_matin() -> void:
-	# placeholder for matin-phase hooks
-	return
+func advance_day_phase() -> Dictionary:
+	if _day_transition_pending:
+		return {"ok": false, "message": "Le changement de phase est déjà en cours."}
+	_day_transition_pending = true
+	var loop := GameLoopStateMachine.new(self)
+	loop.start()
+	var changed := loop.tick_to_next()
+	_day_transition_pending = false
+	if not changed:
+		return {"ok": false, "message": "Revenez de l’expédition avant de faire avancer la journée."}
+	sauvegarder()
+	return {"ok": true, "message": day_report, "phase": daily_phase}
 
+func on_matin() -> void:
+	daily_phase = "matin"
+	var loader := get_node("/root/GameDataLoader")
+	var production := get_production_totale(loader.get_production_par_tour())
+	gagner(production)
+	# Le premier tête-à-tête ne tire pas des événements destinés à une communauté constituée.
+	var message := ""
+	if campaign.is_empty() or int(campaign.get("version", 1)) < 2 or bool(campaign.get("initial_tutorial_done", false)):
+		message = tirer_et_appliquer_evenement(loader.get_evenements_aleatoires())
+	preload("res://scripts/services/refuge_service.gd").dawn(self)
+	tour_actuel += 1
+	moment_journee = "jour"
+	reset_actions_nouveau_tour()
+	day_report = "Une nouvelle aube. Production : %s. %s" % [preload("res://scripts/services/refuge_service.gd").resources_text(production), message]
+	tour_suivant.emit(tour_actuel)
 
 func on_apres_midi() -> void:
-	# afternoon: resolve planned missions
-	resoudre_planning_pnj_journee()
-
+	daily_phase = "apres_midi"
+	var report := resoudre_planning_pnj_journee()
+	day_report = "Le travail de la journée est terminé. " + preload("res://scripts/services/refuge_service.gd").resources_text(report.get("resource_gains", {}))
 
 func on_soir() -> void:
-	# evening: persist state
-	sauvegarder()
+	daily_phase = "soir"
+	moment_journee = "nuit"
+	reset_actions_pour_nuit()
+	day_report = "La nuit tombe sur la Brèche-Sèche. " + appliquer_passifs_nuit()
 
 
 # ─────────────────────────────────────────────────────────────────────
@@ -1254,6 +1298,7 @@ func _comparer_condition(a: Variant, b: Variant, op: String) -> bool:
 
 func sauvegarder() -> void:
 	var data := {
+		"clan_id": clan_id,
 		"nom_clan": nom_clan,
 		"nom_personnage": nom_personnage,
 		"classe": classe,
@@ -1264,6 +1309,10 @@ func sauvegarder() -> void:
 		"fiche_hero": fiche_hero.duplicate(true),
 		"fiches_domaine": fiches_domaine.duplicate(true),
 		"pnj_gestion": pnj_gestion.duplicate(true),
+		"campaign": campaign.duplicate(true),
+		"daily_phase": daily_phase,
+		"corruption_state": get_corruption_service().export_state(),
+		"day_report": day_report,
 		"stats": stats.duplicate(),
 		"ressources": ressources.duplicate(),
 		"ressources_par_tour": ressources_par_tour.duplicate(),
@@ -1293,10 +1342,15 @@ func charger_sauvegarde() -> bool:
 	if data.is_empty():
 		return false
 
-	nom_clan             = data.get("nom_clan", "")
+	nom_clan             = str(data.get("nom_clan", data.get("clan_name", "")))
+	clan_id              = str(data.get("clan_id", "")).strip_edges()
+	if clan_id.is_empty():
+		clan_id = ClanIdentityType.id_from_name(nom_clan)
 	nom_personnage       = data.get("nom_personnage", "")
 	classe               = data.get("classe", "")
 	profil_personnage    = (data.get("profil_personnage", profil_personnage) as Dictionary).duplicate(true)
+	profil_personnage["clan_id"] = clan_id
+	profil_personnage["clan_name"] = nom_clan
 	_forcer_magie_pactes()
 	caracteristiques_hero = (data.get("caracteristiques_hero", caracteristiques_hero) as Dictionary).duplicate(true)
 	stats_clan           = (data.get("stats_clan", stats_clan) as Dictionary).duplicate(true)
@@ -1304,6 +1358,10 @@ func charger_sauvegarde() -> bool:
 	fiche_hero           = (data.get("fiche_hero", fiche_hero) as Dictionary).duplicate(true)
 	fiches_domaine       = (data.get("fiches_domaine", fiches_domaine) as Dictionary).duplicate(true)
 	pnj_gestion          = (data.get("pnj_gestion", _make_default_pnj_gestion_state()) as Dictionary).duplicate(true)
+	campaign             = (data.get("campaign", {}) as Dictionary).duplicate(true)
+	_corruption_service = CorruptionService.new()
+	_corruption_service.import_state(data.get("corruption_state", data.get("corruption", {})))
+	_corruption_service.setup(self)
 	stats                = (data.get("stats", {}) as Dictionary).duplicate()
 	ressources           = (data.get("ressources", {}) as Dictionary).duplicate()
 	ressources_par_tour  = (data.get("ressources_par_tour", {}) as Dictionary).duplicate()
@@ -1311,6 +1369,9 @@ func charger_sauvegarde() -> bool:
 	forme_dragon_utilisee = int(data.get("forme_dragon_utilisee", 0))
 	tour_actuel          = int(data.get("tour_actuel", 1))
 	moment_journee       = str(data.get("moment_journee", "jour"))
+	daily_phase = str(data.get("daily_phase", "soir" if moment_journee == "nuit" else "matin"))
+	if daily_phase not in ["matin", "apres_midi", "soir"]: daily_phase = "matin"
+	day_report = str(data.get("day_report", ""))
 	action_jour_effectuee = bool(data.get("action_jour_effectuee", false))
 	action_nuit_effectuee = bool(data.get("action_nuit_effectuee", false))
 	maisons_nobles       = (data.get("maisons_nobles", []) as Array).duplicate(true)
@@ -1734,3 +1795,37 @@ func _ensure_fiche_complete() -> void:
 	fiche["niveau"] = maxi(1, int(fiche.get("niveau", 1)))
 	fiche["points_restants"] = maxi(0, int(fiche.get("points_restants", 0)))
 	profil_personnage["fiche_complete"] = fiche
+
+## Façade : la corruption reste dans son service et dans le même instantané de sauvegarde.
+func get_corruption_service() -> CorruptionService:
+	_corruption_service.setup(self)
+	if not _corruption_service.has_character("hero"):
+		var secondary: Dictionary = get_fiche_complete().get("secondary_stats", {})
+		_corruption_service.register_character("hero", clampf(50.0 + float(secondary.get("ESE", 0)) * 2.0, 0.0, 90.0))
+	return _corruption_service
+
+func get_corruption_profile(character_id: String) -> Dictionary:
+	return get_corruption_service().get_profile(character_id)
+
+func apply_corruption(character_id: String, amount: float, source: String = "", persist: bool = true) -> Dictionary:
+	var result := get_corruption_service().apply_corruption(character_id, amount, source)
+	if bool(result.get("ok", false)) and persist: sauvegarder()
+	return result
+
+func purify_character(character_id: String) -> Dictionary:
+	var run: Dictionary = campaign.get("run", {})
+	if not run.is_empty() and not bool(run.get("returned", false)):
+		return {"ok": false, "message": "La purification demande de revenir au refuge."}
+	var service := get_corruption_service()
+	if not service.has_character(character_id) or service.get_corruption_level(character_id) <= 0:
+		return {"ok": false, "message": "Aucune corruption à purifier."}
+	var cost := {"mana": 4, "nourriture": 1}
+	if not peut_payer(cost): return {"ok": false, "message": "Purification : 4 mana et 1 nourriture nécessaires."}
+	var result := service.cleanse(character_id, 10.0)
+	if not bool(result.get("ok", false)): return result
+	payer(cost)
+	var message := "Purification : %.1f points dissipés. Coût : 4 mana, 1 nourriture." % -float(result.get("delta", 0.0))
+	if not campaign.is_empty(): preload("res://scripts/services/refuge_service.gd").log_entry(self, "Retrouver son équilibre", message)
+	sauvegarder()
+	result["message"] = message
+	return result

@@ -112,9 +112,9 @@
       "reason": "Le texte montre les bannieres et un Lance de Couronne en tete de l'assaut."
     },
     "chute_03": {
-      "visual": "@father",
+      "visual": "@kael",
       "mode": "portrait",
-      "reason": "Le pere blesse donne ses instructions."
+      "reason": "Kael protège le passage pendant le choix de l’héritier."
     },
     "chute_04": {
       "visual": "@mother",
@@ -139,12 +139,12 @@
     "chute_08": {
       "visual": "@heir_child",
       "mode": "portrait",
-      "reason": "L’héritier enfant observe la destruction du bastion : le protagoniste est le sujet émotionnel de la scène."
+      "reason": "L’héritier découvre la Cicatrice de Sang."
     },
     "exil_01": {
-      "visual": "@heir_child",
-      "mode": "portrait",
-      "reason": "L’héritier est encore enfant pendant la fuite : portrait enfant cohérent avec cette période."
+      "visual": "@clan",
+      "mode": "contain",
+      "reason": "Arrivée des survivants au refuge."
     },
     "exil_02": {
       "visual": "@kael",
@@ -205,6 +205,31 @@
       "visual": "@clan",
       "mode": "symbol",
       "reason": "Cloture sur la Maison et son histoire a reconstruire."
+    },
+    "fragment_01": {
+      "visual": "@none",
+      "mode": "none",
+      "reason": "Kael seule au réveil ; souvenirs fragmentaires sans révéler les secrets."
+    },
+    "fragment_02": {
+      "visual": "@none",
+      "mode": "none",
+      "reason": "Kael seule au réveil ; souvenirs fragmentaires sans révéler les secrets."
+    },
+    "awakening_01": {
+      "visual": "@kael",
+      "mode": "portrait",
+      "reason": "Kael seule au réveil ; souvenirs fragmentaires sans révéler les secrets."
+    },
+    "awakening_02": {
+      "visual": "@kael",
+      "mode": "portrait",
+      "reason": "Kael seule au réveil ; souvenirs fragmentaires sans révéler les secrets."
+    },
+    "awakening_03": {
+      "visual": "@kael",
+      "mode": "portrait",
+      "reason": "Kael seule au réveil ; souvenirs fragmentaires sans révéler les secrets."
     }
   },
   "resource_cards": [

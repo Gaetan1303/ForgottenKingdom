@@ -35,4 +35,6 @@ func request_next() -> void:
 
 
 func request_previous() -> void:
+	# Conserver les choix de la diapositive avant tout retour en arrière.
+	submit_current_data()
 	emit_signal("slide_previous_requested")

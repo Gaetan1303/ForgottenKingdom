@@ -31,14 +31,14 @@ theme_override_constants/separation = 10
 
 [node name="Titre" type="Label" parent="PanneauCentre"]
 layout_mode = 2
-text = "Création de votre Personnage"
+text = "Création de votre personnage"
 horizontal_alignment = 1
 theme_override_font_sizes/font_size = 24
 theme_override_colors/font_color = Color(0.8, 0.6, 1, 1)
 
 [node name="SousTitre" type="Label" parent="PanneauCentre"]
 layout_mode = 2
-text = "Forgez l'héritière qui restaurera l'honneur de votre clan"
+text = "Forgez l’héritier ou l’héritière qui restaurera l’honneur de votre clan"
 horizontal_alignment = 1
 theme_override_font_sizes/font_size = 14
 theme_override_colors/font_color = Color(0.6, 0.4, 0.9, 0.7)
@@ -262,7 +262,7 @@ name = "LabelBuildResume"
 
 [node name="LabelPacteFixe" type="Label" parent="PanneauCentre/CreationBody/ColDroite/PortraitPanel/PortraitContent/SectionBuild"]
 layout_mode = 2
-text = "Règle de jeu: Magie des Pactes obligatoire pour recruter des PNJ."
+text = "Règle de jeu : la Magie des Pactes est obligatoire pour recruter des PNJ."
 autowrap_mode = 3
 theme_override_font_sizes/font_size = 11
 theme_override_colors/font_color = Color(0.88, 0.75, 0.95, 0.95)
@@ -369,7 +369,7 @@ theme_override_constants/separation = 8
 
 [node name="IcoStratege" type="Label" parent="PanneauCentre/CreationBody/ColGauche/CartesScroll/CartesClasses/CarteStratege/ContenuStratege"]
 layout_mode = 2
-text = "[ Stratege ]"
+text = "[ Stratège ]"
 horizontal_alignment = 1
 theme_override_font_sizes/font_size = 24
 

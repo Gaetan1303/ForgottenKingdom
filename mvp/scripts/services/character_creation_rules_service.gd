@@ -6,7 +6,7 @@ const CharacterBuildServiceClass = preload("res://scripts/data/character_build_s
 
 
 static func get_class_data(classe_id: String) -> Dictionary:
-	var classes: Dictionary = GameDataLoader.get_classes()
+	var classes := _get_classes()
 	if classes.has(classe_id):
 		var entry := classes[classe_id] as Dictionary
 		var stats_bonus := derive_stats_bonus_from_base(resolve_base_stats_for_class(entry))
@@ -74,7 +74,7 @@ static func build_base_stats_from_class_def(class_def: Dictionary) -> Dictionary
 static func apply_point_buy_for_class(classe_id: String, target_points: int) -> Dictionary:
 	var stats := StatDefs.make_default_stats(StatDefs.CHARACTER_MIN_STAT)
 	var points_restants := target_points
-	var classes: Dictionary = GameDataLoader.get_classes()
+	var classes := _get_classes()
 	if classes.has(classe_id) and classes[classe_id] is Dictionary:
 		var class_def := classes[classe_id] as Dictionary
 		var base_stats := resolve_base_stats_for_class(class_def)
@@ -189,33 +189,74 @@ static func compute_feats_effects(feats_defs: Dictionary, feat_ids: Array) -> Di
 
 static func build_feat_description(feat_def: Dictionary) -> String:
 	var desc := str(feat_def.get("description", ""))
-	var pre: Variant = feat_def.get("prerequisite", null)
-	if pre == null:
+	var pre: Variant = feat_def.get("prerequis", feat_def.get("prerequisite", null))
+	if pre == null or not pre is Dictionary:
 		return desc
 
 	var pre_lines: Array[String] = []
 	var pre_d: Dictionary = pre as Dictionary
 	var stat_requirements: Dictionary = pre_d.get("stats", {}) as Dictionary
 	for stat_key in stat_requirements.keys():
-		pre_lines.append("%s >= %s" % [str(stat_key).capitalize(), str(stat_requirements[stat_key])])
-	var feat_requirements: Array = pre_d.get("feats", []) as Array
+		pre_lines.append("%s : %d minimum" % [str(stat_key).replace("_", " ").capitalize(), int(stat_requirements[stat_key])])
+	var feat_requirements: Array = pre_d.get("dons", pre_d.get("feats", [])) as Array
 	for feat_id in feat_requirements:
-		pre_lines.append("Requires feat: %s" % str(feat_id))
+		pre_lines.append("Don requis : %s" % _get_feat_name(str(feat_id)))
 
 	if pre_lines.size() > 0:
-		desc += "\nPrerequisites: %s" % _join_string_array(pre_lines, ", ")
+		desc += "\nPrérequis : %s" % _join_string_array(pre_lines, ", ")
 	return desc
 
 
-static func stat_upgrade_cost_preview(current_value: int) -> int:
-	# UI preview cost curve used by character sheet.
-	if current_value <= 10:
-		return 1
-	if current_value <= 13:
-		return 2
-	if current_value <= 16:
-		return 3
-	return 4
+static func stat_upgrade_cost_preview(_current_value: int) -> int:
+	# Règle commune à la création et à la fiche : +1 coûte toujours 1 point.
+	return 1
+
+
+static func get_creation_class_score_bonus(classe_id: String) -> Dictionary:
+	# Les valeurs de départ des classes sont des bonus de score externes au point-buy.
+	# Elles ne doivent donc jamais être comptées parmi les points investis par le joueur.
+	var out := StatDefs.make_default_stats(0)
+	var classes := _get_classes()
+	if not classes.has(classe_id) or not classes[classe_id] is Dictionary:
+		return out
+	var class_base := resolve_base_stats_for_class(classes[classe_id] as Dictionary)
+	for key in StatDefs.STAT_KEYS:
+		out[key] = int(class_base.get(key, StatDefs.CHARACTER_MIN_STAT)) - StatDefs.CHARACTER_MIN_STAT
+	return out
+
+
+static func compute_creation_display_stats(classe_id: String, purchased_stats: Dictionary) -> Dictionary:
+	var out := StatDefs.sanitize_stats(
+		purchased_stats,
+		StatDefs.CHARACTER_MIN_STAT,
+		StatDefs.CHARACTER_MAX_STAT,
+		StatDefs.CHARACTER_MIN_STAT
+	)
+	var class_bonus := get_creation_class_score_bonus(classe_id)
+	for key in StatDefs.STAT_KEYS:
+		out[key] = int(out.get(key, StatDefs.CHARACTER_MIN_STAT)) + int(class_bonus.get(key, 0))
+	return out
+
+
+static func _get_classes() -> Dictionary:
+	var tree := Engine.get_main_loop() as SceneTree
+	if tree == null:
+		return {}
+	var loader := tree.root.get_node_or_null("GameDataLoader")
+	if loader == null or not loader.has_method("get_classes"):
+		return {}
+	return loader.get_classes() as Dictionary
+
+
+static func _get_feat_name(feat_id: String) -> String:
+	var tree := Engine.get_main_loop() as SceneTree
+	if tree != null:
+		var loader := tree.root.get_node_or_null("GameDataLoader")
+		if loader != null and loader.has_method("get_feat"):
+			var feat := loader.get_feat(feat_id) as Dictionary
+			if not feat.is_empty():
+				return str(feat.get("nom", feat.get("name", feat_id)))
+	return feat_id.replace("_", " ").capitalize()
 
 
 static func build_points_summary(points_remaining: int, points_spent: int) -> String:

@@ -31,7 +31,7 @@ func _update_view() -> void:
 		_name_label.text = str(item_data.get("label", ""))
 	if _slot_label:
 		var slot := str(item_data.get("slot_type", ""))
-		_slot_label.text = "Type: %s" % slot.capitalize()
+		_slot_label.text = "Type : %s" % slot.capitalize()
 
 
 func _get_drag_data(_at_position: Vector2) -> Variant:

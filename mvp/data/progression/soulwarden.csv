@@ -1,6 +1,6 @@
 ﻿Niveau,Force,Magie,Espionnage,Artisanat,Diplomatie,Commandement,Attaque,Défense,Résistance,Initiative,Jet de Vigueur,Jet de Volonté,Jet de Réflexes,Nouveaux Talents,Lore
-1,8,10,8,8,10,8,8,10,10,8,8,12,8,soul_anchor, Lumière intérieure,"Ta lumière repousse les ombres de ton passé."
-2,8,11,8,8,11,8,8,10,11,8,8,13,8,+1 Magie, Bénédiction des anciens,"Les esprits des ancêtres te guident."
+1,8,10,8,8,10,8,8,10,10,8,8,12,8,"soul_anchor, Lumière intérieure","Ta lumière repousse les ombres de ton passé."
+2,8,11,8,8,11,8,8,10,11,8,8,13,8,"+1 Magie, Bénédiction des anciens","Les esprits des ancêtres te guident."
 3,8,12,8,8,12,8,8,11,11,9,9,14,9,Lumière intérieure +1,"Ta lumière devient plus intense."
 4,8,13,8,8,13,8,8,11,12,9,9,15,9,Purification (Soigne 15 PV),"Ton énergie purifie les blessures."
 5,9,14,8,8,14,8,9,12,12,10,10,16,10,Bouclier spirituel (+2 Défense),"Les esprits te protègent des attaques."

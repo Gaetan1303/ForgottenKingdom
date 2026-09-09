@@ -16,9 +16,9 @@ const FEAT_CONFLICT_MAP := {
 
 const EQUIPMENT_COMPATIBILITY := {
 	"Arme lourde + bouclier": {"weapon": ["Arme lourde"], "armor": ["Armure lourde", "Tunique simple", "Robes d'apprenti"]},
-	"Catalyseur runique": {"weapon": ["Catalyseur runique"], "armor": ["Robe runique", "Armure legere", "Tunique simple", "Robes d'apprenti"]},
-	"Lames jumelles": {"weapon": ["Lames jumelles"], "armor": ["Armure legere", "Aucun", "Tunique simple", "Robes d'apprenti"]},
-	"Lance de guerre": {"weapon": ["Lance"], "armor": ["Armure lourde", "Armure legere", "Tunique simple", "Robes d'apprenti"]},
+	"Catalyseur runique": {"weapon": ["Catalyseur runique"], "armor": ["Robe runique", "Armure légère", "Armure legere", "Tunique simple", "Robes d'apprenti"]},
+	"Lames jumelles": {"weapon": ["Lames jumelles"], "armor": ["Armure légère", "Armure legere", "Aucun", "Tunique simple", "Robes d'apprenti"]},
+	"Lance de guerre": {"weapon": ["Lance"], "armor": ["Armure lourde", "Armure légère", "Armure legere", "Tunique simple", "Robes d'apprenti"]},
 }
 
 signal slide_changed(step_index)
@@ -111,7 +111,7 @@ func _apply_slide1(payload: Dictionary) -> void:
 	if payload.has("character_name"):
 		data.character_name = str(payload["character_name"])
 	if payload.has("clan_name"):
-		data.clan_name = str(payload["clan_name"])
+		data.set_clan_name(str(payload["clan_name"]))
 	if payload.has("portrait_payload"):
 		data.portrait_payload = (payload["portrait_payload"] as Dictionary).duplicate(true)
 	if payload.has("appearance_id"):
@@ -132,6 +132,10 @@ func _apply_slide2(payload: Dictionary) -> void:
 		StatDefs.CHARACTER_MAX_STAT,
 		StatDefs.CHARACTER_MIN_STAT
 	)
+	var incoming_secondary_stats: Dictionary = {}
+	if payload.has("secondary_stats") and payload["secondary_stats"] is Dictionary:
+		incoming_secondary_stats = payload["secondary_stats"] as Dictionary
+	data.secondary_stats = StatDefs.sanitize_secondary_stats(incoming_secondary_stats)
 
 
 func _apply_slide3(payload: Dictionary) -> void:
@@ -160,16 +164,16 @@ func _validate_step(step_index: int) -> String:
 	match step_index:
 		CharacterCreationFlowType.Step.BASIC_INFO:
 			if data.character_name.strip_edges().length() < 2:
-				return "Le nom du personnage doit contenir au moins 2 caracteres."
+				return "Le nom du personnage doit contenir au moins 2 caractères."
 			if data.clan_name.strip_edges().length() < 2:
-				return "Le nom du clan doit contenir au moins 2 caracteres."
+				return "Le nom du clan doit contenir au moins 2 caractères."
 			if data.racial_power_id.strip_edges().is_empty():
-				return "Selectionnez un pouvoir racial."
+				return "Sélectionnez un pouvoir racial."
 		CharacterCreationFlowType.Step.CLASS_AND_STATS:
 			if data.class_id.strip_edges().is_empty():
-				return "Selectionnez une classe."
-			if data.points_remaining() < 0:
-				return "Le total de points depasse le pool autorise."
+				return "Sélectionnez une classe."
+			if data.points_spent() > data.stats_points_pool:
+				return "Le total de points dépasse la réserve autorisée."
 		CharacterCreationFlowType.Step.FEATS_AND_ABILITIES:
 			var msg := _validate_feats_and_conflicts()
 			if msg != "":
@@ -186,41 +190,52 @@ func _validate_step(step_index: int) -> String:
 
 func _validate_feats_and_conflicts() -> String:
 	if data.selected_feats.size() > 2:
-		return "Selectionnez au maximum deux dons pour ce personnage."
+		return "Sélectionnez au maximum deux dons pour ce personnage."
 	if data.selected_abilities.size() > 1:
-		return "Selectionnez une seule competence principale."
-	var feats_defs := GameDataLoader.get_feats()
+		return "Sélectionnez une seule compétence principale."
+	var display_stats := CharacterCreationRules.compute_creation_display_stats(data.class_id, data.stats)
 	for feat_id in data.selected_feats:
 		var feat_key := str(feat_id)
-		var def: Dictionary = {}
-		if feats_defs.has(feat_key):
-			def = feats_defs[feat_key] as Dictionary
+		var def: Dictionary = GameDataLoader.get_feat(feat_key)
 		if def.is_empty():
 			continue
 		var prereq: Dictionary = {}
-		if def.has("prerequisite"):
+		if def.get("prerequis") is Dictionary:
+			prereq = def["prerequis"] as Dictionary
+		elif def.get("prerequisite") is Dictionary:
 			prereq = def["prerequisite"] as Dictionary
 		var required_stats: Dictionary = {}
 		if prereq.has("stats"):
 			required_stats = prereq["stats"] as Dictionary
 		for stat_key in required_stats.keys():
 			var required_value := int(required_stats[stat_key])
-			var actual_stat := int(data.stats[str(stat_key)]) if data.stats.has(str(stat_key)) else 0
+			var actual_stat := int(display_stats.get(str(stat_key), 0))
 			if actual_stat < required_value:
-				return "Prerequis non remplis pour le don %s." % str(feat_id)
+				return "Prérequis non remplis pour le don %s." % str(def.get("nom", def.get("name", feat_id)))
+		var required_feats: Array = prereq.get("dons", prereq.get("feats", [])) as Array
+		for required_feat in required_feats:
+			if str(required_feat) not in data.selected_feats:
+				var required_def := GameDataLoader.get_feat(str(required_feat))
+				var required_name := str(required_def.get("nom", required_def.get("name", required_feat)))
+				return "Le don %s requiert d’abord %s." % [str(def.get("nom", def.get("name", feat_id))), required_name]
 		var conflicts: Array = []
 		if def.has("conflicts_with"):
 			conflicts = def["conflicts_with"] as Array
 		for conflict_id in conflicts:
 			if conflict_id in data.selected_feats:
-				return "Conflit detecte entre dons: %s et %s." % [str(feat_id), str(conflict_id)]
+				return "Conflit détecté entre les dons %s et %s." % [_feat_name(feat_key), _feat_name(str(conflict_id))]
 		var extra_conflicts: Array = []
 		if FEAT_CONFLICT_MAP.has(feat_key):
 			extra_conflicts = FEAT_CONFLICT_MAP[feat_key] as Array
 		for conflict_id in extra_conflicts:
 			if conflict_id in data.selected_feats:
-				return "Conflit detecte entre dons: %s et %s." % [str(feat_id), str(conflict_id)]
+				return "Conflit détecté entre les dons %s et %s." % [_feat_name(feat_key), _feat_name(str(conflict_id))]
 	return ""
+
+
+func _feat_name(feat_id: String) -> String:
+	var feat := GameDataLoader.get_feat(feat_id)
+	return str(feat.get("nom", feat.get("name", feat_id.replace("_", " ").capitalize())))
 
 
 func _validate_equipment_slots() -> String:
@@ -228,7 +243,7 @@ func _validate_equipment_slots() -> String:
 	for slot_name in data.equipped_items_by_slot.keys():
 		var slot := str(slot_name)
 		if used_slots.has(slot):
-			return "Le slot %s est utilise plusieurs fois." % slot
+			return "L’emplacement %s est utilisé plusieurs fois." % slot
 		used_slots[slot] = true
 	var inventory_item := ""
 	if data.inventory_items.size() > 0:
@@ -248,7 +263,7 @@ func _validate_equipment_slots() -> String:
 		if rules.has("weapon"):
 			allowed_weapon = rules["weapon"] as Array
 		if selected_weapon != "Aucun" and not allowed_weapon.has(selected_weapon):
-			return "Le choix d'arme est incompatible avec l'objet de depart."
+			return "L’arme choisie est incompatible avec l’équipement de départ."
 
 	if data.class_id.strip_edges() != "":
 		var class_def = GameDataLoader.get_class_by_id(data.class_id)
@@ -266,7 +281,10 @@ func _validate_equipment_slots() -> String:
 func _armor_category_from_label(label: String) -> String:
 	if label.strip_edges().is_empty() or label == "Aucun":
 		return ""
-	var equipment_item := GameDataLoader.get_equipment_item_by_label(label)
+	var compatible_label := label
+	if compatible_label == "Armure legere":
+		compatible_label = "Armure légère"
+	var equipment_item := GameDataLoader.get_equipment_item_by_label(compatible_label)
 	if equipment_item.is_empty():
 		return ""
 	return str(equipment_item.get("armor_category", "")).strip_edges().to_lower()

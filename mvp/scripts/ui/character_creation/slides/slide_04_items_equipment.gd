@@ -34,23 +34,29 @@ const SLOT_NODE_NAMES := {
 const DEFAULT_ITEMS := [
 	{"id": "war_helm", "label": "Casque de guerre", "slot_type": "head"},
 	{"id": "obsidian_spaulders", "label": "Armure d'obsidienne", "slot_type": "armor", "armor_category": "heavy"},
-	{"id": "demon_gauntlets", "label": "Gantelets demoniaques", "slot_type": "hands"},
+	{"id": "demon_gauntlets", "label": "Gantelets démoniaques", "slot_type": "hands"},
 	{"id": "war_boots", "label": "Bottes du front", "slot_type": "boots"},
 	{"id": "blood_ring", "label": "Anneau de sang", "slot_type": "ring"},
-	{"id": "ashen_ring", "label": "Anneau cendre", "slot_type": "ring"},
+	{"id": "ashen_ring", "label": "Anneau de cendre", "slot_type": "ring"},
 	{"id": "great_blade", "label": "Arme lourde", "slot_type": "weapon"},
 	{"id": "twin_blades", "label": "Lames jumelles", "slot_type": "weapon"},
 	{"id": "war_spear", "label": "Lance", "slot_type": "weapon"},
 	{"id": "runic_catalyst", "label": "Catalyseur runique", "slot_type": "weapon"},
 	{"id": "kite_shield", "label": "Bouclier cerf-volant", "slot_type": "offhand"},
 	{"id": "heavy_armor", "label": "Armure lourde", "slot_type": "armor", "armor_category": "heavy"},
-	{"id": "light_armor", "label": "Armure legere", "slot_type": "armor", "armor_category": "light"},
+	{"id": "light_armor", "label": "Armure légère", "slot_type": "armor", "armor_category": "light"},
 	{"id": "runic_robe", "label": "Robe runique", "slot_type": "armor", "armor_category": "light"},
 	{"id": "simple_tunic", "label": "Tunique simple", "slot_type": "armor", "armor_category": "clothing"},
 	{"id": "apprentice_robes", "label": "Robes d'apprenti", "slot_type": "armor", "armor_category": "clothing"},
-	{"id": "war_legs", "label": "Jambieres de guerre", "slot_type": "legs"},
+	{"id": "war_legs", "label": "Jambières de guerre", "slot_type": "legs"},
 	{"id": "obsidian_amulet", "label": "Amulette d'obsidienne", "slot_type": "amulet"},
 ]
+
+const LEGACY_ITEM_LABELS := {
+	"Anneau cendre": "Anneau de cendre",
+	"Armure legere": "Armure légère",
+	"Jambieres de guerre": "Jambières de guerre",
+}
 
 var _inventory_items: Array = []
 var _equipped_by_slot: Dictionary = {}
@@ -257,7 +263,7 @@ func _show_torso_restriction_hint(item: Dictionary) -> void:
 	if hint == null:
 		return
 	var armor_label := str(item.get("label", "cette armure"))
-	hint.text = "Attention: %s n'est pas autorisee pour votre classe." % armor_label
+	hint.text = "Attention : %s n’est pas autorisée pour votre classe." % armor_label
 	hint.add_theme_color_override("font_color", Color8(255, 140, 110))
 
 
@@ -312,7 +318,7 @@ func _update_compatibility_hint() -> void:
 		hint.text = warning
 		hint.add_theme_color_override("font_color", Color8(255, 140, 110))
 	else:
-		hint.text = "Configuration valide. Glisse les objets entre sac et slots pour optimiser le build."
+		hint.text = "Configuration valide. Faites glisser les objets entre le sac et les emplacements pour ajuster votre équipement."
 		hint.add_theme_color_override("font_color", Color8(170, 230, 170))
 
 
@@ -347,9 +353,10 @@ func _restore_from_data(data: Resource) -> void:
 func _pull_item_by_label(label: String) -> Dictionary:
 	if label.is_empty() or label == "Aucun":
 		return {}
+	var compatible_label := str(LEGACY_ITEM_LABELS.get(label, label))
 	for i in range(_inventory_items.size()):
 		var item := _inventory_items[i] as Dictionary
-		if str(item.get("label", "")) == label:
+		if str(item.get("label", "")) == compatible_label:
 			_inventory_items.remove_at(i)
 			return item
 	return {}
@@ -397,5 +404,5 @@ func _check_compatibility(inventory_choice: Array, equipment: Dictionary) -> Str
 	if expected.has("weapon"):
 		allowed_weapon = expected["weapon"] as Array
 	if weapon != "Aucun" and not allowed_weapon.has(weapon):
-		return "Attention: selection de l'arme incompatible avec l'objet principal."
+		return "Attention : l’arme sélectionnée est incompatible avec l’objet principal."
 	return ""

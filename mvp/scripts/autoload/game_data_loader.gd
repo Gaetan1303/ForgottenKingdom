@@ -169,7 +169,7 @@ func _lire_progression_csv(path: String) -> Array:
 			continue
 
 		var cols := _split_csv_line(line)
-		if cols.size() < 15:
+		if not _is_valid_progression_row(cols):
 			continue
 
 		var talents := str(cols[14])
@@ -200,6 +200,18 @@ func _lire_progression_csv(path: String) -> Array:
 
 	file.close()
 	return rows
+
+
+func _is_valid_progression_row(cols: Array[String]) -> bool:
+	if cols.size() < 16 or not cols[0].is_valid_int():
+		return false
+	var level := int(cols[0])
+	if level < 1 or level > 10:
+		return false
+	for column_index in range(1, 14):
+		if not cols[column_index].is_valid_int():
+			return false
+	return true
 
 
 func _charger_feats() -> void:
@@ -362,7 +374,22 @@ func get_character_traits() -> Dictionary:
 
 
 func get_library_entries() -> Dictionary:
+	if not ClanManager.campaign.is_empty():
+		return {"sections": _refuge_archive_sections()}
 	return _library_entries.duplicate(true)
+
+func _refuge_archive_sections() -> Array:
+	var rules: Array = []
+	var tutorial = preload("res://scripts/autoload/tutorial_director.gd")
+	var state: Dictionary = ClanManager.campaign
+	var objective: Dictionary = tutorial.current(state)
+	for step in tutorial.STEPS:
+		if str(step.id) in state.get("milestones", []) or str(step.id) == str(objective.id):
+			rules.append({"title": str(step.objective), "text": str(step.hint)})
+	for key in StatDefs.STAT_KEYS + StatDefs.SECONDARY_STAT_KEYS:
+		rules.append({"title": str(key).capitalize(), "text": StatDefs.description(str(key))})
+	return [{"id": "refuge", "title": "Chronique du refuge", "entries": state.get("journal", []).duplicate(true)}, {"id": "rules", "title": "Aides connues", "entries": rules}]
+
 
 
 ## Retourne toutes les classes chargées (id -> definition)
@@ -493,6 +520,8 @@ func get_world_houses() -> Array:
 
 
 func get_compendium_sections() -> Array:
+	if not ClanManager.campaign.is_empty():
+		return _refuge_archive_sections()
 	var sections: Array = (_library_entries.get("sections", []) as Array).duplicate(true)
 
 	var house_entries: Array = []

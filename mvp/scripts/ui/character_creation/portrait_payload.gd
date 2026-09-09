@@ -44,7 +44,7 @@ func _load_payload(payload: Dictionary) -> void:
 				if _path_label != null and payload.has("file_name"):
 					_path_label.text = str(payload["file_name"])
 				elif _path_label != null:
-					_path_label.text = "Portrait charge"
+					_path_label.text = "Portrait chargé"
 				return
 	var file_path := str(payload["image_path"]) if payload.has("image_path") else ""
 	if file_path != "" and FileAccess.file_exists(file_path):
@@ -63,7 +63,7 @@ func _clear_preview() -> void:
 	if _preview != null:
 		_preview.texture = null
 	if _path_label != null:
-		_path_label.text = "Aucun portrait selectionne"
+		_path_label.text = "Aucun portrait sélectionné"
 
 func _on_file_selected(path: String) -> void:
 	var image := _open_image_file(path)

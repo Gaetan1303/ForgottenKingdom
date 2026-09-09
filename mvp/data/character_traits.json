@@ -22,7 +22,7 @@
     },
     "monster_empathy": {
       "label": "Empathie des Monstres",
-      "description": "Tu ressens la souffrance des créatures cendrés. Cela te permet de réduire le coût en énergie mystique pour les invocations et les pactes.",
+      "description": "Tu ressens la souffrance des créatures cendrées. Cela te permet de réduire le coût en énergie mystique des invocations et des pactes.",
       "effects": {
         "mana_cost_reduction_pct": 20
       },
@@ -137,7 +137,7 @@
     },
     "demon_invocation": {
       "label": "Invocation de Faille",
-      "description": "Invoque une créature cendré pour t’aider au combat ou au recrutement. Réduit le coût en mana et améliore les actions de recrutement.",
+      "description": "Invoque une créature cendrée pour t’aider au combat ou au recrutement. Réduit le coût en mana et améliore les actions de recrutement.",
       "effects": {
         "mana_cost_reduction_pct": 10,
         "bonus_score_actions": {

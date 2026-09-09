@@ -102,6 +102,7 @@ func get_slot_summary(slot_id: String) -> Dictionary:
 		"is_active": sid == _active_slot_id,
 		"has_progress": not progress.is_empty(),
 		"has_clan": not clan.is_empty(),
+		"clan_id": str(clan.get("clan_id", "")),
 		"nom_clan": str(clan.get("nom_clan", "")),
 		"nom_personnage": str(clan.get("nom_personnage", "")),
 		"tour_actuel": int(clan.get("tour_actuel", 0)),

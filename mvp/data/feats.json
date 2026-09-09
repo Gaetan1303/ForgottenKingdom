@@ -16,7 +16,7 @@
     "robustesse": {
       "nom": "Robustesse",
       "categorie": "Corps",
-      "description": "L'entraînement intensif à Citadelle des Veilleurs a forgé ton corps pour encaisser les assauts cendrés.",
+      "description": "L'entraînement intensif à la Citadelle des Veilleurs a forgé ton corps pour encaisser les assauts cendrés.",
       "prerequis": null,
       "effets": {
         "texte": "Cette aptitude augmente votre Force de 1 et vous confère immédiatement 3 points de vie supplémentaires.",
@@ -45,7 +45,7 @@
     "reflexes_rapides": {
       "nom": "Réflexes Rapides",
       "categorie": "Espionnage",
-      "description": "Vitesse de réaction affinée pour anticiper les attaques cendrés.",
+      "description": "Vitesse de réaction affinée pour anticiper les attaques cendrées.",
       "prerequis": {
         "stats": {
           "espionnage": 12
@@ -125,7 +125,7 @@
     "focalisation_de_pacte": {
       "nom": "Focalisation de Pacte",
       "categorie": "Magie",
-      "description": "Renforce la stabilité des pactes conclus avec des entités du Faille.",
+      "description": "Renforce la stabilité des pactes conclus avec des entités de la Faille.",
       "prerequis": {
         "stats": {
           "magie": 14
@@ -189,7 +189,7 @@
     "precision_arcane": {
       "nom": "Précision Arcane",
       "categorie": "Magie",
-      "description": "Canalisation ultra-précise des Éther de Cendre.",
+      "description": "Canalisation ultra-précise de l’Éther de Cendre.",
       "prerequis": {
         "stats": {
           "magie": 14
@@ -338,7 +338,7 @@
     "immunite_diplomatique": {
       "nom": "Immunité Diplomatique",
       "categorie": "Diplomatie",
-      "description": "Statut reconnu par les clans rivaux et certaines factions cendrés.",
+      "description": "Statut reconnu par les clans rivaux et certaines factions cendrées.",
       "prerequis": {
         "stats": {
           "diplomatie": 14
@@ -443,7 +443,7 @@
     "combat_a_deux_armes": {
       "nom": "Combat à Deux Armes",
       "categorie": "Combat",
-      "description": "Style de combat dual enseigné par certains clans.",
+      "description": "Style de combat à deux armes enseigné par certains clans.",
       "prerequis": {
         "stats": {
           "force": 11,
@@ -495,7 +495,7 @@
     "grande_resistance": {
       "nom": "Grande Résistance",
       "categorie": "Corps",
-      "description": "Résistance naturelle aux poisons et maladies du Faille.",
+      "description": "Résistance naturelle aux poisons et maladies de la Faille.",
       "prerequis": null,
       "effets": {
         "texte": "Votre Force augmente de 1 et vous gagnez +3 aux jets de sauvegarde contre les poisons et maladies.",
@@ -522,7 +522,7 @@
     "dur_a_cuire": {
       "nom": "Dur à Cuire",
       "categorie": "Corps",
-      "description": "Même à l'agonie, tu continues de combattre grâce à ta détermination et ta lignée Altéréique.",
+      "description": "Même à l'agonie, tu continues de combattre grâce à ta détermination et à ta lignée altérée.",
       "prerequis": {
         "dons": [
           "endurance"
@@ -702,7 +702,7 @@
     }
   },
   "capacites": {
-    "description_globale": "Les capacités sont des techniques de combat débloquées au fil de la progression d'un Veilleurs. Elles exploitent soit l'art de l'épée infernale (voie Blood Edge), soit les arts arcanes cendrés (voie Abyss Focus).",
+    "description_globale": "Les capacités sont des techniques de combat débloquées au fil de la progression d'un Veilleur. Elles exploitent soit l'art de l'épée infernale (voie Blood Edge), soit les arts arcanes cendrés (voie Abyss Focus).",
     "voie_blood_edge": {
       "description": "Voie du guerrier Veilleurs ayant éveillé une lame infusée d'énergie infernale. Orientée combat rapproché et puissance brute.",
       "capacites": [
@@ -755,7 +755,7 @@
           "niveau": 4,
           "nom": "Lame Empoisonnée",
           "type": "Passif",
-          "description": "Ton énergie infernale corrompt les plaies infligées, rongeant les cellules cendrés de l'intérieur à la manière d'une toxine du Faille.",
+          "description": "Ton énergie infernale corrompt les plaies infligées et ronge les cellules cendrées de l'intérieur, à la manière d'une toxine de la Faille.",
           "prerequis": "Niveau 4",
           "effets": {
             "texte": "Les ennemis que tu blesses subissent des dégâts supplémentaires sur la durée, comme s'ils étaient empoisonnés par ton énergie infernale.",
@@ -769,7 +769,7 @@
           "description": "Tu laisses libre cours à la part sombre de ton héritage cendré, entrant dans une rage temporaire qui décuple ta puissance au détriment de ta défense.",
           "prerequis": "Niveau 5",
           "effets": {
-            "texte": "Tu entres dans un état de rage cendré, augmentant tes dégâts mais réduisant ta défense pendant une courte durée.",
+            "texte": "Tu entres dans un état de rage cendrée, augmentant tes dégâts mais réduisant ta défense pendant une courte durée.",
             "details": "+20 % dégâts, -10 % Défense pendant 3 tours.",
             "cout_energie_mystique": 15
           }
@@ -823,7 +823,7 @@
           "niveau": 10,
           "nom": "Légende Noire",
           "type": "Passif",
-          "description": "Ton nom est murmuré avec crainte dans les rangs de Compagnie du Voile et les cercles cendrés de Tokyo Kingdom.",
+          "description": "Ton nom est murmuré avec crainte dans les rangs de la Compagnie du Voile et les cercles cendrés de Tokyo Kingdom.",
           "prerequis": "Niveau 10",
           "effets": {
             "texte": "Tu deviens insensible à la peur et tes ennemis ont plus de mal à te toucher en combat.",
@@ -839,7 +839,7 @@
           "niveau": 1,
           "nom": "Abyss Focus",
           "type": "Passif",
-          "description": "Ta concentration sur les arcanes cendrés affine ta maîtrise des Éther de Cendre, augmentant la précision de tes sorts et réduisant les risques de déviation.",
+          "description": "Ta concentration sur les arcanes cendrés affine ta maîtrise de l’Éther de Cendre, augmentant la précision de tes sorts et réduisant les risques de déviation.",
           "prerequis": null,
           "effets": {
             "texte": "Tous tes sorts gagnent 10 % de précision supplémentaire, ce qui réduit les risques d'échec ou de déviation.",

@@ -3,6 +3,12 @@
 ## Jouée une seule fois après la création du personnage.
 ## Flux : Passé (tutoriel) → La Chute → Serment → clan_hub
 extends Control
+const Refuge = preload("res://scripts/services/refuge_service.gd")
+var _choices: VBoxContainer
+var _finishing := false
+var _opening_mode := false
+var _text_tween: Tween
+
 const FallenUI = preload("res://scripts/ui/fallen_ui.gd")
 const ResourcePathResolver = preload("res://scripts/utils/resource_path_resolver.gd")
 const VisualAssetCatalog = preload("res://scripts/ui/visual_asset_catalog.gd")
@@ -87,6 +93,8 @@ func _inject_icons(text: String) -> String:
 
 
 func _ready() -> void:
+	_opening_mode = bool(SaveSystem.get_value("opening", {}).get("active", false))
+	if not _opening_mode: Refuge.initialize(ClanManager)
 	_resolve_player_data()
 	_load_visual_bindings()
 	_build_ui()
@@ -96,10 +104,11 @@ func _ready() -> void:
 		push_error("IntroVN: aucune scène chargée — vérifier data/intro_vn.json")
 		GameManager.go_to("clan_hub")
 		return
-	_show_scene(0)
+	_show_scene(clampi(int(SaveSystem.get_value("opening", {}).get("index", 0)) if _opening_mode else int(ClanManager.campaign.get("intro_index", 0)), 0, _scenes.size() - 1))
 
 
 func _resolve_player_data() -> void:
+	if _opening_mode: return
 	var cm: Node = get_node_or_null("/root/ClanManager")
 	if cm == null:
 		return
@@ -292,7 +301,8 @@ func _build_ui() -> void:
 	var text_panel := PanelContainer.new()
 	text_panel.name = "TextBox"
 	text_panel.anchor_left   = 0.0
-	text_panel.anchor_top    = 0.64
+	text_panel.anchor_top    = 1.0
+	text_panel.offset_top = -280.0
 	text_panel.anchor_right  = 1.0
 	text_panel.anchor_bottom = 1.0
 	text_panel.offset_left   = 24.0
@@ -346,6 +356,9 @@ func _build_ui() -> void:
 	_story_text.custom_minimum_size = Vector2(0, 118)
 	_story_text.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	vbox.add_child(_story_text)
+
+	_choices = VBoxContainer.new()
+	vbox.add_child(_choices)
 
 	# --- Navigation intégrée à la boîte de texte : aucun bouton flottant hors-écran ---
 	var nav_row := HBoxContainer.new()
@@ -544,15 +557,28 @@ func _show_scene(idx: int) -> void:
 		_finish()
 		return
 	_idx = idx
+	if _opening_mode:
+		var opening: Dictionary = SaveSystem.get_value("opening", {})
+		opening["index"] = idx
+		SaveSystem.set_value("opening", opening)
+		SaveSystem.save()
+	else:
+		ClanManager.campaign["intro_index"] = idx
+		ClanManager.sauvegarder()
 	var s: Dictionary = _scenes[idx]
+	$TextBox.offset_top = -340.0 if str(s.get("type", "")) == "choice" else -280.0
+	$TextBox/InnerVBox/NarrationNav.visible = str(s.get("type", "")) != "choice"
 
+	for child in _choices.get_children():
+		_choices.remove_child(child)
+		child.queue_free()
 	# Fond couleur
 	var fond: String = str(s.get("fond_couleur", "#0a000f"))
 	_bg.color = Color.from_string(fond, Color(0.04, 0.0, 0.1, 1.0))
 
 	# Période
 	var periode: String = str(s.get("periode", ""))
-	_label_periode.text = periode
+	_label_periode.text = _sub(periode)
 	_label_periode.visible = not periode.is_empty()
 
 	# Illustration explicitement liée au contenu de la scène.
@@ -567,7 +593,7 @@ func _show_scene(idx: int) -> void:
 	var type: String = str(s.get("type", "narration"))
 	match type:
 		"fin":
-			_btn_continue.text = "Commencer l'aventure  ▶"
+			_btn_continue.text = "Évaluer mon état avec Kael ▶" if _opening_mode else "Entrer dans le refuge ▶"
 			_show_narration(s)
 		"recrutement":
 			_show_narration(s)
@@ -576,6 +602,28 @@ func _show_scene(idx: int) -> void:
 		_:
 			_btn_continue.text = "Continuer  ▶"
 			_show_narration(s)
+
+	if str(s.get("type", "")) == "choice":
+		_btn_continue.visible = false
+		for choice in s.get("choices", []):
+			var button := Button.new()
+			button.text = str(choice.label)
+			button.custom_minimum_size.y = 36
+			button.pressed.connect(func():
+				if _opening_mode:
+					var opening: Dictionary = SaveSystem.get_value("opening", {})
+					opening["choices"][str(s.id)] = choice.get("consequence", "")
+					SaveSystem.set_value("opening", opening)
+					SaveSystem.save()
+				else:
+					Refuge.intro_choice(ClanManager, str(s.id), choice)
+				_advance()
+			)
+			_choices.add_child(button)
+		if _choices.get_child_count() > 0:
+			_choices.get_child(0).grab_focus()
+	else:
+		_btn_continue.grab_focus()
 
 
 func _show_narration(s: Dictionary) -> void:
@@ -611,11 +659,14 @@ func _resolve_speaker(raw: String) -> String:
 
 func _typewrite(text: String) -> void:
 	_animating = true
+	_btn_continue.disabled = false
 	_story_text.bbcode_enabled = true
 	_story_text.text = ""
 	_story_text.append_text(text)
 	_story_text.visible_ratio = 0.0
+	if _text_tween != null: _text_tween.kill()
 	var tween: Tween = create_tween()
+	_text_tween = tween
 	var duration: float = clampf(float(text.length()) * 0.025, 0.4, 4.5)
 	tween.tween_property(_story_text, "visible_ratio", 1.0, duration)
 	tween.finished.connect(func() -> void:
@@ -738,8 +789,11 @@ func _load_illustration(illus_name: String, mode: String = "contain") -> void:
 # ─────────────────────────────────────────────────────────────────────
 
 func _on_continue() -> void:
+	if _finishing or _scenes.is_empty() or str(_scenes[_idx].get("type", "")) == "choice":
+		return
 	# Si l'animation est en cours → révèle instantanément
 	if _animating:
+		if _text_tween != null: _text_tween.kill()
 		_story_text.visible_ratio = 1.0
 		_animating = false
 		_btn_continue.disabled = false
@@ -771,11 +825,12 @@ func _advance() -> void:
 
 # ─── Input clavier ────────────────────────────────────────────────────
 
-func _input(event: InputEvent) -> void:
-	if _tuto_layer.visible or _recruit_layer.visible:
+func _unhandled_input(event: InputEvent) -> void:
+	if _tuto_layer.visible or _recruit_layer.visible or not event is InputEventKey:
 		return
-	if event.is_action_pressed("ui_accept") or event.is_action_pressed("ui_next"):
+	if event.is_action_pressed("ui_accept"):
 		_on_continue()
+		get_viewport().set_input_as_handled()
 
 
 # ─────────────────────────────────────────────────────────────────────
@@ -962,10 +1017,20 @@ func _on_recruit() -> void:
 # ─────────────────────────────────────────────────────────────────────
 
 func _finish() -> void:
+	if _finishing: return
+	_finishing = true
+	_btn_continue.disabled = true
+	if _opening_mode:
+		var opening: Dictionary = SaveSystem.get_value("opening", {})
+		opening["finished"] = true
+		SaveSystem.set_value("opening", opening)
+	else:
+		ClanManager.campaign["intro_done"] = true
+		ClanManager.sauvegarder()
 	SaveSystem.set_value("intro_done", true)
 	SaveSystem.save()
 	# Fondu léger avant la transition
 	var tween: Tween = create_tween()
 	tween.tween_property(_bg, "color", Color(0, 0, 0, 1), 1.2)
 	await tween.finished
-	GameManager.go_to("clan_hub")
+	GameManager.go_to("creation_personnage" if _opening_mode else "clan_hub")
