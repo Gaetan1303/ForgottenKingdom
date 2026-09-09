@@ -3,5 +3,6 @@ requirements.txt
 __pycache__/
 
 /mvp/build/
-# Godot generated files
+
+# Godot generated cache / editor metadata
 **/.godot/
