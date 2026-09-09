@@ -625,7 +625,7 @@ func _on_cancel() -> void:
 
 
 func _on_export() -> void:
-	var base_dir: String = "user://exports/"
+	var base_dir: String = "res://data/exports/"
 	var abs_path: String = ProjectSettings.globalize_path(base_dir)
 	DirAccess.make_dir_recursive_absolute(abs_path)
 	var char_name: String = "npc"

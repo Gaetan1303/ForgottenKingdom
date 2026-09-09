@@ -51,6 +51,9 @@ func _test_slide_2_state_and_persistence() -> void:
 		var primary_control := slide.find_child("Stat_%s" % key, true, false) as SpinBox
 		_expect(primary_label != null and not primary_label.tooltip_text.is_empty(), "%s doit avoir une infobulle réelle" % key)
 		_expect(primary_control != null and not primary_control.tooltip_text.is_empty(), "la valeur %s doit avoir une infobulle réelle" % key)
+		_expect(primary_control != null and not primary_control.get_line_edit().tooltip_text.is_empty(), "la zone numérique %s doit conserver l’infobulle" % key)
+		var primary_info := slide.find_child("Info_%s" % key, true, false) as Label
+		_expect(primary_info != null and not primary_info.tooltip_text.is_empty(), "l’icône d’information %s doit avoir une infobulle" % key)
 	var expected_secondary_labels := {
 		"ESP": "Esprit",
 		"TRA": "Transfuge",
@@ -62,6 +65,9 @@ func _test_slide_2_state_and_persistence() -> void:
 		_expect(secondary_label != null and secondary_label.text == expected_secondary_labels[key], "%s ne doit pas exposer son ID" % key)
 		_expect(secondary_label != null and not secondary_label.tooltip_text.is_empty(), "%s doit avoir une infobulle réelle" % expected_secondary_labels[key])
 		_expect(secondary_value != null and not secondary_value.tooltip_text.is_empty(), "la valeur %s doit avoir une infobulle réelle" % expected_secondary_labels[key])
+		var secondary_info := slide.find_child("Info_%s" % key, true, false) as Label
+		_expect(secondary_info != null and secondary_info.has_meta("keyboard_tooltip"), "le bouton ⓘ de %s doit ouvrir son détail" % expected_secondary_labels[key])
+		_expect(secondary_info != null and bool(secondary_info.get_meta("keyboard_tooltip_click_toggle", false)), "le bouton ⓘ de %s doit se fermer au second clic" % expected_secondary_labels[key])
 	var initial_secondary := slide.collect_payload().get("secondary_stats", {}) as Dictionary
 	_expect(initial_secondary.keys().size() == 3 and initial_secondary.has("ESP") and initial_secondary.has("TRA") and initial_secondary.has("ESE"), "les IDs internes secondaires doivent être conservés dans les données")
 	var progression_text := _collect_label_text(slide.find_child("ProgressionGrid", true, false))
@@ -75,7 +81,13 @@ func _test_slide_2_state_and_persistence() -> void:
 	force.value += 4
 	_expect(int(slide.collect_payload()["stats"]["force"]) == 13, "+5 Force doit produire une valeur achetée de 13")
 	_expect(label.text == "Points restants : 5 / 10", "+5 Force doit laisser 5 points")
-	_expect(force.tooltip_text.find("Points investis : +5") != -1, "l’infobulle doit détailler les points investis")
+	_expect(force.tooltip_text.find("Investi +5") != -1, "l’aide compacte doit refléter les points investis")
+	_expect(force.get_line_edit().tooltip_text.find("Investi +5") != -1, "l’aide compacte de la zone numérique doit être actualisée")
+	_expect(not force.get_line_edit().has_meta("keyboard_tooltip"), "la zone numérique ne doit pas ouvrir une grande infobulle au focus")
+	var force_info := slide.find_child("Info_force", true, false) as Label
+	_expect(force_info.tooltip_text.find("Investi +5") != -1, "l’icône d’information doit conserver le détail dynamique")
+	_expect(force_info.has_meta("keyboard_tooltip"), "l’icône ⓘ doit ouvrir le détail au clic/focus")
+	_expect(bool(force_info.get_meta("keyboard_tooltip_click_toggle", false)), "l’icône ⓘ doit fonctionner en toggle au clic")
 	_expect((slide.find_child("Modifier_force", true, false) as Label).text == "(+1)", "Force 13 doit afficher le modificateur +1")
 
 	force.value -= 5

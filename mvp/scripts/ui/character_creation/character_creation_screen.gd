@@ -164,8 +164,6 @@ func _on_creation_completed(final_payload: Dictionary) -> void:
 	var final_stats: Dictionary = {}
 	if final_payload.has("final_stats"):
 		final_stats = final_payload["final_stats"] as Dictionary
-	var modifiers: Dictionary = final_payload.get("modifiers", {}) as Dictionary
-	var derived_stats: Dictionary = final_payload.get("derived_stats", {}) as Dictionary
 
 	var nom_perso := ""
 	if character.has("character_name"):
@@ -249,11 +247,7 @@ func _on_creation_completed(final_payload: Dictionary) -> void:
 			"equipment": [inventory, equipment.values()],
 		},
 		"fiche_complete": {
-			"stats_brutes": final_stats,
-			"purchased_scores": raw_stats,
-			"character_scores": final_stats,
-			"modifiers": modifiers,
-			"derived_stats": derived_stats,
+			"stats_brutes": raw_stats,
 			"secondary_stats": secondary_stats,
 			"points_restants": maxi(0, int(character.get("stats_points_pool", 10)) - _creation_points_spent(raw_stats)),
 		},

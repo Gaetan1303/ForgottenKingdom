@@ -1,10 +1,18 @@
 ## Complète les infobulles souris de Godot par une lecture au focus clavier.
 extends RefCounted
 
-static func bind(control: Control) -> void:
-	if control == null or control.has_meta("keyboard_tooltip"):
+static func bind(control: Control, click_toggle: bool = false, consume_toggle_click: bool = true) -> void:
+	if control == null:
+		return
+	# Permet d'activer le mode toggle lors d'un second bind sans reconstruire le panneau.
+	if control.has_meta("keyboard_tooltip"):
+		if click_toggle:
+			control.set_meta("keyboard_tooltip_click_toggle", true)
+		control.set_meta("keyboard_tooltip_consume_toggle_click", consume_toggle_click)
 		return
 	control.set_meta("keyboard_tooltip", true)
+	control.set_meta("keyboard_tooltip_click_toggle", click_toggle)
+	control.set_meta("keyboard_tooltip_consume_toggle_click", consume_toggle_click)
 	control.focus_mode = Control.FOCUS_ALL
 	var layer := CanvasLayer.new()
 	layer.layer = 90
@@ -54,6 +62,19 @@ static func bind(control: Control) -> void:
 	)
 
 	control.gui_input.connect(func(event: InputEvent):
+		# Les petits boutons ⓘ peuvent fonctionner comme un vrai interrupteur :
+		# clic 1 = ouvrir, clic 2 = fermer, sans attendre une perte de focus.
+		if bool(control.get_meta("keyboard_tooltip_click_toggle", false)) and event is InputEventMouseButton:
+			if event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
+				if panel.visible:
+					panel.hide()
+				else:
+					if not control.has_focus():
+						control.grab_focus()
+					show_tooltip.call_deferred()
+				if bool(control.get_meta("keyboard_tooltip_consume_toggle_click", true)):
+					control.accept_event()
+				return
 		if panel.visible and event is InputEventKey and event.pressed:
 			if event.keycode == KEY_PAGEDOWN or event.keycode == KEY_PAGEUP:
 				text.get_v_scroll_bar().value += 120 if event.keycode == KEY_PAGEDOWN else -120

@@ -7,6 +7,7 @@ const ClassCardFactory = preload("res://scripts/ui/tween/classedeperso/class_car
 const CharacterCreationRules = preload("res://scripts/services/character_creation_rules_service.gd")
 const CharacterBuildService = preload("res://scripts/data/character_build_service.gd")
 const FallenUI = preload("res://scripts/ui/fallen_ui.gd")
+const KeyboardTooltip = preload("res://scripts/ui/components/keyboard_tooltip.gd")
 
 const POINTS_POOL_TOTAL: int = 10
 const STAT_LABELS := {
@@ -35,7 +36,6 @@ func _ready() -> void:
 	reset.name = "BtnReset"
 	reset.text = "Réinitialiser les points"
 	reset.tooltip_text = "Récupérer les 10 points investis. La classe choisie et ses bonus sont conservés."
-	preload("res://scripts/ui/components/keyboard_tooltip.gd").bind(reset)
 	$Content/Nav.add_child(reset)
 	$Content/Nav.move_child(reset, 0)
 	reset.pressed.connect(func():
@@ -104,44 +104,62 @@ func collect_payload() -> Dictionary:
 
 
 func _configure_tooltip_for_stat_row(stat_key: String, stat_label: Label, stat_control: SpinBox) -> void:
-	preload("res://scripts/ui/components/keyboard_tooltip.gd").bind(stat_label)
-	var tooltip := _stat_rules_tooltip(stat_key)
+	# UX : les contrôles courants gardent une aide très courte.
+	# Le détail complet est volontairement réservé à l’icône ⓘ afin de ne pas
+	# masquer la feuille dès qu’un SpinBox reçoit le focus.
+	var short_tooltip := _stat_compact_tooltip(stat_key)
+	var detailed_tooltip := _stat_rules_tooltip(stat_key)
 	if stat_label:
 		stat_label.mouse_filter = Control.MOUSE_FILTER_STOP
-		stat_label.tooltip_text = tooltip
+		stat_label.tooltip_text = short_tooltip
 	if stat_control:
-		stat_control.tooltip_text = tooltip
-		# The embedded LineEdit is the actual hovered control over the number.
-		stat_control.get_line_edit().tooltip_text = tooltip + "\nFlèches haut/bas : investir ou récupérer 1 point. Budget partagé : 10 points."
-		preload("res://scripts/ui/components/keyboard_tooltip.gd").bind(stat_control.get_line_edit())
+		stat_control.tooltip_text = short_tooltip
+		var line_edit := stat_control.get_line_edit()
+		if line_edit:
+			line_edit.tooltip_text = short_tooltip
 	var modifier_label := find_child("Modifier_%s" % stat_key, true, false) as Label
 	if modifier_label:
 		modifier_label.mouse_filter = Control.MOUSE_FILTER_STOP
-		modifier_label.tooltip_text = tooltip
+		modifier_label.tooltip_text = "Modificateur dérivé du score. Il est calculé automatiquement."
 	var info_label := find_child("Info_%s" % stat_key, true, false) as Label
 	if info_label:
 		info_label.mouse_filter = Control.MOUSE_FILTER_STOP
-		info_label.tooltip_text = tooltip
+		info_label.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
+		info_label.tooltip_text = detailed_tooltip
+		# Le détail complet ne s'ouvre que sur l'icône ⓘ, jamais sur le SpinBox.
+		KeyboardTooltip.bind(info_label, true)
 
 
 func _configure_tooltip_for_secondary_row(stat_key: String, stat_label: Label, value_label: Label) -> void:
-	preload("res://scripts/ui/components/keyboard_tooltip.gd").bind(stat_label)
-	var tooltip := _secondary_stat_tooltip(stat_key)
+	var detailed_tooltip := _secondary_stat_tooltip(stat_key, int(_secondary_stats.get(stat_key, StatDefs.SECONDARY_STAT_DEFAULT)))
+	var short_tooltip := _secondary_stat_compact_tooltip(stat_key)
 	for control in [stat_label, value_label]:
 		if control:
 			control.mouse_filter = Control.MOUSE_FILTER_STOP
-			control.tooltip_text = tooltip
+			control.tooltip_text = short_tooltip
 	var info_label := find_child("Info_%s" % stat_key, true, false) as Label
 	if info_label:
 		info_label.mouse_filter = Control.MOUSE_FILTER_STOP
-		info_label.tooltip_text = tooltip
+		info_label.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
+		info_label.tooltip_text = detailed_tooltip
+		KeyboardTooltip.bind(info_label, true)
 
 
 func _refresh_secondary_stats() -> void:
 	for key in StatDefs.SECONDARY_STAT_KEYS:
+		var value := int(_secondary_stats.get(key, StatDefs.SECONDARY_STAT_DEFAULT))
+		var detailed_tooltip := _secondary_stat_tooltip(key, value)
+		var compact_tooltip := _secondary_stat_compact_tooltip(key)
 		var value_label := find_child("Secondary_%s" % key, true, false) as Label
 		if value_label:
-			value_label.text = str(int(_secondary_stats.get(key, StatDefs.SECONDARY_STAT_DEFAULT)))
+			value_label.text = str(value)
+			value_label.tooltip_text = compact_tooltip
+		var stat_label := find_child("Label_%s" % key, true, false) as Label
+		if stat_label:
+			stat_label.tooltip_text = compact_tooltip
+		var info_label := find_child("Info_%s" % key, true, false) as Label
+		if info_label:
+			info_label.tooltip_text = detailed_tooltip
 
 
 func _collect_stats() -> Dictionary:
@@ -188,8 +206,10 @@ func _build_class_card(class_id: String, class_data: Dictionary) -> Button:
 	card.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	card.size_flags_vertical = Control.SIZE_SHRINK_BEGIN
 	card.focus_mode = Control.FOCUS_ALL
-	card.tooltip_text = str(class_data.get("description", "")) + "\nCaractéristiques conseillées : " + ", ".join(PackedStringArray(class_data.get("primary", []))) + "\nSpécialisez vos 10 points ou compensez les caractéristiques non favorisées par votre classe."
-	preload("res://scripts/ui/components/keyboard_tooltip.gd").bind(card)
+	card.tooltip_text = _class_tooltip(class_id, class_data)
+	# Les cartes de classe conservent leur infobulle détaillée. Le clic reste
+	# disponible pour sélectionner la classe et sert aussi de toggle pour l’aide.
+	KeyboardTooltip.bind(card, true, false)
 	card.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 	card.set_meta("class_id", class_id)
 	card.add_theme_stylebox_override("normal", _make_card_style(false))
@@ -312,18 +332,23 @@ func _refresh_stat_controls() -> void:
 		var class_bonus := int(_class_bonus_stats.get(key, 0))
 		var final_value := StatDefs.CHARACTER_MIN_STAT + invested + class_bonus
 		var node := find_child("Stat_%s" % key, true, false) as SpinBox
+		var detailed_tooltip := _stat_breakdown_tooltip(key, final_value)
+		var compact_tooltip := _stat_compact_dynamic_tooltip(key, final_value)
 		if node:
 			node.min_value = float(StatDefs.CHARACTER_MIN_STAT + class_bonus)
 			node.max_value = float(final_value + remaining)
 			node.value = float(final_value)
-			node.tooltip_text = _stat_breakdown_tooltip(key, final_value)
-		var detailed_tooltip := _stat_breakdown_tooltip(key, final_value)
+			node.tooltip_text = compact_tooltip
+			var line_edit := node.get_line_edit()
+			if line_edit:
+				line_edit.tooltip_text = compact_tooltip
 		var stat_name := find_child("Label%s" % str(key).capitalize(), true, false) as Label
-		if stat_name: stat_name.tooltip_text = detailed_tooltip
+		if stat_name:
+			stat_name.tooltip_text = _stat_compact_tooltip(key)
 		var modifier_label := find_child("Modifier_%s" % key, true, false) as Label
 		if modifier_label:
 			modifier_label.text = "(%s)" % _format_signed(StatDefs.score_to_modifier(final_value))
-			modifier_label.tooltip_text = detailed_tooltip
+			modifier_label.tooltip_text = "Modificateur dérivé : %s" % _format_signed(StatDefs.score_to_modifier(final_value))
 		var info_label := find_child("Info_%s" % key, true, false) as Label
 		if info_label:
 			info_label.tooltip_text = detailed_tooltip
@@ -348,9 +373,23 @@ func _set_derived_label(node_name: String, value: int) -> void:
 	var node := find_child(node_name, true, false) as Label
 	if node:
 		node.text = str(value)
-		var rules := {"DerivedAttaqueValue": "Attaque de la fiche : 10 + modificateurs de Force et de Commandement.", "DerivedDefenseValue": "Défense de la fiche : 10 + modificateur d’Espionnage.", "DerivedResistanceValue": "Résistance de la fiche : 10 + modificateur de Magie.", "DerivedInitiativeValue": "Initiative de la fiche : modificateur d’Espionnage. L’expédition utilise le score d’Espionnage pour l’ordre des tours.", "DerivedVigueurValue": "Jet de vigueur : modificateur de Force.", "DerivedVolonteValue": "Jet de volonté : modificateur de Magie.", "DerivedReflexesValue": "Jet de réflexes : modificateur d’Espionnage."}
-		node.tooltip_text = str(rules.get(node_name, ""))
-		preload("res://scripts/ui/components/keyboard_tooltip.gd").bind(node)
+		var rules := {
+			"DerivedAttaqueValue": "Attaque — Valeur dérivée utilisée pour les actions offensives.\nCalcul : 10 + modificateur de Force + modificateur de Commandement.",
+			"DerivedDefenseValue": "Défense — Difficulté de base pour vous atteindre.\nCalcul : 10 + modificateur d’Espionnage.",
+			"DerivedResistanceValue": "Résistance — Défense contre les effets surnaturels.\nCalcul : 10 + modificateur de Magie.",
+			"DerivedInitiativeValue": "Initiative — Bonus dérivé lié à votre vivacité.\nCalcul : modificateur d’Espionnage. En expédition, l’ordre des tours utilise directement le score d’Espionnage.",
+			"DerivedVigueurValue": "Jet de Vigueur — Résistance aux efforts physiques, blessures et contraintes corporelles.\nCalcul : modificateur de Force.",
+			"DerivedVolonteValue": "Jet de Volonté — Résistance aux influences mentales et occultes.\nCalcul : modificateur de Magie.",
+			"DerivedReflexesValue": "Jet de Réflexes — Réaction face aux dangers soudains.\nCalcul : modificateur d’Espionnage.",
+		}
+		var tooltip := str(rules.get(node_name, ""))
+		node.mouse_filter = Control.MOUSE_FILTER_STOP
+		node.tooltip_text = tooltip
+		var label_name := node_name.trim_suffix("Value") + "Label"
+		var name_label := find_child(label_name, true, false) as Label
+		if name_label:
+			name_label.mouse_filter = Control.MOUSE_FILTER_STOP
+			name_label.tooltip_text = tooltip
 
 func _update_points_pool() -> void:
 	var remaining := _points_remaining()
@@ -359,36 +398,84 @@ func _update_points_pool() -> void:
 		label.text = "Points restants : %d / %d" % [remaining, POINTS_POOL_TOTAL]
 
 
+func _stat_compact_tooltip(stat_key: String) -> String:
+	var label := str(STAT_LABELS.get(stat_key, stat_key.capitalize()))
+	return "%s — %s" % [label, _stat_usage_text(stat_key)]
+
+
+func _stat_compact_dynamic_tooltip(stat_key: String, final_value: int) -> String:
+	var label := str(STAT_LABELS.get(stat_key, stat_key.capitalize()))
+	var invested := int(_invested_points.get(stat_key, 0))
+	var class_bonus := int(_class_bonus_stats.get(stat_key, 0))
+	return "%s : %d  •  Classe %s  •  Investi %s  •  1 point = +1" % [
+		label, final_value, _format_signed(class_bonus), _format_signed(invested),
+	]
+
+
+func _secondary_stat_compact_tooltip(stat_key: String) -> String:
+	var labels := {
+		"ESP": "Esprit — stabilité mentale et concentration.",
+		"TRA": "Transfuge — affinité avec la magi-tech.",
+		"ESE": "Essence — héritage sanguin et stabilité de lignée.",
+	}
+	return str(labels.get(stat_key, stat_key))
+
+
 func _stat_breakdown_tooltip(stat_key: String, final_value: int) -> String:
-	return StatDefs.description(stat_key) + "\n\n" + "%s : %d\n\nValeur de base : %d\nPoints investis : %s\nBonus de classe : %s\nBonus de clan : 0\nMalus actif : 0\n\nTotal : %d\nModificateur : %s" % [
-		str(STAT_LABELS.get(stat_key, stat_key.capitalize())), final_value,
-		StatDefs.CHARACTER_MIN_STAT, _format_signed(int(_invested_points.get(stat_key, 0))),
-		_format_signed(int(_class_bonus_stats.get(stat_key, 0))), final_value,
+	var label := str(STAT_LABELS.get(stat_key, stat_key.capitalize()))
+	var invested := int(_invested_points.get(stat_key, 0))
+	var class_bonus := int(_class_bonus_stats.get(stat_key, 0))
+	return "%s\n%s\nBase %d • Classe %s • Investi %s → Score %d\nModificateur : %s\n1 point investi = +1 au score." % [
+		label, _stat_usage_text(stat_key), StatDefs.CHARACTER_MIN_STAT,
+		_format_signed(class_bonus), _format_signed(invested), final_value,
 		_format_signed(StatDefs.score_to_modifier(final_value)),
 	]
 
 
 func _stat_rules_tooltip(stat_key: String) -> String:
+	var label := str(STAT_LABELS.get(stat_key, stat_key.capitalize()))
+	return "%s\n%s\n1 point investi = +1 au score." % [label, _stat_usage_text(stat_key)]
+
+
+func _stat_usage_text(stat_key: String) -> String:
 	var descriptions := {
-		"force": "Mesure la puissance physique du personnage.\n\nInfluence :\n• l’Attaque\n• le jet de Vigueur",
-		"magie": "Mesure sa maîtrise de l’Éther de Cendre.\n\nInfluence :\n• la Résistance\n• le jet de Volonté\n• la réserve de mana",
-		"espionnage": "Mesure sa furtivité et sa vivacité.\n\nInfluence :\n• la Défense\n• l’Initiative\n• le jet de Réflexes",
-		"artisanat": "Mesure sa maîtrise de la forge et des vestiges.",
-		"diplomatie": "Mesure son influence et son talent de négociation.",
-		"commandement": "Mesure son autorité et sa discipline.\n\nInfluence :\n• l’Attaque\n• les points de vie maximaux",
+		"force": "Puissance physique. Influence l’Attaque, le jet de Vigueur et certaines actions physiques.",
+		"magie": "Maîtrise de l’Éther de Cendre. Influence la Résistance, le jet de Volonté et les capacités surnaturelles.",
+		"espionnage": "Vivacité, discrétion et observation. Influence la Défense, l’Initiative et le jet de Réflexes.",
+		"artisanat": "Maîtrise des outils, matériaux et vestiges. Sert à la fabrication, aux réparations et à certains soutiens du domaine.",
+		"diplomatie": "Écoute, persuasion et négociation. Sert aux relations, alliances et soutiens sociaux.",
+		"commandement": "Autorité, discipline et coordination. Influence l’Attaque combinée, les soutiens et les points de vie en expédition.",
 	}
-	return "%s\n\n%s\n\nUtilisée comme prérequis par certains dons." % [
-		str(STAT_LABELS.get(stat_key, stat_key.capitalize())), str(descriptions.get(stat_key, "")),
+	return str(descriptions.get(stat_key, StatDefs.description(stat_key)))
+
+
+func _secondary_stat_tooltip(stat_key: String, current_value: int = StatDefs.SECONDARY_STAT_DEFAULT) -> String:
+	var tooltips := {
+		"ESP": "Esprit (ESP)\nForce mentale, concentration et stabilité psychique. Sert aux prérequis psychiques ou occultes et pourra intervenir dans la résistance aux influences mentales.",
+		"TRA": "Transfuge (TRA)\nAffinité avec la magi-tech et les technologies hybrides ou étrangères. Sert aux prérequis d’utilisation, d’étude ou d’assimilation de certains équipements et systèmes.",
+		"ESE": "Essence (ESE)\nStabilité, pureté et nature de l’héritage sanguin. Sert aux prérequis de lignée et aux mécaniques liées au sang, aux pactes et aux transformations.",
+	}
+	return "%s\n\nValeur actuelle : %d\nCette caractéristique secondaire n’utilise pas la réserve des 10 points de cette étape." % [
+		str(tooltips.get(stat_key, stat_key)), current_value,
 	]
 
 
-func _secondary_stat_tooltip(stat_key: String) -> String:
-	var tooltips := {
-		"ESP": "Esprit\n\nMesure la force mentale et la stabilité psychique du personnage.\n\nPeut influencer :\n• la résistance mentale ;\n• certains jets de volonté ;\n• certains prérequis.",
-		"TRA": "Transfuge\n\nMesure l'affinité du personnage avec la magi-tech.\n\nUtilisé pour :\n• les technologies occultes ;\n• les équipements magi-tech ;\n• certaines capacités spécialisées.",
-		"ESE": "Essence\n\nMesure la qualité, la stabilité et la nature de l’essence et du sang.\n\nPeut être utilisée pour :\n• les prérequis de lignée ;\n• certaines capacités raciales ;\n• les mécaniques liées au sang.",
-	}
-	return str(tooltips.get(stat_key, ""))
+func _class_tooltip(class_id: String, class_data: Dictionary) -> String:
+	var class_display_name := str(class_data.get("name", class_id))
+	var description := str(class_data.get("description", "")).strip_edges()
+	var bonuses := CharacterCreationRules.get_creation_class_score_bonus(class_id)
+	var bonus_parts: Array[String] = []
+	for key in StatDefs.STAT_KEYS:
+		var bonus := int(bonuses.get(key, 0))
+		if bonus != 0:
+			bonus_parts.append("%s %s" % [str(STAT_LABELS.get(key, key.capitalize())), _format_signed(bonus)])
+	var bonus_text := ", ".join(PackedStringArray(bonus_parts)) if not bonus_parts.is_empty() else "Aucun bonus de caractéristique"
+	var parts: Array[String] = [class_display_name]
+	if not description.is_empty():
+		parts.append(description)
+	parts.append("Bonus de départ : %s" % bonus_text)
+	parts.append("Les 10 points de création restent libres : 1 point dépensé = +1 au score choisi.")
+	return "\n\n".join(PackedStringArray(parts))
 
 
 func _format_signed(value: int) -> String:
