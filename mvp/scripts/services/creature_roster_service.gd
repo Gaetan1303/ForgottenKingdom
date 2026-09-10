@@ -4,7 +4,7 @@ extends RefCounted
 
 const CreatureProfileClass = preload("res://scripts/data/creature_profile.gd")
 
-signal creature_captured(creature_id: String, profile: CreatureProfile)
+signal creature_captured(creature_id: String, profile: Resource)
 signal creature_released(creature_id: String)
 signal creature_loyalty_changed(creature_id: String, new_loyalty: float)
 signal creature_corrupted(creature_id: String, corruption_level: float)
@@ -13,7 +13,7 @@ var _captured: Dictionary = {}
 var _available: Array = []
 
 
-func capture_creature(creature_profile: CreatureProfile) -> bool:
+func capture_creature(creature_profile: Resource) -> bool:
 	if creature_profile == null or not creature_profile.is_valid() or _captured.has(creature_profile.id):
 		return false
 	_captured[creature_profile.id] = _entry(creature_profile)
@@ -30,10 +30,10 @@ func release_creature(creature_id: String) -> bool:
 	return true
 
 
-func add_available_creature(creature_profile: CreatureProfile) -> bool:
+func add_available_creature(creature_profile: Resource) -> bool:
 	if creature_profile == null or not creature_profile.is_valid():
 		return false
-	var data := creature_profile.to_dict()
+	var data: Dictionary = creature_profile.to_dict()
 	for index in range(_available.size()):
 		if str((_available[index] as Dictionary).get("id", "")) == creature_profile.id:
 			_available[index] = data
@@ -58,7 +58,7 @@ func get_available_for_assignment() -> Array:
 	return result
 
 
-func get_profile_by_id(creature_id: String) -> CreatureProfile:
+func get_profile_by_id(creature_id: String) -> Resource:
 	var entry := _captured.get(creature_id.strip_edges(), {}) as Dictionary
 	if entry.is_empty():
 		for raw in _available:
@@ -120,7 +120,7 @@ func import_state(state: Dictionary) -> void:
 		var key := str(raw_id).strip_edges()
 		var raw := captured.get(raw_id, {}) as Dictionary
 		var profile_data := raw.get("profile", raw) as Dictionary
-		var profile := CreatureProfileClass.from_dict(profile_data)
+		var profile: Resource = CreatureProfileClass.from_dict(profile_data)
 		if key.is_empty() or not profile.is_valid():
 			continue
 		var entry := _entry(profile)
@@ -130,7 +130,7 @@ func import_state(state: Dictionary) -> void:
 		_captured[key] = entry
 	for raw in state.get("available", []) as Array:
 		if raw is Dictionary:
-			var profile := CreatureProfileClass.from_dict(raw as Dictionary)
+			var profile: Resource = CreatureProfileClass.from_dict(raw as Dictionary)
 			if profile.is_valid() and not _captured.has(profile.id):
 				add_available_creature(profile)
 
@@ -168,7 +168,7 @@ func remove(roster: Array, creature_id: String) -> Dictionary:
 func set_state(roster: Array, creature_id: String, next_state: String) -> Dictionary:
 	var index := find_index(roster, creature_id)
 	if index < 0: return _error(roster, "creature_introuvable")
-	var profile := CreatureProfileClass.from_dict(roster[index] as Dictionary)
+	var profile: Resource = CreatureProfileClass.from_dict(roster[index] as Dictionary)
 	if not profile.set_state(next_state): return _error(roster, "etat_creature_invalide")
 	var next_roster := roster.duplicate(true)
 	next_roster[index] = profile.to_dict()
@@ -183,7 +183,7 @@ func get_profile(roster: Array, creature_id: String) -> Resource:
 func get_available(roster: Array) -> Array:
 	var result: Array = []
 	for entry in roster:
-		var profile := CreatureProfileClass.from_dict(entry as Dictionary)
+		var profile: Resource = CreatureProfileClass.from_dict(entry as Dictionary)
 		if profile.is_available(): result.append(profile.to_dict())
 	return result
 
@@ -193,7 +193,7 @@ func sanitize(roster: Array) -> Array:
 	var seen: Dictionary = {}
 	for entry in roster:
 		if not (entry is Dictionary): continue
-		var profile := CreatureProfileClass.from_dict(entry as Dictionary)
+		var profile: Resource = CreatureProfileClass.from_dict(entry as Dictionary)
 		if not profile.is_valid() or seen.has(profile.id): continue
 		seen[profile.id] = true
 		result.append(profile.to_dict())
@@ -212,7 +212,7 @@ func remove_creature(roster: Array, creature_id: String) -> Dictionary: return r
 func update_state(roster: Array, creature_id: String, next_state: String) -> Dictionary: return set_state(roster, creature_id, next_state)
 
 
-static func _entry(profile: CreatureProfile) -> Dictionary:
+static func _entry(profile: Resource) -> Dictionary:
 	return {"profile": profile.to_dict(), "loyalty": profile.loyalty, "corruption": profile.corruption, "assignment": {}}
 
 

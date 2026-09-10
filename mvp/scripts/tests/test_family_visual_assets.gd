@@ -3,7 +3,11 @@ extends SceneTree
 const VisualAssetCatalog = preload("res://scripts/ui/visual_asset_catalog.gd")
 const ResourcePathResolver = preload("res://scripts/utils/resource_path_resolver.gd")
 
-func _initialize() -> void:
+func _init() -> void:
+    call_deferred("_run")
+
+
+func _run() -> void:
     var failures: Array[String] = []
     var checks: Dictionary = {
         "mother": VisualAssetCatalog.family_mother_path(),
@@ -26,6 +30,7 @@ func _initialize() -> void:
     if failures.is_empty():
         print("FAMILY_VISUAL_ASSETS_OK: 5/5")
         quit(0)
+        return
     for failure: String in failures:
         push_error(failure)
     quit(1)

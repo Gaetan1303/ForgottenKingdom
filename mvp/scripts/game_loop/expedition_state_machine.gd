@@ -1,10 +1,12 @@
 ## Automate du parcours d’expédition ; l’unique état persistant reste run.state.
 extends RefCounted
+const StateMachineClass = preload("res://scripts/state_machine/state_machine.gd")
+const StateClass = preload("res://scripts/state_machine/state.gd")
 const STATES := ["arrival", "exploration", "combat", "return", "returned"]
 
-static func make(run: Dictionary) -> StateMachine:
-	var machine := StateMachine.new()
-	for key in STATES: machine.add_state(key, State.new(key))
+static func make(run: Dictionary) -> RefCounted:
+	var machine: RefCounted = StateMachineClass.new()
+	for key in STATES: machine.add_state(key, StateClass.new(key))
 	machine.allow("arrival", "enter", "exploration")
 	machine.allow("exploration", "engage", "combat")
 	machine.allow("combat", "victory", "exploration")
@@ -32,7 +34,7 @@ static func state_of(run: Dictionary) -> String:
 	return "exploration"
 
 static func send(run: Dictionary, event: String) -> bool:
-	var machine := make(run)
+	var machine: RefCounted = make(run)
 	if not machine.handle_event(event): return false
 	run["state"] = machine.current.name
 	return true

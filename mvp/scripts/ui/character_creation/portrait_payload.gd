@@ -2,6 +2,8 @@
 class_name PortraitPayload
 extends Control
 
+const MAX_IMPORTED_PORTRAIT_SIDE := 512
+
 @onready var _preview: TextureRect = null
 @onready var _path_label: Label = null
 @onready var _file_dialog: FileDialog = null
@@ -69,6 +71,7 @@ func _on_file_selected(path: String) -> void:
 	var image := _open_image_file(path)
 	if image == null:
 		return
+	image = resize_for_import(image)
 	var texture := ImageTexture.create_from_image(image)
 	if texture:
 		if _preview != null:
@@ -80,6 +83,21 @@ func _on_file_selected(path: String) -> void:
 		}
 		if _path_label != null:
 			_path_label.text = path.get_file()
+
+static func resize_for_import(source: Image) -> Image:
+	if source == null or source.is_empty():
+		return null
+	var image: Image = source.duplicate()
+	var longest_side: int = maxi(image.get_width(), image.get_height())
+	if longest_side <= MAX_IMPORTED_PORTRAIT_SIDE:
+		return image
+	var scale: float = float(MAX_IMPORTED_PORTRAIT_SIDE) / float(longest_side)
+	var target := Vector2i(
+		maxi(1, roundi(image.get_width() * scale)),
+		maxi(1, roundi(image.get_height() * scale))
+	)
+	image.resize(target.x, target.y, Image.INTERPOLATE_LANCZOS)
+	return image
 
 func _on_upload_portrait_pressed() -> void:
 	if _file_dialog != null:

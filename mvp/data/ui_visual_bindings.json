@@ -12,7 +12,7 @@
       "reason": "Le texte situe geographiquement les Marches Libres a l'est des domaines nobles."
     },
     "famille_01": {
-      "visual": "@heir_child",
+      "visual": "@child",
       "mode": "portrait",
       "reason": "Le protagoniste a dix ans : portrait de l’héritier enfant correspondant au genre choisi."
     },
@@ -22,23 +22,23 @@
       "reason": "Dialogue et action de la mere."
     },
     "famille_03": {
-      "visual": "@father",
+      "visual": "@father_alone",
       "mode": "portrait",
       "reason": "Dialogue et action du pere."
     },
     "famille_04": {
-      "visual": "@clan",
-      "mode": "symbol",
-      "reason": "Souvenir de la vie quotidienne du clan dans son ensemble."
+      "visual": "@child",
+      "mode": "portrait",
+      "reason": "Souvenir de l’héritier enfant au sein de sa famille."
     },
     "lecon_01": {
-      "visual": "@none",
-      "mode": "none",
-      "reason": "Le pere montre explicitement une carte du Royaume Demonique."
+      "visual": "@father_alone",
+      "mode": "portrait",
+      "reason": "Le père conduit la leçon."
     },
     "lecon_02": {
-      "visual": "@resources",
-      "mode": "resources",
+      "visual": "@father_alone",
+      "mode": "portrait",
       "resources": [
         "or",
         "soldats",
@@ -47,7 +47,7 @@
       "reason": "Le texte nomme explicitement l'or, les soldats et le mana."
     },
     "lecon_03": {
-      "visual": "@father",
+      "visual": "@father_alone",
       "mode": "portrait",
       "reason": "Le pere enseigne les choix d'action."
     },
@@ -62,12 +62,12 @@
       "reason": "La mere enseigne la valeur des alliances et du recrutement."
     },
     "lecon_06": {
-      "visual": "@clan",
-      "mode": "symbol",
-      "reason": "Souvenir familial et identite du clan; aucun portrait double exact n'existe."
+      "visual": "@child",
+      "mode": "portrait",
+      "reason": "La leçon s’achève sur l’héritier enfant."
     },
     "kael_01": {
-      "visual": "@kael",
+      "visual": "@mother",
       "mode": "portrait",
       "reason": "La mere introduit Kael; Kael est le sujet du propos."
     },
@@ -92,9 +92,9 @@
       "reason": "Verdict collectif du Grand Synode des Neuf Couronnes."
     },
     "conclave_02": {
-      "visual": "@none",
-      "mode": "none",
-      "reason": "Le sceau du Synode et l'emissaire sont au centre de la scene."
+      "visual": "@father_alone",
+      "mode": "portrait",
+      "reason": "Le père demeure la figure familiale de cette scène."
     },
     "conclave_03": {
       "visual": "@mother",
@@ -112,7 +112,7 @@
       "reason": "Le texte montre les bannieres et un Lance de Couronne en tete de l'assaut."
     },
     "chute_03": {
-      "visual": "@kael",
+      "visual": "@father_alone",
       "mode": "portrait",
       "reason": "Kael protège le passage pendant le choix de l’héritier."
     },
@@ -127,7 +127,7 @@
       "reason": "Dernier adieu de la mere."
     },
     "chute_06": {
-      "visual": "@father",
+      "visual": "@father_alone",
       "mode": "portrait",
       "reason": "Dernieres paroles du pere."
     },

@@ -5,14 +5,14 @@ signal transitioned(from: String, to: String, event: String)
 var states: Dictionary = {}
 var transitions: Dictionary = {}
 var initial_state: String = ""
-var current: State = null
+var current: RefCounted = null
 var debug: bool = false
 var _transitioning := false
 
 func _init(_debug: bool = false) -> void:
 	debug = _debug
 
-func add_state(state_name: String, state: State) -> void:
+func add_state(state_name: String, state: RefCounted) -> void:
 	state.name = state_name
 	state.machine = self
 	states[state_name] = state
@@ -39,7 +39,7 @@ func _goto(state_name: String, data: Dictionary = {}) -> bool:
 	if _transitioning or not states.has(state_name) or (current != null and current.name == state_name):
 		return false
 	_transitioning = true
-	var previous := current.name if current != null else ""
+	var previous: String = str(current.name) if current != null else ""
 	if current != null: current.exit(data)
 	current = states[state_name]
 	current.enter(data)

@@ -7,7 +7,7 @@ var _failures: Array[String] = []
 var _submitted_payload: Dictionary = {}
 
 
-func _initialize() -> void:
+func _init() -> void:
 	call_deferred("_run")
 
 

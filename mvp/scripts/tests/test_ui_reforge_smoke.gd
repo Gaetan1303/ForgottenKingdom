@@ -31,13 +31,13 @@ const REQUIRED_NODES: Dictionary = {
 		"Main/SlideHost",
 	],
 	"res://scenes/character_creation/slides/slide_02_class_stats.tscn": [
-		"Content/MainSplit/ProgressionPanel/ProgressionSummary/ProgressionGrid",
-		"Content/MainSplit/ClassesPanel/ClassesScroll/ClassesGrid",
+		"Content/BottomSplit/ProgressionFrame/ProgressionMargin/ProgressionPanel/ProgressionSummary/ProgressionGrid",
+		"Content/ClassesBand/ClassesMargin/ClassesScroll/ClassesGrid",
 	],
 	"res://scenes/chapter_view.tscn": [
 		"IllustrationContainer",
 		"TextBox/VBox/StoryText",
-		"ChapterTitle",
+		"TextBox/VBox/ChapterTitle",
 		"NavBar/BtnPrev",
 		"NavBar/BtnNext",
 	],

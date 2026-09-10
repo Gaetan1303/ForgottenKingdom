@@ -3,10 +3,7 @@
 class_name Character
 extends RefCounted
 
-# Use the globally-registered StatDefs script (class_name StatDefs)
-const STAT_KEYS := StatDefs.STAT_KEYS
-const MIN_STAT: int = StatDefs.CHARACTER_MIN_STAT
-const MAX_STAT: int = StatDefs.CHARACTER_MAX_STAT
+const StatDefsClass = preload("res://scripts/data/stat_defs.gd")
 const ClanIdentityType = preload("res://scripts/data/clan_identity.gd")
 
 var name: String = ""
@@ -26,7 +23,7 @@ func _init(_name: String = "") -> void:
     _reset_stats()
 
 func _reset_stats() -> void:
-    stats = StatDefs.make_default_stats(MIN_STAT)
+    stats = StatDefsClass.make_default_stats(StatDefsClass.CHARACTER_MIN_STAT)
 
 func cost_for_increment(_current_value: int) -> int:
     # Règle canonique : chaque point de caractéristique coûte exactement 1 point.
@@ -34,9 +31,9 @@ func cost_for_increment(_current_value: int) -> int:
 
 func points_spent() -> int:
     var spent := 0
-    for k in STAT_KEYS:
-        var v: int = int(stats.get(k, MIN_STAT))
-        var cur := MIN_STAT
+    for k in StatDefsClass.STAT_KEYS:
+        var v: int = int(stats.get(k, StatDefsClass.CHARACTER_MIN_STAT))
+        var cur: int = StatDefsClass.CHARACTER_MIN_STAT
         while cur < v:
             spent += cost_for_increment(cur)
             cur += 1
@@ -49,7 +46,7 @@ func can_increase(stat: String) -> bool:
     if not stats.has(stat):
         return false
     var v: int = int(stats[stat])
-    if v >= MAX_STAT:
+    if v >= StatDefsClass.CHARACTER_MAX_STAT:
         return false
     var c := cost_for_increment(v)
     return c <= points_remaining()
@@ -63,7 +60,7 @@ func increase_stat(stat: String) -> bool:
 func can_decrease(stat: String) -> bool:
     if not stats.has(stat):
         return false
-    return int(stats[stat]) > MIN_STAT
+    return int(stats[stat]) > StatDefsClass.CHARACTER_MIN_STAT
 
 func decrease_stat(stat: String) -> bool:
     if can_decrease(stat):
@@ -145,7 +142,7 @@ func from_dict(d: Dictionary) -> void:
     char_class = str(d.get("class", ""))
     level = int(d.get("level", 1))
     var loaded_stats := (d.get("stats", {}) as Dictionary).duplicate(true)
-    stats = StatDefs.sanitize_stats(loaded_stats, MIN_STAT, MAX_STAT, MIN_STAT)
+    stats = StatDefsClass.sanitize_stats(loaded_stats, StatDefsClass.CHARACTER_MIN_STAT, StatDefsClass.CHARACTER_MAX_STAT, StatDefsClass.CHARACTER_MIN_STAT)
     feats = (d.get("feats", []) as Array).duplicate(true)
     abilities = (d.get("abilities", []) as Array).duplicate(true)
     points_pool = int(d.get("points_pool", points_pool))

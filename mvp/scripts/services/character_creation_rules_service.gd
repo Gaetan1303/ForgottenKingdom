@@ -3,6 +3,7 @@ class_name CharacterCreationRulesService
 extends RefCounted
 
 const CharacterBuildServiceClass = preload("res://scripts/data/character_build_service.gd")
+const StatDefsClass = preload("res://scripts/data/stat_defs.gd")
 
 
 static func get_class_data(classe_id: String) -> Dictionary:
@@ -19,19 +20,19 @@ static func get_class_data(classe_id: String) -> Dictionary:
 
 	return {
 		"nom": classe_id,
-		"stats_bonus": StatDefs.make_default_stats(0),
+		"stats_bonus": StatDefsClass.make_default_stats(0),
 		"equipement": [],
 		"competences": [],
 	}
 
 
 static func derive_stats_bonus_from_base(base_stats: Dictionary) -> Dictionary:
-	var out := StatDefs.make_default_stats(0)
+	var out: Dictionary = StatDefsClass.make_default_stats(0)
 	if base_stats.is_empty():
 		return out
-	for key in StatDefs.STAT_KEYS:
-		var score := int(base_stats.get(key, 10))
-		out[key] = score - 10
+	for key in StatDefsClass.STAT_KEYS:
+		var score := int(base_stats.get(key, StatDefsClass.CHARACTER_MIN_STAT))
+		out[key] = score - StatDefsClass.CHARACTER_MIN_STAT
 	return out
 
 
@@ -43,7 +44,7 @@ static func resolve_base_stats_for_class(class_def: Dictionary) -> Dictionary:
 
 
 static func build_base_stats_from_class_def(class_def: Dictionary) -> Dictionary:
-	var out := StatDefs.make_default_stats(StatDefs.CHARACTER_MIN_STAT)
+	var out: Dictionary = StatDefsClass.make_default_stats(StatDefsClass.CHARACTER_MIN_STAT)
 	var primary := class_def.get("primary", []) as Array
 	var secondary := class_def.get("secondary", []) as Array
 	var hit_die := int(class_def.get("hit_die", 8))
@@ -63,26 +64,26 @@ static func build_base_stats_from_class_def(class_def: Dictionary) -> Dictionary
 	elif hit_die <= 6:
 		out["magie"] = int(out.get("magie", 8)) + 1
 
-	return StatDefs.sanitize_stats(
+	return StatDefsClass.sanitize_stats(
 		out,
-		StatDefs.CHARACTER_MIN_STAT,
-		StatDefs.CHARACTER_MAX_STAT,
-		StatDefs.CHARACTER_MIN_STAT
+		StatDefsClass.CHARACTER_MIN_STAT,
+		StatDefsClass.CHARACTER_MAX_STAT,
+		StatDefsClass.CHARACTER_MIN_STAT
 	)
 
 
 static func apply_point_buy_for_class(classe_id: String, target_points: int) -> Dictionary:
-	var stats := StatDefs.make_default_stats(StatDefs.CHARACTER_MIN_STAT)
+	var stats: Dictionary = StatDefsClass.make_default_stats(StatDefsClass.CHARACTER_MIN_STAT)
 	var points_restants := target_points
 	var classes := _get_classes()
 	if classes.has(classe_id) and classes[classe_id] is Dictionary:
 		var class_def := classes[classe_id] as Dictionary
 		var base_stats := resolve_base_stats_for_class(class_def)
-		stats = StatDefs.sanitize_stats(
+		stats = StatDefsClass.sanitize_stats(
 			base_stats,
-			StatDefs.CHARACTER_MIN_STAT,
-			StatDefs.CHARACTER_MAX_STAT,
-			StatDefs.CHARACTER_MIN_STAT
+			StatDefsClass.CHARACTER_MIN_STAT,
+			StatDefsClass.CHARACTER_MAX_STAT,
+			StatDefsClass.CHARACTER_MIN_STAT
 		)
 		return {
 			"stats": stats,
@@ -119,8 +120,8 @@ static func build_complete_sheet(classe_choisie: String, fiche_stats: Dictionary
 		pv_base = 10
 
 	var points_spent := 0
-	for k in StatDefs.STAT_KEYS:
-		points_spent += max(0, int(fiche_stats.get(k, StatDefs.CHARACTER_MIN_STAT)) - StatDefs.CHARACTER_MIN_STAT)
+	for k in StatDefsClass.STAT_KEYS:
+		points_spent += max(0, int(fiche_stats.get(k, StatDefsClass.CHARACTER_MIN_STAT)) - StatDefsClass.CHARACTER_MIN_STAT)
 	var points_pool_total := points_spent + fiche_points_restants
 
 	return {
@@ -215,26 +216,26 @@ static func stat_upgrade_cost_preview(_current_value: int) -> int:
 static func get_creation_class_score_bonus(classe_id: String) -> Dictionary:
 	# Les valeurs de départ des classes sont des bonus de score externes au point-buy.
 	# Elles ne doivent donc jamais être comptées parmi les points investis par le joueur.
-	var out := StatDefs.make_default_stats(0)
+	var out: Dictionary = StatDefsClass.make_default_stats(0)
 	var classes := _get_classes()
 	if not classes.has(classe_id) or not classes[classe_id] is Dictionary:
 		return out
 	var class_base := resolve_base_stats_for_class(classes[classe_id] as Dictionary)
-	for key in StatDefs.STAT_KEYS:
-		out[key] = int(class_base.get(key, StatDefs.CHARACTER_MIN_STAT)) - StatDefs.CHARACTER_MIN_STAT
+	for key in StatDefsClass.STAT_KEYS:
+		out[key] = int(class_base.get(key, StatDefsClass.CHARACTER_MIN_STAT)) - StatDefsClass.CHARACTER_MIN_STAT
 	return out
 
 
 static func compute_creation_display_stats(classe_id: String, purchased_stats: Dictionary) -> Dictionary:
-	var out := StatDefs.sanitize_stats(
+	var out: Dictionary = StatDefsClass.sanitize_stats(
 		purchased_stats,
-		StatDefs.CHARACTER_MIN_STAT,
-		StatDefs.CHARACTER_MAX_STAT,
-		StatDefs.CHARACTER_MIN_STAT
+		StatDefsClass.CHARACTER_MIN_STAT,
+		StatDefsClass.CHARACTER_MAX_STAT,
+		StatDefsClass.CHARACTER_MIN_STAT
 	)
 	var class_bonus := get_creation_class_score_bonus(classe_id)
-	for key in StatDefs.STAT_KEYS:
-		out[key] = int(out.get(key, StatDefs.CHARACTER_MIN_STAT)) + int(class_bonus.get(key, 0))
+	for key in StatDefsClass.STAT_KEYS:
+		out[key] = int(out.get(key, StatDefsClass.CHARACTER_MIN_STAT)) + int(class_bonus.get(key, 0))
 	return out
 
 
@@ -299,18 +300,54 @@ static func compute_final_stats_for_creation(
 	feats_defs: Dictionary,
 	selected_feats: Array
 ) -> Dictionary:
-	var feats_bonus := compute_feats_bonus(
-		feats_defs,
-		classe_data.get("competences", []) as Array,
-		selected_feats
-	)
-	return CharacterBuildService.compute_final_stats(
-		classe_data.get("stats_bonus", {}) as Dictionary,
+	return (build_character_result_for_creation(
+		classe_data,
 		raw_stats,
+		competence_id,
+		archetype_label,
+		feats_defs,
+		selected_feats
+	).get("character_scores", {}) as Dictionary)
+
+
+static func build_character_result_for_creation(
+	classe_data: Dictionary,
+	purchased_scores: Dictionary,
+	competence_id: String,
+	archetype_label: String,
+	feats_defs: Dictionary,
+	selected_feats: Array
+) -> Dictionary:
+	var permanent_bonuses: Dictionary = StatDefsClass.make_default_stats(0)
+	for source in [
 		competence_bonus(competence_id),
 		archetype_bonus(archetype_label),
-		feats_bonus
+		compute_feats_bonus(feats_defs, [], selected_feats),
+	]:
+		permanent_bonuses = StatDefsClass.merge_stats(permanent_bonuses, source as Dictionary)
+	var sanitized_scores: Dictionary = StatDefsClass.sanitize_stats(
+		purchased_scores,
+		StatDefsClass.CHARACTER_MIN_STAT,
+		StatDefsClass.CHARACTER_MAX_STAT,
+		StatDefsClass.CHARACTER_MIN_STAT
 	)
+	var class_bonuses: Dictionary = classe_data.get("stats_bonus", {}) as Dictionary
+	var character_scores: Dictionary = sanitized_scores.duplicate(true)
+	for key in StatDefsClass.STAT_KEYS:
+		character_scores[key] = clampi(
+			int(sanitized_scores[key]) + int(class_bonuses.get(key, 0)) + int(permanent_bonuses.get(key, 0)),
+			1,
+			30
+		)
+	var modifiers: Dictionary = CharacterBuildServiceClass.build_modifiers(character_scores)
+	return {
+		"purchased_scores": sanitized_scores,
+		"class_bonuses": class_bonuses.duplicate(true),
+		"permanent_bonuses": permanent_bonuses,
+		"character_scores": character_scores,
+		"modifiers": modifiers,
+		"derived_stats": CharacterBuildServiceClass.build_derived_stats(modifiers),
+	}
 
 
 static func _accumulate_feat_stats_bonus(destination: Dictionary, feats_defs: Dictionary, feat_id: String) -> void:

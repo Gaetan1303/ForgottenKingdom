@@ -3,6 +3,7 @@ extends Control
 const FallenUI = preload("res://scripts/ui/fallen_ui.gd")
 
 const MODULAR_CREATION_SCENE := "res://scenes/character_creation/character_creation_screen.tscn"
+var _portrait_data: Dictionary = {}
 
 
 func _ready() -> void:
@@ -20,3 +21,18 @@ func _ready() -> void:
 		return
 	instance.name = "CharacterCreationModular"
 	add_child(instance)
+
+
+func _appliquer_portrait_depuis_chemin(path: String) -> void:
+	if not FileAccess.file_exists(path):
+		push_error("Portrait introuvable : %s" % path)
+		return
+	var image: Image = Image.load_from_file(path)
+	if image == null or image.is_empty():
+		push_error("Portrait illisible : %s" % path)
+		return
+	_portrait_data = {
+		"file_name": path.get_file(),
+		"image_path": path,
+		"image_base64": Marshalls.raw_to_base64(image.save_png_to_buffer()),
+	}

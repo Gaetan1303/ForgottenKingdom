@@ -2,7 +2,7 @@
 ## Singleton de sauvegarde — persiste la progression par slot dans user://slots/<slot>/.
 extends Node
 
-## Use global class_name JsonPersistenceService for persistence utilities.
+const JsonPersistenceServiceClass = preload("res://scripts/services/json_persistence_service.gd")
 
 const SLOTS_ROOT_PATH := "user://slots"
 const SLOTS_INDEX_PATH := "user://save_slots.json"
@@ -165,13 +165,17 @@ func visit_location(location_id: String) -> void:
 
 ## Sauvegarde la progression sur disque.
 func save() -> void:
-	_save_data["last_chapter"] = GameManager.current_chapter_id
-	_save_data["last_scene"] = GameManager.current_scene_index
+	var game_manager: Node = get_node_or_null("/root/GameManager")
+	if game_manager == null:
+		push_error("SaveSystem: autoload GameManager introuvable, sauvegarde annulée.")
+		return
+	_save_data["last_chapter"] = int(game_manager.get("current_chapter_id"))
+	_save_data["last_scene"] = int(game_manager.get("current_scene_index"))
 	_save_data["play_time_seconds"] += _play_timer
 	_play_timer = 0.0
 
 	_ensure_slot_directory(_active_slot_id)
-	if not JsonPersistenceService.write_json_atomic(get_progress_save_path(), _save_data, BAK_SUFFIX, TMP_SUFFIX):
+	if not JsonPersistenceServiceClass.write_json_atomic(get_progress_save_path(), _save_data, BAK_SUFFIX, TMP_SUFFIX):
 		push_error("SaveSystem: impossible d'écrire la progression du slot '%s'" % _active_slot_id)
 		return
 	_save_slots_index()
@@ -184,7 +188,7 @@ func load_save() -> void:
 	if not FileAccess.file_exists(save_path):
 		return  # Première partie, pas de sauvegarde
 
-	var parsed := JsonPersistenceService.read_json_with_backup(save_path, BAK_SUFFIX)
+	var parsed := JsonPersistenceServiceClass.read_json_with_backup(save_path, BAK_SUFFIX)
 	if not parsed.is_empty():
 		# Fusionne avec les valeurs par défaut pour compatibilité ascendante
 		for key in _save_data:
@@ -285,10 +289,10 @@ func _load_slots_index() -> void:
 
 func _save_slots_index() -> void:
 	_touch_slot_index(_active_slot_id)
-	if not JsonPersistenceService.write_json_atomic(SLOTS_INDEX_PATH, _slots_index, BAK_SUFFIX, TMP_SUFFIX):
+	if not JsonPersistenceServiceClass.write_json_atomic(SLOTS_INDEX_PATH, _slots_index, BAK_SUFFIX, TMP_SUFFIX):
 		push_error("SaveSystem: impossible d'écrire l'index des slots")
 		return
 
 
 func _read_json_dict(path: String) -> Dictionary:
-	return JsonPersistenceService.read_json_dict(path)
+	return JsonPersistenceServiceClass.read_json_dict(path)

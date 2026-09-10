@@ -2,7 +2,11 @@ extends SceneTree
 
 # Use global CharacterBuildService class_name from data scripts
 
-func _initialize() -> void:
+func _init() -> void:
+	call_deferred("_run")
+
+
+func _run() -> void:
 	var failures: Array = []
 	# Test: feats_bonus merged into base before modifiers
 	var class_bonus := {"force": 0, "magie": 0, "espionnage": 0, "artisanat": 0, "diplomatie": 0, "commandement": 0}
@@ -22,6 +26,7 @@ func _initialize() -> void:
 	if failures.size() == 0:
 		print("SMOKE_OK: feats_bonus")
 		quit(0)
+		return
 	for f in failures:
 		push_error("SMOKE_FAIL: %s" % f)
 	quit(1)

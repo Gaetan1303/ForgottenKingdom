@@ -1,7 +1,7 @@
 extends SceneTree
 
 const PlannerScript = preload("res://scripts/services/pnj_daily_planner_service.gd")
-const IntroVNScript = preload("res://scripts/ui/intro_vn.gd")
+const INTRO_VN_SCRIPT_PATH := "res://scripts/ui/intro_vn.gd"
 const ResourcePathResolver = preload("res://scripts/utils/resource_path_resolver.gd")
 
 const MENU_ICONS: Array[String] = [
@@ -12,7 +12,11 @@ const MENU_ICONS: Array[String] = [
     "res://assets/ui/icons/quit.png",
 ]
 
-func _initialize() -> void:
+func _init() -> void:
+    call_deferred("_run")
+
+
+func _run() -> void:
     var failures: Array[String] = []
 
     var planner = PlannerScript.new()
@@ -30,7 +34,8 @@ func _initialize() -> void:
         if int(profile.get("combativite", -1)) < 0:
             failures.append("combativité PNJ absente")
 
-    var intro = IntroVNScript.new()
+    var intro_script: GDScript = load(INTRO_VN_SCRIPT_PATH) as GDScript
+    var intro = intro_script.new() if intro_script != null else null
     if intro == null:
         failures.append("IntroVN non instanciable")
     else:

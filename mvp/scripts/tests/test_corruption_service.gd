@@ -12,6 +12,7 @@ func _init() -> void:
 
 func _run() -> void:
 	var failures: Array[String] = []
+	_test_stage_boundaries(failures)
 	var emitted := {"progress": 0, "completed": 0, "corrupted": 0}
 	var corruption := CorruptionServiceScript.new()
 	corruption.training_progress.connect(func(_id, _progress): emitted["progress"] += 1)
@@ -72,6 +73,31 @@ func _run() -> void:
 		_check((pacts.get_pacts_for_character("pnj_adulte")[0] as Dictionary).get("status") == "fulfilled", "pacte non accompli", failures)
 
 	_finish(failures)
+
+
+func _test_stage_boundaries(failures: Array[String]) -> void:
+	var cases: Array[Dictionary] = [
+		{"level": 0.0, "stage": Enums.CorruptionStage.PURE},
+		{"level": 19.9, "stage": Enums.CorruptionStage.PURE},
+		{"level": 20.0, "stage": Enums.CorruptionStage.TAINTED},
+		{"level": 39.9, "stage": Enums.CorruptionStage.TAINTED},
+		{"level": 40.0, "stage": Enums.CorruptionStage.BREAKING},
+		{"level": 59.9, "stage": Enums.CorruptionStage.BREAKING},
+		{"level": 60.0, "stage": Enums.CorruptionStage.SUBMISSIVE},
+		{"level": 79.9, "stage": Enums.CorruptionStage.SUBMISSIVE},
+		{"level": 80.0, "stage": Enums.CorruptionStage.CORRUPTED},
+		{"level": 94.9, "stage": Enums.CorruptionStage.CORRUPTED},
+		{"level": 95.0, "stage": Enums.CorruptionStage.LOST},
+		{"level": 100.0, "stage": Enums.CorruptionStage.LOST},
+	]
+	for test_case in cases:
+		var level: float = float(test_case["level"])
+		var expected_stage: int = int(test_case["stage"])
+		_check(
+			CorruptionServiceScript.level_to_stage(level) == expected_stage,
+			"palier de corruption incorrect pour %.1f" % level,
+			failures
+		)
 
 
 func _check(condition: bool, message: String, failures: Array[String]) -> void:

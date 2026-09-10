@@ -1,7 +1,7 @@
 extends Control
 const FallenUI = preload("res://scripts/ui/fallen_ui.gd")
 
-## Use global class_name DateTimeFormatter for formatting utilities.
+const DateTimeFormatterClass = preload("res://scripts/services/date_time_formatter.gd")
 
 var _slots: Array = []
 var _selected_slot_id: String = ""
@@ -69,7 +69,7 @@ func _render_summary(slot: Dictionary) -> void:
 		return
 
 	var updated_unix := int(slot.get("updated_at_unix", 0))
-	var updated_str := DateTimeFormatter.format_local_datetime(updated_unix)
+	var updated_str: String = DateTimeFormatterClass.format_local_datetime(updated_unix)
 	var display_slot_name := _slot_display_name(slot)
 
 	txt.text = "Nom du slot : %s\nClan : %s\nPersonnage : %s\nTour : %d\nChronique de Veyr : %d / scène %d\nTemps joué : %02dh%02d\nDernière sauvegarde : %s" % [

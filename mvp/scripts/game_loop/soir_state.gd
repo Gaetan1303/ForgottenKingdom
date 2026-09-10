@@ -1,4 +1,4 @@
-extends State
+extends "res://scripts/state_machine/state.gd"
 class_name SoirState
 
 func _init() -> void:

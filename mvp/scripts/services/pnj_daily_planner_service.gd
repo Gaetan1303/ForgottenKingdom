@@ -1,7 +1,7 @@
 extends RefCounted
 class_name PnjDailyPlannerService
 
-# rely on StatDefs class_name from data/stat_defs.gd
+const StatDefsClass = preload("res://scripts/data/stat_defs.gd")
 
 const ROOM_ORDER := ["combat_faible", "evenement_aleatoire", "repos", "boss"]
 const SOLDIER_ACTIONS := {
@@ -73,7 +73,7 @@ func make_pnj_profile(
 		"type": pnj_type,
 		"role": role,
 		"niveau": clampi(niveau, 1, 20),
-		"stats": StatDefs.sanitize_stats(stats, StatDefs.CHARACTER_MIN_STAT, StatDefs.CHARACTER_MAX_STAT, StatDefs.CHARACTER_MIN_STAT),
+		"stats": StatDefsClass.sanitize_stats(stats, StatDefsClass.CHARACTER_MIN_STAT, StatDefsClass.CHARACTER_MAX_STAT, StatDefsClass.CHARACTER_MIN_STAT),
 		"traits": traits.duplicate(true),
 		"combativite": combativite,
 		"temperament": temperament,
@@ -346,7 +346,7 @@ func compute_support_bonus(pnj: Dictionary, hero_action_id: String) -> int:
 	var stats: Dictionary = pnj.get("stats", {}) as Dictionary
 	var total := 0
 	for stat_name in weights:
-		total += int(stats.get(str(stat_name), StatDefs.CHARACTER_MIN_STAT))
+		total += int(stats.get(str(stat_name), StatDefsClass.CHARACTER_MIN_STAT))
 	var bonus := int(round(total / maxf(1.0, float(weights.size()) * 3.0)))
 	bonus += int(pnj.get("niveau", 1)) / 2
 	bonus += int((ROLE_BONUS.get(str(pnj.get("role", "")), {}) as Dictionary).get(hero_action_id, 0))
@@ -445,7 +445,7 @@ func _get_primary_expedition_stat(pnj: Dictionary) -> String:
 	var best_stat := "force"
 	var best_value := -1
 	for stat_name in candidates:
-		var value := int(stats.get(stat_name, StatDefs.CHARACTER_MIN_STAT))
+		var value: int = int(stats.get(stat_name, StatDefsClass.CHARACTER_MIN_STAT))
 		if value > best_value:
 			best_value = value
 			best_stat = stat_name
@@ -454,4 +454,4 @@ func _get_primary_expedition_stat(pnj: Dictionary) -> String:
 
 func _room_roll(rng: RandomNumberGenerator, pnj: Dictionary, stat_name: String, dice_sides: int) -> int:
 	var stats: Dictionary = pnj.get("stats", {}) as Dictionary
-	return int(stats.get(stat_name, StatDefs.CHARACTER_MIN_STAT)) + int(pnj.get("niveau", 1)) + rng.randi_range(1, dice_sides)
+	return int(stats.get(stat_name, StatDefsClass.CHARACTER_MIN_STAT)) + int(pnj.get("niveau", 1)) + rng.randi_range(1, dice_sides)

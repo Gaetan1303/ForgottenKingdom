@@ -2,9 +2,8 @@ extends RefCounted
 class_name PnjGenerator
 
 const NameGeneratorServiceScript = preload("res://scripts/services/name_generator_service.gd")
-
-# rely on StatDefs class_name from data/stat_defs.gd
-## Rely on class_name PnjDailyPlannerService instead of preloading.
+const StatDefsClass = preload("res://scripts/data/stat_defs.gd")
+const PnjDailyPlannerServiceClass = preload("res://scripts/services/pnj_daily_planner_service.gd")
 
 var _rng := RandomNumberGenerator.new()
 var _names: RefCounted = NameGeneratorServiceScript.new()
@@ -26,7 +25,7 @@ func _choose_role(hint: String = "") -> String:
 
 
 func _stats_for_role(role: String, niveau: int) -> Dictionary:
-    var base := StatDefs.make_default_stats(StatDefs.CHARACTER_MIN_STAT)
+    var base: Dictionary = StatDefsClass.make_default_stats(StatDefsClass.CHARACTER_MIN_STAT)
     match role:
         "garde":
             base["force"] = 14
@@ -41,7 +40,7 @@ func _stats_for_role(role: String, niveau: int) -> Dictionary:
             base["magie"] = 12
             base["commandement"] = 10
         "villageois":
-            base = StatDefs.make_default_stats(10)
+            base = StatDefsClass.make_default_stats(10)
         "stratege":
             base["commandement"] = 15
             base["espionnage"] = 11
@@ -55,18 +54,18 @@ func _stats_for_role(role: String, niveau: int) -> Dictionary:
             base["diplomatie"] = 15
             base["commandement"] = 10
         _:
-            base = StatDefs.make_default_stats(StatDefs.CHARACTER_MIN_STAT)
+            base = StatDefsClass.make_default_stats(StatDefsClass.CHARACTER_MIN_STAT)
 
     # small random variation
-    for k in StatDefs.STAT_KEYS:
-        var v := int(base.get(k, StatDefs.CHARACTER_MIN_STAT))
+    for k in StatDefsClass.STAT_KEYS:
+        var v: int = int(base.get(k, StatDefsClass.CHARACTER_MIN_STAT))
         v += _rng.randi_range(-1, 2)
-        base[k] = clampi(v, StatDefs.CHARACTER_MIN_STAT, StatDefs.CHARACTER_MAX_STAT)
+        base[k] = clampi(v, StatDefsClass.CHARACTER_MIN_STAT, StatDefsClass.CHARACTER_MAX_STAT)
 
     # scale slightly with niveau
     if niveau > 1:
-        for k in StatDefs.STAT_KEYS:
-            base[k] = clampi(int(base[k]) + int(niveau / 2), StatDefs.CHARACTER_MIN_STAT, StatDefs.CHARACTER_MAX_STAT)
+        for k in StatDefsClass.STAT_KEYS:
+            base[k] = clampi(int(base[k]) + int(niveau / 2), StatDefsClass.CHARACTER_MIN_STAT, StatDefsClass.CHARACTER_MAX_STAT)
 
     return base
 
@@ -114,7 +113,7 @@ func generate_and_register_pnj(role_hint: String = "", pnj_type: String = "recru
     var behavior: Dictionary = _behavior_for_role(role)
 
     # 4. create profile via planner helper
-    var planner: RefCounted = PnjDailyPlannerService.new()
+    var planner: RefCounted = PnjDailyPlannerServiceClass.new()
     var profile: Dictionary = (planner as Object).make_pnj_profile(pnj_id, name, pnj_type, role, niveau, stats, traits)
     profile["equipment"] = equipment
     profile["behavior"] = behavior

@@ -1,7 +1,11 @@
 ## tests/test_xp_level.gd
 extends SceneTree
 
-func _initialize() -> void:
+func _init() -> void:
+	call_deferred("_run")
+
+
+func _run() -> void:
 	var clan_mgr := get_root().get_node("ClanManager")
 	assert(clan_mgr != null)
 	# Ensure fiches initialized

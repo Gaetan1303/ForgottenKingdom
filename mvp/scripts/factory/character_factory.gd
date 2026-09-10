@@ -5,11 +5,11 @@ extends RefCounted
 
 const CLASSES_PATH := "res://data/classes.json"
 const ClanIdentityType = preload("res://scripts/data/clan_identity.gd")
-# rely on StatDefs class_name from data/stat_defs.gd
+const StatDefsClass = preload("res://scripts/data/stat_defs.gd")
+const CharacterClass = preload("res://scripts/data/character.gd")
 
-func create_from_profile(profile: Dictionary) -> Character:
-    var CharacterClass = preload("res://scripts/data/character.gd")
-    var ch: Character = CharacterClass.new()
+func create_from_profile(profile: Dictionary) -> RefCounted:
+    var ch: RefCounted = CharacterClass.new()
     ch.name = str(profile.get("name", ""))
     ch.clan_name = str(profile.get("clan_name", profile.get("clan", "")))
     ch.clan = ch.clan_name
@@ -23,16 +23,18 @@ func create_from_profile(profile: Dictionary) -> Character:
     # Apply stats if provided
     var s := profile.get("stats_brutes", profile.get("stats", {})) as Dictionary
     if s.size() > 0:
-        ch.stats = StatDefs.sanitize_stats(
+        ch.stats = StatDefsClass.sanitize_stats(
             s,
-            StatDefs.CHARACTER_MIN_STAT,
-            StatDefs.CHARACTER_MAX_STAT,
-            StatDefs.CHARACTER_MIN_STAT
+            StatDefsClass.CHARACTER_MIN_STAT,
+            StatDefsClass.CHARACTER_MAX_STAT,
+            StatDefsClass.CHARACTER_MIN_STAT
         )
 
     # Add starting feats/abilities from centralized GameDataLoader
     var cid: String = ch.char_class
-    var cdef := GameDataLoader.get_class_by_id(cid)
+    var tree: SceneTree = Engine.get_main_loop() as SceneTree
+    var loader: Node = tree.root.get_node_or_null("GameDataLoader") if tree != null else null
+    var cdef: Dictionary = loader.get_class_by_id(cid) if loader != null else {}
     if not cdef.is_empty():
         for f in cdef.get("starting_feats", []):
             ch.add_feat(str(f))

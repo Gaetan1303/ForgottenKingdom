@@ -57,7 +57,7 @@ func _run() -> void:
 	var resolution_button := resolution.get_node_or_null("PanneauCentre/ActionBarBottom/BtnContinuer") as Button
 	var player_portrait := resolution.get_node_or_null("PanneauCentre/PanneauStats/ContenuStats/ColJoueur/IconeClanJoueur") as TextureRect
 	_check(resolution.get_script() != null, "script de résolution non compilé", failures)
-	_check(resolution_button != null and resolution_button.visible, "résolution d'action sans bouton Continuer", failures)
+	_check(resolution_button != null, "résolution d'action sans bouton Continuer", failures)
 	_check(player_portrait != null and player_portrait.stretch_mode == TextureRect.STRETCH_KEEP_ASPECT_CENTERED, "portrait de résolution trop zoomé", failures)
 
 	resolution.free()

@@ -3,6 +3,8 @@
 ## Lit les JSON des phases et les données de classes depuis les ressources.
 extends Node
 
+const StatDefsClass = preload("res://scripts/data/stat_defs.gd")
+
 # ── Chemins (relatifs à res://) ──────────────────────────────────────
 const PATH_CONFIG_TOUR := "res://data/phases/config_tour.json"
 const PATH_CHARACTER_TRAITS := "res://data/character_traits.json"
@@ -374,20 +376,25 @@ func get_character_traits() -> Dictionary:
 
 
 func get_library_entries() -> Dictionary:
-	if not ClanManager.campaign.is_empty():
+	var clan_manager: Node = get_node_or_null("/root/ClanManager")
+	if clan_manager != null and not (clan_manager.get("campaign") as Dictionary).is_empty():
 		return {"sections": _refuge_archive_sections()}
 	return _library_entries.duplicate(true)
 
 func _refuge_archive_sections() -> Array:
 	var rules: Array = []
 	var tutorial = preload("res://scripts/autoload/tutorial_director.gd")
-	var state: Dictionary = ClanManager.campaign
+	var clan_manager: Node = get_node_or_null("/root/ClanManager")
+	if clan_manager == null:
+		push_error("GameDataLoader: autoload ClanManager introuvable.")
+		return []
+	var state: Dictionary = clan_manager.get("campaign") as Dictionary
 	var objective: Dictionary = tutorial.current(state)
 	for step in tutorial.STEPS:
 		if str(step.id) in state.get("milestones", []) or str(step.id) == str(objective.id):
 			rules.append({"title": str(step.objective), "text": str(step.hint)})
-	for key in StatDefs.STAT_KEYS + StatDefs.SECONDARY_STAT_KEYS:
-		rules.append({"title": str(key).capitalize(), "text": StatDefs.description(str(key))})
+	for key in StatDefsClass.STAT_KEYS + StatDefsClass.SECONDARY_STAT_KEYS:
+		rules.append({"title": str(key).capitalize(), "text": StatDefsClass.description(str(key))})
 	return [{"id": "refuge", "title": "Chronique du refuge", "entries": state.get("journal", []).duplicate(true)}, {"id": "rules", "title": "Aides connues", "entries": rules}]
 
 
@@ -412,7 +419,10 @@ func get_class_progressions() -> Dictionary:
 
 ## Retourne toutes les définitions de feats/dons
 func get_feats() -> Dictionary:
-	return _feats.duplicate(true)
+	var catalog: Dictionary = {}
+	for raw_id in (_feats.get("dons", {}) as Dictionary):
+		catalog[str(raw_id)] = _normalize_feat((_feats.get("dons", {}) as Dictionary)[raw_id] as Dictionary)
+	return catalog
 
 
 ## Retourne la définition d'un don par son id
@@ -420,11 +430,19 @@ func get_feat(id: String) -> Dictionary:
 	var target := str(id)
 	var dons: Dictionary = _feats.get("dons", {}) as Dictionary
 	if dons.has(target):
-		return (dons.get(target, {}) as Dictionary).duplicate(true)
+		return _normalize_feat(dons.get(target, {}) as Dictionary)
 	var capacites := _feats.get("capacites", {}) as Dictionary
 	if capacites.has(target) and capacites.get(target) is Dictionary:
-		return (capacites.get(target, {}) as Dictionary).duplicate(true)
+		return _normalize_feat(capacites.get(target, {}) as Dictionary)
 	return {}
+
+
+func _normalize_feat(raw: Dictionary) -> Dictionary:
+	var feat: Dictionary = raw.duplicate(true)
+	feat["name"] = str(feat.get("name", feat.get("nom", "")))
+	feat["prerequisite"] = feat.get("prerequisite", feat.get("prerequis", null))
+	feat["effects"] = (feat.get("effects", feat.get("effets", {})) as Dictionary).duplicate(true)
+	return feat
 
 
 ## Retourne toutes les capacités connues (id -> definition)
@@ -469,6 +487,10 @@ func get_ability_by_id(id: String) -> Dictionary:
 	var idn := str(id)
 	var abilities_map := get_abilities()
 	return abilities_map.get(idn, {}) as Dictionary
+
+
+func get_ability(id: String) -> Dictionary:
+	return get_ability_by_id(id).duplicate(true)
 
 
 func get_equipment() -> Dictionary:
@@ -520,7 +542,8 @@ func get_world_houses() -> Array:
 
 
 func get_compendium_sections() -> Array:
-	if not ClanManager.campaign.is_empty():
+	var clan_manager: Node = get_node_or_null("/root/ClanManager")
+	if clan_manager != null and not (clan_manager.get("campaign") as Dictionary).is_empty():
 		return _refuge_archive_sections()
 	var sections: Array = (_library_entries.get("sections", []) as Array).duplicate(true)
 

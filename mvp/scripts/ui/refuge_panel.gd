@@ -213,7 +213,7 @@ func _build_corruption() -> void:
 	_label(box, "L’exposition laisse une trace. Kael prépare de quoi retrouver votre équilibre ; cela ne déverrouille pas l’Architecture de l’Âme.")
 	for person in people:
 		var id := str(person.id)
-		var level := service.get_corruption_level(id)
+		var level: float = service.get_corruption_level(id)
 		var label := _label(box, "%s · %.1f / 100 · %s" % [person.nom, level, service.stage_display_name(service.get_corruption_stage(id))])
 		label.tooltip_text = service.expedition_description(id)
 		preload("res://scripts/ui/components/keyboard_tooltip.gd").bind(label)

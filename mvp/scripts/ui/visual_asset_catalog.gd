@@ -16,6 +16,7 @@ const PERSON_ASSETS := {
 
 const FAMILY_ASSETS := {
     "mother": "res://assets/images/clan/mère/Okasa-sama (6).png",
+    "father_alone": "res://assets/images/clan/Pere et fils/Ottosama_00002_.png",
     "mother_with_son": "res://assets/images/clan/mère/Mèreetfils.png",
     "father_with_daughter": "res://assets/images/clan/Pere et fille/Ottosama_00026_.png",
     "father_with_son": "res://assets/images/clan/Pere et fils/Ottosama_00003_.png",
@@ -37,6 +38,8 @@ const RESOURCE_ICONS := {
     "bois": "res://assets/icon/wood.png",
     "fer": "res://assets/icon/iron.png",
     "essence": "res://assets/icon/essence.png",
+    "reputation": "res://assets/icon/reputation.png",
+    "pierre": "res://assets/icon/stone.png",
 }
 
 const RESOURCE_LABELS := {
@@ -76,6 +79,23 @@ static func family_mother_path() -> String:
     if not direct.is_empty():
         return direct
     return find_semantic_asset_recursive(FAMILY_DIRECTORY, ["mère", "mere", "okasa"])
+
+static func resolve_family_portrait(role: String, player_genre: String) -> String:
+    match role.strip_edges().to_lower():
+        "mother":
+            return family_mother_path()
+        "father_alone":
+            var direct: String = _existing_family_asset("father_alone")
+            if not direct.is_empty():
+                return direct
+            return find_semantic_asset_recursive(FAMILY_DIRECTORY, ["ottosama 00002", "père seul", "pere seul"])
+        "father":
+            return father_with_child_path(player_genre)
+        "child":
+            return heir_child_path(player_genre)
+        _:
+            push_warning("Rôle de portrait familial inconnu : %s" % role)
+            return ""
 
 ## Mapping preserved exactly from the project owner's family-asset convention.
 ## Homme -> « Pere et fille » ; otherwise -> « Pere et fils ».

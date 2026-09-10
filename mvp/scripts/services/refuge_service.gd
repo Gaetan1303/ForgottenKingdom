@@ -1,6 +1,8 @@
 ## Règles permanentes du refuge. État exclusivement détenu et sauvegardé par ClanManager.
 extends RefCounted
 
+const PnjDailyPlannerServiceClass = preload("res://scripts/services/pnj_daily_planner_service.gd")
+
 const BUILDINGS := {
 	"granary": {"name": "Grenier", "cost": {"bois": 6}, "production": {"nourriture": 4}, "benefit": "+4 nourriture par journée", "requires": ""},
 	"walls": {"name": "Palissade", "cost": {"pierre": 6}, "production": {"reputation": 1}, "benefit": "+1 réputation par journée", "requires": ""},
@@ -66,7 +68,7 @@ static func repair(cm: Node, id: String, person_id: String) -> String:
 	var assigned: Dictionary = cm.assigner_pnj_support_journee(person_id, "fortifier")
 	if not bool(assigned.get("ok", false)):
 		return "Cette personne est déjà affectée."
-	var support := PnjDailyPlannerService.new().compute_support_bonus(person, "fortifier")
+	var support: int = PnjDailyPlannerServiceClass.new().compute_support_bonus(person, "fortifier")
 	cm.payer(BUILDINGS[id].cost)
 	cm.marquer_action_utilisee()
 	var buildings: Dictionary = cm.campaign.get("buildings", {})

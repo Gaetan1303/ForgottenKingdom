@@ -1,17 +1,21 @@
-extends Node
+extends SceneTree
 
-func _ready() -> void:
+func _init() -> void:
+    call_deferred("_run")
+
+
+func _run() -> void:
     push_warning("SCENE_PARSING_START")
     var gm_path := "res://scripts/autoload/game_manager.gd"
     if not FileAccess.file_exists(gm_path):
         push_error("game_manager.gd not found at %s" % gm_path)
-        get_tree().quit(2)
+        quit(2)
         return
 
     var f := FileAccess.open(gm_path, FileAccess.READ)
     if f == null:
         push_error("Cannot open %s" % gm_path)
-        get_tree().quit(2)
+        quit(2)
         return
 
     var content := f.get_as_text()
@@ -22,7 +26,7 @@ func _ready() -> void:
     var err := re.compile('res://scenes/[^" ]+\\.tscn')
     if err != OK:
         push_error("Failed to compile regex")
-        get_tree().quit(2)
+        quit(2)
         return
 
     var matches := re.search_all(content)
@@ -52,11 +56,11 @@ func _ready() -> void:
 
     if missing.is_empty() and failed.is_empty():
         print("SCENE_PARSING_OK")
-        get_tree().quit(0)
+        quit(0)
         return
 
     if not missing.is_empty():
         print("SCENE_PARSING_MISSING: %s" % missing)
     if not failed.is_empty():
         print("SCENE_PARSING_FAILED: %s" % failed)
-    get_tree().quit(1)
+    quit(1)

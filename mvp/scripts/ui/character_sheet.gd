@@ -472,10 +472,11 @@ func _update_ui() -> void:
 	else:
 		stats_dict = StatDefsClass.make_default_stats(StatDefsClass.CHARACTER_MIN_STAT)
 
-	_points_label.text = CharacterCreationRules.build_points_summary(
-		_character.points_remaining(),
-		_character.points_spent()
-	)
+	if _points_label != null:
+		_points_label.text = CharacterCreationRules.build_points_summary(
+			_character.points_remaining(),
+			_character.points_spent()
+		)
 	for stat in _stat_keys:
 		var key: String = str(stat)
 		var val: int = int(stats_dict.get(key, StatDefsClass.CHARACTER_MIN_STAT))
@@ -486,7 +487,7 @@ func _update_ui() -> void:
 
 	# Compute feats bonuses (flat stat changes and other effects)
 	var feats_bonus = _compute_feats_bonus()
-	var clan_mgr = get_node_or_null("/root/ClanManager")
+	var clan_mgr: Node = get_node_or_null("/root/ClanManager") if is_inside_tree() else null
 	var ame_pct = 100
 	if clan_mgr != null:
 		ame_pct = int(clan_mgr.barre_ame)

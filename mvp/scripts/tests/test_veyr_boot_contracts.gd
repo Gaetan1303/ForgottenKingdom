@@ -28,8 +28,8 @@ func _test_game_data_loader_contracts() -> void:
 		_failures.append("Character traits non chargés")
 	if classes.size() != 14:
 		_failures.append("14 classes attendues, trouvé: %d" % classes.size())
-	if not feats.has("dons"):
-		_failures.append("feats.json doit exposer la clé 'dons'")
+	if not feats.has("robustesse") or feats.has("dons"):
+		_failures.append("get_feats doit exposer directement les dons par ID")
 	if abilities.is_empty():
 		_failures.append("Capacités non chargées")
 
