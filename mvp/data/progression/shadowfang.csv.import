@@ -1,17 +1,7 @@
 [remap]
 
-importer="csv_translation"
-type="Translation"
-uid="uid://ga5npo4prw6e"
+importer="keep"
 
 [deps]
 
-files=["res://data/progression/shadowfang.Force.translation", "res://data/progression/shadowfang.Magie.translation", "res://data/progression/shadowfang.Espionnage.translation", "res://data/progression/shadowfang.Artisanat.translation", "res://data/progression/shadowfang.Diplomatie.translation", "res://data/progression/shadowfang.Commandement.translation", "res://data/progression/shadowfang.Attaque.translation", "res://data/progression/shadowfang.Défense.translation", "res://data/progression/shadowfang.Résistance.translation", "res://data/progression/shadowfang.Initiative.translation", "res://data/progression/shadowfang.Jet de Vigueur.translation", "res://data/progression/shadowfang.Jet de Volonté.translation", "res://data/progression/shadowfang.Jet de Réflexes.translation", "res://data/progression/shadowfang.Nouveaux Talents.translation", "res://data/progression/shadowfang.Lore.translation"]
-
-source_file="res://data/progression/shadowfang.csv"
-dest_files=["res://data/progression/shadowfang.Force.translation", "res://data/progression/shadowfang.Magie.translation", "res://data/progression/shadowfang.Espionnage.translation", "res://data/progression/shadowfang.Artisanat.translation", "res://data/progression/shadowfang.Diplomatie.translation", "res://data/progression/shadowfang.Commandement.translation", "res://data/progression/shadowfang.Attaque.translation", "res://data/progression/shadowfang.Défense.translation", "res://data/progression/shadowfang.Résistance.translation", "res://data/progression/shadowfang.Initiative.translation", "res://data/progression/shadowfang.Jet de Vigueur.translation", "res://data/progression/shadowfang.Jet de Volonté.translation", "res://data/progression/shadowfang.Jet de Réflexes.translation", "res://data/progression/shadowfang.Nouveaux Talents.translation", "res://data/progression/shadowfang.Lore.translation"]
-
 [params]
-
-compress=1
-delimiter=0

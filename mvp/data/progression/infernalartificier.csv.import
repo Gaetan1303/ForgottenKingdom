@@ -1,17 +1,7 @@
 [remap]
 
-importer="csv_translation"
-type="Translation"
-uid="uid://crbtig7nq6gfp"
+importer="keep"
 
 [deps]
 
-files=["res://data/progression/infernalartificier.Force.translation", "res://data/progression/infernalartificier.Magie.translation", "res://data/progression/infernalartificier.Espionnage.translation", "res://data/progression/infernalartificier.Artisanat.translation", "res://data/progression/infernalartificier.Diplomatie.translation", "res://data/progression/infernalartificier.Commandement.translation", "res://data/progression/infernalartificier.Attaque.translation", "res://data/progression/infernalartificier.Défense.translation", "res://data/progression/infernalartificier.Résistance.translation", "res://data/progression/infernalartificier.Initiative.translation", "res://data/progression/infernalartificier.Jet de Vigueur.translation", "res://data/progression/infernalartificier.Jet de Volonté.translation", "res://data/progression/infernalartificier.Jet de Réflexes.translation", "res://data/progression/infernalartificier.Nouveaux Talents.translation", "res://data/progression/infernalartificier.Lore.translation"]
-
-source_file="res://data/progression/infernalartificier.csv"
-dest_files=["res://data/progression/infernalartificier.Force.translation", "res://data/progression/infernalartificier.Magie.translation", "res://data/progression/infernalartificier.Espionnage.translation", "res://data/progression/infernalartificier.Artisanat.translation", "res://data/progression/infernalartificier.Diplomatie.translation", "res://data/progression/infernalartificier.Commandement.translation", "res://data/progression/infernalartificier.Attaque.translation", "res://data/progression/infernalartificier.Défense.translation", "res://data/progression/infernalartificier.Résistance.translation", "res://data/progression/infernalartificier.Initiative.translation", "res://data/progression/infernalartificier.Jet de Vigueur.translation", "res://data/progression/infernalartificier.Jet de Volonté.translation", "res://data/progression/infernalartificier.Jet de Réflexes.translation", "res://data/progression/infernalartificier.Nouveaux Talents.translation", "res://data/progression/infernalartificier.Lore.translation"]
-
 [params]
-
-compress=1
-delimiter=0

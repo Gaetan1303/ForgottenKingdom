@@ -7,13 +7,14 @@ const RESOURCE_KEYS := [
 	"bois", "fer", "pierre", "nourriture", "essence"
 ]
 const SOLDIERS_MAX := 600
+const DOMAIN_ROLES := ["forgeron", "alchimiste", "intendant", "arcaniste"]
 
 
-func sanitize(resources: Dictionary) -> Dictionary:
-	var result: Dictionary = {}
+func sanitize(resources: Dictionary, preserve_extra: bool = false, limit_soldiers: bool = true) -> Dictionary:
+	var result: Dictionary = resources.duplicate(true) if preserve_extra else {}
 	for key in RESOURCE_KEYS:
 		var value := maxi(0, int(resources.get(key, 0)))
-		if key == "soldats":
+		if key == "soldats" and limit_soldiers:
 			value = mini(value, SOLDIERS_MAX)
 		result[key] = value
 	return result
@@ -74,3 +75,88 @@ func apply_delta(resources: Dictionary, delta: Dictionary, reject_negative: bool
 
 func get_resource(resources: Dictionary, key: String, default_value: int = 0) -> int:
 	return int(resources.get(key, default_value))
+
+
+## Contrat historique : coûts signés autorisés, sans normaliser l'état lu.
+func can_pay(resources: Dictionary, cost: Dictionary) -> bool:
+	for key in cost:
+		if resources.get(key, 0) < int(cost[key]):
+			return false
+	return true
+
+
+## Débit sans précondition. Les IDs soldats sont appliqués par l'orchestrateur.
+func debit(resources: Dictionary, key: Variant, amount: int) -> void:
+	resources[key] = maxi(0, int(resources.get(key, 0)) - amount)
+
+
+## Delta signé historique ; une clé inconnue ne crée pas une nouvelle ressource.
+func credit(resources: Dictionary, key: Variant, amount: int) -> void:
+	if resources.has(key):
+		resources[key] = int(resources[key]) + amount
+
+
+func total_production(base: Dictionary, domain_sheets: Dictionary, affinities: Dictionary) -> Dictionary:
+	var total := base.duplicate(true)
+	for key in RESOURCE_KEYS:
+		if not total.has(key):
+			total[key] = 0
+	var bonus := domain_production(domain_sheets, affinities)
+	for key in bonus:
+		total[key] = int(total.get(key, 0)) + int(bonus[key])
+	return total
+
+
+func domain_production(fiches_domaine: Dictionary, affinites_pnj: Dictionary) -> Dictionary:
+	var bonus := {
+		"or": 0,
+		"mana": 0,
+		"fer": 0,
+		"essence": 0,
+		"bois": 0,
+		"pierre": 0,
+		"nourriture": 0,
+	}
+
+	for role in DOMAIN_ROLES:
+		if not fiches_domaine.has(role):
+			continue
+		var fiche := fiches_domaine[role] as Dictionary
+		if not bool(fiche.get("actif", false)):
+			continue
+
+		var niveau := clampi(int(fiche.get("niveau", 1)), 1, 20)
+		var affinite := clampi(int(fiche.get("affinite", int(affinites_pnj.get(role, 0)))), -100, 100)
+		var bonus_aff := maxi(0, affinite) / 25
+
+		match role:
+			"forgeron":
+				bonus["fer"] += niveau + bonus_aff
+				bonus["pierre"] += maxi(1, niveau / 3)
+			"alchimiste":
+				bonus["essence"] += maxi(1, niveau / 2) + bonus_aff
+				bonus["mana"] += maxi(1, niveau / 2)
+			"intendant":
+				bonus["or"] += 5 * niveau + (2 * bonus_aff)
+				bonus["nourriture"] += maxi(1, niveau / 2)
+			"arcaniste":
+				bonus["mana"] += 2 * niveau + bonus_aff
+				if niveau >= 5:
+					bonus["essence"] += 1
+
+	return bonus
+
+
+func action_cost(action_id: String, cout_base: Dictionary, traits: Dictionary, caps: Dictionary) -> Dictionary:
+	var cout := cout_base.duplicate(true)
+
+	var mana_reduc_pct := clampi(int(traits.get("mana_cost_reduction_pct", 0)), 0, int(caps.get("mana_cost_reduction_pct", 35)))
+	if mana_reduc_pct > 0 and cout.has("mana"):
+		if action_id in ["recruter", "recruter_pnj", "recuperer"]:
+			cout["mana"] = maxi(0, int(round(int(cout["mana"]) * (100 - mana_reduc_pct) / 100.0)))
+
+	var soldats_reduc_atk := clampi(int(traits.get("soldats_cost_reduction_attaquer_pct", 0)), 0, int(caps.get("soldats_cost_reduction_attaquer_pct", 20)))
+	if soldats_reduc_atk > 0 and action_id == "attaquer" and cout.has("soldats"):
+		cout["soldats"] = maxi(0, int(round(int(cout["soldats"]) * (100 - soldats_reduc_atk) / 100.0)))
+
+	return cout

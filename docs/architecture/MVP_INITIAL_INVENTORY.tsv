@@ -1,0 +1,1222 @@
+path	bytes	category
+.github/workflows/deploy-pages.yml	1434	CI
+.github/workflows/godot-ci.yml	570	CI
+game/characters/affinites_pnj_initiales.json	2788	data
+game/characters/creation_personnage.yaml	10627	lore
+game/clan/etat_clan_defaut.json	5840	data
+game/events/evenements_jour_nuit.json	5762	data
+game/phases/config_tour.json	11085	data
+game/world/chevaliers_infernaux.yaml	16806	lore
+game/world/especes_demoniaques.yaml	27996	lore
+game/world/lore_monde.yaml	15291	lore
+game/world/nine_noble_houses.yaml	22185	lore
+mvp/README.md	1067	md
+mvp/assets/animations/kiss/character.png	208327	image
+mvp/assets/animations/kiss/character.png.import	784	import
+mvp/assets/animations/kiss/character_closedoneeye.png	200341	image
+mvp/assets/animations/kiss/character_closedoneeye.png.import	823	import
+mvp/assets/atlas/atlas_2048.import.json	212	data
+mvp/assets/atlas/atlas_2048.png	720114	image
+mvp/assets/atlas/atlas_2048.png.import	777	import
+mvp/assets/atlas/atlas_map.json	314	data
+mvp/assets/audio/LICENSE_CC0.txt	207	txt
+mvp/assets/audio/README.md	686	md
+mvp/assets/audio/ambience_short.ogg	11770	audio
+mvp/assets/audio/ambience_short.ogg.import	411	import
+mvp/assets/audio/ambience_short.wav	264644	audio
+mvp/assets/audio/ambience_short.wav.import	513	import
+mvp/assets/audio/click.ogg	4809	audio
+mvp/assets/audio/click.ogg.import	383	import
+mvp/assets/audio/click.wav	5336	audio
+mvp/assets/audio/click.wav.import	486	import
+mvp/assets/audio/footstep.ogg	4857	audio
+mvp/assets/audio/footstep.ogg.import	393	import
+mvp/assets/audio/footstep.wav	22094	audio
+mvp/assets/audio/footstep.wav.import	495	import
+mvp/assets/audio/music/8fbc5bf5-127b-47a2-b8b2-52ee410e00ca.mp3	960931	audio
+mvp/assets/audio/music/8fbc5bf5-127b-47a2-b8b2-52ee410e00ca.mp3.import	456	import
+mvp/assets/audio/music/D#U00e9chu.mp3	7645297	audio
+mvp/assets/audio/music/D#U00e9chu.mp3-df0f00852426ec81c2dd473e4a3f3cf4.md5	91	generated
+mvp/assets/audio/music/D#U00e9chu.mp3-df0f00852426ec81c2dd473e4a3f3cf4.mp3str	7645635	generated
+mvp/assets/audio/music/D#U00e9chu.mp3-e644f77d6cffee0f882f4da7120c40a9.md5	91	generated
+mvp/assets/audio/music/D#U00e9chu.mp3-e644f77d6cffee0f882f4da7120c40a9.mp3str	7645635	generated
+mvp/assets/audio/music/D#U00e9chu.mp3.import	378	import
+mvp/assets/audio/music/DemonBlade.csv-b165dea4cfb252ac702fcecf66c28bee.md5	91	generated
+mvp/assets/audio/music/Déchu.mp3	7645297	audio
+mvp/assets/audio/music/Déchu.mp3.import	366	import
+mvp/assets/audio/music/M#U00e8reetfils.png-2c3fed44712df6bd9d03c77d654128b1.ctex	1272968	generated
+mvp/assets/audio/music/M#U00e8reetfils.png-2c3fed44712df6bd9d03c77d654128b1.ctex.uid	20	uid
+mvp/assets/audio/music/M#U00e8reetfils.png-2c3fed44712df6bd9d03c77d654128b1.md5	91	generated
+mvp/assets/audio/music/Mèreetfils.png-577700951e045d7fabc8edeb34cf1295.ctex	1273370	generated
+mvp/assets/audio/music/Mèreetfils.png-577700951e045d7fabc8edeb34cf1295.ctex.uid	20	uid
+mvp/assets/audio/music/Mèreetfils.png-577700951e045d7fabc8edeb34cf1295.md5	91	generated
+mvp/assets/audio/music/Naissance.mp3	3514244	audio
+mvp/assets/audio/music/Naissance.mp3.import	375	import
+mvp/assets/audio/music/Naissance_2821500f.mp3	960931	audio
+mvp/assets/audio/music/Naissance_2821500f.mp3.import	402	import
+mvp/assets/audio/music/Naissance_6e25d9a5.mp3	2810401	audio
+mvp/assets/audio/music/Naissance_6e25d9a5.mp3.import	402	import
+mvp/assets/audio/music/Okasa-sama (6).png-17a23304e020185b2c6fa8ff7dc43b22.ctex	1307374	generated
+mvp/assets/audio/music/Okasa-sama (6).png-17a23304e020185b2c6fa8ff7dc43b22.ctex.uid	20	uid
+mvp/assets/audio/music/Okasa-sama (6).png-17a23304e020185b2c6fa8ff7dc43b22.md5	91	generated
+mvp/assets/audio/music/Okasa-sama (6).png-513497549be90216130691738f4bd299.ctex	1307508	generated
+mvp/assets/audio/music/Okasa-sama (6).png-513497549be90216130691738f4bd299.ctex.uid	19	uid
+mvp/assets/audio/music/Okasa-sama (6).png-513497549be90216130691738f4bd299.md5	91	generated
+mvp/assets/audio/music/Ottosama_00002_.png-9e75c3fee84f2a16610e31c86f189954.ctex	1397288	generated
+mvp/assets/audio/music/Ottosama_00002_.png-9e75c3fee84f2a16610e31c86f189954.ctex.uid	20	uid
+mvp/assets/audio/music/Ottosama_00002_.png-9e75c3fee84f2a16610e31c86f189954.md5	91	generated
+mvp/assets/audio/music/Ottosama_00003_.png-09069567ab1e897dd5418f1a224eb567.ctex	1290386	generated
+mvp/assets/audio/music/Ottosama_00003_.png-09069567ab1e897dd5418f1a224eb567.ctex.uid	20	uid
+mvp/assets/audio/music/Ottosama_00003_.png-09069567ab1e897dd5418f1a224eb567.md5	91	generated
+mvp/assets/audio/music/Ottosama_00026_.png-5f60cfb956d1d1c4e8308d3b8b5855ac.ctex	1211146	generated
+mvp/assets/audio/music/Ottosama_00026_.png-5f60cfb956d1d1c4e8308d3b8b5855ac.ctex.uid	20	uid
+mvp/assets/audio/music/Ottosama_00026_.png-5f60cfb956d1d1c4e8308d3b8b5855ac.md5	91	generated
+mvp/assets/audio/music/Ottosama_00028_.png-9183a728a90508db86101406a38901f9.ctex	1271164	generated
+mvp/assets/audio/music/Ottosama_00028_.png-9183a728a90508db86101406a38901f9.ctex.uid	20	uid
+mvp/assets/audio/music/Ottosama_00028_.png-9183a728a90508db86101406a38901f9.md5	91	generated
+mvp/assets/audio/music/README.md	87	md
+mvp/assets/audio/music/README_VEYR.md	284	md
+mvp/assets/audio/music/Serment d#U2019Ingrid.mp3	6059592	audio
+mvp/assets/audio/music/Serment d#U2019Ingrid.mp3-15280c3b83536738e43133b8d5c11a4e.md5	91	generated
+mvp/assets/audio/music/Serment d#U2019Ingrid.mp3-15280c3b83536738e43133b8d5c11a4e.mp3str	6059927	generated
+mvp/assets/audio/music/Serment d#U2019Ingrid.mp3-52f939ebe7b04587f3889b1287480b66.md5	91	generated
+mvp/assets/audio/music/Serment d#U2019Ingrid.mp3-52f939ebe7b04587f3889b1287480b66.mp3str	6059927	generated
+mvp/assets/audio/music/Serment d#U2019Ingrid.mp3.import	411	import
+mvp/assets/audio/music/Serment d’Ingrid.mp3	6059592	audio
+mvp/assets/audio/music/Serment d’Ingrid.mp3.import	402	import
+mvp/assets/audio/music/Serment_des_Cendres.mp3	6059592	audio
+mvp/assets/audio/music/Serment_des_Cendres.mp3-15280c3b83536738e43133b8d5c11a4e.md5	91	generated
+mvp/assets/audio/music/Serment_des_Cendres.mp3-15280c3b83536738e43133b8d5c11a4e.mp3str	6059927	generated
+mvp/assets/audio/music/Serment_des_Cendres.mp3-591d3664444715a3b9db3e58cf717ab0.md5	91	generated
+mvp/assets/audio/music/Serment_des_Cendres.mp3-591d3664444715a3b9db3e58cf717ab0.mp3str	6059927	generated
+mvp/assets/audio/music/Serment_des_Cendres.mp3.import	405	import
+mvp/assets/audio/music/abyss paladin.csv-1493cc8e31d71f4f936653c5ac10a99c.md5	91	generated
+mvp/assets/audio/music/abysspaladin.png-6e2263e5cc604edead87f713dee24a39.ctex	1337738	generated
+mvp/assets/audio/music/abysspaladin.png-6e2263e5cc604edead87f713dee24a39.ctex.uid	20	uid
+mvp/assets/audio/music/abysspaladin.png-6e2263e5cc604edead87f713dee24a39.md5	91	generated
+mvp/assets/audio/music/attack.png-282330332ddbb2f770fca446b32d0564.ctex	27826	generated
+mvp/assets/audio/music/attack.png-282330332ddbb2f770fca446b32d0564.ctex.uid	20	uid
+mvp/assets/audio/music/attack.png-282330332ddbb2f770fca446b32d0564.md5	91	generated
+mvp/assets/audio/music/audio.png-2ac36028a7de43ee50793d1794e5fc94.ctex	27110	generated
+mvp/assets/audio/music/audio.png-2ac36028a7de43ee50793d1794e5fc94.ctex.uid	20	uid
+mvp/assets/audio/music/audio.png-2ac36028a7de43ee50793d1794e5fc94.md5	91	generated
+mvp/assets/audio/music/back.png-b62d732550ef97418233e69fb5b72b8b.ctex	25742	generated
+mvp/assets/audio/music/back.png-b62d732550ef97418233e69fb5b72b8b.ctex.uid	20	uid
+mvp/assets/audio/music/back.png-b62d732550ef97418233e69fb5b72b8b.md5	91	generated
+mvp/assets/audio/music/berserkdemon.csv-066b4e121b82fddbfb52e2712026c2df.md5	91	generated
+mvp/assets/audio/music/berserkdemon.png-3b3cd9b8808fefffc3bdb344a5ac25bd.ctex	1202204	generated
+mvp/assets/audio/music/berserkdemon.png-3b3cd9b8808fefffc3bdb344a5ac25bd.ctex.uid	20	uid
+mvp/assets/audio/music/berserkdemon.png-3b3cd9b8808fefffc3bdb344a5ac25bd.md5	91	generated
+mvp/assets/audio/music/bloodsorcerer.csv-152100d5ba3790584f13e69d88b3bc04.md5	91	generated
+mvp/assets/audio/music/bloodsorcerer.png-c6ad4f25bcdbca8937602236a3b49a04.ctex	1092574	generated
+mvp/assets/audio/music/bloodsorcerer.png-c6ad4f25bcdbca8937602236a3b49a04.ctex.uid	20	uid
+mvp/assets/audio/music/bloodsorcerer.png-c6ad4f25bcdbca8937602236a3b49a04.md5	91	generated
+mvp/assets/audio/music/boy (1).png-ac942d0e7ba3b27948e656d88fbc1648.ctex	1161908	generated
+mvp/assets/audio/music/boy (1).png-ac942d0e7ba3b27948e656d88fbc1648.ctex.uid	19	uid
+mvp/assets/audio/music/boy (1).png-ac942d0e7ba3b27948e656d88fbc1648.md5	91	generated
+mvp/assets/audio/music/boy.png-9654478fda34adcbede0f44fe136b47f.ctex	1194194	generated
+mvp/assets/audio/music/boy.png-9654478fda34adcbede0f44fe136b47f.ctex.uid	20	uid
+mvp/assets/audio/music/boy.png-9654478fda34adcbede0f44fe136b47f.md5	91	generated
+mvp/assets/audio/music/ceres_1024.webp-4a97b2e3ec2d1b4f5e238c036ad72bae.ctex	528588	generated
+mvp/assets/audio/music/ceres_1024.webp-4a97b2e3ec2d1b4f5e238c036ad72bae.ctex.uid	19	uid
+mvp/assets/audio/music/ceres_1024.webp-4a97b2e3ec2d1b4f5e238c036ad72bae.md5	91	generated
+mvp/assets/audio/music/chest.png-240afbe3dd01f16a59474bfd989a961a.ctex	26188	generated
+mvp/assets/audio/music/chest.png-240afbe3dd01f16a59474bfd989a961a.ctex.uid	19	uid
+mvp/assets/audio/music/chest.png-240afbe3dd01f16a59474bfd989a961a.md5	91	generated
+mvp/assets/audio/music/continue.png-867a8761ad6477b0e32d3f48b7f04e57.ctex	30694	generated
+mvp/assets/audio/music/continue.png-867a8761ad6477b0e32d3f48b7f04e57.ctex.uid	20	uid
+mvp/assets/audio/music/continue.png-867a8761ad6477b0e32d3f48b7f04e57.md5	91	generated
+mvp/assets/audio/music/defaut.png-0e119fedd5aa5f4d69dd155a4bb7b459.ctex	1331130	generated
+mvp/assets/audio/music/defaut.png-0e119fedd5aa5f4d69dd155a4bb7b459.ctex.uid	20	uid
+mvp/assets/audio/music/defaut.png-0e119fedd5aa5f4d69dd155a4bb7b459.md5	91	generated
+mvp/assets/audio/music/demonblade.png-08ddd3543831e2dd4940f081f8b9b735.ctex	1149920	generated
+mvp/assets/audio/music/demonblade.png-08ddd3543831e2dd4940f081f8b9b735.ctex.uid	20	uid
+mvp/assets/audio/music/demonblade.png-08ddd3543831e2dd4940f081f8b9b735.md5	91	generated
+mvp/assets/audio/music/diplomacy.png-c738707a245b8b1cba6c7a8b5dfc56fc.ctex	27722	generated
+mvp/assets/audio/music/diplomacy.png-c738707a245b8b1cba6c7a8b5dfc56fc.ctex.uid	19	uid
+mvp/assets/audio/music/diplomacy.png-c738707a245b8b1cba6c7a8b5dfc56fc.md5	91	generated
+mvp/assets/audio/music/dungeon.png-0c36e102158183f178bfe7b8c31e714a.ctex	28682	generated
+mvp/assets/audio/music/dungeon.png-0c36e102158183f178bfe7b8c31e714a.ctex.uid	20	uid
+mvp/assets/audio/music/dungeon.png-0c36e102158183f178bfe7b8c31e714a.md5	91	generated
+mvp/assets/audio/music/echobard.csv-4215889dffa74dd978eb1be7d7480d29.md5	91	generated
+mvp/assets/audio/music/echobard.png-a274d934d0bdcf5d83b29f898096dddb.ctex	1180244	generated
+mvp/assets/audio/music/echobard.png-a274d934d0bdcf5d83b29f898096dddb.ctex.uid	20	uid
+mvp/assets/audio/music/echobard.png-a274d934d0bdcf5d83b29f898096dddb.md5	91	generated
+mvp/assets/audio/music/end_turn.png-b414fd3c7a74a6eec99dfba8e5e5e595.ctex	30448	generated
+mvp/assets/audio/music/end_turn.png-b414fd3c7a74a6eec99dfba8e5e5e595.ctex.uid	20	uid
+mvp/assets/audio/music/end_turn.png-b414fd3c7a74a6eec99dfba8e5e5e595.md5	91	generated
+mvp/assets/audio/music/female.png-e133fa6ed08b2d61379aeed197b26cfe.ctex	1084436	generated
+mvp/assets/audio/music/female.png-e133fa6ed08b2d61379aeed197b26cfe.ctex.uid	20	uid
+mvp/assets/audio/music/female.png-e133fa6ed08b2d61379aeed197b26cfe.md5	91	generated
+mvp/assets/audio/music/flame.png-ab5738fc4e93c7b6ba0b19c8640297c3.ctex	141368	generated
+mvp/assets/audio/music/flame.png-ab5738fc4e93c7b6ba0b19c8640297c3.ctex.uid	20	uid
+mvp/assets/audio/music/flame.png-ab5738fc4e93c7b6ba0b19c8640297c3.md5	91	generated
+mvp/assets/audio/music/fortify.png-54d83cdb09ec3f3b09a2662b46e951bf.ctex	26168	generated
+mvp/assets/audio/music/fortify.png-54d83cdb09ec3f3b09a2662b46e951bf.ctex.uid	20	uid
+mvp/assets/audio/music/fortify.png-54d83cdb09ec3f3b09a2662b46e951bf.md5	91	generated
+mvp/assets/audio/music/girl (1).png-58fe3972b2c8d18258992f502588ca04.ctex	1198924	generated
+mvp/assets/audio/music/girl (1).png-58fe3972b2c8d18258992f502588ca04.ctex.uid	20	uid
+mvp/assets/audio/music/girl (1).png-58fe3972b2c8d18258992f502588ca04.md5	91	generated
+mvp/assets/audio/music/girl (2).png-de08ed8eba8cb43ce087421bf64bbe6c.ctex	1203960	generated
+mvp/assets/audio/music/girl (2).png-de08ed8eba8cb43ce087421bf64bbe6c.ctex.uid	20	uid
+mvp/assets/audio/music/girl (2).png-de08ed8eba8cb43ce087421bf64bbe6c.md5	91	generated
+mvp/assets/audio/music/hell_knight_1024.webp-08a48f7ad3efbafad4b7ea30d0f03c29.ctex	820166	generated
+mvp/assets/audio/music/hell_knight_1024.webp-08a48f7ad3efbafad4b7ea30d0f03c29.ctex.uid	20	uid
+mvp/assets/audio/music/hell_knight_1024.webp-08a48f7ad3efbafad4b7ea30d0f03c29.md5	91	generated
+mvp/assets/audio/music/hellcaster.csv-3582fc4045d9f02dd779d36afd133e56.md5	91	generated
+mvp/assets/audio/music/hellcaster.png-0716b01ebf9e9326fa9c7671fc0dbd3c.ctex	1482430	generated
+mvp/assets/audio/music/hellcaster.png-0716b01ebf9e9326fa9c7671fc0dbd3c.ctex.uid	19	uid
+mvp/assets/audio/music/hellcaster.png-0716b01ebf9e9326fa9c7671fc0dbd3c.md5	91	generated
+mvp/assets/audio/music/hellranger.csv-ea20704e482b96ed12dbd22b26f51554.md5	91	generated
+mvp/assets/audio/music/hellranger.png-1ebb45a13f9c301526a86c0b97bc000f.ctex	911356	generated
+mvp/assets/audio/music/hellranger.png-1ebb45a13f9c301526a86c0b97bc000f.ctex.uid	20	uid
+mvp/assets/audio/music/hellranger.png-1ebb45a13f9c301526a86c0b97bc000f.md5	91	generated
+mvp/assets/audio/music/houses.png-cb9065fb09f6d3de77f565662f9dbdf3.ctex	28264	generated
+mvp/assets/audio/music/houses.png-cb9065fb09f6d3de77f565662f9dbdf3.ctex.uid	20	uid
+mvp/assets/audio/music/houses.png-cb9065fb09f6d3de77f565662f9dbdf3.md5	91	generated
+mvp/assets/audio/music/infernalartificer.png-355e5e3b01260ec9284c82e12fb373c9.ctex	1366382	generated
+mvp/assets/audio/music/infernalartificer.png-355e5e3b01260ec9284c82e12fb373c9.ctex.uid	19	uid
+mvp/assets/audio/music/infernalartificer.png-355e5e3b01260ec9284c82e12fb373c9.md5	91	generated
+mvp/assets/audio/music/infernalartificier.csv-b79036ed14a4c80da963dbe1e466753b.md5	91	generated
+mvp/assets/audio/music/library.png-ca848c33884d83bad6b7720a1d6505a9.ctex	26544	generated
+mvp/assets/audio/music/library.png-ca848c33884d83bad6b7720a1d6505a9.ctex.uid	19	uid
+mvp/assets/audio/music/library.png-ca848c33884d83bad6b7720a1d6505a9.md5	91	generated
+mvp/assets/audio/music/lore.png-a57dec891d99ddec1000d53f6d011707.ctex	26344	generated
+mvp/assets/audio/music/lore.png-a57dec891d99ddec1000d53f6d011707.ctex.uid	20	uid
+mvp/assets/audio/music/lore.png-a57dec891d99ddec1000d53f6d011707.md5	91	generated
+mvp/assets/audio/music/main_theme.ogg	123133	audio
+mvp/assets/audio/music/main_theme.ogg.import	405	import
+mvp/assets/audio/music/main_theme.wav	2469644	audio
+mvp/assets/audio/music/main_theme.wav.import	507	import
+mvp/assets/audio/music/mainmenu.mp3	5069471	audio
+mvp/assets/audio/music/mainmenu.mp3.import	372	import
+mvp/assets/audio/music/male.png-a77c5b0caa058007001002d75b8e8cdd.ctex	1073168	generated
+mvp/assets/audio/music/male.png-a77c5b0caa058007001002d75b8e8cdd.ctex.uid	20	uid
+mvp/assets/audio/music/male.png-a77c5b0caa058007001002d75b8e8cdd.md5	91	generated
+mvp/assets/audio/music/map.png-222ebca165f221062c05313f365dd453.ctex	27968	generated
+mvp/assets/audio/music/map.png-222ebca165f221062c05313f365dd453.ctex.uid	20	uid
+mvp/assets/audio/music/map.png-222ebca165f221062c05313f365dd453.md5	91	generated
+mvp/assets/audio/music/musique.md	1902	md
+mvp/assets/audio/music/new_game.png-a1e45cb5aaff021614b458b6f9f766b7.ctex	27060	generated
+mvp/assets/audio/music/new_game.png-a1e45cb5aaff021614b458b6f9f766b7.ctex.uid	19	uid
+mvp/assets/audio/music/new_game.png-a1e45cb5aaff021614b458b6f9f766b7.md5	91	generated
+mvp/assets/audio/music/next.png-8c9747a781650f7042a77caf9e48da90.ctex	25778	generated
+mvp/assets/audio/music/next.png-8c9747a781650f7042a77caf9e48da90.ctex.uid	20	uid
+mvp/assets/audio/music/next.png-8c9747a781650f7042a77caf9e48da90.md5	91	generated
+mvp/assets/audio/music/pactbound.csv-c74251f55f4a63727c6076a11519830d.md5	91	generated
+mvp/assets/audio/music/pactbound.png-b1fcbf83bc3f8476a14042f3abf0d13c.ctex	1182900	generated
+mvp/assets/audio/music/pactbound.png-b1fcbf83bc3f8476a14042f3abf0d13c.ctex.uid	19	uid
+mvp/assets/audio/music/pactbound.png-b1fcbf83bc3f8476a14042f3abf0d13c.md5	91	generated
+mvp/assets/audio/music/profile.png-396467a4a8f220a917d4f03197362219.ctex	29526	generated
+mvp/assets/audio/music/profile.png-396467a4a8f220a917d4f03197362219.ctex.uid	20	uid
+mvp/assets/audio/music/profile.png-396467a4a8f220a917d4f03197362219.md5	91	generated
+mvp/assets/audio/music/quit.png-5a00075c91bf77f4604c46ecad23faa7.ctex	29108	generated
+mvp/assets/audio/music/quit.png-5a00075c91bf77f4604c46ecad23faa7.ctex.uid	20	uid
+mvp/assets/audio/music/quit.png-5a00075c91bf77f4604c46ecad23faa7.md5	91	generated
+mvp/assets/audio/music/recruit.png-b5561cbe389362151bc08dcea78f5225.ctex	30768	generated
+mvp/assets/audio/music/recruit.png-b5561cbe389362151bc08dcea78f5225.ctex.uid	20	uid
+mvp/assets/audio/music/recruit.png-b5561cbe389362151bc08dcea78f5225.md5	91	generated
+mvp/assets/audio/music/renaissance-des-neuf-couronnes.mp3	5503939	audio
+mvp/assets/audio/music/renaissance-des-neuf-couronnes.mp3-107bea10516181eea7c8c820f9dd3c69.md5	91	generated
+mvp/assets/audio/music/renaissance-des-neuf-couronnes.mp3-107bea10516181eea7c8c820f9dd3c69.mp3str	5504275	generated
+mvp/assets/audio/music/renaissance-des-neuf-couronnes.mp3-c3cdb71191eedba1e227565c8b15cd7b.md5	91	generated
+mvp/assets/audio/music/renaissance-des-neuf-couronnes.mp3-c3cdb71191eedba1e227565c8b15cd7b.mp3str	5504275	generated
+mvp/assets/audio/music/renaissance-des-neuf-couronnes.mp3.import	438	import
+mvp/assets/audio/music/renaissance-des-neuf-nobles.mp3	5503939	audio
+mvp/assets/audio/music/renaissance-des-neuf-nobles.mp3.import	429	import
+mvp/assets/audio/music/reputation.png-d141562669e72cd9b81656cd4e903d1e.ctex	33680	generated
+mvp/assets/audio/music/reputation.png-d141562669e72cd9b81656cd4e903d1e.ctex.uid	20	uid
+mvp/assets/audio/music/reputation.png-d141562669e72cd9b81656cd4e903d1e.md5	91	generated
+mvp/assets/audio/music/rest.png-d2b82544b80f3bf184a65452ce29c4a4.ctex	30506	generated
+mvp/assets/audio/music/rest.png-d2b82544b80f3bf184a65452ce29c4a4.ctex.uid	19	uid
+mvp/assets/audio/music/rest.png-d2b82544b80f3bf184a65452ce29c4a4.md5	91	generated
+mvp/assets/audio/music/save.png-3ed7cc7b435c664b84486ebf905e3684.ctex	26114	generated
+mvp/assets/audio/music/save.png-3ed7cc7b435c664b84486ebf905e3684.ctex.uid	20	uid
+mvp/assets/audio/music/save.png-3ed7cc7b435c664b84486ebf905e3684.md5	91	generated
+mvp/assets/audio/music/settings.png-05f96689361c066ede9747ca7d01171b.ctex	31286	generated
+mvp/assets/audio/music/settings.png-05f96689361c066ede9747ca7d01171b.ctex.uid	20	uid
+mvp/assets/audio/music/settings.png-05f96689361c066ede9747ca7d01171b.md5	91	generated
+mvp/assets/audio/music/shadowfang.csv-92c61ecf715238096dbbf96119e489d4.md5	91	generated
+mvp/assets/audio/music/shadowfang.png-0b0be62c598afe79b1d2166f2ed001a3.ctex	980320	generated
+mvp/assets/audio/music/shadowfang.png-0b0be62c598afe79b1d2166f2ed001a3.ctex.uid	19	uid
+mvp/assets/audio/music/shadowfang.png-0b0be62c598afe79b1d2166f2ed001a3.md5	91	generated
+mvp/assets/audio/music/song_133348701765634.mp3	5935273	audio
+mvp/assets/audio/music/song_133348701765634.mp3.import	408	import
+mvp/assets/audio/music/song_133348702027777.mp3	5624938	audio
+mvp/assets/audio/music/song_133348702027777.mp3.import	408	import
+mvp/assets/audio/music/song_133484553175041.mp3	5819707	audio
+mvp/assets/audio/music/song_133484553175041.mp3.import	408	import
+mvp/assets/audio/music/song_133484553437185.mp3	6816122	audio
+mvp/assets/audio/music/song_133484553437185.mp3.import	408	import
+mvp/assets/audio/music/soul.png-4c3f4363de7d0c68586fd6e8a855911d.ctex	34560	generated
+mvp/assets/audio/music/soul.png-4c3f4363de7d0c68586fd6e8a855911d.ctex.uid	19	uid
+mvp/assets/audio/music/soul.png-4c3f4363de7d0c68586fd6e8a855911d.md5	91	generated
+mvp/assets/audio/music/soulwarden.csv-59ddc9d62a9f9a9e9480bfd709fbac06.md5	91	generated
+mvp/assets/audio/music/soulwarden.png-fd5c13c21969e107fde5edbcbeb55459.ctex	1434958	generated
+mvp/assets/audio/music/soulwarden.png-fd5c13c21969e107fde5edbcbeb55459.ctex.uid	20	uid
+mvp/assets/audio/music/soulwarden.png-fd5c13c21969e107fde5edbcbeb55459.md5	91	generated
+mvp/assets/audio/music/spy.png-76a6347599d6a7c9d5682d310ad9da99.ctex	31440	generated
+mvp/assets/audio/music/spy.png-76a6347599d6a7c9d5682d310ad9da99.ctex.uid	20	uid
+mvp/assets/audio/music/spy.png-76a6347599d6a7c9d5682d310ad9da99.md5	91	generated
+mvp/assets/audio/music/stone.png-1fc913a5774d4ebe7fb12dfb7c186838.ctex	29992	generated
+mvp/assets/audio/music/stone.png-1fc913a5774d4ebe7fb12dfb7c186838.ctex.uid	20	uid
+mvp/assets/audio/music/stone.png-1fc913a5774d4ebe7fb12dfb7c186838.md5	91	generated
+mvp/assets/audio/music/voidmonk.csv-2a0e30edcc712daa26a339694b185e95.md5	91	generated
+mvp/assets/audio/music/voidmonk.png-37055a0f60a41d62c05323aa9dd05bd1.ctex	1252642	generated
+mvp/assets/audio/music/voidmonk.png-37055a0f60a41d62c05323aa9dd05bd1.ctex.uid	20	uid
+mvp/assets/audio/music/voidmonk.png-37055a0f60a41d62c05323aa9dd05bd1.md5	91	generated
+mvp/assets/audio/music/warlord.csv-adc47c552ef6aca7f10d54d050341079.md5	91	generated
+mvp/assets/audio/music/warlord.png-95d68434e6214f0ba18e50ee6c1f3f38.ctex	1028852	generated
+mvp/assets/audio/music/warlord.png-95d68434e6214f0ba18e50ee6c1f3f38.ctex.uid	20	uid
+mvp/assets/audio/music/warlord.png-95d68434e6214f0ba18e50ee6c1f3f38.md5	91	generated
+mvp/assets/audio/music/wilddruid.csv-6aa4fb6ee4369a79813eb8bc3197fbbc.md5	91	generated
+mvp/assets/audio/music/wilddruid.png-855f50dbb5d6904485da3a8c2a3e7b35.ctex	1393106	generated
+mvp/assets/audio/music/wilddruid.png-855f50dbb5d6904485da3a8c2a3e7b35.ctex.uid	19	uid
+mvp/assets/audio/music/wilddruid.png-855f50dbb5d6904485da3a8c2a3e7b35.md5	91	generated
+mvp/assets/audio/sfx/ambience_short.ogg	11770	audio
+mvp/assets/audio/sfx/ambience_short.ogg.import	415	import
+mvp/assets/audio/sfx/click.ogg	4809	audio
+mvp/assets/audio/sfx/click.ogg.import	387	import
+mvp/assets/audio/sfx/footstep.ogg	4857	audio
+mvp/assets/audio/sfx/footstep.ogg.import	397	import
+mvp/assets/audio/sfx/silent_1.ogg	4509	audio
+mvp/assets/audio/sfx/silent_1.ogg.import	397	import
+mvp/assets/audio/sfx/silent_2.ogg	4509	audio
+mvp/assets/audio/sfx/silent_2.ogg.import	396	import
+mvp/assets/audio/sfx/silent_3.ogg	4509	audio
+mvp/assets/audio/sfx/silent_3.ogg.import	397	import
+mvp/assets/audio/sfx/silent_4.ogg	4509	audio
+mvp/assets/audio/sfx/silent_4.ogg.import	397	import
+mvp/assets/audio/sfx/silent_5.ogg	4509	audio
+mvp/assets/audio/sfx/silent_5.ogg.import	397	import
+mvp/assets/audio/sfx/swing.ogg	5255	audio
+mvp/assets/audio/sfx/swing.ogg.import	388	import
+mvp/assets/audio/sfx/whoosh.ogg	10322	audio
+mvp/assets/audio/sfx/whoosh.ogg.import	390	import
+mvp/assets/audio/silent_1.ogg	4509	audio
+mvp/assets/audio/silent_1.ogg.import	393	import
+mvp/assets/audio/silent_1.wav	176444	audio
+mvp/assets/audio/silent_1.wav.import	495	import
+mvp/assets/audio/silent_2.ogg	4509	audio
+mvp/assets/audio/silent_2.ogg.import	393	import
+mvp/assets/audio/silent_2.wav	176444	audio
+mvp/assets/audio/silent_2.wav.import	495	import
+mvp/assets/audio/silent_3.ogg	4509	audio
+mvp/assets/audio/silent_3.ogg.import	393	import
+mvp/assets/audio/silent_3.wav	176444	audio
+mvp/assets/audio/silent_3.wav.import	495	import
+mvp/assets/audio/silent_4.ogg	4509	audio
+mvp/assets/audio/silent_4.ogg.import	393	import
+mvp/assets/audio/silent_4.wav	176444	audio
+mvp/assets/audio/silent_4.wav.import	494	import
+mvp/assets/audio/silent_5.ogg	4509	audio
+mvp/assets/audio/silent_5.ogg.import	392	import
+mvp/assets/audio/silent_5.wav	176444	audio
+mvp/assets/audio/silent_5.wav.import	495	import
+mvp/assets/audio/swing.ogg	5255	audio
+mvp/assets/audio/swing.ogg.import	384	import
+mvp/assets/audio/swing.wav	30912	audio
+mvp/assets/audio/swing.wav.import	486	import
+mvp/assets/audio/whoosh.ogg	10322	audio
+mvp/assets/audio/whoosh.ogg.import	387	import
+mvp/assets/audio/whoosh.wav	52964	audio
+mvp/assets/audio/whoosh.wav.import	489	import
+mvp/assets/backgrounds/background_menu.png	997067	image
+mvp/assets/backgrounds/background_menu.png.import	797	import
+mvp/assets/class_icons/.gitkeep	0	
+mvp/assets/class_icons/abysspaladin.png	1661772	image
+mvp/assets/class_icons/abysspaladin.png.import	789	import
+mvp/assets/class_icons/berserkdemon.png	1475379	image
+mvp/assets/class_icons/berserkdemon.png.import	788	import
+mvp/assets/class_icons/bloodsorcerer.png	1392909	image
+mvp/assets/class_icons/bloodsorcerer.png.import	792	import
+mvp/assets/class_icons/demonblade.png	1434134	image
+mvp/assets/class_icons/demonblade.png.import	781	import
+mvp/assets/class_icons/echobard.png	1476287	image
+mvp/assets/class_icons/echobard.png.import	776	import
+mvp/assets/class_icons/flame.png	160224	image
+mvp/assets/class_icons/flame.png.import	768	import
+mvp/assets/class_icons/hellcaster.png	1812276	image
+mvp/assets/class_icons/hellcaster.png.import	783	import
+mvp/assets/class_icons/hellranger.png	1193120	image
+mvp/assets/class_icons/hellranger.png.import	783	import
+mvp/assets/class_icons/infernalartificer.png	1685694	image
+mvp/assets/class_icons/infernalartificer.png.import	804	import
+mvp/assets/class_icons/pactbound.png	1478335	image
+mvp/assets/class_icons/pactbound.png.import	780	import
+mvp/assets/class_icons/shadowfang.png	1246003	image
+mvp/assets/class_icons/shadowfang.png.import	783	import
+mvp/assets/class_icons/soulwarden.png	1779254	image
+mvp/assets/class_icons/soulwarden.png.import	783	import
+mvp/assets/class_icons/voidmonk.png	1573693	image
+mvp/assets/class_icons/voidmonk.png.import	777	import
+mvp/assets/class_icons/warlord.png	1286868	image
+mvp/assets/class_icons/warlord.png.import	773	import
+mvp/assets/class_icons/wilddruid.png	1703881	image
+mvp/assets/class_icons/wilddruid.png.import	779	import
+mvp/assets/icon/essence.png	45735	image
+mvp/assets/icon/essence.png.import	767	import
+mvp/assets/icon/food.png	37264	image
+mvp/assets/icon/food.png.import	758	import
+mvp/assets/icon/gold.png	41406	image
+mvp/assets/icon/gold.png.import	758	import
+mvp/assets/icon/iron.png	43226	image
+mvp/assets/icon/iron.png.import	758	import
+mvp/assets/icon/jeu.png	1310840	image
+mvp/assets/icon/jeu.png.import	755	import
+mvp/assets/icon/mana.png	50541	image
+mvp/assets/icon/mana.png.import	758	import
+mvp/assets/icon/reputation.png	43180	image
+mvp/assets/icon/reputation.png.import	776	import
+mvp/assets/icon/soldat.png	42463	image
+mvp/assets/icon/soldat.png.import	763	import
+mvp/assets/icon/soul.png	37726	image
+mvp/assets/icon/soul.png.import	758	import
+mvp/assets/icon/stone.png	37216	image
+mvp/assets/icon/stone.png.import	761	import
+mvp/assets/icon/wood.png	49530	image
+mvp/assets/icon/wood.png.import	758	import
+mvp/assets/images/PNJ/defaut/Kael.png	1488788	image
+mvp/assets/images/PNJ/defaut/Kael.png.import	771	import
+mvp/assets/images/PNJ/defaut/female.png	1607051	image
+mvp/assets/images/PNJ/defaut/female.png.import	777	import
+mvp/assets/images/PNJ/defaut/male.png	1627144	image
+mvp/assets/images/PNJ/defaut/male.png.import	771	import
+mvp/assets/images/clan/Pere et fille/Ottosama_00026_.png	1551398	image
+mvp/assets/images/clan/Pere et fille/Ottosama_00026_.png.import	811	import
+mvp/assets/images/clan/Pere et fils/Ottosama_00002_.png	1737106	image
+mvp/assets/images/clan/Pere et fils/Ottosama_00002_.png.import	811	import
+mvp/assets/images/clan/Pere et fils/Ottosama_00003_.png	1655130	image
+mvp/assets/images/clan/Pere et fils/Ottosama_00003_.png.import	811	import
+mvp/assets/images/clan/Pere et fils/Ottosama_00028_.png	1609265	image
+mvp/assets/images/clan/Pere et fils/Ottosama_00028_.png.import	811	import
+mvp/assets/images/clan/defaut.png	170031	image
+mvp/assets/images/clan/defaut.png.import	771	import
+mvp/assets/images/clan/hero-children/boy (1).png	1503811	image
+mvp/assets/images/clan/hero-children/boy (1).png.import	788	import
+mvp/assets/images/clan/hero-children/boy.png	1532095	image
+mvp/assets/images/clan/hero-children/boy.png.import	776	import
+mvp/assets/images/clan/hero-children/girl (1).png	1558441	image
+mvp/assets/images/clan/hero-children/girl (1).png.import	791	import
+mvp/assets/images/clan/hero-children/girl (2).png	1549619	image
+mvp/assets/images/clan/hero-children/girl (2).png.import	791	import
+mvp/assets/images/clan/m#U00e8re/M#U00e8reetfils.png	1583767	image
+mvp/assets/images/clan/m#U00e8re/M#U00e8reetfils.png.import	808	import
+mvp/assets/images/clan/m#U00e8re/Okasa-sama (6).png	1639012	image
+mvp/assets/images/clan/m#U00e8re/Okasa-sama (6).png.import	805	import
+mvp/assets/images/clan/mère/Mèreetfils.png	1583767	image
+mvp/assets/images/clan/mère/Mèreetfils.png.import	792	import
+mvp/assets/images/clan/mère/Okasa-sama (6).png	1639012	image
+mvp/assets/images/clan/mère/Okasa-sama (6).png.import	801	import
+mvp/assets/images/clan/nine_nobles.png	187459	image
+mvp/assets/images/clan/nine_nobles.png.import	786	import
+mvp/assets/images/demon_realm_map_1024.png	1206783	image
+mvp/assets/images/demon_realm_map_1024.png.import	808	import
+mvp/assets/images/edwin_black_1024.png	398307	image
+mvp/assets/images/edwin_black_1024.png.import	796	import
+mvp/assets/images/hero/defaut.png	1765857	image
+mvp/assets/images/hero/defaut.png.import	770	import
+mvp/assets/images/hero/femme/female.png	1436733	image
+mvp/assets/images/hero/femme/female.png.import	777	import
+mvp/assets/images/hero/homme/male.png	1406134	image
+mvp/assets/images/hero/homme/male.png.import	771	import
+mvp/assets/images/ingrid_39_1024.png	457260	image
+mvp/assets/images/ingrid_39_1024.png.import	789	import
+mvp/assets/images/lore/ceres_1024.webp	529660	image
+mvp/assets/images/lore/ceres_1024.webp.import	786	import
+mvp/assets/images/lore/hell_knight_1024.webp	820178	image
+mvp/assets/images/lore/hell_knight_1024.webp.import	804	import
+mvp/assets/images/nine_nobles_1024.png	1218096	image
+mvp/assets/images/nine_nobles_1024.png.import	795	import
+mvp/assets/images/yomihara_1024.png	1098744	image
+mvp/assets/images/yomihara_1024.png.import	787	import
+mvp/assets/maps/README.md	398	md
+mvp/assets/shaders/fk_ui_background.gdshader	1775	shader
+mvp/assets/shaders/fk_ui_background.gdshader.uid	20	uid
+mvp/assets/ui/icons/.keep	75	
+mvp/assets/ui/icons/attack.png	31296	image
+mvp/assets/ui/icons/attack.png.import	768	import
+mvp/assets/ui/icons/audio.png	31575	image
+mvp/assets/ui/icons/audio.png.import	765	import
+mvp/assets/ui/icons/back.png	31815	image
+mvp/assets/ui/icons/back.png.import	762	import
+mvp/assets/ui/icons/chest.png	32353	image
+mvp/assets/ui/icons/chest.png.import	765	import
+mvp/assets/ui/icons/continue.png	37430	image
+mvp/assets/ui/icons/continue.png.import	774	import
+mvp/assets/ui/icons/diplomacy.png	34780	image
+mvp/assets/ui/icons/diplomacy.png.import	777	import
+mvp/assets/ui/icons/dungeon.png	33280	image
+mvp/assets/ui/icons/dungeon.png.import	771	import
+mvp/assets/ui/icons/end_turn.png	39392	image
+mvp/assets/ui/icons/end_turn.png.import	774	import
+mvp/assets/ui/icons/fortify.png	31962	image
+mvp/assets/ui/icons/fortify.png.import	770	import
+mvp/assets/ui/icons/houses.png	32044	image
+mvp/assets/ui/icons/houses.png.import	768	import
+mvp/assets/ui/icons/library.png	29864	image
+mvp/assets/ui/icons/library.png.import	771	import
+mvp/assets/ui/icons/lore.png	32812	image
+mvp/assets/ui/icons/lore.png.import	762	import
+mvp/assets/ui/icons/map.png	32272	image
+mvp/assets/ui/icons/map.png.import	759	import
+mvp/assets/ui/icons/new_game.png	31022	image
+mvp/assets/ui/icons/new_game.png.import	774	import
+mvp/assets/ui/icons/next.png	31778	image
+mvp/assets/ui/icons/next.png.import	761	import
+mvp/assets/ui/icons/profile.png	37627	image
+mvp/assets/ui/icons/profile.png.import	770	import
+mvp/assets/ui/icons/quit.png	33722	image
+mvp/assets/ui/icons/quit.png.import	762	import
+mvp/assets/ui/icons/recruit.png	35953	image
+mvp/assets/ui/icons/recruit.png.import	771	import
+mvp/assets/ui/icons/rest.png	36523	image
+mvp/assets/ui/icons/rest.png.import	761	import
+mvp/assets/ui/icons/save.png	32124	image
+mvp/assets/ui/icons/save.png.import	762	import
+mvp/assets/ui/icons/settings.png	37237	image
+mvp/assets/ui/icons/settings.png.import	774	import
+mvp/assets/ui/icons/spy.png	38696	image
+mvp/assets/ui/icons/spy.png.import	759	import
+mvp/assets/ui/stop_icon.png	370	image
+mvp/assets/ui/stop_icon.png.import	771	import
+mvp/data/abilities.json	3644	data
+mvp/data/character_traits.json	10754	data
+mvp/data/clan/affinites_pnj_initiales.json	2860	data
+mvp/data/clan/etat_clan_defaut.json	8246	data
+mvp/data/classes.json	6699	data
+mvp/data/equipment.json	2064	data
+mvp/data/events/evenements_jour_nuit.json	7042	data
+mvp/data/feats.json	30034	data
+mvp/data/generation/name_fragments.json	2123	data
+mvp/data/intro_vn.json	1398	data
+mvp/data/intro_vn_legacy.json	2852	data
+mvp/data/library_entries.json	2975	data
+mvp/data/phases/config_tour.json	11389	data
+mvp/data/power_actions.json	7163	data
+mvp/data/progression/DemonBlade.Artisanat.translation	684	generated
+mvp/data/progression/DemonBlade.Attaque.translation	694	generated
+mvp/data/progression/DemonBlade.Commandement.translation	695	generated
+mvp/data/progression/DemonBlade.D#U00e9fense.translation	717	generated
+mvp/data/progression/DemonBlade.Diplomatie.translation	685	generated
+mvp/data/progression/DemonBlade.Défense.translation	691	generated
+mvp/data/progression/DemonBlade.Espionnage.translation	685	generated
+mvp/data/progression/DemonBlade.Force.translation	688	generated
+mvp/data/progression/DemonBlade.Initiative.translation	689	generated
+mvp/data/progression/DemonBlade.Jet de R#U00e9flexes.translation	725	generated
+mvp/data/progression/DemonBlade.Jet de Réflexes.translation	699	generated
+mvp/data/progression/DemonBlade.Jet de Vigueur.translation	697	generated
+mvp/data/progression/DemonBlade.Jet de Volont#U00e9.translation	724	generated
+mvp/data/progression/DemonBlade.Jet de Volonté.translation	698	generated
+mvp/data/progression/DemonBlade.Lore.translation	1011	generated
+mvp/data/progression/DemonBlade.Magie.translation	684	generated
+mvp/data/progression/DemonBlade.Nouveaux Talents.translation	995	generated
+mvp/data/progression/DemonBlade.R#U00e9sistance.translation	720	generated
+mvp/data/progression/DemonBlade.Résistance.translation	694	generated
+mvp/data/progression/DemonBlade.csv	1349	progression
+mvp/data/progression/DemonBlade.csv.import	1999	import
+mvp/data/progression/abyss paladin.Artisanat.translation	684	generated
+mvp/data/progression/abyss paladin.Attaque.translation	694	generated
+mvp/data/progression/abyss paladin.Commandement.translation	699	generated
+mvp/data/progression/abyss paladin.D#U00e9fense.translation	721	generated
+mvp/data/progression/abyss paladin.Diplomatie.translation	693	generated
+mvp/data/progression/abyss paladin.Défense.translation	695	generated
+mvp/data/progression/abyss paladin.Espionnage.translation	685	generated
+mvp/data/progression/abyss paladin.Force.translation	692	generated
+mvp/data/progression/abyss paladin.Initiative.translation	693	generated
+mvp/data/progression/abyss paladin.Jet de R#U00e9flexes.translation	725	generated
+mvp/data/progression/abyss paladin.Jet de Réflexes.translation	699	generated
+mvp/data/progression/abyss paladin.Jet de Vigueur.translation	701	generated
+mvp/data/progression/abyss paladin.Jet de Volont#U00e9.translation	728	generated
+mvp/data/progression/abyss paladin.Jet de Volonté.translation	702	generated
+mvp/data/progression/abyss paladin.Lore.translation	955	generated
+mvp/data/progression/abyss paladin.Magie.translation	684	generated
+mvp/data/progression/abyss paladin.Nouveaux Talents.translation	1067	generated
+mvp/data/progression/abyss paladin.R#U00e9sistance.translation	724	generated
+mvp/data/progression/abyss paladin.Résistance.translation	698	generated
+mvp/data/progression/abyss paladin.csv	1424	progression
+mvp/data/progression/abyss paladin.csv.import	2092	import
+mvp/data/progression/berserkdemon.Artisanat.translation	684	generated
+mvp/data/progression/berserkdemon.Attaque.translation	694	generated
+mvp/data/progression/berserkdemon.Commandement.translation	691	generated
+mvp/data/progression/berserkdemon.D#U00e9fense.translation	717	generated
+mvp/data/progression/berserkdemon.Diplomatie.translation	685	generated
+mvp/data/progression/berserkdemon.Défense.translation	691	generated
+mvp/data/progression/berserkdemon.Espionnage.translation	685	generated
+mvp/data/progression/berserkdemon.Force.translation	692	generated
+mvp/data/progression/berserkdemon.Initiative.translation	693	generated
+mvp/data/progression/berserkdemon.Jet de R#U00e9flexes.translation	725	generated
+mvp/data/progression/berserkdemon.Jet de Réflexes.translation	699	generated
+mvp/data/progression/berserkdemon.Jet de Vigueur.translation	701	generated
+mvp/data/progression/berserkdemon.Jet de Volont#U00e9.translation	724	generated
+mvp/data/progression/berserkdemon.Jet de Volonté.translation	698	generated
+mvp/data/progression/berserkdemon.Lore.translation	999	generated
+mvp/data/progression/berserkdemon.Magie.translation	680	generated
+mvp/data/progression/berserkdemon.Nouveaux Talents.translation	1067	generated
+mvp/data/progression/berserkdemon.R#U00e9sistance.translation	724	generated
+mvp/data/progression/berserkdemon.Résistance.translation	698	generated
+mvp/data/progression/berserkdemon.csv	1449	progression
+mvp/data/progression/berserkdemon.csv.import	2061	import
+mvp/data/progression/bloodsorcerer.Artisanat.translation	684	generated
+mvp/data/progression/bloodsorcerer.Attaque.translation	682	generated
+mvp/data/progression/bloodsorcerer.Commandement.translation	687	generated
+mvp/data/progression/bloodsorcerer.D#U00e9fense.translation	713	generated
+mvp/data/progression/bloodsorcerer.Diplomatie.translation	689	generated
+mvp/data/progression/bloodsorcerer.Défense.translation	687	generated
+mvp/data/progression/bloodsorcerer.Espionnage.translation	685	generated
+mvp/data/progression/bloodsorcerer.Force.translation	680	generated
+mvp/data/progression/bloodsorcerer.Initiative.translation	693	generated
+mvp/data/progression/bloodsorcerer.Jet de R#U00e9flexes.translation	725	generated
+mvp/data/progression/bloodsorcerer.Jet de Réflexes.translation	699	generated
+mvp/data/progression/bloodsorcerer.Jet de Vigueur.translation	693	generated
+mvp/data/progression/bloodsorcerer.Jet de Volont#U00e9.translation	728	generated
+mvp/data/progression/bloodsorcerer.Jet de Volonté.translation	702	generated
+mvp/data/progression/bloodsorcerer.Lore.translation	967	generated
+mvp/data/progression/bloodsorcerer.Magie.translation	692	generated
+mvp/data/progression/bloodsorcerer.Nouveaux Talents.translation	1055	generated
+mvp/data/progression/bloodsorcerer.R#U00e9sistance.translation	724	generated
+mvp/data/progression/bloodsorcerer.Résistance.translation	698	generated
+mvp/data/progression/bloodsorcerer.csv	1395	progression
+mvp/data/progression/bloodsorcerer.csv.import	2093	import
+mvp/data/progression/echobard.Artisanat.translation	684	generated
+mvp/data/progression/echobard.Attaque.translation	682	generated
+mvp/data/progression/echobard.Commandement.translation	691	generated
+mvp/data/progression/echobard.D#U00e9fense.translation	717	generated
+mvp/data/progression/echobard.Diplomatie.translation	697	generated
+mvp/data/progression/echobard.Défense.translation	691	generated
+mvp/data/progression/echobard.Espionnage.translation	685	generated
+mvp/data/progression/echobard.Force.translation	680	generated
+mvp/data/progression/echobard.Initiative.translation	693	generated
+mvp/data/progression/echobard.Jet de R#U00e9flexes.translation	725	generated
+mvp/data/progression/echobard.Jet de Réflexes.translation	699	generated
+mvp/data/progression/echobard.Jet de Vigueur.translation	697	generated
+mvp/data/progression/echobard.Jet de Volont#U00e9.translation	728	generated
+mvp/data/progression/echobard.Jet de Volonté.translation	702	generated
+mvp/data/progression/echobard.Lore.translation	987	generated
+mvp/data/progression/echobard.Magie.translation	692	generated
+mvp/data/progression/echobard.Nouveaux Talents.translation	1055	generated
+mvp/data/progression/echobard.R#U00e9sistance.translation	720	generated
+mvp/data/progression/echobard.Résistance.translation	694	generated
+mvp/data/progression/echobard.csv	1447	progression
+mvp/data/progression/echobard.csv.import	1937	import
+mvp/data/progression/hellcaster.Artisanat.translation	684	generated
+mvp/data/progression/hellcaster.Attaque.translation	682	generated
+mvp/data/progression/hellcaster.Commandement.translation	687	generated
+mvp/data/progression/hellcaster.D#U00e9fense.translation	713	generated
+mvp/data/progression/hellcaster.Diplomatie.translation	693	generated
+mvp/data/progression/hellcaster.Défense.translation	687	generated
+mvp/data/progression/hellcaster.Espionnage.translation	689	generated
+mvp/data/progression/hellcaster.Force.translation	680	generated
+mvp/data/progression/hellcaster.Initiative.translation	693	generated
+mvp/data/progression/hellcaster.Jet de R#U00e9flexes.translation	725	generated
+mvp/data/progression/hellcaster.Jet de Réflexes.translation	699	generated
+mvp/data/progression/hellcaster.Jet de Vigueur.translation	697	generated
+mvp/data/progression/hellcaster.Jet de Volont#U00e9.translation	728	generated
+mvp/data/progression/hellcaster.Jet de Volonté.translation	702	generated
+mvp/data/progression/hellcaster.Lore.translation	987	generated
+mvp/data/progression/hellcaster.Magie.translation	692	generated
+mvp/data/progression/hellcaster.Nouveaux Talents.translation	983	generated
+mvp/data/progression/hellcaster.R#U00e9sistance.translation	720	generated
+mvp/data/progression/hellcaster.Résistance.translation	694	generated
+mvp/data/progression/hellcaster.csv	1336	progression
+mvp/data/progression/hellcaster.csv.import	2000	import
+mvp/data/progression/hellranger.Artisanat.translation	648	generated
+mvp/data/progression/hellranger.Attaque.translation	654	generated
+mvp/data/progression/hellranger.Commandement.translation	651	generated
+mvp/data/progression/hellranger.D#U00e9fense.translation	661	generated
+mvp/data/progression/hellranger.Diplomatie.translation	649	generated
+mvp/data/progression/hellranger.Défense.translation	651	generated
+mvp/data/progression/hellranger.Espionnage.translation	657	generated
+mvp/data/progression/hellranger.Force.translation	652	generated
+mvp/data/progression/hellranger.Initiative.translation	653	generated
+mvp/data/progression/hellranger.Jet de R#U00e9flexes.translation	645	generated
+mvp/data/progression/hellranger.Jet de Réflexes.translation	659	generated
+mvp/data/progression/hellranger.Jet de Vigueur.translation	657	generated
+mvp/data/progression/hellranger.Jet de Volont#U00e9.translation	640	generated
+mvp/data/progression/hellranger.Jet de Volonté.translation	654	generated
+mvp/data/progression/hellranger.Lore.translation	807	generated
+mvp/data/progression/hellranger.Magie.translation	644	generated
+mvp/data/progression/hellranger.Nouveaux Talents.translation	831	generated
+mvp/data/progression/hellranger.R#U00e9sistance.translation	664	generated
+mvp/data/progression/hellranger.Résistance.translation	654	generated
+mvp/data/progression/hellranger.csv	888	progression
+mvp/data/progression/hellranger.csv.import	2000	import
+mvp/data/progression/infernalartificier.Artisanat.translation	696	generated
+mvp/data/progression/infernalartificier.Attaque.translation	686	generated
+mvp/data/progression/infernalartificier.Commandement.translation	691	generated
+mvp/data/progression/infernalartificier.D#U00e9fense.translation	721	generated
+mvp/data/progression/infernalartificier.Diplomatie.translation	685	generated
+mvp/data/progression/infernalartificier.Défense.translation	695	generated
+mvp/data/progression/infernalartificier.Espionnage.translation	685	generated
+mvp/data/progression/infernalartificier.Force.translation	684	generated
+mvp/data/progression/infernalartificier.Initiative.translation	693	generated
+mvp/data/progression/infernalartificier.Jet de R#U00e9flexes.translation	729	generated
+mvp/data/progression/infernalartificier.Jet de Réflexes.translation	703	generated
+mvp/data/progression/infernalartificier.Jet de Vigueur.translation	697	generated
+mvp/data/progression/infernalartificier.Jet de Volont#U00e9.translation	728	generated
+mvp/data/progression/infernalartificier.Jet de Volonté.translation	702	generated
+mvp/data/progression/infernalartificier.Lore.translation	1051	generated
+mvp/data/progression/infernalartificier.Magie.translation	692	generated
+mvp/data/progression/infernalartificier.Nouveaux Talents.translation	1051	generated
+mvp/data/progression/infernalartificier.R#U00e9sistance.translation	720	generated
+mvp/data/progression/infernalartificier.Résistance.translation	694	generated
+mvp/data/progression/infernalartificier.csv	1526	progression
+mvp/data/progression/infernalartificier.csv.import	2248	import
+mvp/data/progression/pactbound.Artisanat.translation	684	generated
+mvp/data/progression/pactbound.Attaque.translation	682	generated
+mvp/data/progression/pactbound.Commandement.translation	691	generated
+mvp/data/progression/pactbound.D#U00e9fense.translation	717	generated
+mvp/data/progression/pactbound.Diplomatie.translation	697	generated
+mvp/data/progression/pactbound.Défense.translation	691	generated
+mvp/data/progression/pactbound.Espionnage.translation	685	generated
+mvp/data/progression/pactbound.Force.translation	680	generated
+mvp/data/progression/pactbound.Initiative.translation	693	generated
+mvp/data/progression/pactbound.Jet de R#U00e9flexes.translation	725	generated
+mvp/data/progression/pactbound.Jet de Réflexes.translation	699	generated
+mvp/data/progression/pactbound.Jet de Vigueur.translation	697	generated
+mvp/data/progression/pactbound.Jet de Volont#U00e9.translation	728	generated
+mvp/data/progression/pactbound.Jet de Volonté.translation	702	generated
+mvp/data/progression/pactbound.Lore.translation	1007	generated
+mvp/data/progression/pactbound.Magie.translation	692	generated
+mvp/data/progression/pactbound.Nouveaux Talents.translation	1079	generated
+mvp/data/progression/pactbound.R#U00e9sistance.translation	720	generated
+mvp/data/progression/pactbound.Résistance.translation	694	generated
+mvp/data/progression/pactbound.csv	1430	progression
+mvp/data/progression/pactbound.csv.import	1969	import
+mvp/data/progression/shadowfang.Artisanat.translation	704	generated
+mvp/data/progression/shadowfang.Attaque.translation	706	generated
+mvp/data/progression/shadowfang.Commandement.translation	707	generated
+mvp/data/progression/shadowfang.D#U00e9fense.translation	713	generated
+mvp/data/progression/shadowfang.Diplomatie.translation	705	generated
+mvp/data/progression/shadowfang.Défense.translation	703	generated
+mvp/data/progression/shadowfang.Espionnage.translation	713	generated
+mvp/data/progression/shadowfang.Force.translation	700	generated
+mvp/data/progression/shadowfang.Initiative.translation	713	generated
+mvp/data/progression/shadowfang.Jet de R#U00e9flexes.translation	709	generated
+mvp/data/progression/shadowfang.Jet de Réflexes.translation	719	generated
+mvp/data/progression/shadowfang.Jet de Vigueur.translation	713	generated
+mvp/data/progression/shadowfang.Jet de Volont#U00e9.translation	724	generated
+mvp/data/progression/shadowfang.Jet de Volonté.translation	714	generated
+mvp/data/progression/shadowfang.Lore.translation	939	generated
+mvp/data/progression/shadowfang.Magie.translation	700	generated
+mvp/data/progression/shadowfang.Nouveaux Talents.translation	947	generated
+mvp/data/progression/shadowfang.R#U00e9sistance.translation	716	generated
+mvp/data/progression/shadowfang.Résistance.translation	710	generated
+mvp/data/progression/shadowfang.csv	1233	progression
+mvp/data/progression/shadowfang.csv.import	1999	import
+mvp/data/progression/soulwarden.Artisanat.translation	704	generated
+mvp/data/progression/soulwarden.Attaque.translation	706	generated
+mvp/data/progression/soulwarden.Commandement.translation	707	generated
+mvp/data/progression/soulwarden.D#U00e9fense.translation	721	generated
+mvp/data/progression/soulwarden.Diplomatie.translation	713	generated
+mvp/data/progression/soulwarden.Défense.translation	711	generated
+mvp/data/progression/soulwarden.Espionnage.translation	705	generated
+mvp/data/progression/soulwarden.Force.translation	704	generated
+mvp/data/progression/soulwarden.Initiative.translation	709	generated
+mvp/data/progression/soulwarden.Jet de R#U00e9flexes.translation	705	generated
+mvp/data/progression/soulwarden.Jet de Réflexes.translation	715	generated
+mvp/data/progression/soulwarden.Jet de Vigueur.translation	713	generated
+mvp/data/progression/soulwarden.Jet de Volont#U00e9.translation	708	generated
+mvp/data/progression/soulwarden.Jet de Volonté.translation	718	generated
+mvp/data/progression/soulwarden.Lore.translation	939	generated
+mvp/data/progression/soulwarden.Magie.translation	708	generated
+mvp/data/progression/soulwarden.Nouveaux Talents.translation	999	generated
+mvp/data/progression/soulwarden.R#U00e9sistance.translation	724	generated
+mvp/data/progression/soulwarden.Résistance.translation	714	generated
+mvp/data/progression/soulwarden.csv	1251	progression
+mvp/data/progression/soulwarden.csv.import	1999	import
+mvp/data/progression/voidmonk.Artisanat.translation	684	generated
+mvp/data/progression/voidmonk.Attaque.translation	694	generated
+mvp/data/progression/voidmonk.Commandement.translation	691	generated
+mvp/data/progression/voidmonk.D#U00e9fense.translation	721	generated
+mvp/data/progression/voidmonk.Diplomatie.translation	685	generated
+mvp/data/progression/voidmonk.Défense.translation	695	generated
+mvp/data/progression/voidmonk.Espionnage.translation	697	generated
+mvp/data/progression/voidmonk.Force.translation	692	generated
+mvp/data/progression/voidmonk.Initiative.translation	697	generated
+mvp/data/progression/voidmonk.Jet de R#U00e9flexes.translation	729	generated
+mvp/data/progression/voidmonk.Jet de Réflexes.translation	703	generated
+mvp/data/progression/voidmonk.Jet de Vigueur.translation	701	generated
+mvp/data/progression/voidmonk.Jet de Volont#U00e9.translation	728	generated
+mvp/data/progression/voidmonk.Jet de Volonté.translation	702	generated
+mvp/data/progression/voidmonk.Lore.translation	1015	generated
+mvp/data/progression/voidmonk.Magie.translation	684	generated
+mvp/data/progression/voidmonk.Nouveaux Talents.translation	1027	generated
+mvp/data/progression/voidmonk.R#U00e9sistance.translation	720	generated
+mvp/data/progression/voidmonk.Résistance.translation	694	generated
+mvp/data/progression/voidmonk.csv	1431	progression
+mvp/data/progression/voidmonk.csv.import	1938	import
+mvp/data/progression/warlord.Artisanat.translation	684	generated
+mvp/data/progression/warlord.Attaque.translation	694	generated
+mvp/data/progression/warlord.Commandement.translation	699	generated
+mvp/data/progression/warlord.D#U00e9fense.translation	721	generated
+mvp/data/progression/warlord.Diplomatie.translation	693	generated
+mvp/data/progression/warlord.Défense.translation	695	generated
+mvp/data/progression/warlord.Espionnage.translation	685	generated
+mvp/data/progression/warlord.Force.translation	692	generated
+mvp/data/progression/warlord.Initiative.translation	693	generated
+mvp/data/progression/warlord.Jet de R#U00e9flexes.translation	725	generated
+mvp/data/progression/warlord.Jet de Réflexes.translation	699	generated
+mvp/data/progression/warlord.Jet de Vigueur.translation	701	generated
+mvp/data/progression/warlord.Jet de Volont#U00e9.translation	728	generated
+mvp/data/progression/warlord.Jet de Volonté.translation	702	generated
+mvp/data/progression/warlord.Lore.translation	975	generated
+mvp/data/progression/warlord.Magie.translation	680	generated
+mvp/data/progression/warlord.Nouveaux Talents.translation	1119	generated
+mvp/data/progression/warlord.R#U00e9sistance.translation	720	generated
+mvp/data/progression/warlord.Résistance.translation	694	generated
+mvp/data/progression/warlord.csv	1525	progression
+mvp/data/progression/warlord.csv.import	1907	import
+mvp/data/progression/wilddruid.Artisanat.translation	696	generated
+mvp/data/progression/wilddruid.Attaque.translation	690	generated
+mvp/data/progression/wilddruid.Commandement.translation	691	generated
+mvp/data/progression/wilddruid.D#U00e9fense.translation	717	generated
+mvp/data/progression/wilddruid.Diplomatie.translation	685	generated
+mvp/data/progression/wilddruid.Défense.translation	691	generated
+mvp/data/progression/wilddruid.Espionnage.translation	685	generated
+mvp/data/progression/wilddruid.Force.translation	688	generated
+mvp/data/progression/wilddruid.Initiative.translation	693	generated
+mvp/data/progression/wilddruid.Jet de R#U00e9flexes.translation	725	generated
+mvp/data/progression/wilddruid.Jet de Réflexes.translation	699	generated
+mvp/data/progression/wilddruid.Jet de Vigueur.translation	697	generated
+mvp/data/progression/wilddruid.Jet de Volont#U00e9.translation	728	generated
+mvp/data/progression/wilddruid.Jet de Volonté.translation	702	generated
+mvp/data/progression/wilddruid.Lore.translation	987	generated
+mvp/data/progression/wilddruid.Magie.translation	692	generated
+mvp/data/progression/wilddruid.Nouveaux Talents.translation	1035	generated
+mvp/data/progression/wilddruid.R#U00e9sistance.translation	724	generated
+mvp/data/progression/wilddruid.Résistance.translation	698	generated
+mvp/data/progression/wilddruid.csv	1386	progression
+mvp/data/progression/wilddruid.csv.import	1968	import
+mvp/data/tutorials/memories.json	7394	data
+mvp/data/ui_visual_bindings.json	7065	data
+mvp/data/world/houses.json	6296	data
+mvp/docs/IDENTITE_VEYR.md	2302	md
+mvp/export_presets.cfg	1010	config
+mvp/godot_presets/README.md	1714	md
+mvp/godot_presets/export_presets.cfg	388	config
+mvp/godot_run.log	49	generated
+mvp/icon.png	170031	image
+mvp/icon.png.import	746	import
+mvp/project.godot	2231	project
+mvp/resources/chapters/data.json	5587	data
+mvp/resources/creatures/incubus_base.tres	762	resource
+mvp/resources/creatures/mind_flayer.tres	756	resource
+mvp/resources/creatures/succubus_base.tres	744	resource
+mvp/resources/creatures/tentacle_beast.tres	730	resource
+mvp/resources/materials/fk_ui_background.tres	552	resource
+mvp/resources/theme_demon.tres	190	resource
+mvp/resources/themes/taimanin_theme.gd	4214	script
+mvp/resources/themes/taimanin_theme.gd.uid	20	uid
+mvp/scenes/chapter_ingrid.tscn	402	scene
+mvp/scenes/chapter_select.tscn	1602	scene
+mvp/scenes/chapter_view.tscn	2977	scene
+mvp/scenes/character_animation.tscn	240	scene
+mvp/scenes/character_creation/character_creation_screen.tscn	1658	scene
+mvp/scenes/character_creation/slides/slide_01_basic_info.tscn	8823	scene
+mvp/scenes/character_creation/slides/slide_02_class_stats.tscn	15328	scene
+mvp/scenes/character_creation/slides/slide_03_feats_abilities.tscn	2352	scene
+mvp/scenes/character_creation/slides/slide_04_items_equipment.tscn	13781	scene
+mvp/scenes/character_creation/slides/slide_06_character_sheet.tscn	9868	scene
+mvp/scenes/character_sheet.tscn	311	scene
+mvp/scenes/clan_hub.tscn	9166	scene
+mvp/scenes/creation_personnage.tscn	17497	scene
+mvp/scenes/dungeon_view.tscn	1932	scene
+mvp/scenes/intro_vn.tscn	320	scene
+mvp/scenes/library_view.tscn	291	scene
+mvp/scenes/main_menu.tscn	10472	scene
+mvp/scenes/map_view.tscn	3628	scene
+mvp/scenes/memory_tutorial.tscn	312	scene
+mvp/scenes/pnj_card.tscn	2213	scene
+mvp/scenes/pnj_manager.tscn	3121	scene
+mvp/scenes/resolution_action.tscn	6832	scene
+mvp/scenes/slot_select.tscn	4296	scene
+mvp/scenes/ui/character_creation/components/inventory_item_card.tscn	668	scene
+mvp/scenes/ui/event_result_view.tscn	2892	scene
+mvp/scenes/ui/options_dialog.tscn	969	scene
+mvp/scenes/ui/stop_music_ui.tscn	445	scene
+mvp/scripts/adapters/world_state_adapter.gd	3595	script
+mvp/scripts/adapters/world_state_adapter.gd.uid	20	uid
+mvp/scripts/autoload/audio_manager.gd	4888	script
+mvp/scripts/autoload/audio_manager.gd.uid	20	uid
+mvp/scripts/autoload/chapter_loader.gd	3708	script
+mvp/scripts/autoload/chapter_loader.gd.uid	20	uid
+mvp/scripts/autoload/clan_manager.gd	70857	script
+mvp/scripts/autoload/clan_manager.gd.uid	20	uid
+mvp/scripts/autoload/dungeon_generator.gd	14607	script
+mvp/scripts/autoload/dungeon_generator.gd.uid	20	uid
+mvp/scripts/autoload/game_data_loader.gd	24746	script
+mvp/scripts/autoload/game_data_loader.gd.uid	20	uid
+mvp/scripts/autoload/game_manager.gd	9984	script
+mvp/scripts/autoload/game_manager.gd.uid	20	uid
+mvp/scripts/autoload/save_system.gd	9731	script
+mvp/scripts/autoload/save_system.gd.uid	20	uid
+mvp/scripts/autoload/tutorial_director.gd	2206	script
+mvp/scripts/autoload/tutorial_director.gd.uid	20	uid
+mvp/scripts/character_anim.gd	15203	script
+mvp/scripts/character_anim.gd.uid	20	uid
+mvp/scripts/core/enums.gd	1502	script
+mvp/scripts/core/enums.gd.uid	19	uid
+mvp/scripts/data/character.gd	4942	script
+mvp/scripts/data/character.gd.uid	20	uid
+mvp/scripts/data/character_build_service.gd	1865	script
+mvp/scripts/data/character_build_service.gd.uid	20	uid
+mvp/scripts/data/clan_identity.gd	348	script
+mvp/scripts/data/clan_identity.gd.uid	20	uid
+mvp/scripts/data/creature_profile.gd	9244	script
+mvp/scripts/data/creature_profile.gd.uid	19	uid
+mvp/scripts/data/stat_defs.gd	3305	script
+mvp/scripts/data/stat_defs.gd.uid	19	uid
+mvp/scripts/data/world_state.gd	593	script
+mvp/scripts/data/world_state.gd.uid	20	uid
+mvp/scripts/data/yaml_to_json_builder.gd	3213	script
+mvp/scripts/data/yaml_to_json_builder.gd.uid	20	uid
+mvp/scripts/domain/corruption_effect.gd	400	script
+mvp/scripts/domain/corruption_effect.gd.uid	20	uid
+mvp/scripts/domain/corruption_profile.gd	1694	script
+mvp/scripts/domain/corruption_profile.gd.uid	19	uid
+mvp/scripts/domain/corruption_result.gd	801	script
+mvp/scripts/domain/corruption_result.gd.uid	20	uid
+mvp/scripts/domain/corruption_stage.gd	1255	script
+mvp/scripts/domain/corruption_stage.gd.uid	19	uid
+mvp/scripts/domain/creature_profile.gd	290	script
+mvp/scripts/domain/creature_profile.gd.uid	19	uid
+mvp/scripts/domain/loop_action_result.gd	345	script
+mvp/scripts/domain/loop_action_result.gd.uid	19	uid
+mvp/scripts/domain/narrative_objective.gd	1172	script
+mvp/scripts/domain/narrative_objective.gd.uid	20	uid
+mvp/scripts/domain/objective_resolution.gd	510	script
+mvp/scripts/domain/objective_resolution.gd.uid	20	uid
+mvp/scripts/factories/creature_factory.gd	207	script
+mvp/scripts/factories/creature_factory.gd.uid	20	uid
+mvp/scripts/factory/character_factory.gd	1907	script
+mvp/scripts/factory/character_factory.gd.uid	20	uid
+mvp/scripts/factory/creature_factory.gd	3052	script
+mvp/scripts/factory/creature_factory.gd.uid	19	uid
+mvp/scripts/game_loop/apres_midi_state.gd	359	script
+mvp/scripts/game_loop/apres_midi_state.gd.uid	20	uid
+mvp/scripts/game_loop/expedition_state_machine.gd	1846	script
+mvp/scripts/game_loop/expedition_state_machine.gd.uid	20	uid
+mvp/scripts/game_loop/game_loop_state_machine.gd	1282	script
+mvp/scripts/game_loop/game_loop_state_machine.gd.uid	20	uid
+mvp/scripts/game_loop/matin_state.gd	349	script
+mvp/scripts/game_loop/matin_state.gd.uid	20	uid
+mvp/scripts/game_loop/soir_state.gd	353	script
+mvp/scripts/game_loop/soir_state.gd.uid	20	uid
+mvp/scripts/repositories/creature_repository.gd	1624	script
+mvp/scripts/repositories/creature_repository.gd.uid	19	uid
+mvp/scripts/services/character_creation_application_service.gd	2833	script
+mvp/scripts/services/character_creation_application_service.gd.uid	20	uid
+mvp/scripts/services/character_creation_context.gd	1371	script
+mvp/scripts/services/character_creation_context.gd.uid	20	uid
+mvp/scripts/services/character_creation_rules_service.gd	14175	script
+mvp/scripts/services/character_creation_rules_service.gd.uid	20	uid
+mvp/scripts/services/character_traits_service.gd	2737	script
+mvp/scripts/services/character_traits_service.gd.uid	19	uid
+mvp/scripts/services/clan_economy_service.gd	2382	script
+mvp/scripts/services/clan_economy_service.gd.uid	20	uid
+mvp/scripts/services/clan_house_service.gd	5125	script
+mvp/scripts/services/clan_house_service.gd.uid	19	uid
+mvp/scripts/services/corruption_service.gd	22161	script
+mvp/scripts/services/corruption_service.gd.uid	19	uid
+mvp/scripts/services/creature_portrait_resolver.gd	3937	script
+mvp/scripts/services/creature_portrait_resolver.gd.uid	19	uid
+mvp/scripts/services/creature_roster_service.gd	8659	script
+mvp/scripts/services/creature_roster_service.gd.uid	20	uid
+mvp/scripts/services/date_time_formatter.gd	825	script
+mvp/scripts/services/date_time_formatter.gd.uid	19	uid
+mvp/scripts/services/json_persistence_service.gd	1765	script
+mvp/scripts/services/json_persistence_service.gd.uid	20	uid
+mvp/scripts/services/memory_tutorial_service.gd	6659	script
+mvp/scripts/services/memory_tutorial_service.gd.uid	20	uid
+mvp/scripts/services/name_generator_service.gd	3451	script
+mvp/scripts/services/name_generator_service.gd.uid	20	uid
+mvp/scripts/services/narrative_objective_service.gd	1814	script
+mvp/scripts/services/narrative_objective_service.gd.uid	20	uid
+mvp/scripts/services/pact_service.gd	4922	script
+mvp/scripts/services/pact_service.gd.uid	19	uid
+mvp/scripts/services/pnj_daily_planner_service.gd	16466	script
+mvp/scripts/services/pnj_daily_planner_service.gd.uid	20	uid
+mvp/scripts/services/pnj_generator.gd	6556	script
+mvp/scripts/services/pnj_generator.gd.uid	20	uid
+mvp/scripts/services/power_campaign_service.gd	5399	script
+mvp/scripts/services/power_campaign_service.gd.uid	20	uid
+mvp/scripts/services/power_loop_service.gd	8632	script
+mvp/scripts/services/power_loop_service.gd.uid	19	uid
+mvp/scripts/services/refuge_service.gd	9370	script
+mvp/scripts/services/refuge_service.gd.uid	20	uid
+mvp/scripts/services/resource_path_resolver.gd	138	script
+mvp/scripts/services/resource_path_resolver.gd.uid	20	uid
+mvp/scripts/services/soldier_assignment_service.gd	4981	script
+mvp/scripts/services/soldier_assignment_service.gd.uid	20	uid
+mvp/scripts/services/tactical_combat_service.gd	7557	script
+mvp/scripts/services/tactical_combat_service.gd.uid	20	uid
+mvp/scripts/services/training_system.gd	2595	script
+mvp/scripts/services/training_system.gd.uid	20	uid
+mvp/scripts/services/transaction.gd	763	script
+mvp/scripts/services/transaction.gd.uid	18	uid
+mvp/scripts/state_machine/state.gd	711	script
+mvp/scripts/state_machine/state.gd.uid	20	uid
+mvp/scripts/state_machine/state_machine.gd	2006	script
+mvp/scripts/state_machine/state_machine.gd.uid	19	uid
+mvp/scripts/tests/check_classe_stats.gd	1969	script
+mvp/scripts/tests/check_classe_stats.gd.uid	20	uid
+mvp/scripts/tests/check_scenes.gd	1336	script
+mvp/scripts/tests/check_scenes.gd.uid	20	uid
+mvp/scripts/tests/check_scenes_parsing.gd	1775	script
+mvp/scripts/tests/check_scenes_parsing.gd.uid	20	uid
+mvp/scripts/tests/e2e_clanhub_display.gd	2419	script
+mvp/scripts/tests/e2e_clanhub_display.gd.uid	20	uid
+mvp/scripts/tests/e2e_creation_and_persistence.gd	5265	script
+mvp/scripts/tests/e2e_creation_and_persistence.gd.uid	20	uid
+mvp/scripts/tests/flow_test_assign_soldiers.gd	708	script
+mvp/scripts/tests/flow_test_assign_soldiers.gd.uid	20	uid
+mvp/scripts/tests/game_loop_smoke.gd	3504	script
+mvp/scripts/tests/game_loop_smoke.gd.uid	20	uid
+mvp/scripts/tests/generate_pnj_test.gd	1542	script
+mvp/scripts/tests/generate_pnj_test.gd.uid	20	uid
+mvp/scripts/tests/inspect_creation_ui.gd	1237	script
+mvp/scripts/tests/inspect_creation_ui.gd.uid	19	uid
+mvp/scripts/tests/instantiate_pnj_manager.gd	509	script
+mvp/scripts/tests/instantiate_pnj_manager.gd.uid	20	uid
+mvp/scripts/tests/print_build_resume.gd.uid	20	uid
+mvp/scripts/tests/smoke_clan_manager_pnj.gd	3179	script
+mvp/scripts/tests/smoke_clan_manager_pnj.gd.uid	19	uid
+mvp/scripts/tests/smoke_pnj_management.gd	4036	script
+mvp/scripts/tests/smoke_pnj_management.gd.uid	20	uid
+mvp/scripts/tests/smoke_refactor_domain.gd	2169	script
+mvp/scripts/tests/smoke_refactor_domain.gd.uid	20	uid
+mvp/scripts/tests/smoke_stats.gd	3873	script
+mvp/scripts/tests/smoke_stats.gd.uid	20	uid
+mvp/scripts/tests/test_campaign_states.gd	3243	script
+mvp/scripts/tests/test_campaign_states.gd.uid	20	uid
+mvp/scripts/tests/test_chapter_view_illustrations.gd	2227	script
+mvp/scripts/tests/test_chapter_view_illustrations.gd.uid	20	uid
+mvp/scripts/tests/test_character_clan_reference.gd	1936	script
+mvp/scripts/tests/test_character_clan_reference.gd.uid	20	uid
+mvp/scripts/tests/test_character_creation_point_buy.gd	10599	script
+mvp/scripts/tests/test_character_creation_point_buy.gd.uid	20	uid
+mvp/scripts/tests/test_character_creation_smoke.gd	1565	script
+mvp/scripts/tests/test_character_creation_smoke.gd.uid	20	uid
+mvp/scripts/tests/test_character_stats_roundtrip.gd	3026	script
+mvp/scripts/tests/test_character_stats_roundtrip.gd.uid	19	uid
+mvp/scripts/tests/test_compile_smoke.gd	3639	script
+mvp/scripts/tests/test_compile_smoke.gd.uid	20	uid
+mvp/scripts/tests/test_corruption_clan_manager.gd	2501	script
+mvp/scripts/tests/test_corruption_clan_manager.gd.uid	19	uid
+mvp/scripts/tests/test_corruption_service.gd	5586	script
+mvp/scripts/tests/test_corruption_service.gd.uid	19	uid
+mvp/scripts/tests/test_creation_classes_ui.gd	3544	script
+mvp/scripts/tests/test_creation_classes_ui.gd.uid	20	uid
+mvp/scripts/tests/test_creation_headless.gd	2377	script
+mvp/scripts/tests/test_creation_headless.gd.uid	20	uid
+mvp/scripts/tests/test_domain_services.gd	5502	script
+mvp/scripts/tests/test_domain_services.gd.uid	20	uid
+mvp/scripts/tests/test_event_result_view.gd	5119	script
+mvp/scripts/tests/test_event_result_view.gd.uid	19	uid
+mvp/scripts/tests/test_expedition_corruption.gd	4915	script
+mvp/scripts/tests/test_expedition_corruption.gd.uid	19	uid
+mvp/scripts/tests/test_family_portraits.gd	5432	script
+mvp/scripts/tests/test_family_portraits.gd.uid	20	uid
+mvp/scripts/tests/test_family_visual_assets.gd	1414	script
+mvp/scripts/tests/test_family_visual_assets.gd.uid	19	uid
+mvp/scripts/tests/test_feats_bonus.gd	1321	script
+mvp/scripts/tests/test_feats_bonus.gd.uid	20	uid
+mvp/scripts/tests/test_integration_feats.gd	4055	script
+mvp/scripts/tests/test_integration_feats.gd.uid	20	uid
+mvp/scripts/tests/test_memorial_resume.gd	4327	script
+mvp/scripts/tests/test_memorial_resume.gd.uid	19	uid
+mvp/scripts/tests/test_memory_sequences.gd	2449	script
+mvp/scripts/tests/test_memory_sequences.gd.uid	20	uid
+mvp/scripts/tests/test_multiroute_campaign.gd	5932	script
+mvp/scripts/tests/test_multiroute_campaign.gd.uid	20	uid
+mvp/scripts/tests/test_narration_assets.gd	1751	script
+mvp/scripts/tests/test_narration_assets.gd.uid	20	uid
+mvp/scripts/tests/test_original_identity.gd	4690	script
+mvp/scripts/tests/test_original_identity.gd.uid	20	uid
+mvp/scripts/tests/test_persistence_effects.gd	928	script
+mvp/scripts/tests/test_persistence_effects.gd.uid	20	uid
+mvp/scripts/tests/test_playable_prologue.gd	11092	script
+mvp/scripts/tests/test_playable_prologue.gd.uid	20	uid
+mvp/scripts/tests/test_portrait_signature_loader.gd	1193	script
+mvp/scripts/tests/test_portrait_signature_loader.gd.uid	20	uid
+mvp/scripts/tests/test_power_objectives.gd	3313	script
+mvp/scripts/tests/test_power_objectives.gd.uid	20	uid
+mvp/scripts/tests/test_prologue_navigation.gd	7035	script
+mvp/scripts/tests/test_prologue_navigation.gd.uid	20	uid
+mvp/scripts/tests/test_recruter_pnj_scenario.gd	3075	script
+mvp/scripts/tests/test_recruter_pnj_scenario.gd.uid	20	uid
+mvp/scripts/tests/test_semantic_visual_mapping.gd	2106	script
+mvp/scripts/tests/test_semantic_visual_mapping.gd.uid	19	uid
+mvp/scripts/tests/test_slide2_t_layout.gd	1651	script
+mvp/scripts/tests/test_slide2_t_layout.gd.uid	19	uid
+mvp/scripts/tests/test_ui_reforge_smoke.gd	2662	script
+mvp/scripts/tests/test_ui_reforge_smoke.gd.uid	19	uid
+mvp/scripts/tests/test_veyr_boot_contracts.gd	1509	script
+mvp/scripts/tests/test_veyr_boot_contracts.gd.uid	20	uid
+mvp/scripts/tests/test_veyr_runtime_regressions.gd	2197	script
+mvp/scripts/tests/test_veyr_runtime_regressions.gd.uid	20	uid
+mvp/scripts/tests/test_visual_coherence.gd	4323	script
+mvp/scripts/tests/test_visual_coherence.gd.uid	20	uid
+mvp/scripts/tests/test_world_state_adapter.gd	2382	script
+mvp/scripts/tests/test_world_state_adapter.gd.uid	20	uid
+mvp/scripts/tests/test_xp_level.gd	679	script
+mvp/scripts/tests/test_xp_level.gd.uid	20	uid
+mvp/scripts/tools/game_data_helper.gd	1006	script
+mvp/scripts/tools/game_data_helper.gd.uid	20	uid
+mvp/scripts/ui/chapter_select.gd	3988	script
+mvp/scripts/ui/chapter_select.gd.uid	20	uid
+mvp/scripts/ui/chapter_view.gd	4980	script
+mvp/scripts/ui/chapter_view.gd.uid	19	uid
+mvp/scripts/ui/character_creation/character_creation_manager.gd	12173	script
+mvp/scripts/ui/character_creation/character_creation_manager.gd.uid	20	uid
+mvp/scripts/ui/character_creation/character_creation_screen.gd	12174	script
+mvp/scripts/ui/character_creation/character_creation_screen.gd.uid	20	uid
+mvp/scripts/ui/character_creation/components/equipment_slot_card.gd	3305	script
+mvp/scripts/ui/character_creation/components/equipment_slot_card.gd.uid	20	uid
+mvp/scripts/ui/character_creation/components/inventory_item_card.gd	2314	script
+mvp/scripts/ui/character_creation/components/inventory_item_card.gd.uid	20	uid
+mvp/scripts/ui/character_creation/components/inventory_item_grid.gd	552	script
+mvp/scripts/ui/character_creation/components/inventory_item_grid.gd.uid	19	uid
+mvp/scripts/ui/character_creation/creation_data.gd	4306	script
+mvp/scripts/ui/character_creation/creation_data.gd.uid	20	uid
+mvp/scripts/ui/character_creation/creation_flow_controller.gd	856	script
+mvp/scripts/ui/character_creation/creation_flow_controller.gd.uid	20	uid
+mvp/scripts/ui/character_creation/portrait_payload.gd	4033	script
+mvp/scripts/ui/character_creation/portrait_payload.gd.uid	20	uid
+mvp/scripts/ui/character_creation/slides/CharacterSheet.gd	16681	script
+mvp/scripts/ui/character_creation/slides/CharacterSheet.gd.uid	19	uid
+mvp/scripts/ui/character_creation/slides/creation_slide_base.gd	780	script
+mvp/scripts/ui/character_creation/slides/creation_slide_base.gd.uid	19	uid
+mvp/scripts/ui/character_creation/slides/slide_01_basic_info.gd	9689	script
+mvp/scripts/ui/character_creation/slides/slide_01_basic_info.gd.uid	20	uid
+mvp/scripts/ui/character_creation/slides/slide_02_class_stats.gd	25683	script
+mvp/scripts/ui/character_creation/slides/slide_02_class_stats.gd.uid	19	uid
+mvp/scripts/ui/character_creation/slides/slide_03_feats_abilities.gd	21416	script
+mvp/scripts/ui/character_creation/slides/slide_03_feats_abilities.gd.uid	20	uid
+mvp/scripts/ui/character_creation/slides/slide_04_items_equipment.gd	14264	script
+mvp/scripts/ui/character_creation/slides/slide_04_items_equipment.gd.uid	20	uid
+mvp/scripts/ui/character_creation/slides/slide_05_review_confirm.gd	583	script
+mvp/scripts/ui/character_creation/slides/slide_05_review_confirm.gd.uid	19	uid
+mvp/scripts/ui/character_sheet.gd	23739	script
+mvp/scripts/ui/character_sheet.gd.uid	20	uid
+mvp/scripts/ui/clan_hub.gd	54308	script
+mvp/scripts/ui/clan_hub.gd.uid	19	uid
+mvp/scripts/ui/colors.gd	368	script
+mvp/scripts/ui/colors.gd.uid	20	uid
+mvp/scripts/ui/components/keyboard_tooltip.gd	3881	script
+mvp/scripts/ui/components/keyboard_tooltip.gd.uid	19	uid
+mvp/scripts/ui/components/vn_modal_factory.gd	6479	script
+mvp/scripts/ui/components/vn_modal_factory.gd.uid	20	uid
+mvp/scripts/ui/creation_personnage.gd	1313	script
+mvp/scripts/ui/creation_personnage.gd.uid	20	uid
+mvp/scripts/ui/dungeon_view.gd	14013	script
+mvp/scripts/ui/dungeon_view.gd.uid	20	uid
+mvp/scripts/ui/event_result_presenter.gd	6237	script
+mvp/scripts/ui/event_result_presenter.gd.uid	20	uid
+mvp/scripts/ui/event_result_view.gd	3507	script
+mvp/scripts/ui/event_result_view.gd.uid	20	uid
+mvp/scripts/ui/fallen_ui.gd	11268	script
+mvp/scripts/ui/fallen_ui.gd.uid	20	uid
+mvp/scripts/ui/fk_screen_chrome.gd	1687	script
+mvp/scripts/ui/fk_screen_chrome.gd.uid	20	uid
+mvp/scripts/ui/fk_ui_styles.gd	3341	script
+mvp/scripts/ui/fk_ui_styles.gd.uid	19	uid
+mvp/scripts/ui/intro_vn.gd	43131	script
+mvp/scripts/ui/intro_vn.gd.uid	20	uid
+mvp/scripts/ui/library_view.gd	5429	script
+mvp/scripts/ui/library_view.gd.uid	19	uid
+mvp/scripts/ui/main_menu.gd	14538	script
+mvp/scripts/ui/main_menu.gd.uid	19	uid
+mvp/scripts/ui/main_menu_reworked.gd	1959	script
+mvp/scripts/ui/main_menu_reworked.gd.uid	19	uid
+mvp/scripts/ui/map_view.gd	5778	script
+mvp/scripts/ui/map_view.gd.uid	19	uid
+mvp/scripts/ui/menu_actions.gd	1311	script
+mvp/scripts/ui/menu_actions.gd.uid	20	uid
+mvp/scripts/ui/menu_bg_shader.gdshader	1227	shader
+mvp/scripts/ui/menu_bg_shader.gdshader.uid	20	uid
+mvp/scripts/ui/menu_item.gd	1539	script
+mvp/scripts/ui/menu_item.gd.uid	20	uid
+mvp/scripts/ui/options_dialog.gd	1782	script
+mvp/scripts/ui/options_dialog.gd.uid	20	uid
+mvp/scripts/ui/pnj_card.gd	9228	script
+mvp/scripts/ui/pnj_card.gd.uid	20	uid
+mvp/scripts/ui/pnj_manager.gd	28128	script
+mvp/scripts/ui/pnj_manager.gd.uid	20	uid
+mvp/scripts/ui/power_routes_panel.gd	7788	script
+mvp/scripts/ui/power_routes_panel.gd.uid	19	uid
+mvp/scripts/ui/refuge_panel.gd	14247	script
+mvp/scripts/ui/refuge_panel.gd.uid	20	uid
+mvp/scripts/ui/resolution_action.gd	20862	script
+mvp/scripts/ui/resolution_action.gd.uid	20	uid
+mvp/scripts/ui/resolution_animator.gd	4050	script
+mvp/scripts/ui/resolution_animator.gd.uid	20	uid
+mvp/scripts/ui/slot_select.gd	7214	script
+mvp/scripts/ui/slot_select.gd.uid	20	uid
+mvp/scripts/ui/stop_music_ui.gd	1297	script
+mvp/scripts/ui/stop_music_ui.gd.uid	20	uid
+mvp/scripts/ui/transition.gd.uid	19	uid
+mvp/scripts/ui/tutorials/character_animation_controller.gd	841	script
+mvp/scripts/ui/tutorials/character_animation_controller.gd.uid	20	uid
+mvp/scripts/ui/tutorials/memory_tutorial_view.gd	10199	script
+mvp/scripts/ui/tutorials/memory_tutorial_view.gd.uid	20	uid
+mvp/scripts/ui/tutorials/placeholder_animator.gd	1214	script
+mvp/scripts/ui/tutorials/placeholder_animator.gd.uid	20	uid
+mvp/scripts/ui/tutorials/tutorial_highlight.gd	1032	script
+mvp/scripts/ui/tutorials/tutorial_highlight.gd.uid	20	uid
+mvp/scripts/ui/tween/classedeperso/abyss_paladin_card.gd	324	script
+mvp/scripts/ui/tween/classedeperso/abyss_paladin_card.gd.uid	20	uid
+mvp/scripts/ui/tween/classedeperso/base_class_card.gd	4537	script
+mvp/scripts/ui/tween/classedeperso/base_class_card.gd.uid	19	uid
+mvp/scripts/ui/tween/classedeperso/berserker_demon_card.gd	538	script
+mvp/scripts/ui/tween/classedeperso/berserker_demon_card.gd.uid	20	uid
+mvp/scripts/ui/tween/classedeperso/blood_sorcerer_card.gd	312	script
+mvp/scripts/ui/tween/classedeperso/blood_sorcerer_card.gd.uid	20	uid
+mvp/scripts/ui/tween/classedeperso/class_card_factory.gd	2688	script
+mvp/scripts/ui/tween/classedeperso/class_card_factory.gd.uid	20	uid
+mvp/scripts/ui/tween/classedeperso/demon_blade_card.gd	307	script
+mvp/scripts/ui/tween/classedeperso/demon_blade_card.gd.uid	19	uid
+mvp/scripts/ui/tween/classedeperso/echo_bard_card.gd	940	script
+mvp/scripts/ui/tween/classedeperso/echo_bard_card.gd.uid	20	uid
+mvp/scripts/ui/tween/classedeperso/hellcaster_card.gd	313	script
+mvp/scripts/ui/tween/classedeperso/hellcaster_card.gd.uid	19	uid
+mvp/scripts/ui/tween/classedeperso/hellcaster_tween.gd	7251	script
+mvp/scripts/ui/tween/classedeperso/hellcaster_tween.gd.uid	20	uid
+mvp/scripts/ui/tween/classedeperso/hellranger_card.gd	312	script
+mvp/scripts/ui/tween/classedeperso/hellranger_card.gd.uid	19	uid
+mvp/scripts/ui/tween/classedeperso/infernal_artificer_card.gd	308	script
+mvp/scripts/ui/tween/classedeperso/infernal_artificer_card.gd.uid	19	uid
+mvp/scripts/ui/tween/classedeperso/pactbound_card.gd	303	script
+mvp/scripts/ui/tween/classedeperso/pactbound_card.gd.uid	19	uid
+mvp/scripts/ui/tween/classedeperso/shadowfang_card.gd	305	script
+mvp/scripts/ui/tween/classedeperso/shadowfang_card.gd.uid	20	uid
+mvp/scripts/ui/tween/classedeperso/soulwarden_card.gd	308	script
+mvp/scripts/ui/tween/classedeperso/soulwarden_card.gd.uid	20	uid
+mvp/scripts/ui/tween/classedeperso/void_monk_card.gd	320	script
+mvp/scripts/ui/tween/classedeperso/void_monk_card.gd.uid	20	uid
+mvp/scripts/ui/tween/classedeperso/warlord_card.gd	318	script
+mvp/scripts/ui/tween/classedeperso/warlord_card.gd.uid	20	uid
+mvp/scripts/ui/tween/classedeperso/wild_druid_card.gd	302	script
+mvp/scripts/ui/tween/classedeperso/wild_druid_card.gd.uid	20	uid
+mvp/scripts/ui/visual_asset_catalog.gd	12587	script
+mvp/scripts/ui/visual_asset_catalog.gd.uid	20	uid
+mvp/scripts/utils/fk_helpers.gd	364	script
+mvp/scripts/utils/fk_helpers.gd.uid	20	uid
+mvp/scripts/utils/resource_path_resolver.gd	6769	script
+mvp/scripts/utils/resource_path_resolver.gd.uid	20	uid
+mvp/story/carte_lieux.yaml	7431	lore
+mvp/story/carte_veyr.yaml	463	lore
+mvp/story/chapitres_ingrid.yaml	16545	lore
+mvp/story/chroniques_veyr.yaml	688	lore
+mvp/tools/run_refactor_smoke.sh	743	tool
+scripts/ci_test.sh	1378	tool
+scripts/data/character.gd	46	script
+scripts/ensure_export_templates.sh	2668	tool
+scripts/ensure_web_preset.sh	1630	tool
+scripts/export_web.sh	880	tool
+scripts/find_godot_project.sh	1029	tool
+scripts/test_memorial_prologue.sh	1694	tool
+scripts/ui/character_sheet.gd	50	script
+scripts/ui/creation_personnage.gd	77311	script
+scripts/utils/fk_helpers.gd	314	script

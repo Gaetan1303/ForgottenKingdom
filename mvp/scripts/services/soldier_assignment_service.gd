@@ -138,3 +138,12 @@ func reserve(pool: Array, assignments: Dictionary, mission_id: String, count: in
 
 func cancel(pool: Array, assignments: Dictionary, mission_id: String) -> Dictionary:
 	return release(pool, assignments, mission_id)
+
+
+## Retire les derniers IDs disponibles, comme le débit historique de ClanManager.
+func remove_soldiers(pool: Array, count: int) -> Dictionary:
+	var next_pool := pool.duplicate(true)
+	var removed: Array = []
+	for _index in range(mini(maxi(0, count), next_pool.size())):
+		removed.append(next_pool.pop_back())
+	return {"pool": next_pool, "removed_ids": removed}

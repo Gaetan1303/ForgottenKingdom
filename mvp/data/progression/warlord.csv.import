@@ -1,17 +1,7 @@
 [remap]
 
-importer="csv_translation"
-type="Translation"
-uid="uid://bsu8bg0psf3ea"
+importer="keep"
 
 [deps]
 
-files=["res://data/progression/warlord.Force.translation", "res://data/progression/warlord.Magie.translation", "res://data/progression/warlord.Espionnage.translation", "res://data/progression/warlord.Artisanat.translation", "res://data/progression/warlord.Diplomatie.translation", "res://data/progression/warlord.Commandement.translation", "res://data/progression/warlord.Attaque.translation", "res://data/progression/warlord.Défense.translation", "res://data/progression/warlord.Résistance.translation", "res://data/progression/warlord.Initiative.translation", "res://data/progression/warlord.Jet de Vigueur.translation", "res://data/progression/warlord.Jet de Volonté.translation", "res://data/progression/warlord.Jet de Réflexes.translation", "res://data/progression/warlord.Nouveaux Talents.translation", "res://data/progression/warlord.Lore.translation"]
-
-source_file="res://data/progression/warlord.csv"
-dest_files=["res://data/progression/warlord.Force.translation", "res://data/progression/warlord.Magie.translation", "res://data/progression/warlord.Espionnage.translation", "res://data/progression/warlord.Artisanat.translation", "res://data/progression/warlord.Diplomatie.translation", "res://data/progression/warlord.Commandement.translation", "res://data/progression/warlord.Attaque.translation", "res://data/progression/warlord.Défense.translation", "res://data/progression/warlord.Résistance.translation", "res://data/progression/warlord.Initiative.translation", "res://data/progression/warlord.Jet de Vigueur.translation", "res://data/progression/warlord.Jet de Volonté.translation", "res://data/progression/warlord.Jet de Réflexes.translation", "res://data/progression/warlord.Nouveaux Talents.translation", "res://data/progression/warlord.Lore.translation"]
-
 [params]
-
-compress=1
-delimiter=0

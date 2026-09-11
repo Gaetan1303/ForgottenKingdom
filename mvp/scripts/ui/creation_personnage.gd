@@ -24,10 +24,14 @@ func _ready() -> void:
 
 
 func _appliquer_portrait_depuis_chemin(path: String) -> void:
-	if not FileAccess.file_exists(path):
-		push_error("Portrait introuvable : %s" % path)
-		return
-	var image: Image = Image.load_from_file(path)
+	var image: Image
+	if path.begins_with("res://"):
+		var texture: Texture2D = ResourceLoader.load(path) as Texture2D if ResourceLoader.exists(path) else null
+		if texture != null:
+			image = texture.get_image()
+	elif FileAccess.file_exists(path):
+		# Image choisie par le joueur ; son contenu est ensuite embarqué en base64.
+		image = Image.load_from_file(path)
 	if image == null or image.is_empty():
 		push_error("Portrait illisible : %s" % path)
 		return

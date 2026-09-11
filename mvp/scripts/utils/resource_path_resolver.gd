@@ -7,7 +7,6 @@ const DATA_ROOT := "res://data"
 const ASSET_ROOT := "res://assets"
 const STORY_ROOT := "res://story"
 const SCRIPT_ROOT := "res://scripts"
-const IMPORTED_ROOT := "res://.godot/imported"
 
 
 static func normalize(path: String) -> String:
@@ -54,7 +53,7 @@ static func script(relative_path: String) -> String:
 
 static func file_exists(path: String) -> bool:
 	var resolved := normalize(path)
-	return not resolved.is_empty() and FileAccess.file_exists(resolved)
+	return not resolved.is_empty() and (ResourceLoader.exists(resolved) or FileAccess.file_exists(resolved))
 
 
 static func first_existing(candidates: Array, base_path: String = "") -> String:
@@ -98,9 +97,8 @@ static func exists(path: String) -> bool:
 
 
 ## Charge une Texture2D depuis les assets du projet.
-## Si le fichier source a été perdu mais que Godot possède encore son import .ctex,
-## on utilise ce cache comme filet de sécurité. Ce fallback sert notamment aux
-## illustrations narratives historiques du MVP.
+## Les ressources embarquées passent par les imports Godot ; les portraits
+## utilisateur peuvent être des images brutes dans user://.
 static func load_texture(path_or_name: String, base_path: String = "res://assets/images") -> Texture2D:
 	var candidates: Array[String] = _texture_candidates(path_or_name, base_path)
 
@@ -121,12 +119,6 @@ static func load_texture(path_or_name: String, base_path: String = "res://assets
 		if direct_texture != null:
 			return direct_texture
 
-	# Dernier recours pour les anciens projets dont seul le cache .ctex subsiste.
-	var imported_path: String = _find_imported_texture(path_or_name)
-	if not imported_path.is_empty() and ResourceLoader.exists(imported_path):
-		var imported_resource: Resource = ResourceLoader.load(imported_path)
-		if imported_resource is Texture2D:
-			return imported_resource as Texture2D
 	return null
 
 
@@ -160,28 +152,3 @@ static func _texture_candidates(path_or_name: String, base_path: String) -> Arra
 			if not result.has(alternative):
 				result.append(alternative)
 	return result
-
-
-static func _find_imported_texture(path_or_name: String) -> String:
-	var file_name: String = normalize(path_or_name).get_file()
-	if file_name.is_empty():
-		return ""
-	var directory: DirAccess = DirAccess.open(IMPORTED_ROOT)
-	if directory == null:
-		return ""
-
-	var prefixes: Array[String] = []
-	if file_name.get_extension().is_empty():
-		for ext: String in ["png", "webp", "jpg", "jpeg", "svg"]:
-			prefixes.append("%s.%s-" % [file_name, ext])
-	else:
-		prefixes.append(file_name + "-")
-
-	var files: PackedStringArray = directory.get_files()
-	for imported_name: String in files:
-		if not imported_name.ends_with(".ctex"):
-			continue
-		for prefix: String in prefixes:
-			if imported_name.begins_with(prefix):
-				return join(IMPORTED_ROOT, imported_name)
-	return ""

@@ -1,0 +1,510 @@
+{
+  "baseline_commit": "693a1f8",
+  "branch": "Dev",
+  "godot": "4.4.stable.official.4c311cbee",
+  "baseline": {
+    "historical_tests_passed": 51,
+    "historical_tests_failed": 0,
+    "boot_exit": 0,
+    "import_exit": 0,
+    "import_diagnostics": "Editor socket/progress-dialog diagnostics and duplicate import UIDs observed before migration."
+  },
+  "after": [
+    {
+      "name": "import",
+      "exit": 0,
+      "errors": [],
+      "ok": true
+    },
+    {
+      "name": "boot",
+      "exit": 0,
+      "errors": [],
+      "ok": true
+    },
+    {
+      "name": "check_classe_stats",
+      "exit": 0,
+      "errors": [],
+      "ok": true
+    },
+    {
+      "name": "check_scenes",
+      "exit": 0,
+      "errors": [],
+      "ok": true
+    },
+    {
+      "name": "check_scenes_parsing",
+      "exit": 0,
+      "errors": [],
+      "ok": true
+    },
+    {
+      "name": "e2e_clanhub_display",
+      "exit": 0,
+      "errors": [],
+      "ok": true
+    },
+    {
+      "name": "e2e_creation_and_persistence",
+      "exit": 0,
+      "errors": [],
+      "ok": true
+    },
+    {
+      "name": "flow_test_assign_soldiers",
+      "exit": 0,
+      "errors": [],
+      "ok": true
+    },
+    {
+      "name": "game_loop_smoke",
+      "exit": 0,
+      "errors": [],
+      "ok": true
+    },
+    {
+      "name": "generate_pnj_test",
+      "exit": 0,
+      "errors": [],
+      "ok": true
+    },
+    {
+      "name": "inspect_creation_ui",
+      "exit": 0,
+      "errors": [],
+      "ok": true
+    },
+    {
+      "name": "instantiate_pnj_manager",
+      "exit": 0,
+      "errors": [],
+      "ok": true
+    },
+    {
+      "name": "smoke_clan_manager_pnj",
+      "exit": 0,
+      "errors": [],
+      "ok": true
+    },
+    {
+      "name": "smoke_pnj_management",
+      "exit": 0,
+      "errors": [],
+      "ok": true
+    },
+    {
+      "name": "smoke_refactor_domain",
+      "exit": 0,
+      "errors": [],
+      "ok": true
+    },
+    {
+      "name": "smoke_stats",
+      "exit": 0,
+      "errors": [],
+      "ok": true
+    },
+    {
+      "name": "test_campaign_states",
+      "exit": 0,
+      "errors": [],
+      "ok": true
+    },
+    {
+      "name": "test_chapter_view_illustrations",
+      "exit": 0,
+      "errors": [],
+      "ok": true
+    },
+    {
+      "name": "test_character_clan_reference",
+      "exit": 0,
+      "errors": [],
+      "ok": true
+    },
+    {
+      "name": "test_character_creation_point_buy",
+      "exit": 0,
+      "errors": [],
+      "ok": true
+    },
+    {
+      "name": "test_character_creation_smoke",
+      "exit": 0,
+      "errors": [],
+      "ok": true
+    },
+    {
+      "name": "test_character_stats_roundtrip",
+      "exit": 0,
+      "errors": [],
+      "ok": true
+    },
+    {
+      "name": "test_clan_economy_compatibility",
+      "exit": 0,
+      "errors": [],
+      "ok": true
+    },
+    {
+      "name": "test_compile_smoke",
+      "exit": 0,
+      "errors": [],
+      "ok": true
+    },
+    {
+      "name": "test_corruption_clan_manager",
+      "exit": 0,
+      "errors": [],
+      "ok": true
+    },
+    {
+      "name": "test_corruption_service",
+      "exit": 0,
+      "errors": [],
+      "ok": true
+    },
+    {
+      "name": "test_creation_classes_ui",
+      "exit": 0,
+      "errors": [],
+      "ok": true
+    },
+    {
+      "name": "test_creation_headless",
+      "exit": 0,
+      "errors": [],
+      "ok": true
+    },
+    {
+      "name": "test_domain_services",
+      "exit": 0,
+      "errors": [],
+      "ok": true
+    },
+    {
+      "name": "test_event_result_view",
+      "exit": 0,
+      "errors": [],
+      "ok": true
+    },
+    {
+      "name": "test_expedition_corruption",
+      "exit": 0,
+      "errors": [],
+      "ok": true
+    },
+    {
+      "name": "test_export_resources",
+      "exit": 0,
+      "errors": [],
+      "ok": true
+    },
+    {
+      "name": "test_family_portraits",
+      "exit": 0,
+      "errors": [],
+      "ok": true
+    },
+    {
+      "name": "test_family_visual_assets",
+      "exit": 0,
+      "errors": [],
+      "ok": true
+    },
+    {
+      "name": "test_feats_bonus",
+      "exit": 0,
+      "errors": [],
+      "ok": true
+    },
+    {
+      "name": "test_integration_feats",
+      "exit": 0,
+      "errors": [],
+      "ok": true
+    },
+    {
+      "name": "test_memorial_resume",
+      "exit": 0,
+      "errors": [],
+      "ok": true
+    },
+    {
+      "name": "test_memory_sequences",
+      "exit": 0,
+      "errors": [],
+      "ok": true
+    },
+    {
+      "name": "test_multiroute_campaign",
+      "exit": 0,
+      "errors": [],
+      "ok": true
+    },
+    {
+      "name": "test_narration_assets",
+      "exit": 0,
+      "errors": [],
+      "ok": true
+    },
+    {
+      "name": "test_original_identity",
+      "exit": 0,
+      "errors": [],
+      "ok": true
+    },
+    {
+      "name": "test_persistence_effects",
+      "exit": 0,
+      "errors": [],
+      "ok": true
+    },
+    {
+      "name": "test_playable_prologue",
+      "exit": 0,
+      "errors": [],
+      "ok": true
+    },
+    {
+      "name": "test_portrait_signature_loader",
+      "exit": 0,
+      "errors": [],
+      "ok": true
+    },
+    {
+      "name": "test_power_objectives",
+      "exit": 0,
+      "errors": [],
+      "ok": true
+    },
+    {
+      "name": "test_prologue_navigation",
+      "exit": 0,
+      "errors": [],
+      "ok": true
+    },
+    {
+      "name": "test_recruter_pnj_scenario",
+      "exit": 0,
+      "errors": [],
+      "ok": true
+    },
+    {
+      "name": "test_semantic_visual_mapping",
+      "exit": 0,
+      "errors": [],
+      "ok": true
+    },
+    {
+      "name": "test_slide2_t_layout",
+      "exit": 0,
+      "errors": [],
+      "ok": true
+    },
+    {
+      "name": "test_ui_reforge_smoke",
+      "exit": 0,
+      "errors": [],
+      "ok": true
+    },
+    {
+      "name": "test_veyr_boot_contracts",
+      "exit": 0,
+      "errors": [],
+      "ok": true
+    },
+    {
+      "name": "test_veyr_runtime_regressions",
+      "exit": 0,
+      "errors": [],
+      "ok": true
+    },
+    {
+      "name": "test_visual_coherence",
+      "exit": 0,
+      "errors": [],
+      "ok": true
+    },
+    {
+      "name": "test_world_state_adapter",
+      "exit": 0,
+      "errors": [],
+      "ok": true
+    },
+    {
+      "name": "test_xp_level",
+      "exit": 0,
+      "errors": [],
+      "ok": true
+    }
+  ],
+  "desktop_audio": [
+    {
+      "peak_db": -19.312967300415,
+      "playing": true,
+      "position": 1.39609980583191,
+      "track": "mainmenu.mp3"
+    },
+    {
+      "peak_db": -13.5294370651245,
+      "playing": true,
+      "position": 1.11746037006378,
+      "track": "main_theme.ogg"
+    },
+    {
+      "peak_db": -9.85691165924072,
+      "playing": true,
+      "position": 7.989333152771,
+      "track": "Serment_des_Cendres.mp3"
+    },
+    {
+      "effect": "click",
+      "peak": 0.752057790756226
+    },
+    {
+      "effect": "whoosh",
+      "peak": 0.38518100976944
+    },
+    {
+      "effect": "swing",
+      "peak": 0.838601350784302
+    }
+  ],
+  "pack_checks": [
+    {
+      "name": "test_export_resources",
+      "exit": 0,
+      "ok": true,
+      "output": "Godot Engine v4.4.stable.official.4c311cbee - https://godotengine.org\n\nChapterLoader: 3 chapitres, 11 lieux chargés.\nEXPORT_RESOURCES_OK { \"images\": 80, \"audio\": 48, \"data\": 38, \"scenes\": 27 }\n"
+    },
+    {
+      "name": "test_portrait_signature_loader",
+      "exit": 0,
+      "ok": true,
+      "output": "Godot Engine v4.4.stable.official.4c311cbee - https://godotengine.org\n\nChapterLoader: 3 chapitres, 11 lieux chargés.\nTEST_OK: signature loader portrait fonctionne | file_name=defaut.png\n"
+    },
+    {
+      "name": "test_prologue_navigation",
+      "exit": 0,
+      "ok": true,
+      "output": "Godot Engine v4.4.stable.official.4c311cbee - https://godotengine.org\n\nChapterLoader: 3 chapitres, 11 lieux chargés.\nPROLOGUE_NAVIGATION_OK\n"
+    }
+  ],
+  "artifacts": [
+    {
+      "name": "index.audio.position.worklet.js",
+      "bytes": 3149,
+      "sha256": "347b512529c5dca302093f7b9de6d184dd09d10e9a6fba62cbab098a891b2368"
+    },
+    {
+      "name": "index.audio.worklet.js",
+      "bytes": 7298,
+      "sha256": "5b476a9c9ce642c0ee4256436d1bc31d9c38f868aca0f9a8e2a57c18d2dec2a3"
+    },
+    {
+      "name": "index.html",
+      "bytes": 5430,
+      "sha256": "d131c73be27e090d5d7231e5be6e6c6bb3678dd5a6a95780c778d1867d4ce64b"
+    },
+    {
+      "name": "index.js",
+      "bytes": 317142,
+      "sha256": "19eb180d568bb8e17bcf4c72ca034ed3af44deeb90304deefee4e665562dfe31"
+    },
+    {
+      "name": "index.pck",
+      "bytes": 132154976,
+      "sha256": "35b360a2c0d7855da6e5ab91b7a265bbbbfacd4fb776964b97a991a4bd628ab2"
+    },
+    {
+      "name": "index.wasm",
+      "bytes": 43682606,
+      "sha256": "60e0c995c94fc53192ac43727948f10ba52aac640b61f0e78783945146da1e22"
+    }
+  ],
+  "remote_github_pages_deployed": false,
+  "checks": {
+    "runtime_path_audit": "MVP_PATHS_OK files=196 resource_paths=189 legacy=0 temp_runtime=0",
+    "clan_manager_lines_before": 1915,
+    "clan_manager_lines_after": 1840,
+    "world_state_and_adapter_unchanged": true,
+    "main_checkout_boot_exit": 0,
+    "exported_sources_match_worktree": true,
+    "git_diff_check_exit": 0
+  },
+  "limits": [
+    "GitHub Pages distant non déployé ni testé",
+    "Chromium local seulement ; Safari/iOS non vérifiés",
+    "Mixage desktop mesuré sans écoute humaine des haut-parleurs",
+    "Les scènes existantes ne déclenchent pas play_sfx ; sources SFX testées par appel du service",
+    "Huit chemins optionnels avec replis existants et quelques UID alias restent documentés"
+  ],
+  "web_audio": {
+    "browser": "153.0.8010.12",
+    "before": {
+      "states": [
+        "running"
+      ],
+      "starts": [],
+      "peaks": [
+        0,
+        0
+      ]
+    },
+    "after": {
+      "states": [
+        "running"
+      ],
+      "starts": [
+        {
+          "time": 11463.199999999953,
+          "duration": 211.14997916666667
+        }
+      ],
+      "peaks": [
+        2.6181820430792868e-05,
+        0
+      ]
+    },
+    "suspended": {
+      "states": [
+        "suspended"
+      ],
+      "starts": [
+        {
+          "time": 11463.199999999953,
+          "duration": 211.14997916666667
+        }
+      ],
+      "peaks": [
+        0.004066990222781897,
+        0
+      ]
+    },
+    "resumed": {
+      "states": [
+        "running"
+      ],
+      "starts": [
+        {
+          "time": 11463.199999999953,
+          "duration": 211.14997916666667
+        }
+      ],
+      "peaks": [
+        0.11169777810573578,
+        0
+      ]
+    },
+    "httpErrors": [],
+    "runtimeErrors": [],
+    "messages": [
+      "Godot Engine v4.4.stable.official.4c311cbee - https://godotengine.org",
+      "OpenGL API OpenGL ES 3.0 (WebGL 2.0 (OpenGL ES 3.0 Chromium)) - Compatibility - Using Device: WebKit - WebKit WebGL",
+      "ChapterLoader: 3 chapitres, 11 lieux chargés."
+    ]
+  }
+}

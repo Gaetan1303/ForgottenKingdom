@@ -1,17 +1,7 @@
 [remap]
 
-importer="csv_translation"
-type="Translation"
-uid="uid://c7kxwlkur2mld"
+importer="keep"
 
 [deps]
 
-files=["res://data/progression/hellranger.Force.translation", "res://data/progression/hellranger.Magie.translation", "res://data/progression/hellranger.Espionnage.translation", "res://data/progression/hellranger.Artisanat.translation", "res://data/progression/hellranger.Diplomatie.translation", "res://data/progression/hellranger.Commandement.translation", "res://data/progression/hellranger.Attaque.translation", "res://data/progression/hellranger.Défense.translation", "res://data/progression/hellranger.Résistance.translation", "res://data/progression/hellranger.Initiative.translation", "res://data/progression/hellranger.Jet de Vigueur.translation", "res://data/progression/hellranger.Jet de Volonté.translation", "res://data/progression/hellranger.Jet de Réflexes.translation", "res://data/progression/hellranger.Nouveaux Talents.translation", "res://data/progression/hellranger.Lore.translation"]
-
-source_file="res://data/progression/hellranger.csv"
-dest_files=["res://data/progression/hellranger.Force.translation", "res://data/progression/hellranger.Magie.translation", "res://data/progression/hellranger.Espionnage.translation", "res://data/progression/hellranger.Artisanat.translation", "res://data/progression/hellranger.Diplomatie.translation", "res://data/progression/hellranger.Commandement.translation", "res://data/progression/hellranger.Attaque.translation", "res://data/progression/hellranger.Défense.translation", "res://data/progression/hellranger.Résistance.translation", "res://data/progression/hellranger.Initiative.translation", "res://data/progression/hellranger.Jet de Vigueur.translation", "res://data/progression/hellranger.Jet de Volonté.translation", "res://data/progression/hellranger.Jet de Réflexes.translation", "res://data/progression/hellranger.Nouveaux Talents.translation", "res://data/progression/hellranger.Lore.translation"]
-
 [params]
-
-compress=1
-delimiter=0

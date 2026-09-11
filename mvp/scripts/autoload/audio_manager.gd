@@ -9,7 +9,8 @@ const SFX_DIR   := "res://assets/audio/sfx/"
 var music_volume: float = 0.8:
 	set(v):
 		music_volume = clamp(v, 0.0, 1.0)
-		_music_player.volume_db = linear_to_db(music_volume)
+		if _music_player:
+			_music_player.volume_db = linear_to_db(music_volume)
 
 var sfx_volume: float = 1.0:
 	set(v):
@@ -19,6 +20,10 @@ var _music_player: AudioStreamPlayer
 var _sfx_player: AudioStreamPlayer
 var _current_music_name: String = ""
 var _sfx_preload: Dictionary = {}
+var _web_audio_unlocked := not OS.has_feature("web")
+var _pending_music_name := ""
+var _pending_music_loop := true
+var _music_transition: Tween
 
 
 func _ready() -> void:
@@ -46,67 +51,95 @@ func _exit_tree() -> void:
 	if _sfx_player:
 		_sfx_player.stop()
 		_sfx_player.stream = null
+	if _music_transition:
+		_music_transition.kill()
+	_music_transition = null
+	_pending_music_name = ""
 	_sfx_preload.clear()
 	_current_music_name = ""
 
 
-## Joue une musique de fond (fondu si une autre est en cours).
+## Le moteur reprend son contexte Web Audio sur cette même interaction native.
+func _input(event: InputEvent) -> void:
+	if _web_audio_unlocked or not event.is_pressed():
+		return
+	if event is InputEventMouseButton or event is InputEventScreenTouch or event is InputEventKey:
+		_web_audio_unlocked = true
+		var pending := _pending_music_name
+		_pending_music_name = ""
+		if not pending.is_empty():
+			play_music(pending, _pending_music_loop)
+
+
+## Les ressources importées sont remappées dans le PCK : FileAccess ne suffit pas.
+func resolve_music_path(track_name: String) -> String:
+	var base_name := track_name.get_basename()
+	# Préserver l'ordre de sélection historique MP3, OGG, WAV.
+	for extension in ["mp3", "ogg", "wav"]:
+		var path: String = MUSIC_DIR + base_name + "." + extension
+		if ResourceLoader.exists(path):
+			return path
+	return ""
+
+
+## Joue une musique de fond ; la dernière demande remplace un fondu en cours.
 func play_music(track_name: String, loop: bool = true) -> void:
 	if track_name.strip_edges().is_empty():
 		return
-	# In headless runs (CI/tests), avoid loading audio resources which may not have loaders.
+	if not _web_audio_unlocked:
+		_pending_music_name = track_name
+		_pending_music_loop = loop
+		return
 	if OS.has_feature("headless") or DisplayServer.get_name() == "headless":
 		return
-
 	if _current_music_name == track_name:
-		return  # Déjà en lecture
-
-	var base_name := track_name.get_basename()
-	var stream: AudioStream = null
-	var path: String = ""
-	# Try common extensions: mp3, ogg, wav
-	var mp3_path := MUSIC_DIR + base_name + '.mp3'
-	if FileAccess.file_exists(mp3_path):
-		stream = load(mp3_path)
-		path = mp3_path
-	else:
-		var ogg_path := MUSIC_DIR + base_name + '.ogg'
-		if FileAccess.file_exists(ogg_path):
-			stream = load(ogg_path)
-			path = ogg_path
-		else:
-			var wav_path := MUSIC_DIR + base_name + '.wav'
-			if FileAccess.file_exists(wav_path):
-				stream = load(wav_path)
-				path = wav_path
+		return
+	var path := resolve_music_path(track_name)
+	var stream: AudioStream = load(path) as AudioStream if not path.is_empty() else null
 	if stream == null:
-		# Try WAV fallback if OGG loader is not available in this runtime
-		var base := path.get_basename()
-		var wav_fallback := base + '.wav'
-		if FileAccess.file_exists(wav_fallback):
-			stream = load(wav_fallback)
-			path = wav_fallback
-		else:
-			push_warning("AudioManager: fichier introuvable '%s'" % path)
-			_music_player.stop()
-			_current_music_name = ""
-			return
+		push_warning("AudioManager: musique introuvable '%s'" % track_name)
+		stop_music(0.0)
+		return
 	if stream is AudioStreamOggVorbis or stream is AudioStreamMP3:
 		stream.loop = loop
-
-	await _fade_out_music(0.5)
-	_music_player.stream = stream
-	_music_player.play()
+	elif stream is AudioStreamWAV:
+		stream.loop_mode = AudioStreamWAV.LOOP_FORWARD if loop else AudioStreamWAV.LOOP_DISABLED
+	if _music_transition:
+		_music_transition.kill()
 	_current_music_name = track_name
-	await _fade_in_music(0.5)
+	_music_transition = create_tween()
+	_music_transition.finished.connect(_on_music_transition_finished)
+	if _music_player.playing:
+		_music_transition.tween_property(_music_player, "volume_db", linear_to_db(0.001), 0.5)
+	_music_transition.tween_callback(func():
+		_music_player.stream = stream
+		_music_player.volume_db = linear_to_db(0.001)
+		_music_player.play()
+	)
+	_music_transition.tween_property(_music_player, "volume_db", linear_to_db(music_volume), 0.5)
 
 
-## Arrête la musique avec un fondu.
+## Arrête aussi une demande encore en attente du premier geste Web.
 func stop_music(fade_duration: float = 1.0) -> void:
-	await _fade_out_music(fade_duration)
-	_music_player.stop()
+	_pending_music_name = ""
 	_current_music_name = ""
-	_music_player.volume_db = linear_to_db(music_volume)
+	if _music_transition:
+		_music_transition.kill()
+	if not _music_player:
+		return
+	_music_transition = create_tween()
+	_music_transition.finished.connect(_on_music_transition_finished)
+	if _music_player.playing and fade_duration > 0.0:
+		_music_transition.tween_property(_music_player, "volume_db", linear_to_db(0.001), fade_duration)
+	_music_transition.tween_callback(func():
+		_music_player.stop()
+		_music_player.volume_db = linear_to_db(music_volume)
+	)
+
+
+func _on_music_transition_finished() -> void:
+	# Libérer les callbacks de fondu qui retiennent la ressource audio précédente.
+	_music_transition = null
 
 
 ## Joue un effet sonore ponctuel.
@@ -134,25 +167,6 @@ func play_sfx(sfx_name: String) -> void:
 	_sfx_player.play()
 
 
-# --- Fonctions internes ---
-
-func _fade_out_music(duration: float) -> void:
-	if not _music_player.playing:
-		return
-	var tween = create_tween()
-	tween.tween_property(_music_player, "volume_db",
-		linear_to_db(0.001), duration)
-	await tween.finished
-
-
-func _fade_in_music(duration: float) -> void:
-	_music_player.volume_db = linear_to_db(0.001)
-	var tween = create_tween()
-	tween.tween_property(_music_player, "volume_db",
-		linear_to_db(music_volume), duration)
-	await tween.finished
-
-
 ## Retourne vrai si une musique est en cours de lecture.
 func is_music_playing() -> bool:
 	return _music_player.playing if _music_player else false
@@ -160,7 +174,7 @@ func is_music_playing() -> bool:
 
 ## Bascule la musique (stop si joue, play si arrêtée). Utilise `main_theme.ogg` par défaut.
 func toggle_music(track_name: String = "main_theme.ogg") -> void:
-	if is_music_playing():
+	if is_music_playing() or not _pending_music_name.is_empty() or not _current_music_name.is_empty():
 		stop_music()
 		return
 	play_music(track_name)

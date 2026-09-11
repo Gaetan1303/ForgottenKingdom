@@ -1,17 +1,7 @@
 [remap]
 
-importer="csv_translation"
-type="Translation"
-uid="uid://fq7syjaq0375"
+importer="keep"
 
 [deps]
 
-files=["res://data/progression/echobard.Force.translation", "res://data/progression/echobard.Magie.translation", "res://data/progression/echobard.Espionnage.translation", "res://data/progression/echobard.Artisanat.translation", "res://data/progression/echobard.Diplomatie.translation", "res://data/progression/echobard.Commandement.translation", "res://data/progression/echobard.Attaque.translation", "res://data/progression/echobard.Défense.translation", "res://data/progression/echobard.Résistance.translation", "res://data/progression/echobard.Initiative.translation", "res://data/progression/echobard.Jet de Vigueur.translation", "res://data/progression/echobard.Jet de Volonté.translation", "res://data/progression/echobard.Jet de Réflexes.translation", "res://data/progression/echobard.Nouveaux Talents.translation", "res://data/progression/echobard.Lore.translation"]
-
-source_file="res://data/progression/echobard.csv"
-dest_files=["res://data/progression/echobard.Force.translation", "res://data/progression/echobard.Magie.translation", "res://data/progression/echobard.Espionnage.translation", "res://data/progression/echobard.Artisanat.translation", "res://data/progression/echobard.Diplomatie.translation", "res://data/progression/echobard.Commandement.translation", "res://data/progression/echobard.Attaque.translation", "res://data/progression/echobard.Défense.translation", "res://data/progression/echobard.Résistance.translation", "res://data/progression/echobard.Initiative.translation", "res://data/progression/echobard.Jet de Vigueur.translation", "res://data/progression/echobard.Jet de Volonté.translation", "res://data/progression/echobard.Jet de Réflexes.translation", "res://data/progression/echobard.Nouveaux Talents.translation", "res://data/progression/echobard.Lore.translation"]
-
 [params]
-
-compress=1
-delimiter=0

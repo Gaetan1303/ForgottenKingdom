@@ -1,7 +1,10 @@
 ## autoload/clan_manager.gd
 ## Singleton de gestion du clan — état complet de la partie en cours.
-## Chargé depuis game/clan/etat_clan_defaut.json + sauvegarde utilisateur.
+## Façade compatible : données res://data/clan/ et sauvegarde user://.
 extends Node
+
+const ClanEconomyServiceClass = preload("res://scripts/services/clan_economy_service.gd")
+const SoldierAssignmentServiceClass = preload("res://scripts/services/soldier_assignment_service.gd")
 
 const FKHelpers = preload("res://scripts/utils/fk_helpers.gd")
 const ClanIdentityType = preload("res://scripts/data/clan_identity.gd")
@@ -17,11 +20,8 @@ const JsonPersistenceServiceClass = preload("res://scripts/services/json_persist
 
 # ── Chemins ────────────────────────────────────────────────────────────
 const DEFAULT_STATE_PATH := "res://data/clan/etat_clan_defaut.json"
-const RESSOURCE_KEYS := [
-	"or", "soldats", "mana", "reputation", "renseignements",
-	"bois", "fer", "pierre", "nourriture", "essence"
-]
-const ROLE_DOMAINES := ["forgeron", "alchimiste", "intendant", "arcaniste"]
+const RESSOURCE_KEYS = ClanEconomyServiceClass.RESOURCE_KEYS
+const ROLE_DOMAINES = ClanEconomyServiceClass.DOMAIN_ROLES
 
 # ── État du clan ────────────────────────────────────────────────────────
 var nom_clan:       String     = ""
@@ -124,6 +124,8 @@ var _day_transition_pending := false
 
 # ── Services (instanciation unique — DRY / SRP) ────────────────────────
 var _planner: RefCounted = null
+var _economy = ClanEconomyServiceClass.new()
+var _soldier_assignment = SoldierAssignmentServiceClass.new()
 
 # Bonus de classe chargés depuis les données
 var _bonus_par_action: Dictionary = {}
@@ -132,7 +134,7 @@ var _bonus_par_action: Dictionary = {}
 signal tour_suivant(numero_tour: int)
 signal ressources_mises_a_jour
 
-const SOLDATS_MAX := 600
+const SOLDATS_MAX = SoldierAssignmentServiceClass.DEFAULT_MAX_SOLDIERS
 
 
 func _ready() -> void:
@@ -295,10 +297,7 @@ func _charger_etat_defaut() -> void:
 
 ## Vérifie si le clan peut payer un coût donné.
 func peut_payer(cout: Dictionary) -> bool:
-	for res in cout:
-		if ressources.get(res, 0) < int(cout[res]):
-			return false
-	return true
+	return _economy.can_pay(ressources, cout)
 
 
 ## Débite les ressources (sans vérification — utiliser peut_payer avant).
@@ -309,7 +308,7 @@ func payer(cout: Dictionary) -> void:
 			var to_remove := maxi(0, int(cout[res]))
 			_remove_soldiers(to_remove)
 		else:
-			ressources[res] = maxi(0, int(ressources.get(res, 0)) - int(cout[res]))
+			_economy.debit(ressources, res, int(cout[res]))
 	emit_signal("ressources_mises_a_jour")
 
 
@@ -322,8 +321,7 @@ func gagner(gains: Dictionary) -> void:
 				# add soldier IDs to pool when gaining soldiers
 				_add_soldiers(inc)
 			else:
-				var nv := int(ressources[res]) + inc
-				ressources[res] = nv
+				_economy.credit(ressources, res, inc)
 	emit_signal("ressources_mises_a_jour")
 
 
@@ -332,7 +330,7 @@ func get_ressources() -> Dictionary:
 
 
 func get_ressource(key: String, default_value: int = 0) -> int:
-	return int(ressources.get(key, default_value))
+	return _economy.get_resource(ressources, key, default_value)
 
 
 func get_stats() -> Dictionary:
@@ -345,29 +343,20 @@ func get_stat(key: String, default_value: int = 5) -> int:
 
 ## Pool helpers: ensure pool and ressources stay in sync when soldiers are added/removed.
 func _remove_soldiers(count: int) -> int:
-	var removed := 0
-	for i in range(maxi(0, count)):
-		if _soldats_disponibles.size() > 0:
-			_soldats_disponibles.pop_back()
-			removed += 1
-		else:
-			break
+	var result: Dictionary = _soldier_assignment.remove_soldiers(_soldats_disponibles, count)
+	_soldats_disponibles = result.pool
 	ressources["soldats"] = _soldats_disponibles.size()
 	emit_signal("ressources_mises_a_jour")
-	return removed
+	return (result.removed_ids as Array).size()
 
 
 func _add_soldiers(count: int) -> int:
-	var added := 0
-	for i in range(maxi(0, count)):
-		if _soldats_disponibles.size() >= SOLDATS_MAX:
-			break
-		_soldats_disponibles.append("S%d" % _soldat_next_id)
-		_soldat_next_id += 1
-		added += 1
+	var result: Dictionary = _soldier_assignment.add_soldiers(_soldats_disponibles, count, _soldat_next_id)
+	_soldats_disponibles = result.pool
+	_soldat_next_id = result.next_id
 	ressources["soldats"] = _soldats_disponibles.size()
 	emit_signal("ressources_mises_a_jour")
-	return added
+	return (result.added_ids as Array).size()
 
 
 func action_deja_utilisee_pour_moment() -> bool:
@@ -440,16 +429,8 @@ func peut_recruter_pnj_domaine() -> bool:
 
 
 func get_production_totale(base_production: Dictionary) -> Dictionary:
-	var total := ressources_par_tour.duplicate(true) if not campaign.is_empty() else base_production.duplicate(true)
-	for cle in RESSOURCE_KEYS:
-		if not total.has(cle):
-			total[cle] = 0
-
-	var bonus := _calculer_bonus_production_domaines()
-	for cle_bonus in bonus:
-		total[cle_bonus] = int(total.get(cle_bonus, 0)) + int(bonus[cle_bonus])
-
-	return total
+	var base := ressources_par_tour if not campaign.is_empty() else base_production
+	return _economy.total_production(base, fiches_domaine, affinites_pnj)
 
 
 func get_traits_gameplay() -> Dictionary:
@@ -457,20 +438,7 @@ func get_traits_gameplay() -> Dictionary:
 
 
 func get_action_cout_modifie(action_id: String, cout_base: Dictionary) -> Dictionary:
-	var cout := cout_base.duplicate(true)
-	var traits := get_traits_gameplay()
-	var caps := _get_traits_caps()
-
-	var mana_reduc_pct := clampi(int(traits.get("mana_cost_reduction_pct", 0)), 0, int(caps.get("mana_cost_reduction_pct", 35)))
-	if mana_reduc_pct > 0 and cout.has("mana"):
-		if action_id in ["recruter", "recruter_pnj", "recuperer"]:
-			cout["mana"] = maxi(0, int(round(int(cout["mana"]) * (100 - mana_reduc_pct) / 100.0)))
-
-	var soldats_reduc_atk := clampi(int(traits.get("soldats_cost_reduction_attaquer_pct", 0)), 0, int(caps.get("soldats_cost_reduction_attaquer_pct", 20)))
-	if soldats_reduc_atk > 0 and action_id == "attaquer" and cout.has("soldats"):
-		cout["soldats"] = maxi(0, int(round(int(cout["soldats"]) * (100 - soldats_reduc_atk) / 100.0)))
-
-	return cout
+	return _economy.action_cost(action_id, cout_base, get_traits_gameplay(), _get_traits_caps())
 
 
 func get_bonus_score_action(action_id: String) -> int:
@@ -543,43 +511,7 @@ func _get_traits_caps() -> Dictionary:
 
 
 func _calculer_bonus_production_domaines() -> Dictionary:
-	var bonus := {
-		"or": 0,
-		"mana": 0,
-		"fer": 0,
-		"essence": 0,
-		"bois": 0,
-		"pierre": 0,
-		"nourriture": 0,
-	}
-
-	for role in ROLE_DOMAINES:
-		if not fiches_domaine.has(role):
-			continue
-		var fiche := fiches_domaine[role] as Dictionary
-		if not bool(fiche.get("actif", false)):
-			continue
-
-		var niveau := clampi(int(fiche.get("niveau", 1)), 1, 20)
-		var affinite := clampi(int(fiche.get("affinite", int(affinites_pnj.get(role, 0)))), -100, 100)
-		var bonus_aff := maxi(0, affinite) / 25
-
-		match role:
-			"forgeron":
-				bonus["fer"] += niveau + bonus_aff
-				bonus["pierre"] += maxi(1, niveau / 3)
-			"alchimiste":
-				bonus["essence"] += maxi(1, niveau / 2) + bonus_aff
-				bonus["mana"] += maxi(1, niveau / 2)
-			"intendant":
-				bonus["or"] += 5 * niveau + (2 * bonus_aff)
-				bonus["nourriture"] += maxi(1, niveau / 2)
-			"arcaniste":
-				bonus["mana"] += 2 * niveau + bonus_aff
-				if niveau >= 5:
-					bonus["essence"] += 1
-
-	return bonus
+	return _economy.domain_production(fiches_domaine, affinites_pnj)
 
 
 func get_pnj_gestion_state() -> Dictionary:
@@ -1601,15 +1533,8 @@ func _sanitizer_stats() -> void:
 
 
 func _sanitizer_ressources() -> void:
-	for cle in RESSOURCE_KEYS:
-		if not ressources.has(cle):
-			ressources[cle] = 0
-		if not ressources_par_tour.has(cle):
-			ressources_par_tour[cle] = 0
-		ressources[cle] = maxi(0, int(ressources.get(cle, 0)))
-		ressources_par_tour[cle] = maxi(0, int(ressources_par_tour.get(cle, 0)))
-
-	ressources["soldats"] = clampi(int(ressources.get("soldats", 0)), 0, SOLDATS_MAX)
+	ressources = _economy.sanitize(ressources, true)
+	ressources_par_tour = _economy.sanitize(ressources_par_tour, true, false)
 
 
 func _sanitizer_pnj_et_domaines() -> void:
