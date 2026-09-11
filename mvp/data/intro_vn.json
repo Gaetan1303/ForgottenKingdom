@@ -1,61 +1,31 @@
 {
   "scenes": [
     {
-      "id": "fragment_01",
+      "id": "duel",
       "type": "narration",
-      "periode": "Un souvenir — date incertaine",
+      "periode": "Enfance — le duel",
       "speaker": "narrateur",
-      "texte": "Du feu. Une main couverte de sang. Les silhouettes de tes parents derrière une porte.\n\nUne autre silhouette se retourne : ton visage, ou presque. Tu tends la main. Le souvenir se brise avant que vous vous touchiez.",
+      "placeholder": "attack_light",
+      "texte": "Vous connaissez chacun de ses gestes. Votre frère sourit comme avant vos jeux.\n\nPuis il cesse de retenir ses coups. Vous cherchez son regard ; sa lame vous jette au sol. Cette fois, il ne vous aide pas à vous relever.",
       "fond_couleur": "#180609"
     },
     {
-      "id": "fragment_02",
-      "type": "choice",
+      "id": "stolen_essence",
+      "type": "narration",
+      "periode": "L’Essence volée",
       "speaker": "narrateur",
-      "texte": "Tu te souviens de la chute comme d’hier. Sur une pierre, tu lis pourtant une date vieille de quinze ans.\n\nTa poitrine ne porte aucune plaie ouverte. Quelque chose y manque.",
-      "choices": [
-        {
-          "label": "Examiner la marque sur ma poitrine",
-          "consequence": "La Cicatrice de Sang ne ressemble pas à une blessure ordinaire. Sous la peau, une lueur suit un tracé inconnu."
-        },
-        {
-          "label": "Chercher la seconde silhouette",
-          "consequence": "Le visage était presque le tien. Le souvenir refuse de dire à qui il appartenait."
-        }
-      ],
+      "placeholder": "hurt",
+      "texte": "Sa main se ferme sur votre poitrine. Une lumière vous quitte et traverse son bras.\n\nLa douleur passe. Le vide reste. Votre souffle, votre force, quelque chose qui portait votre nom : tout s’éloigne vers lui.",
       "fond_couleur": "#100612"
     },
     {
-      "id": "awakening_01",
-      "type": "narration",
-      "periode": "La Brèche-Sèche — Le réveil",
-      "speaker": "kael",
-      "texte": "« Doucement. Vous êtes à la Brèche-Sèche. Je suis là. »\n\nKael pose un linge humide sur ton front. Deux couvertures. Une lampe. Personne d’autre.\n\n« La Maison est tombée. Ici, nous avons un toit qui tient encore. Ce sera notre point de départ. »",
-      "fond_couleur": "#0a0710"
-    },
-    {
-      "id": "awakening_02",
-      "type": "choice",
-      "speaker": "kael",
-      "texte": "Ton bras retrouve un geste de combat que tu ne te souviens pas avoir appris. Kael le remarque.\n\n« Ce qui vous revient n’est pas toujours un souvenir. Nous allons vérifier ensemble ce que votre corps peut encore utiliser. »",
-      "choices": [
-        {
-          "label": "Lui demander depuis combien de temps je dors",
-          "consequence": "Kael hésite. « Assez longtemps pour que les pierres aient refroidi. Reprenez d’abord vos forces. »"
-        },
-        {
-          "label": "Vérifier ma main et mon souffle",
-          "consequence": "La main obéit. Sous la peau, le souffle et la lueur suivent deux rythmes légèrement différents."
-        }
-      ],
-      "fond_couleur": "#0a0710"
-    },
-    {
-      "id": "awakening_03",
+      "id": "presumed_death",
       "type": "fin",
-      "speaker": "kael",
-      "texte": "« Dites-moi votre nom. Le nom de notre Maison. Puis essayons quelques gestes. »\n\nKael dépose les armes à portée de ta main.\n\n« Je ne vous demande pas de redevenir ce que vous étiez. Seulement de voir ce qui est possible aujourd’hui. »",
-      "fond_couleur": "#0a0710"
+      "periode": "La mort supposée",
+      "speaker": "Votre sœur — une voix dans le noir",
+      "placeholder": "death",
+      "texte": "Votre corps d’enfant s’effondre. Quelqu’un murmure : « C’est fini. »\n\nLe noir vous prend. Une voix vous y retrouve.\n\n« Réveille-toi. Pas maintenant… Je ne t’ai pas encore perdu. Souviens-toi de ce qu’on t’a appris. Trouve comment revenir. »",
+      "fond_couleur": "#000000"
     }
   ]
 }

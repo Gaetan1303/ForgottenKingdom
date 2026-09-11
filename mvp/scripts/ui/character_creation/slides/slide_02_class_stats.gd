@@ -475,6 +475,7 @@ func _class_tooltip(class_id: String, class_data: Dictionary) -> String:
 		parts.append(description)
 	parts.append("Bonus de départ : %s" % bonus_text)
 	parts.append("Les 10 points de création restent libres : 1 point dépensé = +1 au score choisi.")
+	parts.append("Cette classe favorise certaines approches et n’interdit aucune voie. Force : contact ; Magie : sorts et sceaux ; Espionnage : initiative et renseignements ; Diplomatie : accords ; Commandement : troupes ; Artisanat : transformations.")
 	return "\n\n".join(PackedStringArray(parts))
 
 

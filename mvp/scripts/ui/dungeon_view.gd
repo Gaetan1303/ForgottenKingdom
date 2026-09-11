@@ -57,10 +57,10 @@ func _build_tactical_ui() -> void:
 	_commands = HBoxContainer.new()
 	$VBox.add_child(_commands)
 	$VBox.move_child(_commands, lbl_result.get_index())
-	for definition in [["move", "Déplacement · 3 cases"], ["attack", "Attaque · portée 1"], ["ability", "Trait d’Éther · portée 3 · 3 mana"], ["end", "Fin du tour"]]:
+	for definition in [["move", "Déplacement · 3 cases"], ["attack", "Attaque · portée 1"], ["ability", "Trait d’Éther · portée 3 · 3 mana"], ["defend", "Fortifier la garde"], ["end", "Fin du tour"]]:
 		var button := Button.new()
 		button.text = definition[1]
-		button.tooltip_text = {"move": "Parcourir au maximum 3 cases libres, une fois par tour.", "attack": "Cible adjacente. Dégâts : Force ÷ 3 + 2. Utilise l’action du tour.", "ability": "Cible à 3 cases au maximum. Dégâts : Magie ÷ 2 + 3. Coût : 3 mana du domaine. Utilise l’action du tour.", "end": "Terminer ce tour et laisser agir le suivant dans l’ordre d’initiative."}[definition[0]]
+		button.tooltip_text = {"move": "Parcourir au maximum 3 cases libres, une fois par tour.", "attack": "Cible adjacente. Dégâts : Force ÷ 3 + 2. Utilise l’action du tour.", "ability": "Cible à 3 cases au maximum. Dégâts : Magie ÷ 2 + 3. Coût : 3 mana du domaine. Utilise l’action du tour.", "defend": "Réduit les dégâts reçus de moitié jusqu’au prochain tour. Utilise l’action du personnage.", "end": "Terminer ce tour et laisser agir le suivant dans l’ordre d’initiative."}[definition[0]]
 		preload("res://scripts/ui/components/keyboard_tooltip.gd").bind(button)
 		button.pressed.connect(_select_command.bind(str(definition[0])))
 		_commands.add_child(button)
@@ -134,8 +134,8 @@ func _refresh_room() -> void:
 	ClanManager.sauvegarder()
 
 func _select_command(kind: String) -> void:
-	if kind == "end":
-		DungeonGenerator.combat_command("end")
+	if kind in ["end", "defend"]:
+		DungeonGenerator.combat_command(kind)
 	else:
 		_mode = kind
 		var text := "Choisissez une case libre accessible." if kind == "move" else "Choisissez un adversaire adjacent." if kind == "attack" else "Choisissez un adversaire à trois cases au maximum. Coût : 3 mana."

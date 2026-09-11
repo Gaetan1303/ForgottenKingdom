@@ -12,6 +12,7 @@ const SCENES := {
 	"creation_personnage":  "res://scenes/character_creation/character_creation_screen.tscn",
 	"clan_hub":             "res://scenes/clan_hub.tscn",
 	"intro_vn":             "res://scenes/intro_vn.tscn",
+	"memory_tutorial":      "res://scenes/memory_tutorial.tscn",
 	"resolution_action":    "res://scenes/resolution_action.tscn",
 	"dungeon_view":         "res://scenes/dungeon_view.tscn",
 	"pnj_manager":          "res://scenes/pnj_manager.tscn",
@@ -193,12 +194,12 @@ func open_library() -> void:
 
 ## ── Gameplay : gestion du clan ──────────────────────────────────────
 
-## Lance une nouvelle partie → écran de création de personnage.
+## Prologue, souvenirs, puis reconstruction de l'identité.
 func start_new_game() -> void:
 	var save_system: Node = _require_autoload("SaveSystem")
 	if save_system == null:
 		return
-	save_system.set_value("opening", {"active": true, "finished": false, "index": 0, "choices": {}, "draft_ready": false})
+	save_system.set_value("opening", {"version": 2, "run_id": "%d_%d" % [Time.get_ticks_usec(), randi()], "stage": "prologue", "active": true, "finished": false, "index": 0, "choices": {}, "draft_ready": false})
 	save_system.save()
 	go_to("intro_vn")
 
@@ -208,8 +209,18 @@ func resume_campaign() -> void:
 	if save_system == null or clan_manager == null:
 		return
 	var opening: Dictionary = save_system.get_value("opening", {})
+	# Reprise d'une coupure entre la sauvegarde du clan créé et celle de l'ouverture.
+	var run_id := str(opening.get("run_id", ""))
+	if not run_id.is_empty() and str(clan_manager.campaign.get("opening_run_id", "")) == run_id and bool(opening.get("active", false)):
+		opening["active"] = false
+		opening.erase("memories")
+		save_system.set_value("opening", opening)
+		save_system.save()
 	if bool(opening.get("active", false)):
-		go_to("creation_personnage" if bool(opening.get("finished", false)) else "intro_vn", {"resume": true})
+		if str(opening.get("stage", "")) == "memories":
+			go_to("memory_tutorial", {"resume": true})
+		else:
+			go_to("creation_personnage" if bool(opening.get("finished", false)) else "intro_vn", {"resume": true})
 	elif not (clan_manager.get("campaign") as Dictionary).get("run", {}).is_empty() and not bool((clan_manager.get("campaign") as Dictionary).get("run", {}).get("returned", false)):
 		go_to("dungeon_view")
 	elif not (clan_manager.get("campaign") as Dictionary).is_empty() and not bool((clan_manager.get("campaign") as Dictionary).get("intro_done", true)):

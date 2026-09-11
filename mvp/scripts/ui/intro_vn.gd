@@ -1,13 +1,13 @@
 ## scripts/ui/intro_vn.gd
-## Séquence d'introduction — Visual Novel + tutoriel intégré.
-## Jouée une seule fois après la création du personnage.
-## Flux : Passé (tutoriel) → La Chute → Serment → clan_hub
+## Trois tableaux : duel → Essence volée → mort supposée → souvenirs interactifs.
 extends Control
 const Refuge = preload("res://scripts/services/refuge_service.gd")
 var _choices: VBoxContainer
 var _finishing := false
 var _opening_mode := false
 var _text_tween: Tween
+const AnimationController = preload("res://scripts/ui/tutorials/character_animation_controller.gd")
+var _actor: AnimationController
 
 const FallenUI = preload("res://scripts/ui/fallen_ui.gd")
 const ResourcePathResolver = preload("res://scripts/utils/resource_path_resolver.gd")
@@ -98,6 +98,11 @@ func _ready() -> void:
 	_resolve_player_data()
 	_load_visual_bindings()
 	_build_ui()
+	_actor = AnimationController.new()
+	_actor.set_anchors_preset(Control.PRESET_CENTER_TOP)
+	_actor.position = Vector2(-130, 95)
+	_actor.size = Vector2(260, 220)
+	add_child(_actor)
 	FallenUI.apply(self, "intro")
 	_load_scenes()
 	if _scenes.is_empty():
@@ -188,6 +193,9 @@ func _load_visual_bindings() -> void:
 
 func _load_scenes() -> void:
 	var path := "res://data/intro_vn.json"
+	# Les ouvertures d'avant cette version reprennent leurs cinq tableaux connus.
+	if not _opening_mode or int(SaveSystem.get_value("opening", {}).get("version", 0)) < 2:
+		path = "res://data/intro_vn_legacy.json"
 	if not FileAccess.file_exists(path):
 		push_error("IntroVN: intro_vn.json introuvable à %s" % path)
 		return
@@ -593,7 +601,7 @@ func _show_scene(idx: int) -> void:
 	var type: String = str(s.get("type", "narration"))
 	match type:
 		"fin":
-			_btn_continue.text = "Évaluer mon état avec Kael ▶" if _opening_mode else "Entrer dans le refuge ▶"
+			_btn_continue.text = "Retrouver mes souvenirs ▶" if _opening_mode else "Entrer dans le refuge ▶"
 			_show_narration(s)
 		"recrutement":
 			_show_narration(s)
@@ -713,6 +721,12 @@ func _build_resource_cards(keys: Array = []) -> void:
 
 
 func _apply_scene_visual(scene_data: Dictionary) -> void:
+	_actor.visible = scene_data.has("placeholder")
+	if _actor.visible:
+		_actor.play(str(scene_data.placeholder))
+		_resource_visual.hide()
+		_illus.hide()
+		return
 	_resource_visual.visible = false
 	_illus.visible = true
 	_illus.texture = null
@@ -1022,7 +1036,10 @@ func _finish() -> void:
 	_btn_continue.disabled = true
 	if _opening_mode:
 		var opening: Dictionary = SaveSystem.get_value("opening", {})
-		opening["finished"] = true
+		opening["stage"] = "memories" if int(opening.get("version", 0)) >= 2 else "creation"
+		opening["finished"] = str(opening.stage) == "creation"
+		if str(opening.stage) == "memories" and not opening.has("memories"):
+			opening["memories"] = preload("res://scripts/services/memory_tutorial_service.gd").fresh()
 		SaveSystem.set_value("opening", opening)
 	else:
 		ClanManager.campaign["intro_done"] = true
@@ -1033,4 +1050,7 @@ func _finish() -> void:
 	var tween: Tween = create_tween()
 	tween.tween_property(_bg, "color", Color(0, 0, 0, 1), 1.2)
 	await tween.finished
-	GameManager.go_to("creation_personnage" if _opening_mode else "clan_hub")
+	if _opening_mode:
+		GameManager.resume_campaign()
+	else:
+		GameManager.go_to("clan_hub")

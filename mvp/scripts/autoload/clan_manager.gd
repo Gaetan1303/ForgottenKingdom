@@ -1198,6 +1198,8 @@ func evaluer_etat_partie() -> Dictionary:
 			"message": "Barre d’âme épuisée. L’héritier est consumé par l’Éther de Cendre.",
 		}
 
+	if preload("res://scripts/services/narrative_objective_service.gd").ending_ready(campaign.get("power_routes", {})):
+		return {"terminee": true, "etat": "victoire", "message": str(campaign.power_routes.get("epilogue", "Les objectifs de votre Maison sont accomplis."))}
 	if maisons_soumises() >= 9:
 		return {
 			"terminee": true,
@@ -1207,7 +1209,9 @@ func evaluer_etat_partie() -> Dictionary:
 
 	var soldats := int(ressources.get("soldats", 0))
 	var or_total := int(ressources.get("or", 0))
-	if soldats <= 0 and or_total < 50 and not _a_alliance_active():
+	# Une Maison spécialisée peut vivre sans armée : la production du refuge
+	# permet de reconstruire ses réserves. Conserver l'ancienne règle hors v3.
+	if int(campaign.get("version", 0)) < 3 and soldats <= 0 and or_total < 50 and not _a_alliance_active():
 		return {
 			"terminee": true,
 			"etat": "defaite",

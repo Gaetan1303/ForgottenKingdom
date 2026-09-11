@@ -189,12 +189,15 @@ func start_expedition(ids: Array) -> String:
 			return "Un compagnon est blessé ou déjà affecté."
 		party.append(person.duplicate(true))
 	var short_run := not Refuge.has(_clan_manager(), "salvage")
+	preload("res://scripts/services/power_campaign_service.gd").ensure(_clan_manager())
 	if short_run:
 		current_run = {"floors": [{"floor": 1, "rooms": [
 			{"id": "gallery_threshold", "type": "rest", "enemies": [], "cleared": false},
 			{"id": "gallery_guards", "type": "combat", "enemies": ["Goule affamée", "Goule des pierres"], "cleared": false},
 			{"id": "gallery_cache", "type": "treasure", "enemies": [], "cleared": false}
 		]}], "current_floor": 0, "current_room": 0, "completed": false, "short": true}
+		if int(_clan_manager().campaign.get("version", 2)) >= 3:
+			current_run.floors[0].rooms[1].enemies = ["Garde du passage", "Garde des réserves"]
 	else:
 		generate_run()
 	current_run["state"] = "arrival"
@@ -300,6 +303,7 @@ func return_to_refuge() -> String:
 	var loot: Dictionary = current_run.get("loot", {})
 	_clan_manager().gagner(loot)
 	if bool(current_run.get("tools_found", false)):
+		preload("res://scripts/services/power_campaign_service.gd").record_expedition(_clan_manager(), current_run)
 		Refuge.mark(_clan_manager(), "salvage")
 	Refuge.mark(_clan_manager(), "return")
 	current_run["returned"] = true

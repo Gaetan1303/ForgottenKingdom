@@ -1,0 +1,87 @@
+Validation du 10 septembre 2026
+Godot 4.4.stable.official.4c311cbee
+Branche : Dev ; base initiale : 8885b00
+
+Commande finale exécutée depuis la racine :
+  bash scripts/test_memorial_prologue.sh --all
+Code de sortie du lanceur : 0
+Copie isolée : /tmp/fk-memorial-whIVpB
+
+Import : aucune Parse Error, Compile Error, erreur de script ou défaillance d’autoload.
+Les diagnostics d’éditeur (sockets/progression) et les anciens doublons d’UID sont détaillés dans import.log.
+Boot : code 0 ; aucun ERROR ni SCRIPT ERROR.
+
+check_classe_stats.gd : PASS
+check_scenes.gd : PASS — WARNING: SCENES_OK ; SCENES_OK
+check_scenes_parsing.gd : PASS — SCENE_PARSING_OK
+e2e_clanhub_display.gd : PASS
+e2e_creation_and_persistence.gd : PASS — PASS: fiche_complete.stats_brutes saved:{ "artisanat": 8.0, "commandement": 8.0, "diplomatie": 8.0, "espionnage": 8.0, "force": 12.0, "magie": 14.0 }
+flow_test_assign_soldiers.gd : PASS
+game_loop_smoke.gd : PASS — SMOKE_OK: boucle gameplay validee
+generate_pnj_test.gd : PASS — SMOKE_OK: pnj_generator
+inspect_creation_ui.gd : PASS
+instantiate_pnj_manager.gd : PASS — INSTANTIATE_OK: pnj_manager loaded and instantiated
+smoke_clan_manager_pnj.gd : PASS — SMOKE_OK: integration ClanManager PNJ
+smoke_pnj_management.gd : PASS — SMOKE_OK: gestion PNJ
+smoke_refactor_domain.gd : PASS — SMOKE_OK: creature/corruption refactor
+smoke_stats.gd : PASS — SMOKE_OK: stats
+test_campaign_states.gd : PASS — CAMPAIGN_STATES_OK
+test_chapter_view_illustrations.gd : PASS — CHAPTER_VIEW_ILLUSTRATIONS_OK: 0/0 (aucune illustration déclarée)
+test_character_clan_reference.gd : PASS — CHARACTER_CLAN_REFERENCE_OK
+test_character_creation_point_buy.gd : PASS — CHARACTER_CREATION_POINT_BUY_OK
+test_character_creation_smoke.gd : PASS — CHARACTER_CREATION_SMOKE_OK
+test_character_stats_roundtrip.gd : PASS — CHARACTER_STATS_ROUNDTRIP_OK
+test_compile_smoke.gd : PASS — COMPILE_SMOKE_OK
+test_corruption_clan_manager.gd : PASS — CORRUPTION_CLAN_MANAGER_OK
+test_corruption_service.gd : PASS — CORRUPTION_SERVICE_OK
+test_creation_classes_ui.gd : PASS — CREATION_CLASSES_UI_OK
+test_creation_headless.gd : PASS
+test_domain_services.gd : PASS — DOMAIN_SERVICES_OK
+test_event_result_view.gd : PASS — EVENT_RESULT_VIEW_OK
+test_expedition_corruption.gd : PASS — EXPEDITION_CORRUPTION_OK
+test_family_portraits.gd : PASS — FAMILY_PORTRAITS_OK
+test_family_visual_assets.gd : PASS — FAMILY_VISUAL_ASSETS_OK: 5/5
+test_feats_bonus.gd : PASS — SMOKE_OK: feats_bonus
+test_integration_feats.gd : PASS — SMOKE_OK: integration_feats
+test_memorial_resume.gd : PASS — MEMORIAL_RESUME_OK · PACT_ROUNDTRIP_OK
+test_memory_sequences.gd : PASS — MEMORY_SEQUENCES_OK
+test_multiroute_campaign.gd : PASS — MULTIROUTE_CAMPAIGN_OK · PACIFIST_RUN_OK · SAVE_LOAD_ROUTES_OK
+test_narration_assets.gd : PASS — NARRATION_ASSETS_OK: 0 illustrations chargeables
+test_original_identity.gd : PASS — ORIGINAL_IDENTITY_OK
+test_persistence_effects.gd : PASS — SMOKE_OK: persistence_effects
+test_playable_prologue.gd : PASS — PLAYABLE_PROLOGUE_OK
+test_portrait_signature_loader.gd : PASS — TEST_OK: signature loader portrait fonctionne | file_name=defaut.png
+test_power_objectives.gd : PASS — POWER_OBJECTIVES_OK
+test_prologue_navigation.gd : PASS — PROLOGUE_NAVIGATION_OK
+test_recruter_pnj_scenario.gd : PASS
+test_semantic_visual_mapping.gd : PASS — SEMANTIC_VISUAL_MAPPING_OK: portrait joueur + résolution sémantique active
+test_slide2_t_layout.gd : PASS — PASS: slide 2 T layout structure
+test_ui_reforge_smoke.gd : PASS — UI_REFORGE_SMOKE_OK: 13/13 scenes
+test_veyr_boot_contracts.gd : PASS — VEYR_BOOT_CONTRACTS_OK
+test_veyr_runtime_regressions.gd : PASS — VEYR_RUNTIME_REGRESSIONS_OK
+test_visual_coherence.gd : PASS — VISUAL_COHERENCE_OK: 17 assets, 11 scenes
+test_world_state_adapter.gd : PASS — WORLD_STATE_ADAPTER_OK
+test_xp_level.gd : PASS — SMOKE_OK: xp_level
+
+Total : 51 scripts, 51 PASS.
+
+Commandes graphiques réellement exécutées (sans --headless) :
+  env XDG_CONFIG_HOME=/tmp/fk-memorial-validation/config XDG_DATA_HOME=/tmp/fk-memorial-validation/data godot --path /tmp/fk-memorial-validation/mvp --rendering-method gl_compatibility -s scripts/tests/capture_memorial_ui.gd
+  env XDG_CONFIG_HOME=/tmp/fk-memorial-hub-render/config XDG_DATA_HOME=/tmp/fk-memorial-hub-render/data godot --path /tmp/fk-memorial-validation/mvp --rendering-method gl_compatibility -s scripts/tests/capture_power_hub.gd
+Codes de sortie graphiques : 0 ; marqueurs MEMORIAL_RENDER_OK et POWER_HUB_RENDER_OK.
+GPU : Mesa Intel UHD Graphics 620 ; images du viewport 1280 x 720 inspectées.
+Les pilotes graphiques n’étaient pas accessibles dans le bac restreint ; ces deux commandes ont été autorisées à utiliser l’affichage local.
+Les scripts de capture sont archivés dans ce dossier pour conserver la méthode de contrôle.
+
+Autres commandes :
+  git diff --check : code 0
+  bash -n scripts/test_memorial_prologue.sh scripts/ci_test.sh : code 0
+
+Matrice du périmètre livré (verticale) :
+BOOT : PASS
+PROLOGUE : PASS
+TUTORIELS : PASS
+CRÉATION : PASS
+MULTI-ROUTE : PASS
+SAVE/LOAD : PASS
+TESTS : PASS

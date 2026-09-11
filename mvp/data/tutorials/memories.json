@@ -1,0 +1,192 @@
+[
+  {
+    "id": "combat",
+    "mentor": "Votre père",
+    "portrait_role": "father_alone",
+    "title": "La force du chef",
+    "summary": "Combat · PV, garde, équipement. La force oblige à protéger.",
+    "steps": [
+      {
+        "id": "attack",
+        "text": "« Approche. Frappe ma garde, puis regarde ce que ton geste a changé. »",
+        "actions": [
+          "training_attack"
+        ],
+        "required_event": "attack_executed",
+        "explanation": "La force et l’équipement règlent les dégâts. Une attaque utilise l’action du tour.",
+        "animation": "attack_light"
+      },
+      {
+        "id": "defend",
+        "text": "« Maintenant, tiens ta garde. Un chef doit savoir encaisser pour les autres. »",
+        "actions": [
+          "training_defend"
+        ],
+        "required_event": "defense_executed",
+        "explanation": "La garde réduit les dégâts reçus. Les soldats ont besoin de cette protection autant que toi.",
+        "animation": "hurt"
+      },
+      {
+        "id": "night",
+        "text": "« Le soir sert aussi à préparer demain. Observe le temps, pas seulement ton adversaire. »",
+        "actions": [
+          "training_night"
+        ],
+        "required_event": "phase_changed",
+        "explanation": "Au refuge : décision le matin, rapport l’après-midi, gestion le soir. Le passage à l’aube produit les réserves.",
+        "animation": "idle"
+      }
+    ]
+  },
+  {
+    "id": "occult",
+    "mentor": "Votre mère",
+    "portrait_role": "mother",
+    "title": "Tout pouvoir possède un prix",
+    "summary": "Magie · Mana, pactes, corruption. Choisir un pouvoir, c’est aussi choisir son prix.",
+    "steps": [
+      {
+        "id": "spell",
+        "text": "« Donne au souffle une forme. Regarde la réserve qui diminue. »",
+        "actions": [
+          "training_cast"
+        ],
+        "required_event": "spell_executed",
+        "explanation": "Le Trait d’Éther porte plus loin qu’une arme et coûte 3 mana. Cette réserve sert aussi aux rituels et à la transformation.",
+        "animation": "cast"
+      },
+      {
+        "id": "price",
+        "text": "« Protège le cercle, ou laisse cette voix te prêter sa force. Tu connais le prix. »",
+        "actions": [
+          "ward",
+          "pact"
+        ],
+        "required_event": "ritual_prepared",
+        "explanation": "Cercle : 3 mana. Pacte : 2 mana et 3 corruption. Les deux préparent le sceau ; personne ne t’oblige à accepter le pacte.",
+        "animation": "cast"
+      },
+      {
+        "id": "seal",
+        "text": "« Maintenant, ouvre un passage sans lever une armée. »",
+        "actions": [
+          "bind"
+        ],
+        "required_event": "objective_resolved",
+        "explanation": "Le sceau résout la situation. La corruption reste le prix du pouvoir ; le cercle et les renseignements peuvent le réduire.",
+        "animation": "cast"
+      }
+    ]
+  },
+  {
+    "id": "espionage",
+    "mentor": "La Garde Silencieuse",
+    "portrait_role": "",
+    "title": "Voir sans être vu",
+    "summary": "Espionnage · Renseignements, secrets, exposition. Savoir avant d’agir.",
+    "steps": [
+      {
+        "id": "observe",
+        "text": "« Les forces et les intérêts de cette Maison sont masqués. Choisis ce que tu veux risquer pour les découvrir. »",
+        "actions": [
+          "observe",
+          "infiltrate"
+        ],
+        "required_event": "intel_discovered",
+        "explanation": "Observer révèle une faiblesse militaire sans exposition. Infiltrer révèle un secret, mais l’agent peut être aperçu. Les Renseignements peuvent ensuite servir à négocier.",
+        "animation": "walk"
+      }
+    ]
+  },
+  {
+    "id": "diplomacy",
+    "mentor": "Une émissaire de la Maison",
+    "portrait_role": "",
+    "title": "Le pouvoir de la parole",
+    "summary": "Diplomatie · Intérêts, obligations, réputation. Une promesse engage la Maison.",
+    "steps": [
+      {
+        "id": "listen",
+        "text": "« Écoute ce que l’autre veut protéger. La parole ne commence pas par un ordre. »",
+        "actions": [
+          "audience"
+        ],
+        "required_event": "motivation_discovered",
+        "explanation": "La crainte de la famine explique le blocus. Une bonne négociation peut s’appuyer sur ce besoin, même sans secret.",
+        "animation": "talk"
+      },
+      {
+        "id": "agreement",
+        "text": "« Offre des réserves, ou utilise le secret découvert par la Garde. Chaque accord laissera une trace. »",
+        "actions": [
+          "bargain",
+          "use_secret"
+        ],
+        "required_event": "objective_resolved",
+        "explanation": "Les vivres créent une obligation future ; révéler le secret coûte des Renseignements et laisse une trêve plus fragile. Aucun combat ne suit cet accord.",
+        "animation": "bow"
+      }
+    ]
+  },
+  {
+    "id": "command",
+    "mentor": "Votre père",
+    "portrait_role": "father_alone",
+    "title": "La force de ceux qui vous suivent",
+    "summary": "Commandement · Soldats, formation, moral. Un chef puissant peut rester une proie.",
+    "steps": [
+      {
+        "id": "formation",
+        "text": "« Tu ne frapperas pas. Place les boucliers et le soutien pour les protéger, ou concentre l’assaut. »",
+        "actions": [
+          "formation_guard",
+          "formation_charge"
+        ],
+        "required_event": "formation_set",
+        "explanation": "Avant et arrière changent les pertes. Les six soldats de l’exercice n’utilisent aucune de tes attaques personnelles.",
+        "animation": "interact"
+      },
+      {
+        "id": "order",
+        "text": "« Donne l’ordre. Regarde tes soldats, pas ta propre lame. »",
+        "actions": [
+          "command_assault"
+        ],
+        "required_event": "objective_resolved",
+        "explanation": "Le passage est pris par les unités. La garde conserve davantage de soldats ; renseignements et équipements peuvent renforcer la préparation.",
+        "animation": "bow"
+      }
+    ]
+  },
+  {
+    "id": "craft",
+    "mentor": "Votre sœur",
+    "portrait_role": "",
+    "title": "Ce que la matière garde",
+    "summary": "Artisanat · Matière, composant, catalyseur. Créer, c’est accepter une réponse inattendue.",
+    "steps": [
+      {
+        "id": "gather",
+        "text": "« Viens, j’ai gardé une place pour toi. Choisis du bois, du fer et de quoi stabiliser notre ouvrage. »",
+        "actions": [
+          "materials"
+        ],
+        "required_event": "materials_gathered",
+        "explanation": "Matière : bois. Composant : fer. Catalyseur : pierre, mana ou Essence selon la méthode.",
+        "animation": "interact"
+      },
+      {
+        "id": "create",
+        "text": "« Assemble-le. ESP tient ton esprit ; TRA guide la transformation ; ESE porte ta lignée. Si le métal répond… écoute. »",
+        "actions": [
+          "craft_grounded",
+          "craft_resonant",
+          "craft_essence"
+        ],
+        "required_event": "artifact_created",
+        "explanation": "Les trois affinités et l’artisanat réduisent le risque. Une Essence est facultative. L’ouvrage peut être exceptionnel, altéré ou échouer ; un échec permet de récupérer des composants et de réessayer.",
+        "animation": "surprised"
+      }
+    ]
+  }
+]

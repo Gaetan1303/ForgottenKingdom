@@ -77,6 +77,12 @@ static func command(battle: Dictionary, kind: String, x: int, y: int, mana: int)
 		actor.y = y
 		battle.moved = true
 		return {"ok": true, "cost": 0}
+	if kind == "defend":
+		if bool(battle.acted): return {"ok": false, "message": "Une seule action par tour."}
+		actor["guarding"] = true
+		battle.acted = true
+		_append_log(battle, "%s fortifie sa garde : les prochains dégâts sont réduits de moitié jusqu’à son prochain tour." % actor.name)
+		return {"ok": true, "cost": 0}
 	if kind not in ["attack", "ability"]:
 		return {"ok": false, "message": "Action inconnue."}
 	var target := unit_at(battle, x, y)
@@ -130,6 +136,7 @@ static func _advance(battle: Dictionary) -> void:
 		if int(actor.hp) <= 0:
 			continue
 		if str(actor.team) == "ally":
+			actor["guarding"] = false
 			return
 		_enemy_turn(battle)
 		_check_outcome(battle)
@@ -158,5 +165,6 @@ static func _enemy_turn(battle: Dictionary) -> void:
 		actor.y = best.y
 	if distance(actor, target) <= 1:
 		var damage := maxi(1, int(int(actor.force) / 3) + 1)
+		if bool(target.get("guarding", false)): damage = maxi(1, int(ceil(damage / 2.0)))
 		target.hp = maxi(0, int(target.hp) - damage)
 		_append_log(battle, "%s frappe %s : force %d ÷ 3 + 1 = %d dégâts." % [actor.name, target.name, int(actor.force), damage])

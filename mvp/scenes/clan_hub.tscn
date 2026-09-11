@@ -131,14 +131,14 @@ theme_override_constants/separation = 4
 layout_mode = 2
 theme_override_colors/font_color = Color(0.8, 0.6, 1, 1)
 theme_override_font_sizes/font_size = 15
-text = "CONSEIL DE GUERRE"
+text = "CONSEIL DE LA MAISON"
 horizontal_alignment = 1
 
 [node name="DescAction" type="Label" parent="ContenuPrincipal/PanneauActions/ContenuActions"]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.7, 0.7, 0.7, 0.8)
 theme_override_font_sizes/font_size = 11
-text = "Choisissez un ordre pour engager les forces de votre Maison."
+text = "Choisissez comment faire progresser votre Maison."
 horizontal_alignment = 1
 autowrap_mode = 3
 

@@ -1,21 +1,24 @@
-# Introduction et tutoriel intégré
+# Prologue et enseignements mémoriels
 
-Le parcours de nouvelle partie commence **avant** la création. Kael est l’unique PNJ présent au réveil et l’unique compagnon ajouté à une campagne neuve. Les registres des anciennes sauvegardes restent conservés.
+Une nouvelle partie suit trois tableaux — **duel, Essence volée, mort supposée** — puis six souvenirs interactifs. La voix de la sœur conduit à la reconstruction de l’identité. Kael n’intervient dans le présent qu’après la création ; elle est l’unique PNJ ajouté au refuge.
 
-| Étape | Objectif et apprentissage | Indice narratif |
+| Souvenir | Mentor | Action et conséquence |
 | --- | --- | --- |
-| Souvenirs fragmentés | Lire, faire avancer le dialogue, choisir quoi observer | Visages incomplets, second visage presque familier ; aucune identité révélée |
-| Chronologie incertaine | Examiner un détail, choisir une réaction | Une date ancienne contredit une chute ressentie comme récente |
-| Réveil avec Kael | Retrouver un repère : deux couvertures, un refuge | Kael élude les circonstances de la reconstruction du corps |
-| Évaluation avec Kael | Nom, Maison, classe, 10 points linéaires, dons, capacités, équipement, confirmation | Le personnage éprouve ses capacités après son réveil |
-| Première urgence | Réparer une infrastructure ou privilégier les galeries | Reconstruction modeste et visible depuis les routes |
-| Repas pour deux | Partager deux rations ou les conserver ; conséquence d’affinité | Fin du tutoriel initial, sans peupler artificiellement le refuge |
-| Arrivée au donjon | Inspecter le passage avant de descendre ; retour toujours possible | Date contradictoire, vibration ambiguë dans le sceau |
-| Première sortie | Observation, combat sur grille, outils, retour | Résonance inexpliquée de la Cicatrice de Sang |
-| Atelier | Réinvestir les matériaux récupérés | Architecture de l’Âme instable : analyse incomplète, assimilation verrouillée |
+| Combat | Père | Attaquer, fortifier sa garde et observer le soir ; les dégâts et les PV utilisent le service tactique. |
+| Arts occultes | Mère | Lancer un sort, choisir cercle ou pacte, sceller le passage ; le mana baisse et le risque de corruption est annoncé. |
+| Espionnage | Garde Silencieuse | Observer ou infiltrer ; révéler des faits masqués et obtenir des Renseignements, avec risque d’exposition. |
+| Diplomatie | Émissaire de la Maison | Écouter puis négocier avec des vivres ou un secret appris précédemment ; créer un accord et ses obligations. |
+| Commandement | Père | Placer les boucliers et le soutien ou concentrer l’assaut, puis donner l’ordre ; les pertes varient sans attaque du protagoniste. |
+| Artisanat | Sœur | Récupérer matière et composants, puis choisir un catalyseur et une méthode ; ESP, TRA et ESE modifient les risques de transformation. |
 
-Kael guide par de courtes répliques et les objectifs du refuge. Les aides Complète / Réduite / Désactivée ne changent pas les conditions de progression. Le journal reste consultable ; les conseils déjà montrés ne se répètent pas après chargement. Le premier tutoriel ne tire pas d’événement de communauté avant le repas et masque les commandes de factions.
+Chaque étape suit **consigne → action → conséquence → confirmation**. Cliquer sur Continuer avant l’action ne valide rien. Un échec artisanal permet de récupérer des composants et de réessayer. Les leçons peuvent être passées sans être déclarées terminées. Leur révision est accessible depuis **Archives du refuge → Souvenirs et enseignements**.
 
-Les choix de souvenirs enregistrent un texte de journal, sans donner de ressources. L’observation du sceau est sans risque ; **le toucher** est un choix distinct, annoncé comme une exposition de corruption. Aucun de ces choix ne révèle le responsable du drame familial ni ne déverrouille l’Architecture.
+Les ressources d’exercice sont sauvegardées séparément du monde présent. Elles ne sont jamais ajoutées au clan. Les actions pratiquées produisent des affinités indicatives ; elles ne sélectionnent aucune classe et ne verrouillent aucun choix. Après les six leçons ou leur passage volontaire, un résumé attend confirmation avant la création.
 
-Sources de jeu : `mvp/data/intro_vn.json`, `intro_vn.gd`, `character_creation_screen.gd`, `refuge_service.gd`, `tutorial_director.gd`. Le canon d’ouverture suit le nouveau prompt et `docs/lore/docs/lore/histoire.md` ; voir aussi la note d’intégration du lore.
+Au présent, la première urgence et le repas avec Kael conservent le fonctionnement du refuge. Les galeries peuvent ensuite être sécurisées par combat personnel, espionnage, diplomatie, magie, commandement ou artisanat. Toutes ces méthodes donnent accès aux mêmes outils, puis à l’atelier et à l’examen de la relique. La méthode reste dans les objectifs et le journal.
+
+Le combat personnel emprunte l’expédition et sa grille existantes. Les autres méthodes utilisent les réserves canoniques et une décision de demi-journée. Aucun de leurs succès ne déclenche ensuite un combat caché. Les archives permettent de relire les conséquences ; les relectures d’enseignement ne donnent aucun gain dans le présent.
+
+Données : `mvp/data/intro_vn.json`, `mvp/data/tutorials/memories.json`, `mvp/data/power_actions.json`. Les cinq anciens tableaux restent dans `intro_vn_legacy.json` uniquement pour reprendre les ouvertures déjà sauvegardées.
+
+Voir [le flux et les sauvegardes](TUTORIAL_FLOW.md) et [le rapport de validation](../validation/memorial/README.md).

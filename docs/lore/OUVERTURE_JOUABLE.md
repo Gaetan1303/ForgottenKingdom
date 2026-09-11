@@ -1,8 +1,10 @@
 # Canon de l’ouverture jouable
 
-L’ouverture de la campagne neuve suit `docs/lore/histoire.md` et la demande de refonte : protagoniste, Kael, ruines, souvenirs incertains. **Kael seule est présente au réveil.** Les autres membres évoqués dans les anciennes descriptions de la Maison ne constituent pas un effectif de départ ; leur recrutement éventuel appartient à une ouverture ultérieure du monde.
+L’ouverture neuve montre volontairement le duel de l’enfance, la défaite du protagoniste et le vol de son Essence par celui qu’il considère comme son frère. Le corps est laissé pour mort. La voix de sa sœur le conduit vers ses souvenirs, puis vers la reconstruction de son identité.
 
-Les fragments ne révèlent ni la responsabilité de la catastrophe, ni l’identité du second visage, ni la vérité de la reconstruction du protagoniste. Les dates contradictoires, les sensations corporelles et les résonances restent des observations ambiguës. Le personnage se décrit et éprouve ses capacités avec Kael avant de prendre la première décision au refuge.
+La trahison est un dévoilement intentionnel demandé pour ce prologue. Le mystère porte sur ses causes, les manipulations, la fiabilité des souvenirs et le rôle réel de la sœur. Son enseignement artisanal reste chaleureux et ambigu ; ni ses projets ni les détails de la reconstruction expérimentale ne sont exposés. Les textes de fond sur l’effacement mémoriel restent inchangés : ces fragments peuvent revenir sans rétablir toute la vérité.
+
+Les parents, la sœur, la Garde Silencieuse et l’émissaire apparaissent dans le passé. **Kael seule est présente après la création**, à la Brèche-Sèche. Aucun mentor des souvenirs n’est recruté au présent. Les autres membres évoqués dans les descriptions de la Maison ne constituent pas un effectif de départ.
 
 L’inscription à l’arrivée au donjon peut être observée librement. Un contact volontaire expose à la corruption de l’Éther, annoncée par l’interface. Cette exposition n’est pas une assimilation et ne donne pas accès à l’Architecture de l’Âme. La relique de l’atelier ne permet qu’une analyse incomplète.
 
