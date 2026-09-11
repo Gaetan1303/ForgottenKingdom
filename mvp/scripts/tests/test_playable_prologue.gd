@@ -99,6 +99,7 @@ func _run() -> void:
 	var xp_before: int = cm.get_personnage_experience()
 	dungeon.return_to_refuge()
 	check(cm.get_personnage_experience() == xp_before + 20, "expérience canonique au retour")
+	check(cm.campaign.power_routes.objectives.secure_galleries.status == "completed" and cm.campaign.power_routes.objectives.secure_galleries.resolution_method == "combat", "combat réel résout l’objectif commun")
 	check(cm.get_ressource("fer") == fer_before + 6, "butin déposé")
 	dungeon.return_to_refuge()
 	check(cm.get_ressource("fer") == fer_before + 6, "retour idempotent")

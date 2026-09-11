@@ -16,8 +16,8 @@ const STEP_TITLES: Array[String] = [
 ]
 
 const STEP_SUBTITLES: Array[String] = [
-	"Kael attend votre nom. Que reste-t-il de votre identité ?",
-	"Avec Kael, éprouvez vos forces : choisissez une voie et répartissez 10 points.",
+	"La voix de votre sœur s’éloigne. Reconstruisez votre identité.",
+	"Choisissez une classe et répartissez 10 points. Chaque approche reste possible.",
 	"Affinez votre style de jeu par les dons et aptitudes qui vous distinguent.",
 	"Préparez ce que vous emporterez pour survivre à la reconquête.",
 	"Vérifiez ce dont vous êtes capable avant de rejoindre Kael au refuge.",
@@ -102,6 +102,8 @@ func _update_step_header(step_index: int) -> void:
 		title.text = "ÉTAPE %d / %d  —  %s" % [step_index + 1, slide_scene_paths.size(), STEP_TITLES[step_index]]
 	if subtitle != null and step_index >= 0 and step_index < STEP_SUBTITLES.size():
 		subtitle.text = STEP_SUBTITLES[step_index]
+		if step_index == 0:
+			subtitle.text += "\n" + preload("res://scripts/services/memory_tutorial_service.gd").affinity_text(SaveSystem.get_value("opening", {}).get("memories", {}))
 
 
 func _bind_slide_signals(slide: Control) -> void:
@@ -264,8 +266,19 @@ func _on_creation_completed(final_payload: Dictionary) -> void:
 	clan_mgr.nouvelle_partie(nom_perso, nom_clan, class_id, final_stats, profil)
 	preload("res://scripts/services/refuge_service.gd").initialize(clan_mgr)
 	var opening: Dictionary = SaveSystem.get_value("opening", {})
+	if int(opening.get("version", 0)) >= 2:
+		clan_mgr.campaign["version"] = 3
+		clan_mgr.campaign["opening_run_id"] = str(opening.get("run_id", ""))
+		clan_mgr.campaign["memories"] = opening.get("memories", {}).duplicate(true)
+		# Les exercices terminés quittent la progression d'ouverture : un seul propriétaire.
+		clan_mgr.campaign.memories.erase("simulation")
+		preload("res://scripts/services/power_campaign_service.gd").ensure(clan_mgr)
+		preload("res://scripts/services/refuge_service.gd").log_entry(clan_mgr, "Le présent", "Vous ouvrez les yeux à la Brèche-Sèche. Kael pose deux couvertures près du feu. « Je suis là. Dites-moi seulement ce que vous voulez faire maintenant. »")
 	for fragment in opening.get("choices", {}).values():
 		preload("res://scripts/services/refuge_service.gd").log_entry(clan_mgr, "Souvenir fragmenté", str(fragment))
+	# Le clan est durable avant de fermer l'ouverture dans progress.json.
+	clan_mgr.sauvegarder()
+	opening.erase("memories")
 	opening["active"] = false
 	SaveSystem.set_value("opening", opening)
 	SaveSystem.save()

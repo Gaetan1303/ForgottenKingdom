@@ -1,75 +1,58 @@
-# Projet CDPI — Royaumes Démoniques : L'Histoire d'Ingrid
+# Royaume Déchu — Les Cendres de Veyr
 
-Résumé professionnel
---------------------
-Jeu narratif / prototype (MVP) développé avec Godot 4 : une histoire interactive autour d'Ingrid, couplée à une mécanique de gestion inspirée des 9 Maisons Nobles du Demon Realm. Ce dépôt contient le MVP jouable et les artefacts de conception (CDC, UML, machines à états).
-
-Principaux objectifs
-- MVP : récit interactif, scènes, illustrations et mécanismes de résolution.
-- Jeu complet (phase 2) : RPG de gestion, reconstruction du clan et conquête des maisons nobles.
-
-Structure du dépôt
-------------------
-Racine du projet : ce README. Le code Godot se trouve dans le dossier `mvp/`.
-
-- `mvp/project.godot` : configuration du projet Godot 4.
-- `mvp/scenes/` : scènes principales (`main_menu.tscn`, `clan_hub.tscn`, `creation_personnage.tscn`, etc.).
-- `mvp/scripts/` : GDScript, singletons (`autoload/`), contrôleurs UI (`ui/`) et outils de données (`data/`).
-- `mvp/assets/` : images et audio (BGM / SFX).
-- `docs/` : cahier des charges et diagrammes (`01_CDC.md`, `02_UML.md`, `03_State_Machine.md`).
-
-Prérequis
----------
-- Godot Engine 4.x installé (version stable recommandée).
-- (Optionnel) Python + pyyaml pour les scripts de génération de données.
-
-Ouvrir le projet (Linux)
-------------------------
-1. Ouvrir Godot et importer le projet en pointant sur :
-
-```
-mvp/project.godot
-```
-
-2. Lancer la scène principale depuis l'éditeur (F5).
-
-Commandes rapides (exemples)
----------------------------
-Générer les données YAML→JSON (optionnel) :
+Jeu narratif et de gestion sous Godot **4.4**. `mvp/` est l'unique projet
+Godot : développement, tests, exports et GitHub Pages utilisent cette racine.
 
 ```bash
-pip install pyyaml
-# exécuter le script GDScript 'scripts/data/yaml_to_json_builder.gd' depuis l'éditeur
+cd mvp
+godot --editor project.godot
 ```
 
-Sur Linux, lancer Godot depuis la racine du dépôt :
+Depuis la racine du dépôt, l'import et le lancement peuvent aussi être exécutés
+sans éditeur graphique :
 
 ```bash
-godot mvp/project.godot
+godot --headless --path mvp --import
+godot --path mvp
 ```
 
-Tests et validation headless
----------------------------
-Le dépôt contient des scripts de vérification/headless (smoke tests) pour valider le chargement de scènes et la boucle de jeu. Note : l'import des assets (fichiers dans `.godot/imported/`) est géré par l'éditeur Godot — ouvrir le projet dans l'éditeur au moins une fois pour générer ces dérivés.
+Les ressources embarquées sont sous `res://` dans `mvp/`. Les sauvegardes,
+slots et portraits du joueur utilisent `user://`.
 
-Limitations connues
--------------------
-- Certains fichiers importés (.ogg compressés / dérivés d'images) peuvent manquer si le projet n'a jamais été ouvert dans l'éditeur : ouvrir Godot et laisser l'import s'exécuter.
-- Headless re-import automatique peut échouer selon la configuration de l'environnement CI ; privilégier l'import via l'éditeur quand possible.
+- `mvp/scenes/` : menu, introduction, souvenirs/tutoriel, création et domaine.
+- `mvp/scripts/` : contrôleurs, services métier et tests.
+- `mvp/assets/` : images, audio et shaders ; conserver les sources et les `.import`.
+- `mvp/data/`, `mvp/story/`, `mvp/resources/` : données, lore et ressources Godot.
+- `scripts/` : outils de validation et d'export, utilisables depuis tout répertoire.
+- `docs/architecture/` : [migration](docs/architecture/MVP_MIGRATION.md) et
+  [refactor de ClanManager](docs/architecture/CLAN_MANAGER_REFACTOR.md).
 
-Contribuer
----------
-- Ouvrir une issue pour signaler un bug ou proposer une amélioration.
-- Proposer des pull requests claires et ciblées (une fonctionnalité / correction par PR).
-- Respecter la structure du projet et ajouter des tests/fichiers de données si nécessaire.
+Validation complète, avec Godot 4.4 et Python 3 :
 
-Points de contact et documentation
----------------------------------
-- Cahier des charges et diagrammes : `docs/01_CDC.md`, `docs/02_UML.md`, `docs/03_State_Machine.md`.
-- Pour lancer le MVP localement : voir `mvp/project.godot`.
+```bash
+./scripts/ci_test.sh
+```
 
-Licence
--------
-Consulter le fichier `LICENSE` à la racine du dépôt pour les termes de redistribution et d'utilisation.
+Le contrôle des chemins s'exécute sur le dépôt. Les tests s'exécutent dans une
+copie temporaire importée sans cache, avec un dossier utilisateur propre par
+suite ; le chemin des résultats est affiché. Aucun fichier personnel de sauvegarde
+n'est utilisé.
 
-# ForgottenKingdom
+Export Web, avec les templates officiels de la même version que Godot :
+
+```bash
+./scripts/export_web.sh
+python3 -m http.server --directory build/web 8000
+```
+
+Ouvrir `http://localhost:8000/`. Le premier clic, toucher ou appui clavier active
+la musique dans le navigateur. Le preset utilise un seul thread et Compatibility
+pour le Web. Les JSON, YAML et CSV sont inclus explicitement dans le PCK.
+Les caches et exports sont ignorés par Git.
+
+Les workflows CI/Pages utilisent la branche `Dev`. Pages publie `build/web`,
+qui contient `index.html`, `index.wasm`, `index.pck` et `index.js`. Le réglage
+GitHub Pages du dépôt doit utiliser **GitHub Actions**. Les paramètres distants
+et le déploiement effectif se contrôlent sur GitHub.
+
+Licence : voir [LICENSE](LICENSE).

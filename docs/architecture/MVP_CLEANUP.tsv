@@ -1,0 +1,477 @@
+file	action	reason_or_replacement
+docs/validation/arrival/checks.log	DELETE	diagnostic généré ; tests reproductibles dans scripts/
+docs/validation/memorial/import.log	DELETE	diagnostic généré ; tests reproductibles dans scripts/
+godot_run.log	DELETE	diagnostic généré ; tests reproductibles dans scripts/
+mvp/assets/audio/music/D#U00e9chu.mp3-df0f00852426ec81c2dd473e4a3f3cf4.md5	DELETE	sources image/audio/CSV dans mvp/assets et mvp/data ; aucun lecteur de ces caches déplacés
+mvp/assets/audio/music/D#U00e9chu.mp3-df0f00852426ec81c2dd473e4a3f3cf4.mp3str	DELETE	sources image/audio/CSV dans mvp/assets et mvp/data ; aucun lecteur de ces caches déplacés
+mvp/assets/audio/music/D#U00e9chu.mp3-e644f77d6cffee0f882f4da7120c40a9.md5	DELETE	sources image/audio/CSV dans mvp/assets et mvp/data ; aucun lecteur de ces caches déplacés
+mvp/assets/audio/music/D#U00e9chu.mp3-e644f77d6cffee0f882f4da7120c40a9.mp3str	DELETE	sources image/audio/CSV dans mvp/assets et mvp/data ; aucun lecteur de ces caches déplacés
+mvp/assets/audio/music/DemonBlade.csv-b165dea4cfb252ac702fcecf66c28bee.md5	DELETE	sources image/audio/CSV dans mvp/assets et mvp/data ; aucun lecteur de ces caches déplacés
+mvp/assets/audio/music/M#U00e8reetfils.png-2c3fed44712df6bd9d03c77d654128b1.ctex	DELETE	sources image/audio/CSV dans mvp/assets et mvp/data ; aucun lecteur de ces caches déplacés
+mvp/assets/audio/music/M#U00e8reetfils.png-2c3fed44712df6bd9d03c77d654128b1.ctex.uid	DELETE	sources image/audio/CSV dans mvp/assets et mvp/data ; aucun lecteur de ces caches déplacés
+mvp/assets/audio/music/M#U00e8reetfils.png-2c3fed44712df6bd9d03c77d654128b1.md5	DELETE	sources image/audio/CSV dans mvp/assets et mvp/data ; aucun lecteur de ces caches déplacés
+mvp/assets/audio/music/Mèreetfils.png-577700951e045d7fabc8edeb34cf1295.ctex	DELETE	sources image/audio/CSV dans mvp/assets et mvp/data ; aucun lecteur de ces caches déplacés
+mvp/assets/audio/music/Mèreetfils.png-577700951e045d7fabc8edeb34cf1295.ctex.uid	DELETE	sources image/audio/CSV dans mvp/assets et mvp/data ; aucun lecteur de ces caches déplacés
+mvp/assets/audio/music/Mèreetfils.png-577700951e045d7fabc8edeb34cf1295.md5	DELETE	sources image/audio/CSV dans mvp/assets et mvp/data ; aucun lecteur de ces caches déplacés
+mvp/assets/audio/music/Okasa-sama (6).png-17a23304e020185b2c6fa8ff7dc43b22.ctex	DELETE	sources image/audio/CSV dans mvp/assets et mvp/data ; aucun lecteur de ces caches déplacés
+mvp/assets/audio/music/Okasa-sama (6).png-17a23304e020185b2c6fa8ff7dc43b22.ctex.uid	DELETE	sources image/audio/CSV dans mvp/assets et mvp/data ; aucun lecteur de ces caches déplacés
+mvp/assets/audio/music/Okasa-sama (6).png-17a23304e020185b2c6fa8ff7dc43b22.md5	DELETE	sources image/audio/CSV dans mvp/assets et mvp/data ; aucun lecteur de ces caches déplacés
+mvp/assets/audio/music/Okasa-sama (6).png-513497549be90216130691738f4bd299.ctex	DELETE	sources image/audio/CSV dans mvp/assets et mvp/data ; aucun lecteur de ces caches déplacés
+mvp/assets/audio/music/Okasa-sama (6).png-513497549be90216130691738f4bd299.ctex.uid	DELETE	sources image/audio/CSV dans mvp/assets et mvp/data ; aucun lecteur de ces caches déplacés
+mvp/assets/audio/music/Okasa-sama (6).png-513497549be90216130691738f4bd299.md5	DELETE	sources image/audio/CSV dans mvp/assets et mvp/data ; aucun lecteur de ces caches déplacés
+mvp/assets/audio/music/Ottosama_00002_.png-9e75c3fee84f2a16610e31c86f189954.ctex	DELETE	sources image/audio/CSV dans mvp/assets et mvp/data ; aucun lecteur de ces caches déplacés
+mvp/assets/audio/music/Ottosama_00002_.png-9e75c3fee84f2a16610e31c86f189954.ctex.uid	DELETE	sources image/audio/CSV dans mvp/assets et mvp/data ; aucun lecteur de ces caches déplacés
+mvp/assets/audio/music/Ottosama_00002_.png-9e75c3fee84f2a16610e31c86f189954.md5	DELETE	sources image/audio/CSV dans mvp/assets et mvp/data ; aucun lecteur de ces caches déplacés
+mvp/assets/audio/music/Ottosama_00003_.png-09069567ab1e897dd5418f1a224eb567.ctex	DELETE	sources image/audio/CSV dans mvp/assets et mvp/data ; aucun lecteur de ces caches déplacés
+mvp/assets/audio/music/Ottosama_00003_.png-09069567ab1e897dd5418f1a224eb567.ctex.uid	DELETE	sources image/audio/CSV dans mvp/assets et mvp/data ; aucun lecteur de ces caches déplacés
+mvp/assets/audio/music/Ottosama_00003_.png-09069567ab1e897dd5418f1a224eb567.md5	DELETE	sources image/audio/CSV dans mvp/assets et mvp/data ; aucun lecteur de ces caches déplacés
+mvp/assets/audio/music/Ottosama_00026_.png-5f60cfb956d1d1c4e8308d3b8b5855ac.ctex	DELETE	sources image/audio/CSV dans mvp/assets et mvp/data ; aucun lecteur de ces caches déplacés
+mvp/assets/audio/music/Ottosama_00026_.png-5f60cfb956d1d1c4e8308d3b8b5855ac.ctex.uid	DELETE	sources image/audio/CSV dans mvp/assets et mvp/data ; aucun lecteur de ces caches déplacés
+mvp/assets/audio/music/Ottosama_00026_.png-5f60cfb956d1d1c4e8308d3b8b5855ac.md5	DELETE	sources image/audio/CSV dans mvp/assets et mvp/data ; aucun lecteur de ces caches déplacés
+mvp/assets/audio/music/Ottosama_00028_.png-9183a728a90508db86101406a38901f9.ctex	DELETE	sources image/audio/CSV dans mvp/assets et mvp/data ; aucun lecteur de ces caches déplacés
+mvp/assets/audio/music/Ottosama_00028_.png-9183a728a90508db86101406a38901f9.ctex.uid	DELETE	sources image/audio/CSV dans mvp/assets et mvp/data ; aucun lecteur de ces caches déplacés
+mvp/assets/audio/music/Ottosama_00028_.png-9183a728a90508db86101406a38901f9.md5	DELETE	sources image/audio/CSV dans mvp/assets et mvp/data ; aucun lecteur de ces caches déplacés
+mvp/assets/audio/music/Serment d#U2019Ingrid.mp3-15280c3b83536738e43133b8d5c11a4e.md5	DELETE	sources image/audio/CSV dans mvp/assets et mvp/data ; aucun lecteur de ces caches déplacés
+mvp/assets/audio/music/Serment d#U2019Ingrid.mp3-15280c3b83536738e43133b8d5c11a4e.mp3str	DELETE	sources image/audio/CSV dans mvp/assets et mvp/data ; aucun lecteur de ces caches déplacés
+mvp/assets/audio/music/Serment d#U2019Ingrid.mp3-52f939ebe7b04587f3889b1287480b66.md5	DELETE	sources image/audio/CSV dans mvp/assets et mvp/data ; aucun lecteur de ces caches déplacés
+mvp/assets/audio/music/Serment d#U2019Ingrid.mp3-52f939ebe7b04587f3889b1287480b66.mp3str	DELETE	sources image/audio/CSV dans mvp/assets et mvp/data ; aucun lecteur de ces caches déplacés
+mvp/assets/audio/music/Serment_des_Cendres.mp3-15280c3b83536738e43133b8d5c11a4e.md5	DELETE	sources image/audio/CSV dans mvp/assets et mvp/data ; aucun lecteur de ces caches déplacés
+mvp/assets/audio/music/Serment_des_Cendres.mp3-15280c3b83536738e43133b8d5c11a4e.mp3str	DELETE	sources image/audio/CSV dans mvp/assets et mvp/data ; aucun lecteur de ces caches déplacés
+mvp/assets/audio/music/Serment_des_Cendres.mp3-591d3664444715a3b9db3e58cf717ab0.md5	DELETE	sources image/audio/CSV dans mvp/assets et mvp/data ; aucun lecteur de ces caches déplacés
+mvp/assets/audio/music/Serment_des_Cendres.mp3-591d3664444715a3b9db3e58cf717ab0.mp3str	DELETE	sources image/audio/CSV dans mvp/assets et mvp/data ; aucun lecteur de ces caches déplacés
+mvp/assets/audio/music/abyss paladin.csv-1493cc8e31d71f4f936653c5ac10a99c.md5	DELETE	sources image/audio/CSV dans mvp/assets et mvp/data ; aucun lecteur de ces caches déplacés
+mvp/assets/audio/music/abysspaladin.png-6e2263e5cc604edead87f713dee24a39.ctex	DELETE	sources image/audio/CSV dans mvp/assets et mvp/data ; aucun lecteur de ces caches déplacés
+mvp/assets/audio/music/abysspaladin.png-6e2263e5cc604edead87f713dee24a39.ctex.uid	DELETE	sources image/audio/CSV dans mvp/assets et mvp/data ; aucun lecteur de ces caches déplacés
+mvp/assets/audio/music/abysspaladin.png-6e2263e5cc604edead87f713dee24a39.md5	DELETE	sources image/audio/CSV dans mvp/assets et mvp/data ; aucun lecteur de ces caches déplacés
+mvp/assets/audio/music/attack.png-282330332ddbb2f770fca446b32d0564.ctex	DELETE	sources image/audio/CSV dans mvp/assets et mvp/data ; aucun lecteur de ces caches déplacés
+mvp/assets/audio/music/attack.png-282330332ddbb2f770fca446b32d0564.ctex.uid	DELETE	sources image/audio/CSV dans mvp/assets et mvp/data ; aucun lecteur de ces caches déplacés
+mvp/assets/audio/music/attack.png-282330332ddbb2f770fca446b32d0564.md5	DELETE	sources image/audio/CSV dans mvp/assets et mvp/data ; aucun lecteur de ces caches déplacés
+mvp/assets/audio/music/audio.png-2ac36028a7de43ee50793d1794e5fc94.ctex	DELETE	sources image/audio/CSV dans mvp/assets et mvp/data ; aucun lecteur de ces caches déplacés
+mvp/assets/audio/music/audio.png-2ac36028a7de43ee50793d1794e5fc94.ctex.uid	DELETE	sources image/audio/CSV dans mvp/assets et mvp/data ; aucun lecteur de ces caches déplacés
+mvp/assets/audio/music/audio.png-2ac36028a7de43ee50793d1794e5fc94.md5	DELETE	sources image/audio/CSV dans mvp/assets et mvp/data ; aucun lecteur de ces caches déplacés
+mvp/assets/audio/music/back.png-b62d732550ef97418233e69fb5b72b8b.ctex	DELETE	sources image/audio/CSV dans mvp/assets et mvp/data ; aucun lecteur de ces caches déplacés
+mvp/assets/audio/music/back.png-b62d732550ef97418233e69fb5b72b8b.ctex.uid	DELETE	sources image/audio/CSV dans mvp/assets et mvp/data ; aucun lecteur de ces caches déplacés
+mvp/assets/audio/music/back.png-b62d732550ef97418233e69fb5b72b8b.md5	DELETE	sources image/audio/CSV dans mvp/assets et mvp/data ; aucun lecteur de ces caches déplacés
+mvp/assets/audio/music/berserkdemon.csv-066b4e121b82fddbfb52e2712026c2df.md5	DELETE	sources image/audio/CSV dans mvp/assets et mvp/data ; aucun lecteur de ces caches déplacés
+mvp/assets/audio/music/berserkdemon.png-3b3cd9b8808fefffc3bdb344a5ac25bd.ctex	DELETE	sources image/audio/CSV dans mvp/assets et mvp/data ; aucun lecteur de ces caches déplacés
+mvp/assets/audio/music/berserkdemon.png-3b3cd9b8808fefffc3bdb344a5ac25bd.ctex.uid	DELETE	sources image/audio/CSV dans mvp/assets et mvp/data ; aucun lecteur de ces caches déplacés
+mvp/assets/audio/music/berserkdemon.png-3b3cd9b8808fefffc3bdb344a5ac25bd.md5	DELETE	sources image/audio/CSV dans mvp/assets et mvp/data ; aucun lecteur de ces caches déplacés
+mvp/assets/audio/music/bloodsorcerer.csv-152100d5ba3790584f13e69d88b3bc04.md5	DELETE	sources image/audio/CSV dans mvp/assets et mvp/data ; aucun lecteur de ces caches déplacés
+mvp/assets/audio/music/bloodsorcerer.png-c6ad4f25bcdbca8937602236a3b49a04.ctex	DELETE	sources image/audio/CSV dans mvp/assets et mvp/data ; aucun lecteur de ces caches déplacés
+mvp/assets/audio/music/bloodsorcerer.png-c6ad4f25bcdbca8937602236a3b49a04.ctex.uid	DELETE	sources image/audio/CSV dans mvp/assets et mvp/data ; aucun lecteur de ces caches déplacés
+mvp/assets/audio/music/bloodsorcerer.png-c6ad4f25bcdbca8937602236a3b49a04.md5	DELETE	sources image/audio/CSV dans mvp/assets et mvp/data ; aucun lecteur de ces caches déplacés
+mvp/assets/audio/music/boy (1).png-ac942d0e7ba3b27948e656d88fbc1648.ctex	DELETE	sources image/audio/CSV dans mvp/assets et mvp/data ; aucun lecteur de ces caches déplacés
+mvp/assets/audio/music/boy (1).png-ac942d0e7ba3b27948e656d88fbc1648.ctex.uid	DELETE	sources image/audio/CSV dans mvp/assets et mvp/data ; aucun lecteur de ces caches déplacés
+mvp/assets/audio/music/boy (1).png-ac942d0e7ba3b27948e656d88fbc1648.md5	DELETE	sources image/audio/CSV dans mvp/assets et mvp/data ; aucun lecteur de ces caches déplacés
+mvp/assets/audio/music/boy.png-9654478fda34adcbede0f44fe136b47f.ctex	DELETE	sources image/audio/CSV dans mvp/assets et mvp/data ; aucun lecteur de ces caches déplacés
+mvp/assets/audio/music/boy.png-9654478fda34adcbede0f44fe136b47f.ctex.uid	DELETE	sources image/audio/CSV dans mvp/assets et mvp/data ; aucun lecteur de ces caches déplacés
+mvp/assets/audio/music/boy.png-9654478fda34adcbede0f44fe136b47f.md5	DELETE	sources image/audio/CSV dans mvp/assets et mvp/data ; aucun lecteur de ces caches déplacés
+mvp/assets/audio/music/ceres_1024.webp-4a97b2e3ec2d1b4f5e238c036ad72bae.ctex	DELETE	sources image/audio/CSV dans mvp/assets et mvp/data ; aucun lecteur de ces caches déplacés
+mvp/assets/audio/music/ceres_1024.webp-4a97b2e3ec2d1b4f5e238c036ad72bae.ctex.uid	DELETE	sources image/audio/CSV dans mvp/assets et mvp/data ; aucun lecteur de ces caches déplacés
+mvp/assets/audio/music/ceres_1024.webp-4a97b2e3ec2d1b4f5e238c036ad72bae.md5	DELETE	sources image/audio/CSV dans mvp/assets et mvp/data ; aucun lecteur de ces caches déplacés
+mvp/assets/audio/music/chest.png-240afbe3dd01f16a59474bfd989a961a.ctex	DELETE	sources image/audio/CSV dans mvp/assets et mvp/data ; aucun lecteur de ces caches déplacés
+mvp/assets/audio/music/chest.png-240afbe3dd01f16a59474bfd989a961a.ctex.uid	DELETE	sources image/audio/CSV dans mvp/assets et mvp/data ; aucun lecteur de ces caches déplacés
+mvp/assets/audio/music/chest.png-240afbe3dd01f16a59474bfd989a961a.md5	DELETE	sources image/audio/CSV dans mvp/assets et mvp/data ; aucun lecteur de ces caches déplacés
+mvp/assets/audio/music/continue.png-867a8761ad6477b0e32d3f48b7f04e57.ctex	DELETE	sources image/audio/CSV dans mvp/assets et mvp/data ; aucun lecteur de ces caches déplacés
+mvp/assets/audio/music/continue.png-867a8761ad6477b0e32d3f48b7f04e57.ctex.uid	DELETE	sources image/audio/CSV dans mvp/assets et mvp/data ; aucun lecteur de ces caches déplacés
+mvp/assets/audio/music/continue.png-867a8761ad6477b0e32d3f48b7f04e57.md5	DELETE	sources image/audio/CSV dans mvp/assets et mvp/data ; aucun lecteur de ces caches déplacés
+mvp/assets/audio/music/defaut.png-0e119fedd5aa5f4d69dd155a4bb7b459.ctex	DELETE	sources image/audio/CSV dans mvp/assets et mvp/data ; aucun lecteur de ces caches déplacés
+mvp/assets/audio/music/defaut.png-0e119fedd5aa5f4d69dd155a4bb7b459.ctex.uid	DELETE	sources image/audio/CSV dans mvp/assets et mvp/data ; aucun lecteur de ces caches déplacés
+mvp/assets/audio/music/defaut.png-0e119fedd5aa5f4d69dd155a4bb7b459.md5	DELETE	sources image/audio/CSV dans mvp/assets et mvp/data ; aucun lecteur de ces caches déplacés
+mvp/assets/audio/music/demonblade.png-08ddd3543831e2dd4940f081f8b9b735.ctex	DELETE	sources image/audio/CSV dans mvp/assets et mvp/data ; aucun lecteur de ces caches déplacés
+mvp/assets/audio/music/demonblade.png-08ddd3543831e2dd4940f081f8b9b735.ctex.uid	DELETE	sources image/audio/CSV dans mvp/assets et mvp/data ; aucun lecteur de ces caches déplacés
+mvp/assets/audio/music/demonblade.png-08ddd3543831e2dd4940f081f8b9b735.md5	DELETE	sources image/audio/CSV dans mvp/assets et mvp/data ; aucun lecteur de ces caches déplacés
+mvp/assets/audio/music/diplomacy.png-c738707a245b8b1cba6c7a8b5dfc56fc.ctex	DELETE	sources image/audio/CSV dans mvp/assets et mvp/data ; aucun lecteur de ces caches déplacés
+mvp/assets/audio/music/diplomacy.png-c738707a245b8b1cba6c7a8b5dfc56fc.ctex.uid	DELETE	sources image/audio/CSV dans mvp/assets et mvp/data ; aucun lecteur de ces caches déplacés
+mvp/assets/audio/music/diplomacy.png-c738707a245b8b1cba6c7a8b5dfc56fc.md5	DELETE	sources image/audio/CSV dans mvp/assets et mvp/data ; aucun lecteur de ces caches déplacés
+mvp/assets/audio/music/dungeon.png-0c36e102158183f178bfe7b8c31e714a.ctex	DELETE	sources image/audio/CSV dans mvp/assets et mvp/data ; aucun lecteur de ces caches déplacés
+mvp/assets/audio/music/dungeon.png-0c36e102158183f178bfe7b8c31e714a.ctex.uid	DELETE	sources image/audio/CSV dans mvp/assets et mvp/data ; aucun lecteur de ces caches déplacés
+mvp/assets/audio/music/dungeon.png-0c36e102158183f178bfe7b8c31e714a.md5	DELETE	sources image/audio/CSV dans mvp/assets et mvp/data ; aucun lecteur de ces caches déplacés
+mvp/assets/audio/music/echobard.csv-4215889dffa74dd978eb1be7d7480d29.md5	DELETE	sources image/audio/CSV dans mvp/assets et mvp/data ; aucun lecteur de ces caches déplacés
+mvp/assets/audio/music/echobard.png-a274d934d0bdcf5d83b29f898096dddb.ctex	DELETE	sources image/audio/CSV dans mvp/assets et mvp/data ; aucun lecteur de ces caches déplacés
+mvp/assets/audio/music/echobard.png-a274d934d0bdcf5d83b29f898096dddb.ctex.uid	DELETE	sources image/audio/CSV dans mvp/assets et mvp/data ; aucun lecteur de ces caches déplacés
+mvp/assets/audio/music/echobard.png-a274d934d0bdcf5d83b29f898096dddb.md5	DELETE	sources image/audio/CSV dans mvp/assets et mvp/data ; aucun lecteur de ces caches déplacés
+mvp/assets/audio/music/end_turn.png-b414fd3c7a74a6eec99dfba8e5e5e595.ctex	DELETE	sources image/audio/CSV dans mvp/assets et mvp/data ; aucun lecteur de ces caches déplacés
+mvp/assets/audio/music/end_turn.png-b414fd3c7a74a6eec99dfba8e5e5e595.ctex.uid	DELETE	sources image/audio/CSV dans mvp/assets et mvp/data ; aucun lecteur de ces caches déplacés
+mvp/assets/audio/music/end_turn.png-b414fd3c7a74a6eec99dfba8e5e5e595.md5	DELETE	sources image/audio/CSV dans mvp/assets et mvp/data ; aucun lecteur de ces caches déplacés
+mvp/assets/audio/music/female.png-e133fa6ed08b2d61379aeed197b26cfe.ctex	DELETE	sources image/audio/CSV dans mvp/assets et mvp/data ; aucun lecteur de ces caches déplacés
+mvp/assets/audio/music/female.png-e133fa6ed08b2d61379aeed197b26cfe.ctex.uid	DELETE	sources image/audio/CSV dans mvp/assets et mvp/data ; aucun lecteur de ces caches déplacés
+mvp/assets/audio/music/female.png-e133fa6ed08b2d61379aeed197b26cfe.md5	DELETE	sources image/audio/CSV dans mvp/assets et mvp/data ; aucun lecteur de ces caches déplacés
+mvp/assets/audio/music/flame.png-ab5738fc4e93c7b6ba0b19c8640297c3.ctex	DELETE	sources image/audio/CSV dans mvp/assets et mvp/data ; aucun lecteur de ces caches déplacés
+mvp/assets/audio/music/flame.png-ab5738fc4e93c7b6ba0b19c8640297c3.ctex.uid	DELETE	sources image/audio/CSV dans mvp/assets et mvp/data ; aucun lecteur de ces caches déplacés
+mvp/assets/audio/music/flame.png-ab5738fc4e93c7b6ba0b19c8640297c3.md5	DELETE	sources image/audio/CSV dans mvp/assets et mvp/data ; aucun lecteur de ces caches déplacés
+mvp/assets/audio/music/fortify.png-54d83cdb09ec3f3b09a2662b46e951bf.ctex	DELETE	sources image/audio/CSV dans mvp/assets et mvp/data ; aucun lecteur de ces caches déplacés
+mvp/assets/audio/music/fortify.png-54d83cdb09ec3f3b09a2662b46e951bf.ctex.uid	DELETE	sources image/audio/CSV dans mvp/assets et mvp/data ; aucun lecteur de ces caches déplacés
+mvp/assets/audio/music/fortify.png-54d83cdb09ec3f3b09a2662b46e951bf.md5	DELETE	sources image/audio/CSV dans mvp/assets et mvp/data ; aucun lecteur de ces caches déplacés
+mvp/assets/audio/music/girl (1).png-58fe3972b2c8d18258992f502588ca04.ctex	DELETE	sources image/audio/CSV dans mvp/assets et mvp/data ; aucun lecteur de ces caches déplacés
+mvp/assets/audio/music/girl (1).png-58fe3972b2c8d18258992f502588ca04.ctex.uid	DELETE	sources image/audio/CSV dans mvp/assets et mvp/data ; aucun lecteur de ces caches déplacés
+mvp/assets/audio/music/girl (1).png-58fe3972b2c8d18258992f502588ca04.md5	DELETE	sources image/audio/CSV dans mvp/assets et mvp/data ; aucun lecteur de ces caches déplacés
+mvp/assets/audio/music/girl (2).png-de08ed8eba8cb43ce087421bf64bbe6c.ctex	DELETE	sources image/audio/CSV dans mvp/assets et mvp/data ; aucun lecteur de ces caches déplacés
+mvp/assets/audio/music/girl (2).png-de08ed8eba8cb43ce087421bf64bbe6c.ctex.uid	DELETE	sources image/audio/CSV dans mvp/assets et mvp/data ; aucun lecteur de ces caches déplacés
+mvp/assets/audio/music/girl (2).png-de08ed8eba8cb43ce087421bf64bbe6c.md5	DELETE	sources image/audio/CSV dans mvp/assets et mvp/data ; aucun lecteur de ces caches déplacés
+mvp/assets/audio/music/hell_knight_1024.webp-08a48f7ad3efbafad4b7ea30d0f03c29.ctex	DELETE	sources image/audio/CSV dans mvp/assets et mvp/data ; aucun lecteur de ces caches déplacés
+mvp/assets/audio/music/hell_knight_1024.webp-08a48f7ad3efbafad4b7ea30d0f03c29.ctex.uid	DELETE	sources image/audio/CSV dans mvp/assets et mvp/data ; aucun lecteur de ces caches déplacés
+mvp/assets/audio/music/hell_knight_1024.webp-08a48f7ad3efbafad4b7ea30d0f03c29.md5	DELETE	sources image/audio/CSV dans mvp/assets et mvp/data ; aucun lecteur de ces caches déplacés
+mvp/assets/audio/music/hellcaster.csv-3582fc4045d9f02dd779d36afd133e56.md5	DELETE	sources image/audio/CSV dans mvp/assets et mvp/data ; aucun lecteur de ces caches déplacés
+mvp/assets/audio/music/hellcaster.png-0716b01ebf9e9326fa9c7671fc0dbd3c.ctex	DELETE	sources image/audio/CSV dans mvp/assets et mvp/data ; aucun lecteur de ces caches déplacés
+mvp/assets/audio/music/hellcaster.png-0716b01ebf9e9326fa9c7671fc0dbd3c.ctex.uid	DELETE	sources image/audio/CSV dans mvp/assets et mvp/data ; aucun lecteur de ces caches déplacés
+mvp/assets/audio/music/hellcaster.png-0716b01ebf9e9326fa9c7671fc0dbd3c.md5	DELETE	sources image/audio/CSV dans mvp/assets et mvp/data ; aucun lecteur de ces caches déplacés
+mvp/assets/audio/music/hellranger.csv-ea20704e482b96ed12dbd22b26f51554.md5	DELETE	sources image/audio/CSV dans mvp/assets et mvp/data ; aucun lecteur de ces caches déplacés
+mvp/assets/audio/music/hellranger.png-1ebb45a13f9c301526a86c0b97bc000f.ctex	DELETE	sources image/audio/CSV dans mvp/assets et mvp/data ; aucun lecteur de ces caches déplacés
+mvp/assets/audio/music/hellranger.png-1ebb45a13f9c301526a86c0b97bc000f.ctex.uid	DELETE	sources image/audio/CSV dans mvp/assets et mvp/data ; aucun lecteur de ces caches déplacés
+mvp/assets/audio/music/hellranger.png-1ebb45a13f9c301526a86c0b97bc000f.md5	DELETE	sources image/audio/CSV dans mvp/assets et mvp/data ; aucun lecteur de ces caches déplacés
+mvp/assets/audio/music/houses.png-cb9065fb09f6d3de77f565662f9dbdf3.ctex	DELETE	sources image/audio/CSV dans mvp/assets et mvp/data ; aucun lecteur de ces caches déplacés
+mvp/assets/audio/music/houses.png-cb9065fb09f6d3de77f565662f9dbdf3.ctex.uid	DELETE	sources image/audio/CSV dans mvp/assets et mvp/data ; aucun lecteur de ces caches déplacés
+mvp/assets/audio/music/houses.png-cb9065fb09f6d3de77f565662f9dbdf3.md5	DELETE	sources image/audio/CSV dans mvp/assets et mvp/data ; aucun lecteur de ces caches déplacés
+mvp/assets/audio/music/infernalartificer.png-355e5e3b01260ec9284c82e12fb373c9.ctex	DELETE	sources image/audio/CSV dans mvp/assets et mvp/data ; aucun lecteur de ces caches déplacés
+mvp/assets/audio/music/infernalartificer.png-355e5e3b01260ec9284c82e12fb373c9.ctex.uid	DELETE	sources image/audio/CSV dans mvp/assets et mvp/data ; aucun lecteur de ces caches déplacés
+mvp/assets/audio/music/infernalartificer.png-355e5e3b01260ec9284c82e12fb373c9.md5	DELETE	sources image/audio/CSV dans mvp/assets et mvp/data ; aucun lecteur de ces caches déplacés
+mvp/assets/audio/music/infernalartificier.csv-b79036ed14a4c80da963dbe1e466753b.md5	DELETE	sources image/audio/CSV dans mvp/assets et mvp/data ; aucun lecteur de ces caches déplacés
+mvp/assets/audio/music/library.png-ca848c33884d83bad6b7720a1d6505a9.ctex	DELETE	sources image/audio/CSV dans mvp/assets et mvp/data ; aucun lecteur de ces caches déplacés
+mvp/assets/audio/music/library.png-ca848c33884d83bad6b7720a1d6505a9.ctex.uid	DELETE	sources image/audio/CSV dans mvp/assets et mvp/data ; aucun lecteur de ces caches déplacés
+mvp/assets/audio/music/library.png-ca848c33884d83bad6b7720a1d6505a9.md5	DELETE	sources image/audio/CSV dans mvp/assets et mvp/data ; aucun lecteur de ces caches déplacés
+mvp/assets/audio/music/lore.png-a57dec891d99ddec1000d53f6d011707.ctex	DELETE	sources image/audio/CSV dans mvp/assets et mvp/data ; aucun lecteur de ces caches déplacés
+mvp/assets/audio/music/lore.png-a57dec891d99ddec1000d53f6d011707.ctex.uid	DELETE	sources image/audio/CSV dans mvp/assets et mvp/data ; aucun lecteur de ces caches déplacés
+mvp/assets/audio/music/lore.png-a57dec891d99ddec1000d53f6d011707.md5	DELETE	sources image/audio/CSV dans mvp/assets et mvp/data ; aucun lecteur de ces caches déplacés
+mvp/assets/audio/music/male.png-a77c5b0caa058007001002d75b8e8cdd.ctex	DELETE	sources image/audio/CSV dans mvp/assets et mvp/data ; aucun lecteur de ces caches déplacés
+mvp/assets/audio/music/male.png-a77c5b0caa058007001002d75b8e8cdd.ctex.uid	DELETE	sources image/audio/CSV dans mvp/assets et mvp/data ; aucun lecteur de ces caches déplacés
+mvp/assets/audio/music/male.png-a77c5b0caa058007001002d75b8e8cdd.md5	DELETE	sources image/audio/CSV dans mvp/assets et mvp/data ; aucun lecteur de ces caches déplacés
+mvp/assets/audio/music/map.png-222ebca165f221062c05313f365dd453.ctex	DELETE	sources image/audio/CSV dans mvp/assets et mvp/data ; aucun lecteur de ces caches déplacés
+mvp/assets/audio/music/map.png-222ebca165f221062c05313f365dd453.ctex.uid	DELETE	sources image/audio/CSV dans mvp/assets et mvp/data ; aucun lecteur de ces caches déplacés
+mvp/assets/audio/music/map.png-222ebca165f221062c05313f365dd453.md5	DELETE	sources image/audio/CSV dans mvp/assets et mvp/data ; aucun lecteur de ces caches déplacés
+mvp/assets/audio/music/new_game.png-a1e45cb5aaff021614b458b6f9f766b7.ctex	DELETE	sources image/audio/CSV dans mvp/assets et mvp/data ; aucun lecteur de ces caches déplacés
+mvp/assets/audio/music/new_game.png-a1e45cb5aaff021614b458b6f9f766b7.ctex.uid	DELETE	sources image/audio/CSV dans mvp/assets et mvp/data ; aucun lecteur de ces caches déplacés
+mvp/assets/audio/music/new_game.png-a1e45cb5aaff021614b458b6f9f766b7.md5	DELETE	sources image/audio/CSV dans mvp/assets et mvp/data ; aucun lecteur de ces caches déplacés
+mvp/assets/audio/music/next.png-8c9747a781650f7042a77caf9e48da90.ctex	DELETE	sources image/audio/CSV dans mvp/assets et mvp/data ; aucun lecteur de ces caches déplacés
+mvp/assets/audio/music/next.png-8c9747a781650f7042a77caf9e48da90.ctex.uid	DELETE	sources image/audio/CSV dans mvp/assets et mvp/data ; aucun lecteur de ces caches déplacés
+mvp/assets/audio/music/next.png-8c9747a781650f7042a77caf9e48da90.md5	DELETE	sources image/audio/CSV dans mvp/assets et mvp/data ; aucun lecteur de ces caches déplacés
+mvp/assets/audio/music/pactbound.csv-c74251f55f4a63727c6076a11519830d.md5	DELETE	sources image/audio/CSV dans mvp/assets et mvp/data ; aucun lecteur de ces caches déplacés
+mvp/assets/audio/music/pactbound.png-b1fcbf83bc3f8476a14042f3abf0d13c.ctex	DELETE	sources image/audio/CSV dans mvp/assets et mvp/data ; aucun lecteur de ces caches déplacés
+mvp/assets/audio/music/pactbound.png-b1fcbf83bc3f8476a14042f3abf0d13c.ctex.uid	DELETE	sources image/audio/CSV dans mvp/assets et mvp/data ; aucun lecteur de ces caches déplacés
+mvp/assets/audio/music/pactbound.png-b1fcbf83bc3f8476a14042f3abf0d13c.md5	DELETE	sources image/audio/CSV dans mvp/assets et mvp/data ; aucun lecteur de ces caches déplacés
+mvp/assets/audio/music/profile.png-396467a4a8f220a917d4f03197362219.ctex	DELETE	sources image/audio/CSV dans mvp/assets et mvp/data ; aucun lecteur de ces caches déplacés
+mvp/assets/audio/music/profile.png-396467a4a8f220a917d4f03197362219.ctex.uid	DELETE	sources image/audio/CSV dans mvp/assets et mvp/data ; aucun lecteur de ces caches déplacés
+mvp/assets/audio/music/profile.png-396467a4a8f220a917d4f03197362219.md5	DELETE	sources image/audio/CSV dans mvp/assets et mvp/data ; aucun lecteur de ces caches déplacés
+mvp/assets/audio/music/quit.png-5a00075c91bf77f4604c46ecad23faa7.ctex	DELETE	sources image/audio/CSV dans mvp/assets et mvp/data ; aucun lecteur de ces caches déplacés
+mvp/assets/audio/music/quit.png-5a00075c91bf77f4604c46ecad23faa7.ctex.uid	DELETE	sources image/audio/CSV dans mvp/assets et mvp/data ; aucun lecteur de ces caches déplacés
+mvp/assets/audio/music/quit.png-5a00075c91bf77f4604c46ecad23faa7.md5	DELETE	sources image/audio/CSV dans mvp/assets et mvp/data ; aucun lecteur de ces caches déplacés
+mvp/assets/audio/music/recruit.png-b5561cbe389362151bc08dcea78f5225.ctex	DELETE	sources image/audio/CSV dans mvp/assets et mvp/data ; aucun lecteur de ces caches déplacés
+mvp/assets/audio/music/recruit.png-b5561cbe389362151bc08dcea78f5225.ctex.uid	DELETE	sources image/audio/CSV dans mvp/assets et mvp/data ; aucun lecteur de ces caches déplacés
+mvp/assets/audio/music/recruit.png-b5561cbe389362151bc08dcea78f5225.md5	DELETE	sources image/audio/CSV dans mvp/assets et mvp/data ; aucun lecteur de ces caches déplacés
+mvp/assets/audio/music/renaissance-des-neuf-couronnes.mp3-107bea10516181eea7c8c820f9dd3c69.md5	DELETE	sources image/audio/CSV dans mvp/assets et mvp/data ; aucun lecteur de ces caches déplacés
+mvp/assets/audio/music/renaissance-des-neuf-couronnes.mp3-107bea10516181eea7c8c820f9dd3c69.mp3str	DELETE	sources image/audio/CSV dans mvp/assets et mvp/data ; aucun lecteur de ces caches déplacés
+mvp/assets/audio/music/renaissance-des-neuf-couronnes.mp3-c3cdb71191eedba1e227565c8b15cd7b.md5	DELETE	sources image/audio/CSV dans mvp/assets et mvp/data ; aucun lecteur de ces caches déplacés
+mvp/assets/audio/music/renaissance-des-neuf-couronnes.mp3-c3cdb71191eedba1e227565c8b15cd7b.mp3str	DELETE	sources image/audio/CSV dans mvp/assets et mvp/data ; aucun lecteur de ces caches déplacés
+mvp/assets/audio/music/reputation.png-d141562669e72cd9b81656cd4e903d1e.ctex	DELETE	sources image/audio/CSV dans mvp/assets et mvp/data ; aucun lecteur de ces caches déplacés
+mvp/assets/audio/music/reputation.png-d141562669e72cd9b81656cd4e903d1e.ctex.uid	DELETE	sources image/audio/CSV dans mvp/assets et mvp/data ; aucun lecteur de ces caches déplacés
+mvp/assets/audio/music/reputation.png-d141562669e72cd9b81656cd4e903d1e.md5	DELETE	sources image/audio/CSV dans mvp/assets et mvp/data ; aucun lecteur de ces caches déplacés
+mvp/assets/audio/music/rest.png-d2b82544b80f3bf184a65452ce29c4a4.ctex	DELETE	sources image/audio/CSV dans mvp/assets et mvp/data ; aucun lecteur de ces caches déplacés
+mvp/assets/audio/music/rest.png-d2b82544b80f3bf184a65452ce29c4a4.ctex.uid	DELETE	sources image/audio/CSV dans mvp/assets et mvp/data ; aucun lecteur de ces caches déplacés
+mvp/assets/audio/music/rest.png-d2b82544b80f3bf184a65452ce29c4a4.md5	DELETE	sources image/audio/CSV dans mvp/assets et mvp/data ; aucun lecteur de ces caches déplacés
+mvp/assets/audio/music/save.png-3ed7cc7b435c664b84486ebf905e3684.ctex	DELETE	sources image/audio/CSV dans mvp/assets et mvp/data ; aucun lecteur de ces caches déplacés
+mvp/assets/audio/music/save.png-3ed7cc7b435c664b84486ebf905e3684.ctex.uid	DELETE	sources image/audio/CSV dans mvp/assets et mvp/data ; aucun lecteur de ces caches déplacés
+mvp/assets/audio/music/save.png-3ed7cc7b435c664b84486ebf905e3684.md5	DELETE	sources image/audio/CSV dans mvp/assets et mvp/data ; aucun lecteur de ces caches déplacés
+mvp/assets/audio/music/settings.png-05f96689361c066ede9747ca7d01171b.ctex	DELETE	sources image/audio/CSV dans mvp/assets et mvp/data ; aucun lecteur de ces caches déplacés
+mvp/assets/audio/music/settings.png-05f96689361c066ede9747ca7d01171b.ctex.uid	DELETE	sources image/audio/CSV dans mvp/assets et mvp/data ; aucun lecteur de ces caches déplacés
+mvp/assets/audio/music/settings.png-05f96689361c066ede9747ca7d01171b.md5	DELETE	sources image/audio/CSV dans mvp/assets et mvp/data ; aucun lecteur de ces caches déplacés
+mvp/assets/audio/music/shadowfang.csv-92c61ecf715238096dbbf96119e489d4.md5	DELETE	sources image/audio/CSV dans mvp/assets et mvp/data ; aucun lecteur de ces caches déplacés
+mvp/assets/audio/music/shadowfang.png-0b0be62c598afe79b1d2166f2ed001a3.ctex	DELETE	sources image/audio/CSV dans mvp/assets et mvp/data ; aucun lecteur de ces caches déplacés
+mvp/assets/audio/music/shadowfang.png-0b0be62c598afe79b1d2166f2ed001a3.ctex.uid	DELETE	sources image/audio/CSV dans mvp/assets et mvp/data ; aucun lecteur de ces caches déplacés
+mvp/assets/audio/music/shadowfang.png-0b0be62c598afe79b1d2166f2ed001a3.md5	DELETE	sources image/audio/CSV dans mvp/assets et mvp/data ; aucun lecteur de ces caches déplacés
+mvp/assets/audio/music/soul.png-4c3f4363de7d0c68586fd6e8a855911d.ctex	DELETE	sources image/audio/CSV dans mvp/assets et mvp/data ; aucun lecteur de ces caches déplacés
+mvp/assets/audio/music/soul.png-4c3f4363de7d0c68586fd6e8a855911d.ctex.uid	DELETE	sources image/audio/CSV dans mvp/assets et mvp/data ; aucun lecteur de ces caches déplacés
+mvp/assets/audio/music/soul.png-4c3f4363de7d0c68586fd6e8a855911d.md5	DELETE	sources image/audio/CSV dans mvp/assets et mvp/data ; aucun lecteur de ces caches déplacés
+mvp/assets/audio/music/soulwarden.csv-59ddc9d62a9f9a9e9480bfd709fbac06.md5	DELETE	sources image/audio/CSV dans mvp/assets et mvp/data ; aucun lecteur de ces caches déplacés
+mvp/assets/audio/music/soulwarden.png-fd5c13c21969e107fde5edbcbeb55459.ctex	DELETE	sources image/audio/CSV dans mvp/assets et mvp/data ; aucun lecteur de ces caches déplacés
+mvp/assets/audio/music/soulwarden.png-fd5c13c21969e107fde5edbcbeb55459.ctex.uid	DELETE	sources image/audio/CSV dans mvp/assets et mvp/data ; aucun lecteur de ces caches déplacés
+mvp/assets/audio/music/soulwarden.png-fd5c13c21969e107fde5edbcbeb55459.md5	DELETE	sources image/audio/CSV dans mvp/assets et mvp/data ; aucun lecteur de ces caches déplacés
+mvp/assets/audio/music/spy.png-76a6347599d6a7c9d5682d310ad9da99.ctex	DELETE	sources image/audio/CSV dans mvp/assets et mvp/data ; aucun lecteur de ces caches déplacés
+mvp/assets/audio/music/spy.png-76a6347599d6a7c9d5682d310ad9da99.ctex.uid	DELETE	sources image/audio/CSV dans mvp/assets et mvp/data ; aucun lecteur de ces caches déplacés
+mvp/assets/audio/music/spy.png-76a6347599d6a7c9d5682d310ad9da99.md5	DELETE	sources image/audio/CSV dans mvp/assets et mvp/data ; aucun lecteur de ces caches déplacés
+mvp/assets/audio/music/stone.png-1fc913a5774d4ebe7fb12dfb7c186838.ctex	DELETE	sources image/audio/CSV dans mvp/assets et mvp/data ; aucun lecteur de ces caches déplacés
+mvp/assets/audio/music/stone.png-1fc913a5774d4ebe7fb12dfb7c186838.ctex.uid	DELETE	sources image/audio/CSV dans mvp/assets et mvp/data ; aucun lecteur de ces caches déplacés
+mvp/assets/audio/music/stone.png-1fc913a5774d4ebe7fb12dfb7c186838.md5	DELETE	sources image/audio/CSV dans mvp/assets et mvp/data ; aucun lecteur de ces caches déplacés
+mvp/assets/audio/music/voidmonk.csv-2a0e30edcc712daa26a339694b185e95.md5	DELETE	sources image/audio/CSV dans mvp/assets et mvp/data ; aucun lecteur de ces caches déplacés
+mvp/assets/audio/music/voidmonk.png-37055a0f60a41d62c05323aa9dd05bd1.ctex	DELETE	sources image/audio/CSV dans mvp/assets et mvp/data ; aucun lecteur de ces caches déplacés
+mvp/assets/audio/music/voidmonk.png-37055a0f60a41d62c05323aa9dd05bd1.ctex.uid	DELETE	sources image/audio/CSV dans mvp/assets et mvp/data ; aucun lecteur de ces caches déplacés
+mvp/assets/audio/music/voidmonk.png-37055a0f60a41d62c05323aa9dd05bd1.md5	DELETE	sources image/audio/CSV dans mvp/assets et mvp/data ; aucun lecteur de ces caches déplacés
+mvp/assets/audio/music/warlord.csv-adc47c552ef6aca7f10d54d050341079.md5	DELETE	sources image/audio/CSV dans mvp/assets et mvp/data ; aucun lecteur de ces caches déplacés
+mvp/assets/audio/music/warlord.png-95d68434e6214f0ba18e50ee6c1f3f38.ctex	DELETE	sources image/audio/CSV dans mvp/assets et mvp/data ; aucun lecteur de ces caches déplacés
+mvp/assets/audio/music/warlord.png-95d68434e6214f0ba18e50ee6c1f3f38.ctex.uid	DELETE	sources image/audio/CSV dans mvp/assets et mvp/data ; aucun lecteur de ces caches déplacés
+mvp/assets/audio/music/warlord.png-95d68434e6214f0ba18e50ee6c1f3f38.md5	DELETE	sources image/audio/CSV dans mvp/assets et mvp/data ; aucun lecteur de ces caches déplacés
+mvp/assets/audio/music/wilddruid.csv-6aa4fb6ee4369a79813eb8bc3197fbbc.md5	DELETE	sources image/audio/CSV dans mvp/assets et mvp/data ; aucun lecteur de ces caches déplacés
+mvp/assets/audio/music/wilddruid.png-855f50dbb5d6904485da3a8c2a3e7b35.ctex	DELETE	sources image/audio/CSV dans mvp/assets et mvp/data ; aucun lecteur de ces caches déplacés
+mvp/assets/audio/music/wilddruid.png-855f50dbb5d6904485da3a8c2a3e7b35.ctex.uid	DELETE	sources image/audio/CSV dans mvp/assets et mvp/data ; aucun lecteur de ces caches déplacés
+mvp/assets/audio/music/wilddruid.png-855f50dbb5d6904485da3a8c2a3e7b35.md5	DELETE	sources image/audio/CSV dans mvp/assets et mvp/data ; aucun lecteur de ces caches déplacés
+mvp/data/progression/DemonBlade.Artisanat.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/DemonBlade.Attaque.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/DemonBlade.Commandement.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/DemonBlade.D#U00e9fense.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/DemonBlade.Diplomatie.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/DemonBlade.Défense.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/DemonBlade.Espionnage.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/DemonBlade.Force.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/DemonBlade.Initiative.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/DemonBlade.Jet de R#U00e9flexes.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/DemonBlade.Jet de Réflexes.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/DemonBlade.Jet de Vigueur.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/DemonBlade.Jet de Volont#U00e9.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/DemonBlade.Jet de Volonté.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/DemonBlade.Lore.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/DemonBlade.Magie.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/DemonBlade.Nouveaux Talents.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/DemonBlade.R#U00e9sistance.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/DemonBlade.Résistance.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/abyss paladin.Artisanat.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/abyss paladin.Attaque.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/abyss paladin.Commandement.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/abyss paladin.D#U00e9fense.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/abyss paladin.Diplomatie.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/abyss paladin.Défense.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/abyss paladin.Espionnage.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/abyss paladin.Force.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/abyss paladin.Initiative.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/abyss paladin.Jet de R#U00e9flexes.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/abyss paladin.Jet de Réflexes.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/abyss paladin.Jet de Vigueur.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/abyss paladin.Jet de Volont#U00e9.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/abyss paladin.Jet de Volonté.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/abyss paladin.Lore.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/abyss paladin.Magie.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/abyss paladin.Nouveaux Talents.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/abyss paladin.R#U00e9sistance.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/abyss paladin.Résistance.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/berserkdemon.Artisanat.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/berserkdemon.Attaque.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/berserkdemon.Commandement.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/berserkdemon.D#U00e9fense.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/berserkdemon.Diplomatie.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/berserkdemon.Défense.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/berserkdemon.Espionnage.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/berserkdemon.Force.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/berserkdemon.Initiative.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/berserkdemon.Jet de R#U00e9flexes.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/berserkdemon.Jet de Réflexes.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/berserkdemon.Jet de Vigueur.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/berserkdemon.Jet de Volont#U00e9.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/berserkdemon.Jet de Volonté.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/berserkdemon.Lore.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/berserkdemon.Magie.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/berserkdemon.Nouveaux Talents.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/berserkdemon.R#U00e9sistance.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/berserkdemon.Résistance.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/bloodsorcerer.Artisanat.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/bloodsorcerer.Attaque.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/bloodsorcerer.Commandement.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/bloodsorcerer.D#U00e9fense.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/bloodsorcerer.Diplomatie.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/bloodsorcerer.Défense.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/bloodsorcerer.Espionnage.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/bloodsorcerer.Force.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/bloodsorcerer.Initiative.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/bloodsorcerer.Jet de R#U00e9flexes.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/bloodsorcerer.Jet de Réflexes.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/bloodsorcerer.Jet de Vigueur.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/bloodsorcerer.Jet de Volont#U00e9.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/bloodsorcerer.Jet de Volonté.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/bloodsorcerer.Lore.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/bloodsorcerer.Magie.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/bloodsorcerer.Nouveaux Talents.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/bloodsorcerer.R#U00e9sistance.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/bloodsorcerer.Résistance.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/echobard.Artisanat.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/echobard.Attaque.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/echobard.Commandement.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/echobard.D#U00e9fense.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/echobard.Diplomatie.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/echobard.Défense.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/echobard.Espionnage.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/echobard.Force.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/echobard.Initiative.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/echobard.Jet de R#U00e9flexes.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/echobard.Jet de Réflexes.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/echobard.Jet de Vigueur.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/echobard.Jet de Volont#U00e9.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/echobard.Jet de Volonté.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/echobard.Lore.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/echobard.Magie.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/echobard.Nouveaux Talents.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/echobard.R#U00e9sistance.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/echobard.Résistance.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/hellcaster.Artisanat.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/hellcaster.Attaque.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/hellcaster.Commandement.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/hellcaster.D#U00e9fense.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/hellcaster.Diplomatie.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/hellcaster.Défense.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/hellcaster.Espionnage.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/hellcaster.Force.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/hellcaster.Initiative.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/hellcaster.Jet de R#U00e9flexes.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/hellcaster.Jet de Réflexes.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/hellcaster.Jet de Vigueur.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/hellcaster.Jet de Volont#U00e9.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/hellcaster.Jet de Volonté.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/hellcaster.Lore.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/hellcaster.Magie.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/hellcaster.Nouveaux Talents.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/hellcaster.R#U00e9sistance.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/hellcaster.Résistance.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/hellranger.Artisanat.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/hellranger.Attaque.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/hellranger.Commandement.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/hellranger.D#U00e9fense.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/hellranger.Diplomatie.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/hellranger.Défense.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/hellranger.Espionnage.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/hellranger.Force.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/hellranger.Initiative.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/hellranger.Jet de R#U00e9flexes.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/hellranger.Jet de Réflexes.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/hellranger.Jet de Vigueur.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/hellranger.Jet de Volont#U00e9.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/hellranger.Jet de Volonté.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/hellranger.Lore.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/hellranger.Magie.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/hellranger.Nouveaux Talents.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/hellranger.R#U00e9sistance.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/hellranger.Résistance.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/infernalartificier.Artisanat.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/infernalartificier.Attaque.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/infernalartificier.Commandement.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/infernalartificier.D#U00e9fense.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/infernalartificier.Diplomatie.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/infernalartificier.Défense.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/infernalartificier.Espionnage.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/infernalartificier.Force.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/infernalartificier.Initiative.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/infernalartificier.Jet de R#U00e9flexes.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/infernalartificier.Jet de Réflexes.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/infernalartificier.Jet de Vigueur.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/infernalartificier.Jet de Volont#U00e9.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/infernalartificier.Jet de Volonté.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/infernalartificier.Lore.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/infernalartificier.Magie.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/infernalartificier.Nouveaux Talents.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/infernalartificier.R#U00e9sistance.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/infernalartificier.Résistance.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/pactbound.Artisanat.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/pactbound.Attaque.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/pactbound.Commandement.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/pactbound.D#U00e9fense.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/pactbound.Diplomatie.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/pactbound.Défense.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/pactbound.Espionnage.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/pactbound.Force.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/pactbound.Initiative.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/pactbound.Jet de R#U00e9flexes.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/pactbound.Jet de Réflexes.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/pactbound.Jet de Vigueur.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/pactbound.Jet de Volont#U00e9.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/pactbound.Jet de Volonté.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/pactbound.Lore.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/pactbound.Magie.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/pactbound.Nouveaux Talents.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/pactbound.R#U00e9sistance.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/pactbound.Résistance.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/shadowfang.Artisanat.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/shadowfang.Attaque.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/shadowfang.Commandement.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/shadowfang.D#U00e9fense.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/shadowfang.Diplomatie.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/shadowfang.Défense.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/shadowfang.Espionnage.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/shadowfang.Force.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/shadowfang.Initiative.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/shadowfang.Jet de R#U00e9flexes.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/shadowfang.Jet de Réflexes.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/shadowfang.Jet de Vigueur.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/shadowfang.Jet de Volont#U00e9.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/shadowfang.Jet de Volonté.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/shadowfang.Lore.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/shadowfang.Magie.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/shadowfang.Nouveaux Talents.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/shadowfang.R#U00e9sistance.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/shadowfang.Résistance.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/soulwarden.Artisanat.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/soulwarden.Attaque.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/soulwarden.Commandement.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/soulwarden.D#U00e9fense.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/soulwarden.Diplomatie.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/soulwarden.Défense.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/soulwarden.Espionnage.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/soulwarden.Force.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/soulwarden.Initiative.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/soulwarden.Jet de R#U00e9flexes.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/soulwarden.Jet de Réflexes.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/soulwarden.Jet de Vigueur.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/soulwarden.Jet de Volont#U00e9.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/soulwarden.Jet de Volonté.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/soulwarden.Lore.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/soulwarden.Magie.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/soulwarden.Nouveaux Talents.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/soulwarden.R#U00e9sistance.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/soulwarden.Résistance.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/voidmonk.Artisanat.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/voidmonk.Attaque.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/voidmonk.Commandement.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/voidmonk.D#U00e9fense.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/voidmonk.Diplomatie.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/voidmonk.Défense.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/voidmonk.Espionnage.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/voidmonk.Force.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/voidmonk.Initiative.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/voidmonk.Jet de R#U00e9flexes.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/voidmonk.Jet de Réflexes.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/voidmonk.Jet de Vigueur.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/voidmonk.Jet de Volont#U00e9.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/voidmonk.Jet de Volonté.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/voidmonk.Lore.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/voidmonk.Magie.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/voidmonk.Nouveaux Talents.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/voidmonk.R#U00e9sistance.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/voidmonk.Résistance.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/warlord.Artisanat.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/warlord.Attaque.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/warlord.Commandement.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/warlord.D#U00e9fense.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/warlord.Diplomatie.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/warlord.Défense.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/warlord.Espionnage.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/warlord.Force.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/warlord.Initiative.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/warlord.Jet de R#U00e9flexes.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/warlord.Jet de Réflexes.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/warlord.Jet de Vigueur.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/warlord.Jet de Volont#U00e9.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/warlord.Jet de Volonté.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/warlord.Lore.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/warlord.Magie.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/warlord.Nouveaux Talents.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/warlord.R#U00e9sistance.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/warlord.Résistance.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/wilddruid.Artisanat.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/wilddruid.Attaque.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/wilddruid.Commandement.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/wilddruid.D#U00e9fense.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/wilddruid.Diplomatie.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/wilddruid.Défense.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/wilddruid.Espionnage.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/wilddruid.Force.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/wilddruid.Initiative.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/wilddruid.Jet de R#U00e9flexes.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/wilddruid.Jet de Réflexes.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/wilddruid.Jet de Vigueur.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/wilddruid.Jet de Volont#U00e9.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/wilddruid.Jet de Volonté.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/wilddruid.Lore.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/wilddruid.Magie.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/wilddruid.Nouveaux Talents.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/wilddruid.R#U00e9sistance.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/data/progression/wilddruid.Résistance.translation	DELETE	mvp/data/progression/*.csv (lecture brute, pas traduction)
+mvp/godot_run.log	DELETE	diagnostic généré ; tests reproductibles dans scripts/
+scripts/data/character.gd	OBSOLETE	mvp/scripts/ (ou mvp/export_presets.cfg) ; aucun consommateur actif
+scripts/ui/character_sheet.gd	OBSOLETE	mvp/scripts/ (ou mvp/export_presets.cfg) ; aucun consommateur actif
+scripts/ui/creation_personnage.gd	OBSOLETE	mvp/scripts/ (ou mvp/export_presets.cfg) ; aucun consommateur actif
+scripts/utils/fk_helpers.gd	OBSOLETE	mvp/scripts/ (ou mvp/export_presets.cfg) ; aucun consommateur actif
+mvp/godot_presets/export_presets.cfg	OBSOLETE	mvp/scripts/ (ou mvp/export_presets.cfg) ; aucun consommateur actif

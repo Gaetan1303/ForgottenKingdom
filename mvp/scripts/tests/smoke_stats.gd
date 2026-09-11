@@ -6,7 +6,11 @@ const CharacterFactoryClass = preload("res://scripts/factory/character_factory.g
 const CharacterClass = preload("res://scripts/data/character.gd")
 
 
-func _initialize() -> void:
+func _init() -> void:
+	call_deferred("_run")
+
+
+func _run() -> void:
 	var failures: Array[String] = []
 
 	_run_statdefs_sanitize_tests(failures)

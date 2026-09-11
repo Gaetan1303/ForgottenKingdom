@@ -2,7 +2,7 @@
 class_name CharacterBuildService
 extends RefCounted
 
-# Use StatDefs global class_name from data/stat_defs.gd
+const StatDefsClass = preload("res://scripts/data/stat_defs.gd")
 
 
 static func compute_final_stats(
@@ -12,24 +12,24 @@ static func compute_final_stats(
 	archetype_bonus: Dictionary,
 	feats_bonus: Dictionary = {}
 ) -> Dictionary:
-	var base := StatDefs.sanitize_stats(
+	var base: Dictionary = StatDefsClass.sanitize_stats(
 		class_stats_bonus,
-		StatDefs.CLAN_MIN_STAT,
-		StatDefs.CLAN_MAX_STAT,
+		StatDefsClass.CLAN_MIN_STAT,
+		StatDefsClass.CLAN_MAX_STAT,
 		0
 	)
 
 	# Merge flat stat bonuses coming from feats or other effects
-	base = StatDefs.merge_stats(base, feats_bonus)
+	base = StatDefsClass.merge_stats(base, feats_bonus)
 
-	for key in StatDefs.STAT_KEYS:
-		base[key] = int(base.get(key, 0)) + StatDefs.score_to_modifier(int(raw_stats.get(key, StatDefs.CHARACTER_MIN_STAT)))
+	for key in StatDefsClass.STAT_KEYS:
+		base[key] = int(base.get(key, 0)) + StatDefsClass.score_to_modifier(int(raw_stats.get(key, StatDefsClass.CHARACTER_MIN_STAT)))
 
-	base = StatDefs.merge_stats(base, competence_bonus)
-	base = StatDefs.merge_stats(base, archetype_bonus)
+	base = StatDefsClass.merge_stats(base, competence_bonus)
+	base = StatDefsClass.merge_stats(base, archetype_bonus)
 
-	var final_stats := StatDefs.sanitize_stats(base, StatDefs.CLAN_MIN_STAT, StatDefs.CLAN_MAX_STAT, 0)
-	var derived_stats := build_derived_stats(final_stats)
+	var final_stats: Dictionary = StatDefsClass.sanitize_stats(base, StatDefsClass.CLAN_MIN_STAT, StatDefsClass.CLAN_MAX_STAT, 0)
+	var derived_stats: Dictionary = build_derived_stats(final_stats)
 	for key in derived_stats.keys():
 		final_stats[key] = derived_stats[key]
 
@@ -37,7 +37,7 @@ static func compute_final_stats(
 
 
 static func build_modifiers(raw_stats: Dictionary) -> Dictionary:
-	return StatDefs.build_modifiers(raw_stats)
+	return StatDefsClass.build_modifiers(raw_stats)
 
 
 static func build_derived_stats(final_stats: Dictionary) -> Dictionary:

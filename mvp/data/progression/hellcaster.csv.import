@@ -1,19 +1,7 @@
 [remap]
 
-importer="csv_translation"
-type="Translation"
-uid="uid://bmqa83y20py5d"
+importer="keep"
 
 [deps]
 
-files=["res://data/progression/hellcaster.Force.translation", "res://data/progression/hellcaster.Magie.translation", "res://data/progression/hellcaster.Espionnage.translation", "res://data/progression/hellcaster.Artisanat.translation", "res://data/progression/hellcaster.Diplomatie.translation", "res://data/progression/hellcaster.Commandement.translation", "res://data/progression/hellcaster.Attaque.translation", "res://data/progression/hellcaster.Défense.translation", "res://data/progression/hellcaster.Résistance.translation", "res://data/progression/hellcaster.Initiative.translation", "res://data/progression/hellcaster.Jet de Vigueur.translation", "res://data/progression/hellcaster.Jet de Volonté.translation", "res://data/progression/hellcaster.Jet de Réflexes.translation", "res://data/progression/hellcaster.Nouveaux Talents.translation", "res://data/progression/hellcaster.Lore.translation"]
-
-source_file="res://data/progression/hellcaster.csv"
-dest_files=["res://data/progression/hellcaster.Force.translation", "res://data/progression/hellcaster.Magie.translation", "res://data/progression/hellcaster.Espionnage.translation", "res://data/progression/hellcaster.Artisanat.translation", "res://data/progression/hellcaster.Diplomatie.translation", "res://data/progression/hellcaster.Commandement.translation", "res://data/progression/hellcaster.Attaque.translation", "res://data/progression/hellcaster.Défense.translation", "res://data/progression/hellcaster.Résistance.translation", "res://data/progression/hellcaster.Initiative.translation", "res://data/progression/hellcaster.Jet de Vigueur.translation", "res://data/progression/hellcaster.Jet de Volonté.translation", "res://data/progression/hellcaster.Jet de Réflexes.translation", "res://data/progression/hellcaster.Nouveaux Talents.translation", "res://data/progression/hellcaster.Lore.translation"]
-
 [params]
-
-compress=1
-delimiter=0
-unescape_keys=false
-unescape_translations=true

@@ -55,14 +55,11 @@ func _run() -> void:
                 stack.append(c)
         if sheet != null:
             print("Found sheet instance:", sheet)
-            if sheet.has("_character"):
-                var ch = sheet.get("_character")
-                if ch != null and ch.has("stats"):
-                    print("Sheet._character.stats =", JSON.stringify(ch.stats))
-                else:
-                    print("Sheet._character present but no stats")
+            var ch = sheet.get("_character")
+            if ch != null and ch.get("stats") is Dictionary:
+                print("Sheet._character.stats =", JSON.stringify(ch.get("stats")))
             else:
-                print("Sheet found but no _character variable")
+                print("Sheet._character absent ou sans stats")
         else:
             print("No character_sheet instance found under clan_hub")
     quit(0)

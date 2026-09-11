@@ -1,30 +1,16 @@
-extends Node
+extends SceneTree
 
-func _ready() -> void:
+const GameManagerScript = preload("res://scripts/autoload/game_manager.gd")
+
+func _init() -> void:
+    call_deferred("_run")
+
+
+func _run() -> void:
     var missing := []
     var failed := []
     push_warning("SCENE_CHECK_START")
-    var scenes_map = {}
-    if Engine.has_singleton("GameManager"):
-        scenes_map = GameManager.SCENES
-    else:
-        push_warning("GameManager autoload not present — attempting to load mapping from file")
-        # Fallback: try to load the game_manager script and read SCENES via an instance
-        var gm_script = load("res://scripts/autoload/game_manager.gd")
-        if gm_script == null:
-            push_error("Unable to load game_manager.gd for scene mapping")
-            get_tree().quit(2)
-            return
-        var inst = null
-        # try to instantiate the script to access SCENES
-        if gm_script is Script:
-            inst = gm_script.new()
-        if inst == null:
-            push_error("Cannot instantiate game_manager.gd to read SCENES")
-            get_tree().quit(2)
-            return
-        if inst.has("SCENES"):
-            scenes_map = inst.get("SCENES")
+    var scenes_map: Dictionary = GameManagerScript.SCENES
 
     for key in scenes_map.keys():
         var path = scenes_map[key]
@@ -50,11 +36,11 @@ func _ready() -> void:
     if missing.is_empty() and failed.is_empty():
         push_warning("SCENES_OK")
         print("SCENES_OK")
-        get_tree().quit(0)
+        quit(0)
         return
 
     if not missing.is_empty():
         print("SCENES_MISSING: %s" % missing)
     if not failed.is_empty():
         print("SCENES_FAILED_INSTANTIATE: %s" % failed)
-    get_tree().quit(1)
+    quit(1)

@@ -46,5 +46,6 @@ func _run() -> void:
                 var raw := (fiche.get("stats_brutes", {}) as Dictionary)
                 sheet_node.setup(raw, int(fiche.get("points_restants", 0)), ClanManager.classe)
                 print("CharacterSheet.setup called with raw stats:", JSON.stringify(raw))
+                sheet_node.free()
 
         quit(0)

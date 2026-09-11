@@ -1,21 +1,27 @@
 ## autoload/clan_manager.gd
 ## Singleton de gestion du clan — état complet de la partie en cours.
-## Chargé depuis game/clan/etat_clan_defaut.json + sauvegarde utilisateur.
+## Façade compatible : données res://data/clan/ et sauvegarde user://.
 extends Node
 
-## rely on the script's class_name (StatDefs) instead of preloading it here
-## Use the service classes registered by class_name (PnjDailyPlannerService, PnjGenerator, JsonPersistenceService)
+const ClanEconomyServiceClass = preload("res://scripts/services/clan_economy_service.gd")
+const SoldierAssignmentServiceClass = preload("res://scripts/services/soldier_assignment_service.gd")
+
 const FKHelpers = preload("res://scripts/utils/fk_helpers.gd")
 const ClanIdentityType = preload("res://scripts/data/clan_identity.gd")
+const StatDefsClass = preload("res://scripts/data/stat_defs.gd")
+const CorruptionServiceClass = preload("res://scripts/services/corruption_service.gd")
+const CreatureRosterServiceClass = preload("res://scripts/services/creature_roster_service.gd")
+const PactServiceClass = preload("res://scripts/services/pact_service.gd")
+const PnjDailyPlannerServiceClass = preload("res://scripts/services/pnj_daily_planner_service.gd")
+const CharacterBuildServiceClass = preload("res://scripts/data/character_build_service.gd")
+const PnjGeneratorClass = preload("res://scripts/services/pnj_generator.gd")
+const GameLoopStateMachineClass = preload("res://scripts/game_loop/game_loop_state_machine.gd")
+const JsonPersistenceServiceClass = preload("res://scripts/services/json_persistence_service.gd")
 
 # ── Chemins ────────────────────────────────────────────────────────────
 const DEFAULT_STATE_PATH := "res://data/clan/etat_clan_defaut.json"
-const STAT_KEYS := StatDefs.STAT_KEYS
-const RESSOURCE_KEYS := [
-	"or", "soldats", "mana", "reputation", "renseignements",
-	"bois", "fer", "pierre", "nourriture", "essence"
-]
-const ROLE_DOMAINES := ["forgeron", "alchimiste", "intendant", "arcaniste"]
+const RESSOURCE_KEYS = ClanEconomyServiceClass.RESOURCE_KEYS
+const ROLE_DOMAINES = ClanEconomyServiceClass.DOMAIN_ROLES
 
 # ── État du clan ────────────────────────────────────────────────────────
 var nom_clan:       String     = ""
@@ -109,13 +115,17 @@ var historique_tours: Array = []
 var pnj_gestion: Dictionary = {}
 ## Progression du refuge et expédition : même transaction que ressources et habitants.
 var campaign: Dictionary = {}
-var _corruption_service: CorruptionService = CorruptionService.new()
+var _corruption_service: RefCounted = CorruptionServiceClass.new()
+var _creature_roster_service: RefCounted = CreatureRosterServiceClass.new()
+var _pact_service: RefCounted = PactServiceClass.new()
 var daily_phase := "matin"
 var day_report := ""
 var _day_transition_pending := false
 
 # ── Services (instanciation unique — DRY / SRP) ────────────────────────
-var _planner: PnjDailyPlannerService = null
+var _planner: RefCounted = null
+var _economy = ClanEconomyServiceClass.new()
+var _soldier_assignment = SoldierAssignmentServiceClass.new()
 
 # Bonus de classe chargés depuis les données
 var _bonus_par_action: Dictionary = {}
@@ -124,13 +134,11 @@ var _bonus_par_action: Dictionary = {}
 signal tour_suivant(numero_tour: int)
 signal ressources_mises_a_jour
 
-const MIN_STAT := StatDefs.CLAN_MIN_STAT
-const MAX_STAT := StatDefs.CLAN_MAX_STAT
-const SOLDATS_MAX := 600
+const SOLDATS_MAX = SoldierAssignmentServiceClass.DEFAULT_MAX_SOLDIERS
 
 
 func _ready() -> void:
-	_planner = PnjDailyPlannerService.new()
+	_planner = PnjDailyPlannerServiceClass.new()
 	_charger_etat_defaut()
 
 
@@ -148,7 +156,9 @@ func nouvelle_partie(
 ) -> void:
 	_charger_etat_defaut()
 	campaign = {}
-	_corruption_service = CorruptionService.new()
+	_corruption_service = CorruptionServiceClass.new()
+	_creature_roster_service = CreatureRosterServiceClass.new()
+	_pact_service = PactServiceClass.new()
 	daily_phase = "matin"
 	day_report = ""
 	nom_personnage = p_nom_personnage
@@ -162,18 +172,21 @@ func nouvelle_partie(
 	profil_personnage["clan_id"] = clan_id
 	profil_personnage["clan_name"] = nom_clan
 	_forcer_magie_pactes()
+	_normalize_loaded_character_sheet()
 
-	# If the creation profile already contains raw character scores (stats_brutes),
-	# apply and persist them now so the character is saved at game start.
-	var fiche_in_profile := (profil_personnage.get("fiche_complete", {}) as Dictionary)
-	if fiche_in_profile.has("stats_brutes"):
-		var raw := (fiche_in_profile.get("stats_brutes", {}) as Dictionary)
-		var pts := int(fiche_in_profile.get("points_restants", 0))
-		var feats := (profil_personnage.get("feats", []) as Array)
-		# apply_profile_sheet_update will compute final stats and call sauvegarder()
-		apply_profile_sheet_update(raw, pts, feats)
-		# Ensure fiche_hero and related structures reflect the new stats
+	# La création transmet des scores finaux déjà calculés. Ils sont la vérité à
+	# persister : les recalculer ici appliquerait les bonus de classe deux fois.
+	var fiche_in_profile: Dictionary = profil_personnage.get("fiche_complete", {}) as Dictionary
+	if fiche_in_profile.has("stats_brutes") or fiche_in_profile.has("character_scores"):
+		var final_scores: Dictionary = fiche_in_profile.get("character_scores", fiche_in_profile.get("stats_brutes", {})) as Dictionary
+		stats = StatDefsClass.sanitize_stats(final_scores, 1, 30, StatDefsClass.CHARACTER_MIN_STAT)
+		fiche_in_profile["stats_brutes"] = stats.duplicate(true)
+		fiche_in_profile["character_scores"] = stats.duplicate(true)
+		fiche_in_profile["modifiers"] = CharacterBuildServiceClass.build_modifiers(stats)
+		fiche_in_profile["derived_stats"] = CharacterBuildServiceClass.build_derived_stats(fiche_in_profile["modifiers"] as Dictionary)
+		profil_personnage["fiche_complete"] = fiche_in_profile
 		_initialiser_fiches_personnage_et_domaine()
+		_compute_and_apply_profil_effects(profil_personnage, false)
 	else:
 		# No raw stats provided: fall back to previous flow (apply stats_bonus)
 		_initialiser_fiches_personnage_et_domaine()
@@ -221,10 +234,10 @@ func _charger_etat_defaut() -> void:
 	var clan := data.get("clan", {}) as Dictionary
 	var perso := clan.get("personnage", {}) as Dictionary
 
-	stats              = StatDefs.sanitize_stats(
+	stats              = StatDefsClass.sanitize_stats(
 		(perso.get("stats", stats) as Dictionary),
-		MIN_STAT,
-		MAX_STAT,
+		StatDefsClass.CLAN_MIN_STAT,
+		StatDefsClass.CLAN_MAX_STAT,
 		5
 	)
 	caracteristiques_hero = (perso.get("caracteristiques", caracteristiques_hero) as Dictionary).duplicate(true)
@@ -284,10 +297,7 @@ func _charger_etat_defaut() -> void:
 
 ## Vérifie si le clan peut payer un coût donné.
 func peut_payer(cout: Dictionary) -> bool:
-	for res in cout:
-		if ressources.get(res, 0) < int(cout[res]):
-			return false
-	return true
+	return _economy.can_pay(ressources, cout)
 
 
 ## Débite les ressources (sans vérification — utiliser peut_payer avant).
@@ -298,7 +308,7 @@ func payer(cout: Dictionary) -> void:
 			var to_remove := maxi(0, int(cout[res]))
 			_remove_soldiers(to_remove)
 		else:
-			ressources[res] = maxi(0, int(ressources.get(res, 0)) - int(cout[res]))
+			_economy.debit(ressources, res, int(cout[res]))
 	emit_signal("ressources_mises_a_jour")
 
 
@@ -311,8 +321,7 @@ func gagner(gains: Dictionary) -> void:
 				# add soldier IDs to pool when gaining soldiers
 				_add_soldiers(inc)
 			else:
-				var nv := int(ressources[res]) + inc
-				ressources[res] = nv
+				_economy.credit(ressources, res, inc)
 	emit_signal("ressources_mises_a_jour")
 
 
@@ -321,7 +330,7 @@ func get_ressources() -> Dictionary:
 
 
 func get_ressource(key: String, default_value: int = 0) -> int:
-	return int(ressources.get(key, default_value))
+	return _economy.get_resource(ressources, key, default_value)
 
 
 func get_stats() -> Dictionary:
@@ -334,29 +343,20 @@ func get_stat(key: String, default_value: int = 5) -> int:
 
 ## Pool helpers: ensure pool and ressources stay in sync when soldiers are added/removed.
 func _remove_soldiers(count: int) -> int:
-	var removed := 0
-	for i in range(maxi(0, count)):
-		if _soldats_disponibles.size() > 0:
-			_soldats_disponibles.pop_back()
-			removed += 1
-		else:
-			break
+	var result: Dictionary = _soldier_assignment.remove_soldiers(_soldats_disponibles, count)
+	_soldats_disponibles = result.pool
 	ressources["soldats"] = _soldats_disponibles.size()
 	emit_signal("ressources_mises_a_jour")
-	return removed
+	return (result.removed_ids as Array).size()
 
 
 func _add_soldiers(count: int) -> int:
-	var added := 0
-	for i in range(maxi(0, count)):
-		if _soldats_disponibles.size() >= SOLDATS_MAX:
-			break
-		_soldats_disponibles.append("S%d" % _soldat_next_id)
-		_soldat_next_id += 1
-		added += 1
+	var result: Dictionary = _soldier_assignment.add_soldiers(_soldats_disponibles, count, _soldat_next_id)
+	_soldats_disponibles = result.pool
+	_soldat_next_id = result.next_id
 	ressources["soldats"] = _soldats_disponibles.size()
 	emit_signal("ressources_mises_a_jour")
-	return added
+	return (result.added_ids as Array).size()
 
 
 func action_deja_utilisee_pour_moment() -> bool:
@@ -429,16 +429,8 @@ func peut_recruter_pnj_domaine() -> bool:
 
 
 func get_production_totale(base_production: Dictionary) -> Dictionary:
-	var total := ressources_par_tour.duplicate(true) if not campaign.is_empty() else base_production.duplicate(true)
-	for cle in RESSOURCE_KEYS:
-		if not total.has(cle):
-			total[cle] = 0
-
-	var bonus := _calculer_bonus_production_domaines()
-	for cle_bonus in bonus:
-		total[cle_bonus] = int(total.get(cle_bonus, 0)) + int(bonus[cle_bonus])
-
-	return total
+	var base := ressources_par_tour if not campaign.is_empty() else base_production
+	return _economy.total_production(base, fiches_domaine, affinites_pnj)
 
 
 func get_traits_gameplay() -> Dictionary:
@@ -446,20 +438,7 @@ func get_traits_gameplay() -> Dictionary:
 
 
 func get_action_cout_modifie(action_id: String, cout_base: Dictionary) -> Dictionary:
-	var cout := cout_base.duplicate(true)
-	var traits := get_traits_gameplay()
-	var caps := _get_traits_caps()
-
-	var mana_reduc_pct := clampi(int(traits.get("mana_cost_reduction_pct", 0)), 0, int(caps.get("mana_cost_reduction_pct", 35)))
-	if mana_reduc_pct > 0 and cout.has("mana"):
-		if action_id in ["recruter", "recruter_pnj", "recuperer"]:
-			cout["mana"] = maxi(0, int(round(int(cout["mana"]) * (100 - mana_reduc_pct) / 100.0)))
-
-	var soldats_reduc_atk := clampi(int(traits.get("soldats_cost_reduction_attaquer_pct", 0)), 0, int(caps.get("soldats_cost_reduction_attaquer_pct", 20)))
-	if soldats_reduc_atk > 0 and action_id == "attaquer" and cout.has("soldats"):
-		cout["soldats"] = maxi(0, int(round(int(cout["soldats"]) * (100 - soldats_reduc_atk) / 100.0)))
-
-	return cout
+	return _economy.action_cost(action_id, cout_base, get_traits_gameplay(), _get_traits_caps())
 
 
 func get_bonus_score_action(action_id: String) -> int:
@@ -524,48 +503,15 @@ func get_resume_traits_actifs() -> String:
 
 
 func _get_traits_caps() -> Dictionary:
-	var traits_cfg: Dictionary = GameDataLoader.get_character_traits()
+	var loader: Node = _require_autoload("GameDataLoader")
+	if loader == null:
+		return {}
+	var traits_cfg: Dictionary = loader.get_character_traits()
 	return (traits_cfg.get("caps", {}) as Dictionary).duplicate(true)
 
 
 func _calculer_bonus_production_domaines() -> Dictionary:
-	var bonus := {
-		"or": 0,
-		"mana": 0,
-		"fer": 0,
-		"essence": 0,
-		"bois": 0,
-		"pierre": 0,
-		"nourriture": 0,
-	}
-
-	for role in ROLE_DOMAINES:
-		if not fiches_domaine.has(role):
-			continue
-		var fiche := fiches_domaine[role] as Dictionary
-		if not bool(fiche.get("actif", false)):
-			continue
-
-		var niveau := clampi(int(fiche.get("niveau", 1)), 1, 20)
-		var affinite := clampi(int(fiche.get("affinite", int(affinites_pnj.get(role, 0)))), -100, 100)
-		var bonus_aff := maxi(0, affinite) / 25
-
-		match role:
-			"forgeron":
-				bonus["fer"] += niveau + bonus_aff
-				bonus["pierre"] += maxi(1, niveau / 3)
-			"alchimiste":
-				bonus["essence"] += maxi(1, niveau / 2) + bonus_aff
-				bonus["mana"] += maxi(1, niveau / 2)
-			"intendant":
-				bonus["or"] += 5 * niveau + (2 * bonus_aff)
-				bonus["nourriture"] += maxi(1, niveau / 2)
-			"arcaniste":
-				bonus["mana"] += 2 * niveau + bonus_aff
-				if niveau >= 5:
-					bonus["essence"] += 1
-
-	return bonus
+	return _economy.domain_production(fiches_domaine, affinites_pnj)
 
 
 func get_pnj_gestion_state() -> Dictionary:
@@ -582,7 +528,7 @@ func ajouter_pnj_gere(
 	pnj_stats: Dictionary,
 	traits: Array = []
 ) -> Dictionary:
-	var fiche := _planner.make_pnj_profile(pnj_id, pnj_name, pnj_type, role, niveau, pnj_stats, traits)
+	var fiche: Dictionary = _planner.make_pnj_profile(pnj_id, pnj_name, pnj_type, role, niveau, pnj_stats, traits)
 	var state := get_pnj_gestion_state()
 	var roster: Array = (state.get("roster", []) as Array).duplicate(true)
 	var index := _find_managed_pnj_index(roster, pnj_id)
@@ -592,6 +538,9 @@ func ajouter_pnj_gere(
 		roster.append(fiche)
 	state["roster"] = roster
 	pnj_gestion = state
+	var corruption: RefCounted = get_corruption_service()
+	if not corruption.has_character(pnj_id):
+		corruption.register_character(pnj_id, 50.0, traits)
 	return fiche.duplicate(true)
 
 
@@ -928,9 +877,9 @@ func advance_day_phase() -> Dictionary:
 	if _day_transition_pending:
 		return {"ok": false, "message": "Le changement de phase est déjà en cours."}
 	_day_transition_pending = true
-	var loop := GameLoopStateMachine.new(self)
+	var loop: RefCounted = GameLoopStateMachineClass.new(self)
 	loop.start()
-	var changed := loop.tick_to_next()
+	var changed: bool = loop.tick_to_next()
 	_day_transition_pending = false
 	if not changed:
 		return {"ok": false, "message": "Revenez de l’expédition avant de faire avancer la journée."}
@@ -978,7 +927,9 @@ func utiliser_forme_dragon(cout_ame: int = 25) -> bool:
 	emit_signal("ressources_mises_a_jour")
 	if barre_ame <= 0:
 		# Déclenchement du Bad End
-		GameManager.declencher_bad_end_dragon()
+		var game_manager: Node = _require_autoload("GameManager")
+		if game_manager != null:
+			game_manager.declencher_bad_end_dragon()
 	return true
 
 
@@ -1117,8 +1068,8 @@ func _appliquer_effets(effets: Dictionary) -> void:
 		var role_hint := str(effets.get("pnj_role", ""))
 		print("[DEBUG] _appliquer_effets: pnj_recrute=%d role_hint=%s moment=%s magie=%s" % [count, role_hint, str(moment_journee), str(magie_pactes_active())])
 		for i in range(count):
-			var gen := PnjGenerator.new()
-			var added := gen.generate_and_register_pnj(role_hint, "recrute")
+			var gen: RefCounted = PnjGeneratorClass.new()
+			var added: Variant = gen.generate_and_register_pnj(role_hint, "recrute")
 			if added == null:
 				print("[DEBUG] generate_and_register_pnj returned null for hint=%s" % role_hint)
 			else:
@@ -1179,6 +1130,8 @@ func evaluer_etat_partie() -> Dictionary:
 			"message": "Barre d’âme épuisée. L’héritier est consumé par l’Éther de Cendre.",
 		}
 
+	if preload("res://scripts/services/narrative_objective_service.gd").ending_ready(campaign.get("power_routes", {})):
+		return {"terminee": true, "etat": "victoire", "message": str(campaign.power_routes.get("epilogue", "Les objectifs de votre Maison sont accomplis."))}
 	if maisons_soumises() >= 9:
 		return {
 			"terminee": true,
@@ -1188,7 +1141,9 @@ func evaluer_etat_partie() -> Dictionary:
 
 	var soldats := int(ressources.get("soldats", 0))
 	var or_total := int(ressources.get("or", 0))
-	if soldats <= 0 and or_total < 50 and not _a_alliance_active():
+	# Une Maison spécialisée peut vivre sans armée : la production du refuge
+	# permet de reconstruire ses réserves. Conserver l'ancienne règle hors v3.
+	if int(campaign.get("version", 0)) < 3 and soldats <= 0 and or_total < 50 and not _a_alliance_active():
 		return {
 			"terminee": true,
 			"etat": "defaite",
@@ -1312,6 +1267,8 @@ func sauvegarder() -> void:
 		"campaign": campaign.duplicate(true),
 		"daily_phase": daily_phase,
 		"corruption_state": get_corruption_service().export_state(),
+		"creature_roster_state": _creature_roster_service.export_state(),
+		"pact_state": _pact_service.export_state(),
 		"day_report": day_report,
 		"stats": stats.duplicate(),
 		"ressources": ressources.duplicate(),
@@ -1329,7 +1286,7 @@ func sauvegarder() -> void:
 		"soldat_next_id": _soldat_next_id,
 	}
 	var save_path := _get_clan_save_path()
-	if not JsonPersistenceService.write_json_atomic(save_path, data):
+	if not JsonPersistenceServiceClass.write_json_atomic(save_path, data):
 		push_error("ClanManager: impossible d'écrire la sauvegarde du clan pour le slot actif.")
 		return
 
@@ -1352,6 +1309,7 @@ func charger_sauvegarde() -> bool:
 	profil_personnage["clan_id"] = clan_id
 	profil_personnage["clan_name"] = nom_clan
 	_forcer_magie_pactes()
+	_normalize_loaded_character_sheet()
 	caracteristiques_hero = (data.get("caracteristiques_hero", caracteristiques_hero) as Dictionary).duplicate(true)
 	stats_clan           = (data.get("stats_clan", stats_clan) as Dictionary).duplicate(true)
 	affinites_pnj        = (data.get("affinites_pnj", affinites_pnj) as Dictionary).duplicate(true)
@@ -1359,9 +1317,13 @@ func charger_sauvegarde() -> bool:
 	fiches_domaine       = (data.get("fiches_domaine", fiches_domaine) as Dictionary).duplicate(true)
 	pnj_gestion          = (data.get("pnj_gestion", _make_default_pnj_gestion_state()) as Dictionary).duplicate(true)
 	campaign             = (data.get("campaign", {}) as Dictionary).duplicate(true)
-	_corruption_service = CorruptionService.new()
+	_corruption_service = CorruptionServiceClass.new()
 	_corruption_service.import_state(data.get("corruption_state", data.get("corruption", {})))
 	_corruption_service.setup(self)
+	_creature_roster_service = CreatureRosterServiceClass.new()
+	_creature_roster_service.import_state(data.get("creature_roster_state", {}) as Dictionary)
+	_pact_service = PactServiceClass.new()
+	_pact_service.import_state(data.get("pact_state", {}) as Dictionary)
 	stats                = (data.get("stats", {}) as Dictionary).duplicate()
 	ressources           = (data.get("ressources", {}) as Dictionary).duplicate()
 	ressources_par_tour  = (data.get("ressources_par_tour", {}) as Dictionary).duplicate()
@@ -1449,11 +1411,11 @@ func is_personnage_xp_full() -> bool:
 func apply_profile_sheet_update(stats_update: Dictionary, points_remaining: int, feats: Array = []) -> void:
 	print("ClanManager.apply_profile_sheet_update: called; stats_update=", JSON.stringify(stats_update), " points_remaining=", points_remaining, " feats=", JSON.stringify(feats))
 	# Store raw character stats (sanitized to character bounds)
-	var raw_stats = StatDefs.sanitize_stats(
+	var raw_stats: Dictionary = StatDefsClass.sanitize_stats(
 		stats_update,
-		StatDefs.CHARACTER_MIN_STAT,
-		StatDefs.CHARACTER_MAX_STAT,
-		StatDefs.CHARACTER_MIN_STAT
+		StatDefsClass.CHARACTER_MIN_STAT,
+		StatDefsClass.CHARACTER_MAX_STAT,
+		StatDefsClass.CHARACTER_MIN_STAT
 	)
 
 	_ensure_fiche_complete()
@@ -1467,10 +1429,13 @@ func apply_profile_sheet_update(stats_update: Dictionary, points_remaining: int,
 		profil_personnage["feats"] = feats.duplicate(true)
 
 	# Recompute clan-level stats (final values) from class, raw stats and feats
+	var loader: Node = _require_autoload("GameDataLoader")
+	if loader == null:
+		return
 	var class_stats_bonus: Dictionary = {}
 	if classe != "":
 		# Get class data from centralized GameDataLoader
-		var class_entry: Dictionary = GameDataLoader.get_class_by_id(classe)
+		var class_entry: Dictionary = loader.get_class_by_id(classe)
 		if class_entry and not class_entry.is_empty():
 			class_stats_bonus = class_entry.get("stats_bonus", {}) as Dictionary
 
@@ -1479,14 +1444,14 @@ func apply_profile_sheet_update(stats_update: Dictionary, points_remaining: int,
 	var feats_bonus_stats: Dictionary = {}
 	var current_feats: Array = profil_personnage.get("feats", []) as Array
 	for f in current_feats:
-		var fdef: Dictionary = GameDataLoader.get_feat(str(f))
+		var fdef: Dictionary = loader.get_feat(str(f))
 		var eff := (fdef.get("effects", {}) as Dictionary)
 		var stats_eff := (eff.get("stats", {}) as Dictionary)
 		for sk in stats_eff.keys():
 			feats_bonus_stats[sk] = int(feats_bonus_stats.get(sk, 0)) + int(stats_eff[sk])
 
 	# Compute final stats using CharacterBuildService
-	var final_stats: Dictionary = CharacterBuildService.compute_final_stats(
+	var final_stats: Dictionary = CharacterBuildServiceClass.compute_final_stats(
 		class_stats_bonus,
 		raw_stats,
 		{},
@@ -1495,7 +1460,7 @@ func apply_profile_sheet_update(stats_update: Dictionary, points_remaining: int,
 	)
 
 	# Persist final stats into clan-level `stats` used by other systems
-	for key in StatDefs.STAT_KEYS:
+	for key in StatDefsClass.STAT_KEYS:
 		stats[key] = int(final_stats.get(key, 0))
 
 	_sanitizer_stats()
@@ -1544,18 +1509,19 @@ func partie_en_cours() -> bool:
 
 
 func _get_clan_save_path() -> String:
-	if SaveSystem == null:
+	var save_system: Node = get_node_or_null("/root/SaveSystem")
+	if save_system == null:
 		return "user://slots/slot_1/clan.json"
-	return SaveSystem.get_clan_save_path()
+	return save_system.get_clan_save_path()
 
 
 func _lire_json(path: String) -> Dictionary:
-	return JsonPersistenceService.read_json_with_backup(path)
+	return JsonPersistenceServiceClass.read_json_with_backup(path)
 
 
 func _sanitizer_stats() -> void:
 	# Protège la boucle de gameplay contre une sauvegarde corrompue.
-	stats = StatDefs.sanitize_stats(stats, MIN_STAT, MAX_STAT, 5)
+	stats = StatDefsClass.sanitize_stats(stats, StatDefsClass.CLAN_MIN_STAT, StatDefsClass.CLAN_MAX_STAT, 5)
 
 	for cle in ["vigueur", "esprit", "presence", "discipline"]:
 		var v := int(caracteristiques_hero.get(cle, 10))
@@ -1567,15 +1533,8 @@ func _sanitizer_stats() -> void:
 
 
 func _sanitizer_ressources() -> void:
-	for cle in RESSOURCE_KEYS:
-		if not ressources.has(cle):
-			ressources[cle] = 0
-		if not ressources_par_tour.has(cle):
-			ressources_par_tour[cle] = 0
-		ressources[cle] = maxi(0, int(ressources.get(cle, 0)))
-		ressources_par_tour[cle] = maxi(0, int(ressources_par_tour.get(cle, 0)))
-
-	ressources["soldats"] = clampi(int(ressources.get("soldats", 0)), 0, SOLDATS_MAX)
+	ressources = _economy.sanitize(ressources, true)
+	ressources_par_tour = _economy.sanitize(ressources_par_tour, true, false)
 
 
 func _sanitizer_pnj_et_domaines() -> void:
@@ -1655,10 +1614,13 @@ func _compute_and_apply_profil_effects(profil: Dictionary, do_save: bool = false
 		return
 	var total_pv_bonus := 0
 	var total_mana_bonus := 0
+	var loader: Node = _require_autoload("GameDataLoader")
+	if loader == null:
+		return
 	if profil.has("feats") and (profil.get("feats") is Array):
 		for f in (profil.get("feats") as Array):
 			var fid := str(f)
-			var fdef: Dictionary = GameDataLoader.get_feat(fid)
+			var fdef: Dictionary = loader.get_feat(fid)
 			var eff := fdef.get("effects", {}) as Dictionary
 			if eff.has("pv_bonus"):
 				total_pv_bonus += int(eff.get("pv_bonus", 0))
@@ -1796,19 +1758,59 @@ func _ensure_fiche_complete() -> void:
 	fiche["points_restants"] = maxi(0, int(fiche.get("points_restants", 0)))
 	profil_personnage["fiche_complete"] = fiche
 
+
+func _normalize_loaded_character_sheet() -> void:
+	var fiche: Dictionary = (profil_personnage.get("fiche_complete", {}) as Dictionary).duplicate(true)
+	if fiche.is_empty():
+		return
+	var loaded_scores: Dictionary = fiche.get("character_scores", fiche.get("stats_brutes", {})) as Dictionary
+	if loaded_scores.is_empty():
+		return
+	var canonical_scores: Dictionary = StatDefsClass.sanitize_stats(loaded_scores, 1, 30, StatDefsClass.CHARACTER_MIN_STAT)
+	fiche["stats_brutes"] = canonical_scores.duplicate(true)
+	fiche["character_scores"] = canonical_scores.duplicate(true)
+	fiche["modifiers"] = CharacterBuildServiceClass.build_modifiers(canonical_scores)
+	fiche["derived_stats"] = CharacterBuildServiceClass.build_derived_stats(fiche["modifiers"] as Dictionary)
+	profil_personnage["fiche_complete"] = fiche
+
 ## Façade : la corruption reste dans son service et dans le même instantané de sauvegarde.
-func get_corruption_service() -> CorruptionService:
+func get_corruption_service() -> RefCounted:
 	_corruption_service.setup(self)
 	if not _corruption_service.has_character("hero"):
 		var secondary: Dictionary = get_fiche_complete().get("secondary_stats", {})
 		_corruption_service.register_character("hero", clampf(50.0 + float(secondary.get("ESE", 0)) * 2.0, 0.0, 90.0))
 	return _corruption_service
 
+
+func get_creature_roster_service() -> RefCounted:
+	return _creature_roster_service
+
+
+func get_pact_service() -> RefCounted:
+	return _pact_service
+
+
+func assign_creature_to_pnj(creature_id: String, pnj_id: String, assignment_type: int) -> Dictionary:
+	var creature: Resource = _creature_roster_service.get_profile_by_id(creature_id)
+	if creature == null:
+		return {"ok": false, "error": "creature_introuvable"}
+	var corruption: RefCounted = get_corruption_service()
+	corruption.register_creature(creature)
+	return corruption.assign_creature_to_target(creature_id, pnj_id, assignment_type)
+
+
+func start_pnj_training(pnj_id: String, training_type: int) -> Dictionary:
+	return get_corruption_service().start_training(pnj_id, training_type)
+
+
+func process_corruption_tick(delta: float) -> void:
+	get_corruption_service().process_tick(delta)
+
 func get_corruption_profile(character_id: String) -> Dictionary:
 	return get_corruption_service().get_profile(character_id)
 
 func apply_corruption(character_id: String, amount: float, source: String = "", persist: bool = true) -> Dictionary:
-	var result := get_corruption_service().apply_corruption(character_id, amount, source)
+	var result: Dictionary = get_corruption_service().apply_corruption(character_id, amount, source)
 	if bool(result.get("ok", false)) and persist: sauvegarder()
 	return result
 
@@ -1816,12 +1818,12 @@ func purify_character(character_id: String) -> Dictionary:
 	var run: Dictionary = campaign.get("run", {})
 	if not run.is_empty() and not bool(run.get("returned", false)):
 		return {"ok": false, "message": "La purification demande de revenir au refuge."}
-	var service := get_corruption_service()
+	var service: RefCounted = get_corruption_service()
 	if not service.has_character(character_id) or service.get_corruption_level(character_id) <= 0:
 		return {"ok": false, "message": "Aucune corruption à purifier."}
 	var cost := {"mana": 4, "nourriture": 1}
 	if not peut_payer(cost): return {"ok": false, "message": "Purification : 4 mana et 1 nourriture nécessaires."}
-	var result := service.cleanse(character_id, 10.0)
+	var result: Dictionary = service.cleanse(character_id, 10.0)
 	if not bool(result.get("ok", false)): return result
 	payer(cost)
 	var message := "Purification : %.1f points dissipés. Coût : 4 mana, 1 nourriture." % -float(result.get("delta", 0.0))
@@ -1829,3 +1831,10 @@ func purify_character(character_id: String) -> Dictionary:
 	sauvegarder()
 	result["message"] = message
 	return result
+
+
+func _require_autoload(autoload_name: String) -> Node:
+	var node: Node = get_node_or_null("/root/%s" % autoload_name)
+	if node == null:
+		push_error("ClanManager: autoload requis introuvable : %s" % autoload_name)
+	return node

@@ -12,6 +12,8 @@ const STEPS := [
 
 static func current(state: Dictionary) -> Dictionary:
 	var milestones: Array = state.get("milestones", [])
+	if int(state.get("version", 1)) >= 3 and "social" in milestones and "salvage" not in milestones:
+		return {"id": "secure_galleries", "objective": "Sécuriser les galeries et retrouver les outils de la Maison.", "hint": "Kael : « La parole, les renseignements, un sceau, des troupes, un automate… ou nos armes. À vous de choisir. »"}
 	for step in STEPS:
 		if step.id not in milestones:
 			return step

@@ -33,7 +33,9 @@ func _ready() -> void:
 		_button(priority, "Faire garder les réserves · −1 affinité d’intendance", func(): _result(Refuge.social_choice(ClanManager, false)))
 	var shortcuts := HFlowContainer.new()
 	add_child(shortcuts)
-	for target in ["Les personnes qui vous restent", "Reconstruire", "Préparer une sortie", "Archives du refuge"]:
+	var sections := ["Les personnes qui vous restent", "Reconstruire", "Préparer une sortie", "Archives du refuge"]
+	if int(state.get("version", 1)) >= 3 and Refuge.has(ClanManager, "social"): sections.push_front("Approches des galeries")
+	for target in sections:
 		var shortcut := _button(shortcuts, target, func():
 			var scroll := get_parent().get_parent() as ScrollContainer
 			if scroll != null:
@@ -42,6 +44,11 @@ func _ready() -> void:
 						scroll.scroll_vertical = int(child.position.y + position.y)
 		)
 		shortcut.custom_minimum_size.x = 190
+	if int(state.get("version", 1)) >= 3 and Refuge.has(ClanManager, "social"):
+		var routes := preload("res://scripts/ui/power_routes_panel.gd").new()
+		routes.set_meta("section_title", "Approches des galeries")
+		add_child(routes)
+		routes.changed.connect(func(): changed.emit(), CONNECT_DEFERRED)
 	_build_roster()
 	_build_corruption()
 	_build_buildings()
@@ -58,6 +65,20 @@ func _ready() -> void:
 		_button(relic, "Observer la résonance · Architecture verrouillée", func(): _result(Refuge.study_relic(ClanManager, true)))
 		_button(relic, "Examiner les marques", func(): _result(Refuge.study_relic(ClanManager, false)))
 	var archives := _card("Archives du refuge")
+	var memories: Dictionary = state.get("memories", {})
+	if not memories.is_empty():
+		var teaching_list := VBoxContainer.new()
+		teaching_list.visible = false
+		var teaching_toggle := _button(archives, "Souvenirs et enseignements", func(): teaching_list.visible = not teaching_list.visible)
+		teaching_toggle.name = "MemoryArchiveToggle"
+		archives.add_child(teaching_list)
+		var sequences: Array = preload("res://scripts/services/memory_tutorial_service.gd").sequences()
+		for i in range(sequences.size()):
+			var lesson: Dictionary = sequences[i]
+			if lesson.id not in memories.get("completed", []) and lesson.id not in memories.get("skipped", []): continue
+			_label(teaching_list, str(lesson.summary), 16)
+			var replay_button := _button(teaching_list, "Revoir : " + str(lesson.title), func(): GameManager.go_to("memory_tutorial", {"replay": i}))
+			replay_button.name = "ReplayLesson%d" % i
 	var help_row := HBoxContainer.new()
 	archives.add_child(help_row)
 	_label(help_row, "Aide contextuelle")
@@ -152,6 +173,8 @@ func _build_expedition() -> void:
 		return
 	_label(box, "Les galeries sous le refuge" if not Refuge.has(ClanManager, "salvage") else "Les profondeurs — dix étages ; retour possible après chaque salle", 18)
 	_label(box, "L’héritier accompagne un ou deux compagnons. Le mana est partagé avec le domaine ; les matériaux sont déposés au retour. Vous pouvez vous retirer à tout moment.")
+	if int(ClanManager.campaign.get("version", 1)) >= 3 and not Refuge.has(ClanManager, "salvage"):
+		_label(box, "Cette expédition est l’approche de combat personnel. Le Conseil, l’Occulte, la Caserne et l’Établi peuvent aussi récupérer les outils.")
 	for person in ClanManager.get_pnj_gestion_state().get("roster", []):
 		var check := CheckButton.new()
 		check.text = "%s · Force %d / Magie %d / Initiative %d" % [person.nom, int(person.stats.force), int(person.stats.magie), int(person.stats.espionnage)]
@@ -213,7 +236,7 @@ func _build_corruption() -> void:
 	_label(box, "L’exposition laisse une trace. Kael prépare de quoi retrouver votre équilibre ; cela ne déverrouille pas l’Architecture de l’Âme.")
 	for person in people:
 		var id := str(person.id)
-		var level := service.get_corruption_level(id)
+		var level: float = service.get_corruption_level(id)
 		var label := _label(box, "%s · %.1f / 100 · %s" % [person.nom, level, service.stage_display_name(service.get_corruption_stage(id))])
 		label.tooltip_text = service.expedition_description(id)
 		preload("res://scripts/ui/components/keyboard_tooltip.gd").bind(label)

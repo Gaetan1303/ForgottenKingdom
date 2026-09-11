@@ -66,7 +66,7 @@ var creature_id: String:
 		id = value
 
 
-func configure(data: Dictionary) -> CreatureProfile:
+func configure(data: Dictionary) -> Resource:
 	id = str(data.get("id", data.get("creature_id", id))).strip_edges()
 	display_name = str(data.get("nom", data.get("display_name", display_name))).strip_edges()
 	description = str(data.get("description", description))
@@ -186,8 +186,10 @@ func generate_training_scene(training_type: int, target_profile: Dictionary) -> 
 	}
 
 
-static func from_dict(data: Dictionary) -> CreatureProfile:
-	return CreatureProfile.new().configure(data)
+static func from_dict(data: Dictionary) -> Resource:
+	var script: GDScript = load("res://scripts/data/creature_profile.gd") as GDScript
+	var profile: Resource = script.new()
+	return profile.configure(data)
 
 
 static func _sanitize_state(value: String) -> String:

@@ -1,0 +1,262 @@
+{
+  "observe": {
+    "route": "espionage",
+    "label": "Observer les rondes",
+    "cost": {
+      "or": 2
+    },
+    "event": "intel_discovered",
+    "feedback": "Les gardiens changent de poste au crépuscule. Leur force repose sur une seule porte.",
+    "knowledge": [
+      "forces",
+      "passage"
+    ],
+    "risk": 0
+  },
+  "infiltrate": {
+    "route": "espionage",
+    "label": "Infiltrer les archives",
+    "cost": {
+      "or": 4
+    },
+    "event": "intel_discovered",
+    "feedback": "Le gardien retient les outils pour nourrir les siens. Son lieutenant lui cache une réserve.",
+    "knowledge": [
+      "secret",
+      "desire"
+    ],
+    "risk": 35
+  },
+  "audience": {
+    "route": "diplomacy",
+    "label": "Écouter les intérêts du gardien",
+    "cost": {
+      "or": 2
+    },
+    "event": "motivation_discovered",
+    "feedback": "« Des rations, pas des serments. Nous n’avons plus de réserves. » La crainte de la famine devient visible.",
+    "knowledge": [
+      "desire"
+    ],
+    "preparation": "audience"
+  },
+  "bargain": {
+    "route": "diplomacy",
+    "label": "Garantir des vivres contre le passage",
+    "cost": {
+      "or": 6,
+      "nourriture": 6
+    },
+    "event": "objective_resolved",
+    "feedback": "Un accord de ravitaillement ouvre les galeries. Les gardiens attendront votre prochaine livraison.",
+    "requires": [
+      "audience"
+    ],
+    "method": "diplomacy",
+    "relation": 3,
+    "future": "supply_debt",
+    "reputation": 2
+  },
+  "use_secret": {
+    "route": "diplomacy",
+    "label": "Révéler la réserve cachée",
+    "cost": {
+      "or": 2,
+      "renseignements": 2
+    },
+    "event": "objective_resolved",
+    "feedback": "Le lieutenant restitue les outils pour éviter le scandale. Une trêve fragile remplace le blocus.",
+    "requires_knowledge": [
+      "secret"
+    ],
+    "method": "diplomacy",
+    "relation": 1,
+    "future": "wary_wardens",
+    "reputation": 1
+  },
+  "sabotage": {
+    "route": "espionage",
+    "label": "Détourner les ordres de garde",
+    "cost": {
+      "or": 6,
+      "renseignements": 2
+    },
+    "event": "objective_resolved",
+    "feedback": "Les faux ordres éloignent les gardiens. Vous récupérez les outils sans affrontement ; leur enquête suivra.",
+    "requires_knowledge": [
+      "passage"
+    ],
+    "method": "espionage",
+    "relation": -1,
+    "future": "investigation",
+    "reputation": 0,
+    "risk": 25
+  },
+  "ward": {
+    "route": "occult",
+    "label": "Tracer un cercle de protection",
+    "cost": {
+      "mana": 3
+    },
+    "event": "ritual_prepared",
+    "feedback": "Le cercle retient le souffle de l’Éther. Préparer limite le prix du pouvoir.",
+    "preparation": "ward"
+  },
+  "pact": {
+    "route": "occult",
+    "label": "Accepter un pacte bref",
+    "cost": {
+      "mana": 2
+    },
+    "event": "ritual_prepared",
+    "feedback": "Une voix prête sa force. Le pacte protège le cercle, mais laisse une trace : +3 corruption.",
+    "preparation": "pact",
+    "corruption": 3
+  },
+  "bind": {
+    "route": "occult",
+    "label": "Sceller le passage des gardiens",
+    "cost": {
+      "mana": 8
+    },
+    "event": "objective_resolved",
+    "feedback": "Le sceau ouvre un chemin vers les outils et retient les gardiens à distance. Quelque chose, de l’autre côté, a appris votre nom.",
+    "requires_any": [
+      "ward",
+      "pact"
+    ],
+    "method": "occult",
+    "relation": -2,
+    "future": "echo_of_binding",
+    "reputation": -1,
+    "corruption": 5,
+    "risk": 25
+  },
+  "materials": {
+    "route": "craft",
+    "label": "Récupérer matière et composants",
+    "cost": {
+      "or": 3
+    },
+    "event": "materials_gathered",
+    "feedback": "Bois de récupération, fer et pierre rejoignent l’établi portatif.",
+    "gains": {
+      "bois": 4,
+      "fer": 2,
+      "pierre": 1
+    }
+  },
+  "craft_grounded": {
+    "route": "craft",
+    "label": "Assembler un automate isolé",
+    "cost": {
+      "bois": 2,
+      "fer": 2,
+      "pierre": 1
+    },
+    "event": "artifact_created",
+    "feedback": "Un petit automate prend vie. L’isolant de pierre absorbe la résonance.",
+    "recipe": {
+      "material": "bois",
+      "component": "fer",
+      "catalyst": "pierre",
+      "method": "isolation",
+      "essence": false
+    },
+    "risk": 15
+  },
+  "craft_resonant": {
+    "route": "craft",
+    "label": "Transformer par résonance",
+    "cost": {
+      "bois": 2,
+      "fer": 2,
+      "mana": 2
+    },
+    "event": "artifact_created",
+    "feedback": "Votre sœur retient votre poignet. « Écoute avant de forcer. Même la matière peut répondre. »",
+    "recipe": {
+      "material": "bois",
+      "component": "fer",
+      "catalyst": "mana",
+      "method": "resonance",
+      "essence": false
+    },
+    "risk": 35
+  },
+  "craft_essence": {
+    "route": "craft",
+    "label": "Insuffler une Essence au mécanisme",
+    "cost": {
+      "bois": 2,
+      "fer": 2,
+      "essence": 1
+    },
+    "event": "artifact_created",
+    "feedback": "Une lueur reconnaît votre sang. La création conserve l’empreinte de votre lignée.",
+    "recipe": {
+      "material": "bois",
+      "component": "fer",
+      "catalyst": "essence",
+      "method": "blood",
+      "essence": true
+    },
+    "risk": 45
+  },
+  "deploy_artifact": {
+    "route": "craft",
+    "label": "Confier les outils à l’automate",
+    "cost": {},
+    "event": "objective_resolved",
+    "feedback": "L’automate emprunte une fissure et rapporte les outils. Les gardiens n’ont rencontré personne ; votre dispositif protégera les futurs convois.",
+    "requires_artifact": true,
+    "method": "craft",
+    "relation": 0,
+    "future": "automaton_patrol",
+    "reputation": 1
+  },
+  "recruit_squad": {
+    "route": "command",
+    "label": "Équiper une escorte de six soldats",
+    "cost": {
+      "or": 12
+    },
+    "event": "squad_recruited",
+    "feedback": "Six soldats équipés rejoignent la réserve militaire. Kael commande ; votre puissance personnelle ne compte pas dans leur manœuvre.",
+    "gains": {
+      "soldats": 6
+    },
+    "preparation": "squad"
+  },
+  "formation_guard": {
+    "route": "command",
+    "label": "Boucliers devant, soutien à l’arrière",
+    "cost": {},
+    "event": "formation_set",
+    "feedback": "Avant : boucliers. Arrière : soutien. Moral +2 ; la couverture limite les pertes.",
+    "formation": "guard"
+  },
+  "formation_charge": {
+    "route": "command",
+    "label": "Masser les unités à l’avant",
+    "cost": {},
+    "event": "formation_set",
+    "feedback": "Avant : assaut. Arrière : vide. L’impact est rapide, mais les pertes seront plus fortes.",
+    "formation": "charge"
+  },
+  "command_assault": {
+    "route": "command",
+    "label": "Ordonner la prise du passage",
+    "cost": {
+      "nourriture": 3
+    },
+    "event": "objective_resolved",
+    "feedback": "Kael mène la formation et prend le passage. Vous restez au poste de commandement. Les vétérans se souviendront de vos ordres.",
+    "requires_formation": true,
+    "requires_soldiers": 6,
+    "method": "command",
+    "relation": -3,
+    "future": "veterans_return",
+    "reputation": 2
+  }
+}

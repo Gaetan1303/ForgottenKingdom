@@ -17,6 +17,7 @@ func _check(condition: bool, message: String) -> void:
 func _run() -> void:
 	var save_system := root.get_node("SaveSystem")
 	var clan_manager := root.get_node("ClanManager")
+	var game_data_loader := root.get_node("GameDataLoader")
 	save_system.set_active_slot("character_stats_roundtrip")
 
 	var purchased_scores := {
@@ -33,7 +34,7 @@ func _run() -> void:
 	_check(spent == 10, "la distribution doit utiliser exactement 10 points")
 
 	var class_data := Rules.get_class_data("demon_blade")
-	var result := Rules.build_character_result_for_creation(class_data, purchased_scores, "", "", GameDataLoader.get_feats(), [])
+	var result: Dictionary = Rules.build_character_result_for_creation(class_data, purchased_scores, "", "", game_data_loader.get_feats(), [])
 	var final_scores: Dictionary = result.character_scores
 	_check(final_scores == {
 		"force": 13,
@@ -64,10 +65,10 @@ func _run() -> void:
 	var saved_scores: Dictionary = clan_manager.get_fiche_complete().get("character_scores", {})
 	_check(saved_scores == final_scores and int(saved_scores.artisanat) == 11, "la fiche canonique doit conserver exactement les scores")
 
-	var feats := GameDataLoader.get_feats()
+	var feats: Dictionary = game_data_loader.get_feats()
 	_check(feats.has("robustesse") and not feats.has("dons") and not feats.has("_meta"), "get_feats doit retourner directement les dons")
-	_check(not GameDataLoader.get_feat("robustesse").is_empty(), "get_feat doit lire un don par son ID")
-	_check(GameDataLoader.has_method("get_ability") and not GameDataLoader.get_ability("second_souffle").is_empty(), "get_ability doit lire une capacité par son ID")
+	_check(not game_data_loader.get_feat("robustesse").is_empty(), "get_feat doit lire un don par son ID")
+	_check(game_data_loader.has_method("get_ability") and not game_data_loader.get_ability("second_souffle").is_empty(), "get_ability doit lire une capacité par son ID")
 
 	if failures.is_empty():
 		print("CHARACTER_STATS_ROUNDTRIP_OK")

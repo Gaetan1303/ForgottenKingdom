@@ -411,7 +411,18 @@ func import_state(state: Dictionary) -> void:
 
 
 static func level_to_stage(level: float) -> int:
-	return int(CorruptionStage.from_level(level))
+	var normalized_level := clampf(level, MIN_LEVEL, MAX_LEVEL)
+	if normalized_level < 20.0:
+		return Enums.CorruptionStage.PURE
+	if normalized_level < 40.0:
+		return Enums.CorruptionStage.TAINTED
+	if normalized_level < 60.0:
+		return Enums.CorruptionStage.BREAKING
+	if normalized_level < 80.0:
+		return Enums.CorruptionStage.SUBMISSIVE
+	if normalized_level < 95.0:
+		return Enums.CorruptionStage.CORRUPTED
+	return Enums.CorruptionStage.LOST
 
 
 static func stage_to_string(stage: int) -> String:

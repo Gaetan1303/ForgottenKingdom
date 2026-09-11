@@ -13,7 +13,11 @@ func _read_json_dict(path: String) -> Dictionary:
 		return {}
 	return parsed as Dictionary
 
-func _initialize() -> void:
+func _init() -> void:
+	call_deferred("_run")
+
+
+func _run() -> void:
 	var failures: Array = []
 
 	# Setup raw stats and selected feats
@@ -74,6 +78,7 @@ func _initialize() -> void:
 	if failures.size() == 0:
 		print("SMOKE_OK: integration_feats")
 		quit(0)
+		return
 	for f in failures:
 		push_error("SMOKE_FAIL: %s" % f)
 	quit(1)

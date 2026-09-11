@@ -12,6 +12,7 @@ const SCENES := {
 	"creation_personnage":  "res://scenes/character_creation/character_creation_screen.tscn",
 	"clan_hub":             "res://scenes/clan_hub.tscn",
 	"intro_vn":             "res://scenes/intro_vn.tscn",
+	"memory_tutorial":      "res://scenes/memory_tutorial.tscn",
 	"resolution_action":    "res://scenes/resolution_action.tscn",
 	"dungeon_view":         "res://scenes/dungeon_view.tscn",
 	"pnj_manager":          "res://scenes/pnj_manager.tscn",
@@ -50,6 +51,10 @@ func _try_run_smoke_tests() -> void:
 	push_warning("SMOKE_START: game loop")
 
 	var failures: Array[String] = []
+	var clan_manager: Node = _require_autoload("ClanManager")
+	if clan_manager == null:
+		get_tree().quit(1)
+		return
 
 	var stats_bonus := {
 		"force": 1,
@@ -81,32 +86,32 @@ func _try_run_smoke_tests() -> void:
 		},
 	}
 
-	ClanManager.nouvelle_partie("Aren", "Clan Test", "hellcaster", stats_bonus, profil)
-	if ClanManager.nom_clan != "Clan Test":
+	clan_manager.nouvelle_partie("Aren", "Clan Test", "hellcaster", stats_bonus, profil)
+	if str(clan_manager.get("nom_clan")) != "Clan Test":
 		failures.append("nom_clan non initialise")
 
-	var cout_recruter: Dictionary = ClanManager.get_action_cout_modifie("recruter", {"mana": 35})
+	var cout_recruter: Dictionary = clan_manager.get_action_cout_modifie("recruter", {"mana": 35})
 	if int(cout_recruter.get("mana", -1)) >= 35:
 		failures.append("reduction mana non appliquee")
-	var cout_attaquer: Dictionary = ClanManager.get_action_cout_modifie("attaquer", {"soldats": 10})
+	var cout_attaquer: Dictionary = clan_manager.get_action_cout_modifie("attaquer", {"soldats": 10})
 	if int(cout_attaquer.get("soldats", 999)) >= 10:
 		failures.append("reduction soldats non appliquee")
 
-	if ClanManager.get_bonus_score_action("attaquer") <= 0:
+	if clan_manager.get_bonus_score_action("attaquer") <= 0:
 		failures.append("bonus score attaquer absent")
 
-	ClanManager.barre_ame = 90
-	var rep_avant := ClanManager.get_ressource("reputation", 0)
-	var msg_passifs: String = ClanManager.appliquer_passifs_nuit()
-	if ClanManager.barre_ame <= 90:
+	clan_manager.set("barre_ame", 90)
+	var rep_avant: int = clan_manager.get_ressource("reputation", 0)
+	var msg_passifs: String = clan_manager.appliquer_passifs_nuit()
+	if int(clan_manager.get("barre_ame")) <= 90:
 		failures.append("passifs nuit: ame non regeneree")
-	if ClanManager.get_ressource("reputation", 0) <= rep_avant:
+	if clan_manager.get_ressource("reputation", 0) <= rep_avant:
 		failures.append("passifs nuit: reputation non augmentee")
 	if msg_passifs.is_empty():
 		failures.append("passifs nuit: message vide")
 
-	ClanManager.barre_ame = 0
-	var etat_defaite: Dictionary = ClanManager.evaluer_etat_partie()
+	clan_manager.set("barre_ame", 0)
+	var etat_defaite: Dictionary = clan_manager.evaluer_etat_partie()
 	if str(etat_defaite.get("etat", "")) != "defaite":
 		failures.append("defaite barre_ame non detectee")
 
@@ -128,7 +133,10 @@ func go_to(scene_key: String, data: Dictionary = {}) -> void:
 		return
 
 	# Sauvegarde la progression avant de changer de scène
-	SaveSystem.save()
+	var save_system: Node = _require_autoload("SaveSystem")
+	if save_system == null:
+		return
+	save_system.save()
 
 	_navigation_pending = true
 	var error := get_tree().change_scene_to_file(SCENES[scene_key])
@@ -186,19 +194,36 @@ func open_library() -> void:
 
 ## ── Gameplay : gestion du clan ──────────────────────────────────────
 
-## Lance une nouvelle partie → écran de création de personnage.
+## Prologue, souvenirs, puis reconstruction de l'identité.
 func start_new_game() -> void:
-	SaveSystem.set_value("opening", {"active": true, "finished": false, "index": 0, "choices": {}, "draft_ready": false})
-	SaveSystem.save()
+	var save_system: Node = _require_autoload("SaveSystem")
+	if save_system == null:
+		return
+	save_system.set_value("opening", {"version": 2, "run_id": "%d_%d" % [Time.get_ticks_usec(), randi()], "stage": "prologue", "active": true, "finished": false, "index": 0, "choices": {}, "draft_ready": false})
+	save_system.save()
 	go_to("intro_vn")
 
 func resume_campaign() -> void:
-	var opening: Dictionary = SaveSystem.get_value("opening", {})
+	var save_system: Node = _require_autoload("SaveSystem")
+	var clan_manager: Node = _require_autoload("ClanManager")
+	if save_system == null or clan_manager == null:
+		return
+	var opening: Dictionary = save_system.get_value("opening", {})
+	# Reprise d'une coupure entre la sauvegarde du clan créé et celle de l'ouverture.
+	var run_id := str(opening.get("run_id", ""))
+	if not run_id.is_empty() and str(clan_manager.campaign.get("opening_run_id", "")) == run_id and bool(opening.get("active", false)):
+		opening["active"] = false
+		opening.erase("memories")
+		save_system.set_value("opening", opening)
+		save_system.save()
 	if bool(opening.get("active", false)):
-		go_to("creation_personnage" if bool(opening.get("finished", false)) else "intro_vn", {"resume": true})
-	elif not ClanManager.campaign.get("run", {}).is_empty() and not bool(ClanManager.campaign.get("run", {}).get("returned", false)):
+		if str(opening.get("stage", "")) == "memories":
+			go_to("memory_tutorial", {"resume": true})
+		else:
+			go_to("creation_personnage" if bool(opening.get("finished", false)) else "intro_vn", {"resume": true})
+	elif not (clan_manager.get("campaign") as Dictionary).get("run", {}).is_empty() and not bool((clan_manager.get("campaign") as Dictionary).get("run", {}).get("returned", false)):
 		go_to("dungeon_view")
-	elif not ClanManager.campaign.is_empty() and not bool(ClanManager.campaign.get("intro_done", true)):
+	elif not (clan_manager.get("campaign") as Dictionary).is_empty() and not bool((clan_manager.get("campaign") as Dictionary).get("intro_done", true)):
 		go_to("intro_vn")
 	else:
 		go_to("clan_hub")
@@ -254,6 +279,16 @@ func _deferred_connect_stop(stop_inst: Node) -> void:
 ## Déclenche le Bad End lié à la barre d'âme (Forme Dragon épuisée).
 func declencher_bad_end_dragon() -> void:
 	# Pour l'instant : retour au menu avec un message sauvegardé
-	SaveSystem.set_value("bad_end_dragon", true)
-	SaveSystem.save()
+	var save_system: Node = _require_autoload("SaveSystem")
+	if save_system == null:
+		return
+	save_system.set_value("bad_end_dragon", true)
+	save_system.save()
 	go_to("main_menu")
+
+
+func _require_autoload(autoload_name: String) -> Node:
+	var node: Node = get_node_or_null("/root/%s" % autoload_name)
+	if node == null:
+		push_error("GameManager: autoload requis introuvable : %s" % autoload_name)
+	return node

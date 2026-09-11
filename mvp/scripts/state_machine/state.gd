@@ -3,7 +3,7 @@ class_name State
 
 var name: String = "State"
 var _machine_ref: WeakRef
-var machine: StateMachine:
+var machine: RefCounted:
     get:
         return _machine_ref.get_ref() if _machine_ref != null else null
     set(value):

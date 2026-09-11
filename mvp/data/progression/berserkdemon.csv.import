@@ -1,19 +1,7 @@
 [remap]
 
-importer="csv_translation"
-type="Translation"
-uid="uid://ffxb57sno6p4"
+importer="keep"
 
 [deps]
 
-files=["res://data/progression/berserkdemon.Force.translation", "res://data/progression/berserkdemon.Magie.translation", "res://data/progression/berserkdemon.Espionnage.translation", "res://data/progression/berserkdemon.Artisanat.translation", "res://data/progression/berserkdemon.Diplomatie.translation", "res://data/progression/berserkdemon.Commandement.translation", "res://data/progression/berserkdemon.Attaque.translation", "res://data/progression/berserkdemon.Défense.translation", "res://data/progression/berserkdemon.Résistance.translation", "res://data/progression/berserkdemon.Initiative.translation", "res://data/progression/berserkdemon.Jet de Vigueur.translation", "res://data/progression/berserkdemon.Jet de Volonté.translation", "res://data/progression/berserkdemon.Jet de Réflexes.translation", "res://data/progression/berserkdemon.Nouveaux Talents.translation", "res://data/progression/berserkdemon.Lore.translation"]
-
-source_file="res://data/progression/berserkdemon.csv"
-dest_files=["res://data/progression/berserkdemon.Force.translation", "res://data/progression/berserkdemon.Magie.translation", "res://data/progression/berserkdemon.Espionnage.translation", "res://data/progression/berserkdemon.Artisanat.translation", "res://data/progression/berserkdemon.Diplomatie.translation", "res://data/progression/berserkdemon.Commandement.translation", "res://data/progression/berserkdemon.Attaque.translation", "res://data/progression/berserkdemon.Défense.translation", "res://data/progression/berserkdemon.Résistance.translation", "res://data/progression/berserkdemon.Initiative.translation", "res://data/progression/berserkdemon.Jet de Vigueur.translation", "res://data/progression/berserkdemon.Jet de Volonté.translation", "res://data/progression/berserkdemon.Jet de Réflexes.translation", "res://data/progression/berserkdemon.Nouveaux Talents.translation", "res://data/progression/berserkdemon.Lore.translation"]
-
 [params]
-
-compress=1
-delimiter=0
-unescape_keys=false
-unescape_translations=true

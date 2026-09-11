@@ -1,4 +1,4 @@
-extends State
+extends "res://scripts/state_machine/state.gd"
 class_name ApresMidiState
 
 func _init() -> void:
