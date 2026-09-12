@@ -29,6 +29,7 @@ var service_context = preload("res://scripts/services/clan_service_context.gd").
 var diplomacyService = preload("res://scripts/services/diplomacy_service.gd").new(service_context)
 var espionageService = preload("res://scripts/services/espionage_service.gd").new(service_context)
 var clanEventService = preload("res://scripts/services/clan_event_service.gd").new(service_context)
+var conquestService = preload("res://scripts/services/conquest_service.gd").new(service_context)
 
 var nom_clan: String:
 	get: return state.nom_clan
@@ -746,10 +747,7 @@ func utiliser_forme_dragon(cout_ame: int = 25) -> bool:
 
 ## Retourne les données d'une maison noble par son ID.
 func get_maison(id: int) -> Dictionary:
-	for maison in maisons_nobles:
-		if int(maison.get("id", -1)) == id:
-			return maison
-	return {}
+	return conquestService.get_house(id)
 
 
 ## Marque une maison comme espionnée et révèle ses infos.
@@ -759,32 +757,16 @@ func espionner_maison(id: int, succes_critique: bool = false) -> void:
 
 ## Conquiert un bastion d'une maison noble.
 func conquerir_bastion(maison_id: int, bastion_id: String) -> void:
-	for i in range(maisons_nobles.size()):
-		if int(maisons_nobles[i].get("id", -1)) == maison_id:
-			var bastions: Array = maisons_nobles[i].get("bastions", [])
-			for j in range(bastions.size()):
-				if bastions[j].get("id", "") == bastion_id:
-					bastions[j]["conquis"] = true
-					maisons_nobles[i]["revelee"] = true
-			# Vérifie si toute la maison est soumise
-			_verifier_maison_soumise(i)
-			return
+	conquestService.conquer_bastion(maison_id, bastion_id)
 
 
 func _verifier_maison_soumise(index: int) -> void:
-	var bastions: Array = maisons_nobles[index].get("bastions", [])
-	var tous_conquis := bastions.all(func(b): return bool(b.get("conquis", false)))
-	if tous_conquis:
-		maisons_nobles[index]["statut"] = "soumise"
+	conquestService.check_submission(index)
 
 
 ## Nombre de maisons soumises (pour vérifier la victoire).
 func maisons_soumises() -> int:
-	var count := 0
-	for m in maisons_nobles:
-		if m.get("statut", "") == "soumise":
-			count += 1
-	return count
+	return conquestService.submitted_count()
 
 
 ## Modification de la relation avec une maison noble.

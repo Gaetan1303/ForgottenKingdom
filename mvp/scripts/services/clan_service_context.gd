@@ -6,6 +6,7 @@ const ClanStateType = preload("res://scripts/data/clan_state.gd")
 var state: ClanStateType
 var rng: RandomNumberGenerator
 var data_loader: Object
+var tactical = preload("res://scripts/services/tactical_combat_service.gd").new()
 var economy = preload("res://scripts/services/clan_economy_service.gd").new()
 var soldiers = preload("res://scripts/services/soldier_assignment_service.gd").new()
 signal resources_changed
