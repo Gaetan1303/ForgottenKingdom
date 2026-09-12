@@ -30,6 +30,7 @@ var diplomacyService = preload("res://scripts/services/diplomacy_service.gd").ne
 var espionageService = preload("res://scripts/services/espionage_service.gd").new(service_context)
 var clanEventService = preload("res://scripts/services/clan_event_service.gd").new(service_context)
 var conquestService = preload("res://scripts/services/conquest_service.gd").new(service_context)
+var victoryService = preload("res://scripts/services/victory_service.gd").new(service_context)
 
 var nom_clan: String:
 	get: return state.nom_clan
@@ -814,38 +815,7 @@ func tirer_et_appliquer_evenement(evenements: Array) -> String:
 
 ## Évalue l'état de la partie (en cours / victoire / défaite).
 func evaluer_etat_partie() -> Dictionary:
-	if barre_ame <= 0:
-		return {
-			"terminee": true,
-			"etat": "defaite",
-			"message": "Barre d’âme épuisée. L’héritier est consumé par l’Éther de Cendre.",
-		}
-
-	if preload("res://scripts/services/narrative_objective_service.gd").ending_ready(campaign.get("power_routes", {})):
-		return {"terminee": true, "etat": "victoire", "message": str(campaign.power_routes.get("epilogue", "Les objectifs de votre Maison sont accomplis."))}
-	if maisons_soumises() >= 9:
-		return {
-			"terminee": true,
-			"etat": "victoire",
-			"message": "Les Neuf Maisons sont soumises. Victoire totale.",
-		}
-
-	var soldats := int(ressources.get("soldats", 0))
-	var or_total := int(ressources.get("or", 0))
-	# Une Maison spécialisée peut vivre sans armée : la production du refuge
-	# permet de reconstruire ses réserves. Conserver l'ancienne règle hors v3.
-	if int(campaign.get("version", 0)) < 3 and soldats <= 0 and or_total < 50 and not _a_alliance_active():
-		return {
-			"terminee": true,
-			"etat": "defaite",
-			"message": "Votre clan s'effondre: plus de soldats, presque plus d'or et aucune alliance active.",
-		}
-
-	return {
-		"terminee": false,
-		"etat": "en_cours",
-		"message": "",
-	}
+	return victoryService.evaluate()
 
 
 func _a_alliance_active() -> bool:
