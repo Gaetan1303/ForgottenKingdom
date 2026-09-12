@@ -31,7 +31,7 @@ func run() -> void:
 	var cm := root.get_node("ClanManager")
 	root.get_node("SaveSystem").set_active_slot("campaign_states_test")
 	cm.nouvelle_partie("Aren", "Cendres", "hellcaster", {})
-	Refuge.initialize(cm)
+	Refuge.initialize(cm.service_context)
 	check(cm.daily_phase == "matin", "phase initiale")
 	check(cm.advance_day_phase().ok and cm.daily_phase == "apres_midi", "résolution journée")
 	var snapshot := JSON.stringify(cm.get_ressources())

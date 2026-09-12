@@ -94,7 +94,7 @@ func _inject_icons(text: String) -> String:
 
 func _ready() -> void:
 	_opening_mode = bool(SaveSystem.get_value("opening", {}).get("active", false))
-	if not _opening_mode: Refuge.initialize(ClanManager)
+	if not _opening_mode: Refuge.initialize(ClanManager.service_context)
 	_resolve_player_data()
 	_load_visual_bindings()
 	_build_ui()
@@ -624,7 +624,7 @@ func _show_scene(idx: int) -> void:
 					SaveSystem.set_value("opening", opening)
 					SaveSystem.save()
 				else:
-					Refuge.intro_choice(ClanManager, str(s.id), choice)
+					Refuge.intro_choice(ClanManager.service_context, str(s.id), choice)
 				_advance()
 			)
 			_choices.add_child(button)

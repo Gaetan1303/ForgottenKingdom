@@ -264,7 +264,7 @@ func _on_creation_completed(final_payload: Dictionary) -> void:
 		return
 
 	clan_mgr.nouvelle_partie(nom_perso, nom_clan, class_id, final_stats, profil)
-	preload("res://scripts/services/refuge_service.gd").initialize(clan_mgr)
+	preload("res://scripts/services/refuge_service.gd").initialize(clan_mgr.service_context)
 	var opening: Dictionary = SaveSystem.get_value("opening", {})
 	if int(opening.get("version", 0)) >= 2:
 		clan_mgr.campaign["version"] = 3
@@ -272,10 +272,10 @@ func _on_creation_completed(final_payload: Dictionary) -> void:
 		clan_mgr.campaign["memories"] = opening.get("memories", {}).duplicate(true)
 		# Les exercices terminés quittent la progression d'ouverture : un seul propriétaire.
 		clan_mgr.campaign.memories.erase("simulation")
-		preload("res://scripts/services/power_campaign_service.gd").ensure(clan_mgr)
-		preload("res://scripts/services/refuge_service.gd").log_entry(clan_mgr, "Le présent", "Vous ouvrez les yeux à la Brèche-Sèche. Kael pose deux couvertures près du feu. « Je suis là. Dites-moi seulement ce que vous voulez faire maintenant. »")
+		preload("res://scripts/services/power_campaign_service.gd").ensure(clan_mgr.service_context)
+		preload("res://scripts/services/refuge_service.gd").log_entry(clan_mgr.service_context, "Le présent", "Vous ouvrez les yeux à la Brèche-Sèche. Kael pose deux couvertures près du feu. « Je suis là. Dites-moi seulement ce que vous voulez faire maintenant. »")
 	for fragment in opening.get("choices", {}).values():
-		preload("res://scripts/services/refuge_service.gd").log_entry(clan_mgr, "Souvenir fragmenté", str(fragment))
+		preload("res://scripts/services/refuge_service.gd").log_entry(clan_mgr.service_context, "Souvenir fragmenté", str(fragment))
 	# Le clan est durable avant de fermer l'ouverture dans progress.json.
 	clan_mgr.sauvegarder()
 	opening.erase("memories")

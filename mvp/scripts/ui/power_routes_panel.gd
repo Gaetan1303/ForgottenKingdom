@@ -11,7 +11,7 @@ var _pending := false
 var _modal: EventResultView
 
 func _ready() -> void:
-	Campaign.ensure(ClanManager)
+	Campaign.ensure(ClanManager.service_context)
 	add_theme_constant_override("separation", 10)
 	_label(self, "LES GALERIES — CHOISIR VOTRE APPROCHE", 21)
 	_label(self, "Des gardiens retiennent les outils de la Maison. Kael peut parlementer, préparer le passage ou vous accompagner. Sécurisez l’accès selon vos méthodes.", 16)
@@ -80,13 +80,13 @@ func _render() -> void:
 		_label(_content, description, 14)
 		var button := _button(_content, str(action.label), _execute.bind(str(action_id)))
 		button.name = str(action_id)
-		var reason := Campaign.reason(ClanManager, str(action_id))
+		var reason := Campaign.reason(ClanManager.service_context, str(action_id))
 		button.disabled = not reason.is_empty()
 		if not reason.is_empty(): _label(_content, reason, 14)
 
 func _execute(action_id: String) -> void:
 	if _pending: return
-	var result := Campaign.execute(ClanManager, action_id)
+	var result := Campaign.execute(ClanManager.service_context, action_id)
 	if not result.accepted:
 		_label(_content, result.message, 16)
 		return
@@ -102,7 +102,7 @@ func _show_pending() -> void:
 	layer.add_child(_modal)
 	_modal.present(ClanManager.campaign.power_routes.pending_feedback)
 	_modal.result_confirmed.connect(func():
-		Campaign.acknowledge(ClanManager)
+		Campaign.acknowledge(ClanManager.service_context)
 		_pending = false
 		layer.queue_free()
 		changed.emit()

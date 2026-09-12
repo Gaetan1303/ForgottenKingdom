@@ -184,12 +184,12 @@ func start_expedition(ids: Array) -> String:
 		return "Choisissez un ou deux compagnons différents."
 	var party: Array = [{"id": "hero", "nom": _clan_manager().nom_personnage, "stats": _clan_manager().get_stats()}]
 	for id in ids:
-		var person := Refuge.find_person(_clan_manager(), str(id))
+		var person := Refuge.find_person(_clan_manager().service_context, str(id))
 		if person.is_empty() or str(person.get("etat", "")) != "disponible":
 			return "Un compagnon est blessé ou déjà affecté."
 		party.append(person.duplicate(true))
-	var short_run := not Refuge.has(_clan_manager(), "salvage")
-	preload("res://scripts/services/power_campaign_service.gd").ensure(_clan_manager())
+	var short_run := not Refuge.has(_clan_manager().service_context, "salvage")
+	preload("res://scripts/services/power_campaign_service.gd").ensure(_clan_manager().service_context)
 	if short_run:
 		current_run = {"floors": [{"floor": 1, "rooms": [
 			{"id": "gallery_threshold", "type": "rest", "enemies": [], "cleared": false},
@@ -206,9 +206,9 @@ func start_expedition(ids: Array) -> String:
 	current_run["party"] = party
 	current_run["loot"] = {}
 	for id in ids:
-		Refuge.set_person_state(_clan_manager(), str(id), "en_expedition")
-	Refuge.mark(_clan_manager(), "assignment")
-	Refuge.log_entry(_clan_manager(), "Sous la Brèche-Sèche", "L’équipe emporte ses armes. Les compagnons seront indisponibles au domaine jusqu’au retour.")
+		Refuge.set_person_state(_clan_manager().service_context, str(id), "en_expedition")
+	Refuge.mark(_clan_manager().service_context, "assignment")
+	Refuge.log_entry(_clan_manager().service_context, "Sous la Brèche-Sèche", "L’équipe emporte ses armes. Les compagnons seront indisponibles au domaine jusqu’au retour.")
 	_clan_manager().sauvegarder()
 	return ""
 
@@ -227,6 +227,7 @@ func ensure_battle() -> Dictionary:
 		var party: Array = current_run.get("party", []).duplicate(true)
 		for person in party:
 			person["corruption_modifiers"] = _clan_manager().get_corruption_service().expedition_modifiers(str(person.id))
+		party = preload("res://scripts/services/pnj_daily_planner_service.gd").new(_clan_manager().service_context).supported_combat_party(party)
 		room["battle"] = Combat.create(party, room.get("enemies", []), int(current_run.get("current_floor", 0)))
 		_clan_manager().sauvegarder()
 	return room.battle
@@ -250,7 +251,7 @@ func combat_command(kind: String, x: int = 0, y: int = 0) -> Dictionary:
 		clear_current_room()
 		_add_loot({"or": 12, "nourriture": 4})
 		current_run["experience"] = int(current_run.get("experience", 0)) + 20
-		Refuge.mark(_clan_manager(), "combat")
+		Refuge.mark(_clan_manager().service_context, "combat")
 	elif str(battle.outcome) == "defeat":
 		Expedition.send(current_run, "defeat")
 		current_run["completed"] = true
@@ -298,21 +299,21 @@ func return_to_refuge() -> String:
 		if str(person.id) == "hero":
 			continue
 		var wounded := int(person.get("hp", 30)) <= int(person.get("max_hp", 30)) / 2
-		Refuge.set_person_state(_clan_manager(), str(person.id), "blesse" if wounded else "disponible")
+		Refuge.set_person_state(_clan_manager().service_context, str(person.id), "blesse" if wounded else "disponible")
 		if wounded: wounds.append(str(person.nom))
 	var loot: Dictionary = current_run.get("loot", {})
 	_clan_manager().gagner(loot)
 	if bool(current_run.get("tools_found", false)):
-		preload("res://scripts/services/power_campaign_service.gd").record_expedition(_clan_manager(), current_run)
-		Refuge.mark(_clan_manager(), "salvage")
-	Refuge.mark(_clan_manager(), "return")
+		preload("res://scripts/services/power_campaign_service.gd").record_expedition(_clan_manager().service_context, current_run)
+		Refuge.mark(_clan_manager().service_context, "salvage")
+	Refuge.mark(_clan_manager().service_context, "return")
 	current_run["returned"] = true
 	current_run["completed"] = true
 	var message := "Retour à la Brèche-Sèche. Ressources déposées : " + (Refuge.resources_text(loot) if not loot.is_empty() else "aucune") + "."
 	if not wounds.is_empty():
 		message += " Blessures : " + ", ".join(wounds) + ". Soins ou repos jusqu’à l’aube nécessaires."
 	message += " Expérience de l’héritier : +%d." % int(current_run.get("experience", 0))
-	Refuge.log_entry(_clan_manager(), "Le retour", message)
+	Refuge.log_entry(_clan_manager().service_context, "Le retour", message)
 	_clan_manager().donner_experience(int(current_run.get("experience", 0)))
 	_clan_manager().sauvegarder()
 	return message
@@ -328,7 +329,7 @@ func inspect_arrival(target: String) -> String:
 	if not inspected.has(target):
 		inspected[target] = true
 		current_run["inspected"] = inspected
-		Refuge.log_entry(_clan_manager(), "Au seuil du donjon", descriptions[target])
+		Refuge.log_entry(_clan_manager().service_context, "Au seuil du donjon", descriptions[target])
 		_clan_manager().sauvegarder()
 	return descriptions[target]
 
@@ -355,6 +356,6 @@ func apply_run_exposure(key: String, amount: float, targets: Array = []) -> bool
 		if not targets.is_empty() and str(person.id) not in targets: continue
 		var result: Dictionary = _clan_manager().apply_corruption(str(person.id), amount, "dungeon:" + key, false)
 		if bool(result.get("ok", false)): lines.append("%s : +%.1f" % [person.nom, float(result.get("delta", 0.0))])
-	Refuge.log_entry(_clan_manager(), "Exposition à l’Éther", "Corruption — " + ", ".join(lines) + ". La purification est disponible au refuge.")
+	Refuge.log_entry(_clan_manager().service_context, "Exposition à l’Éther", "Corruption — " + ", ".join(lines) + ". La purification est disponible au refuge.")
 	_clan_manager().sauvegarder()
 	return true

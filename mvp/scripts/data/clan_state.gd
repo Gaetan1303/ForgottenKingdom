@@ -96,9 +96,37 @@ var campaign: Dictionary = {}
 
 var daily_phase: String = "matin"
 var day_report: String = ""
-var _bonus_par_action: Dictionary = {}
 
-const SAVE_FIELDS := {"nom_clan": "nom_clan", "clan_id": "clan_id", "nom_personnage": "nom_personnage", "classe": "classe", "profil_personnage": "profil_personnage", "stats": "stats", "caracteristiques_hero": "caracteristiques_hero", "stats_clan": "stats_clan", "ressources": "ressources", "ressources_par_tour": "ressources_par_tour", "affinites_pnj": "affinites_pnj", "fiche_hero": "fiche_hero", "fiches_domaine": "fiches_domaine", "_soldat_next_id": "soldat_next_id", "_soldats_disponibles": "soldats_disponibles", "barre_ame": "barre_ame", "forme_dragon_utilisee": "forme_dragon_utilisee", "tour_actuel": "tour_actuel", "moment_journee": "moment_journee", "action_jour_effectuee": "action_jour_effectuee", "action_nuit_effectuee": "action_nuit_effectuee", "maisons_nobles": "maisons_nobles", "evenements_declenches": "evenements_declenches", "historique_tours": "historique_tours", "pnj_gestion": "pnj_gestion", "campaign": "campaign", "daily_phase": "daily_phase", "day_report": "day_report"}
+const SAVE_FIELDS := {
+	"nom_clan": "nom_clan",
+	"clan_id": "clan_id",
+	"nom_personnage": "nom_personnage",
+	"classe": "classe",
+	"profil_personnage": "profil_personnage",
+	"stats": "stats",
+	"caracteristiques_hero": "caracteristiques_hero",
+	"stats_clan": "stats_clan",
+	"ressources": "ressources",
+	"ressources_par_tour": "ressources_par_tour",
+	"affinites_pnj": "affinites_pnj",
+	"fiche_hero": "fiche_hero",
+	"fiches_domaine": "fiches_domaine",
+	"_soldat_next_id": "soldat_next_id",
+	"_soldats_disponibles": "soldats_disponibles",
+	"barre_ame": "barre_ame",
+	"forme_dragon_utilisee": "forme_dragon_utilisee",
+	"tour_actuel": "tour_actuel",
+	"moment_journee": "moment_journee",
+	"action_jour_effectuee": "action_jour_effectuee",
+	"action_nuit_effectuee": "action_nuit_effectuee",
+	"maisons_nobles": "maisons_nobles",
+	"evenements_declenches": "evenements_declenches",
+	"historique_tours": "historique_tours",
+	"pnj_gestion": "pnj_gestion",
+	"campaign": "campaign",
+	"daily_phase": "daily_phase",
+	"day_report": "day_report",
+}
 
 func export_state() -> Dictionary:
 	var data := {}

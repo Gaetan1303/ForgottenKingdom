@@ -154,7 +154,7 @@ func assign_pnj_expedition(roster: Array, planning: Dictionary, pnj_id: String, 
 func build_expedition(pnj: Dictionary, seed_value: int = -1) -> Dictionary:
 	var final_seed := seed_value
 	if final_seed < 0:
-		final_seed = int(Time.get_unix_time_from_system()) + int(pnj.get("niveau", 1))
+		final_seed = context.rng.randi() if context != null else int(Time.get_unix_time_from_system()) + int(pnj.get("niveau", 1))
 	var rng := RandomNumberGenerator.new()
 	rng.seed = final_seed
 	var primary_stat := _get_primary_expedition_stat(pnj)
@@ -482,3 +482,13 @@ func consume_support(action_id: String) -> int:
 	var bonus := support_bonus(action_id)
 	if bonus > 0: _support_state().used.append(action_id)
 	return bonus
+
+func supported_combat_party(party: Array) -> Array:
+	var supported := party.duplicate(true)
+	for person in supported:
+		if str(person.get("id", "")) == "hero":
+			var stats: Dictionary = person.get("stats", {}).duplicate(true)
+			stats["force"] = int(stats.get("force", 8)) + consume_support("attaquer")
+			person["stats"] = stats
+			break
+	return supported

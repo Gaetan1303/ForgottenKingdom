@@ -1,4 +1,5 @@
-## Logique de domaine des neuf maisons nobles, indépendante du stockage et de l'UI.
+## Adaptateur immutable historique. Les mutations passent par les services
+## stratégiques ; les différences de contrat strict restent explicites ici.
 class_name ClanHouseService
 extends RefCounted
 
@@ -25,53 +26,53 @@ func reveal(houses: Array, house_id: Variant) -> Dictionary:
 
 
 func mark_spied(houses: Array, house_id: Variant) -> Dictionary:
-	var result := _update_house_flag(houses, house_id, "espionnee", true)
-	if not bool(result.get("ok", false)):
-		return result
-	var next_houses := result.get("houses", []) as Array
-	return _update_house_flag(next_houses, house_id, "revelee", true)
+	var index := find_house_index(houses, house_id)
+	if index < 0: return _error(houses, "maison_introuvable")
+	var ctx := _context_for([houses[index]])
+	var original_id: Variant = ctx.state.maisons_nobles[0].get("id")
+	ctx.state.maisons_nobles[0]["id"] = 0
+	preload("res://scripts/services/espionage_service.gd").new(ctx).reveal_information(0)
+	_restore_field(ctx.state.maisons_nobles[0], houses[index], "statut")
+	ctx.state.maisons_nobles[0]["id"] = original_id
+	var next_houses := houses.duplicate(true)
+	next_houses[index] = ctx.state.maisons_nobles[0]
+	return _result(next_houses, index)
 
 
 func set_relation(houses: Array, house_id: Variant, relation: String) -> Dictionary:
 	var normalized := relation.strip_edges().to_lower()
-	if not VALID_RELATIONS.has(normalized):
-		return _error(houses, "relation_invalide")
+	if not VALID_RELATIONS.has(normalized): return _error(houses, "relation_invalide")
 	var index := find_house_index(houses, house_id)
-	if index < 0:
-		return _error(houses, "maison_introuvable")
+	if index < 0: return _error(houses, "maison_introuvable")
+	var ctx := _context_for([houses[index]])
+	var original_id: Variant = ctx.state.maisons_nobles[0].get("id")
+	ctx.state.maisons_nobles[0]["id"] = 0
+	preload("res://scripts/services/diplomacy_service.gd").new(ctx).modify_relation(0, normalized)
+	_restore_field(ctx.state.maisons_nobles[0], houses[index], "statut")
+	ctx.state.maisons_nobles[0]["id"] = original_id
 	var next_houses := houses.duplicate(true)
-	var house := (next_houses[index] as Dictionary).duplicate(true)
-	house["relation"] = normalized
-	next_houses[index] = house
-	return {"ok": true, "houses": next_houses, "house": house.duplicate(true)}
+	next_houses[index] = ctx.state.maisons_nobles[0]
+	return _result(next_houses, index)
 
 
 func conquer_bastion(houses: Array, house_id: Variant, bastion_id: String) -> Dictionary:
 	var index := find_house_index(houses, house_id)
-	if index < 0:
-		return _error(houses, "maison_introuvable")
-	var next_houses := houses.duplicate(true)
-	var house := (next_houses[index] as Dictionary).duplicate(true)
-	var bastions := (house.get("bastions", []) as Array).duplicate(true)
+	if index < 0: return _error(houses, "maison_introuvable")
 	var found := false
-	for bastion_index in range(bastions.size()):
-		if not (bastions[bastion_index] is Dictionary):
-			continue
-		var bastion := (bastions[bastion_index] as Dictionary).duplicate(true)
-		if str(bastion.get("id", "")) != bastion_id:
-			continue
-		bastion["conquis"] = true
-		bastions[bastion_index] = bastion
-		found = true
-		break
-	if not found:
-		return _error(houses, "bastion_introuvable")
-	house["bastions"] = bastions
-	if _all_bastions_conquered(bastions):
-		house["statut"] = "soumise"
-		house["relation"] = "soumise"
-	next_houses[index] = house
-	return {"ok": true, "houses": next_houses, "house": house.duplicate(true)}
+	for bastion in (houses[index] as Dictionary).get("bastions", []):
+		if bastion is Dictionary and str(bastion.get("id", "")) == bastion_id: found = true
+	if not found: return _error(houses, "bastion_introuvable")
+	var ctx := _context_for([houses[index]])
+	var original_id: Variant = ctx.state.maisons_nobles[0].get("id")
+	ctx.state.maisons_nobles[0]["id"] = 0
+	preload("res://scripts/services/conquest_service.gd").new(ctx).conquer_bastion(0, bastion_id)
+	var house: Dictionary = ctx.state.maisons_nobles[0]
+	_restore_field(house, houses[index], "revelee")
+	if str(house.get("statut", "")) == "soumise": house["relation"] = "soumise"
+	ctx.state.maisons_nobles[0]["id"] = original_id
+	var next_houses := houses.duplicate(true)
+	next_houses[index] = ctx.state.maisons_nobles[0]
+	return _result(next_houses, index)
 
 
 func conquered_bastion_count(houses: Array, house_id: Variant) -> int:
@@ -142,3 +143,15 @@ func spy_house(houses: Array, house_id: Variant) -> Dictionary:
 
 func conquer(houses: Array, house_id: Variant, bastion_id: String) -> Dictionary:
 	return conquer_bastion(houses, house_id, bastion_id)
+
+func _context_for(houses: Array) -> RefCounted:
+	var state = preload("res://scripts/data/clan_state.gd").new()
+	state.maisons_nobles = houses.duplicate(true)
+	return preload("res://scripts/services/clan_service_context.gd").new(state)
+
+func _restore_field(target: Dictionary, source: Dictionary, key: String) -> void:
+	if source.has(key): target[key] = source[key]
+	else: target.erase(key)
+
+func _result(houses: Array, index: int) -> Dictionary:
+	return {"ok": true, "houses": houses, "house": (houses[index] as Dictionary).duplicate(true)}

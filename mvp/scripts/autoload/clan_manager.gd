@@ -26,11 +26,11 @@ const ROLE_DOMAINES = ClanEconomyServiceClass.DOMAIN_ROLES
 # ── État du clan ────────────────────────────────────────────────────────
 var state = preload("res://scripts/data/clan_state.gd").new()
 var service_context = preload("res://scripts/services/clan_service_context.gd").new(state)
-var diplomacyService = preload("res://scripts/services/diplomacy_service.gd").new(service_context)
-var espionageService = preload("res://scripts/services/espionage_service.gd").new(service_context)
-var clanEventService = preload("res://scripts/services/clan_event_service.gd").new(service_context)
-var conquestService = preload("res://scripts/services/conquest_service.gd").new(service_context)
-var victoryService = preload("res://scripts/services/victory_service.gd").new(service_context)
+var diplomacy_service = preload("res://scripts/services/diplomacy_service.gd").new(service_context)
+var espionage_service = preload("res://scripts/services/espionage_service.gd").new(service_context)
+var clan_event_service = preload("res://scripts/services/clan_event_service.gd").new(service_context)
+var conquest_service = preload("res://scripts/services/conquest_service.gd").new(service_context)
+var victory_service = preload("res://scripts/services/victory_service.gd").new(service_context)
 var character_service = preload("res://scripts/services/clan_character_service.gd").new(service_context)
 var population_service = preload("res://scripts/services/clan_population_service.gd").new(service_context)
 
@@ -118,9 +118,7 @@ var daily_phase: String:
 var day_report: String:
 	get: return state.day_report
 	set(value): state.day_report = value
-var _bonus_par_action: Dictionary:
-	get: return state._bonus_par_action
-	set(value): state._bonus_par_action = value
+var _bonus_par_action: Dictionary = {} # Cache historique de configuration, hors état métier.
 var _corruption_service: RefCounted = service_context.corruption
 var _creature_roster_service: RefCounted = service_context.creatures
 var _pact_service: RefCounted = service_context.pacts
@@ -130,8 +128,6 @@ var _day_transition_pending := false
 var _planner: RefCounted = null
 var _economy = service_context.economy
 var _soldier_assignment = service_context.soldiers
-
-# Bonus de classe chargés depuis les données
 
 # Signal émis quand le tour avance
 signal tour_suivant(numero_tour: int)
@@ -347,24 +343,19 @@ func _add_soldiers(count: int) -> int:
 
 
 func action_deja_utilisee_pour_moment() -> bool:
-	if daily_phase == "apres_midi": return true
-	return action_jour_effectuee if moment_journee == "jour" else action_nuit_effectuee
+	return preload("res://scripts/services/clan_action_service.gd").action_used(service_context)
 
 
 func marquer_action_utilisee() -> void:
-	if moment_journee == "jour":
-		action_jour_effectuee = true
-	else:
-		action_nuit_effectuee = true
+	preload("res://scripts/services/clan_action_service.gd").mark_used(service_context)
 
 
 func reset_actions_pour_nuit() -> void:
-	action_nuit_effectuee = false
+	preload("res://scripts/services/clan_action_service.gd").reset_night(service_context)
 
 
 func reset_actions_nouveau_tour() -> void:
-	action_jour_effectuee = false
-	action_nuit_effectuee = false
+	preload("res://scripts/services/clan_action_service.gd").reset_day(service_context)
 
 
 func magie_pactes_active() -> bool:
@@ -485,7 +476,7 @@ func resoudre_planning_pnj_journee() -> Dictionary:
 		gagner(gains)
 
 	var soldier_results: Array = result.get("soldier_results", [])
-	espionageService.apply_soldier_intelligence(soldier_results)
+	espionage_service.apply_soldier_intelligence(soldier_results)
 
 	# If planner generated events (from failures), apply them now
 	var gen_events := (result.get("generated_events", []) as Array).duplicate(true)
@@ -536,7 +527,7 @@ func on_matin() -> void:
 	var message := ""
 	if campaign.is_empty() or int(campaign.get("version", 1)) < 2 or bool(campaign.get("initial_tutorial_done", false)):
 		message = tirer_et_appliquer_evenement(loader.get_evenements_aleatoires())
-	preload("res://scripts/services/refuge_service.gd").dawn(self)
+	preload("res://scripts/services/refuge_service.gd").dawn(service_context)
 	tour_actuel += 1
 	moment_journee = "jour"
 	reset_actions_nouveau_tour()
@@ -570,31 +561,31 @@ func utiliser_forme_dragon(cout_ame: int = 25) -> bool:
 
 ## Retourne les données d'une maison noble par son ID.
 func get_maison(id: int) -> Dictionary:
-	return conquestService.get_house(id)
+	return conquest_service.get_house(id)
 
 
 ## Marque une maison comme espionnée et révèle ses infos.
 func espionner_maison(id: int, succes_critique: bool = false) -> void:
-	espionageService.reveal_information(id, succes_critique)
+	espionage_service.reveal_information(id, succes_critique)
 
 
 ## Conquiert un bastion d'une maison noble.
 func conquerir_bastion(maison_id: int, bastion_id: String) -> void:
-	conquestService.conquer_bastion(maison_id, bastion_id)
+	conquest_service.conquer_bastion(maison_id, bastion_id)
 
 
 func _verifier_maison_soumise(index: int) -> void:
-	conquestService.check_submission(index)
+	conquest_service.check_submission(index)
 
 
 ## Nombre de maisons soumises (pour vérifier la victoire).
 func maisons_soumises() -> int:
-	return conquestService.submitted_count()
+	return conquest_service.submitted_count()
 
 
 ## Modification de la relation avec une maison noble.
 func modifier_relation(maison_id: int, nouvelle_relation: String) -> void:
-	diplomacyService.modify_relation(maison_id, nouvelle_relation)
+	diplomacy_service.modify_relation(maison_id, nouvelle_relation)
 
 
 # ─────────────────────────────────────────────────────────────────────
@@ -626,42 +617,42 @@ func fin_de_tour(action_choisie: String, effets_action: Dictionary) -> void:
 
 
 func _appliquer_effets(effets: Dictionary) -> void:
-	clanEventService.apply_effects(effets)
+	clan_event_service.apply_effects(effets)
 
 
 ## Tire au plus un événement aléatoire pour le tour et applique ses effets.
 ## Retourne un message à afficher dans le log, ou une chaîne vide.
 func tirer_et_appliquer_evenement(evenements: Array) -> String:
-	return clanEventService.draw_and_apply(evenements)
+	return clan_event_service.draw_and_apply(evenements)
 
 
 ## Évalue l'état de la partie (en cours / victoire / défaite).
 func evaluer_etat_partie() -> Dictionary:
-	return victoryService.evaluate()
+	return victory_service.evaluate()
 
 
 func _a_alliance_active() -> bool:
-	return diplomacyService.has_active_alliance()
+	return diplomacy_service.has_active_alliance()
 
 
 func _condition_evenement_valide(condition: String) -> bool:
-	return clanEventService.evaluate_conditions(condition)
+	return clan_event_service.evaluate_conditions(condition)
 
 
 func _evaluer_clause_condition(clause: String) -> bool:
-	return clanEventService._evaluer_clause_condition(clause)
+	return clan_event_service._evaluer_clause_condition(clause)
 
 
 func _valeur_condition(key: String) -> Variant:
-	return clanEventService._valeur_condition(key)
+	return clan_event_service._valeur_condition(key)
 
 
 func _convertir_condition_value(value: String) -> Variant:
-	return clanEventService._convertir_condition_value(value)
+	return clan_event_service._convertir_condition_value(value)
 
 
 func _comparer_condition(a: Variant, b: Variant, op: String) -> bool:
-	return clanEventService._comparer_condition(a, b, op)
+	return clan_event_service._comparer_condition(a, b, op)
 
 
 # ─────────────────────────────────────────────────────────────────────
@@ -918,22 +909,8 @@ func apply_corruption(character_id: String, amount: float, source: String = "", 
 	return result
 
 func purify_character(character_id: String) -> Dictionary:
-	var run: Dictionary = campaign.get("run", {})
-	if not run.is_empty() and not bool(run.get("returned", false)):
-		return {"ok": false, "message": "La purification demande de revenir au refuge."}
-	var service: RefCounted = get_corruption_service()
-	if not service.has_character(character_id) or service.get_corruption_level(character_id) <= 0:
-		return {"ok": false, "message": "Aucune corruption à purifier."}
-	var cost := {"mana": 4, "nourriture": 1}
-	if not peut_payer(cost): return {"ok": false, "message": "Purification : 4 mana et 1 nourriture nécessaires."}
-	var result: Dictionary = service.cleanse(character_id, 10.0)
-	if not bool(result.get("ok", false)): return result
-	payer(cost)
-	var message := "Purification : %.1f points dissipés. Coût : 4 mana, 1 nourriture." % -float(result.get("delta", 0.0))
-	if not campaign.is_empty(): preload("res://scripts/services/refuge_service.gd").log_entry(self, "Retrouver son équilibre", message)
-	sauvegarder()
-	result["message"] = message
-	return result
+	get_corruption_service()
+	return preload("res://scripts/services/refuge_service.gd").purify_character(service_context, character_id)
 
 
 func _require_autoload(autoload_name: String) -> Node:

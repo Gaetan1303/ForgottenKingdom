@@ -45,7 +45,8 @@ func start_battle(action: Dictionary, party: Array, enemies: Array, floor_index:
 	if not can_execute(action): return {"ok": false, "error": "bastion_indisponible"}
 	if not context.state.campaign.get("territorial_battle", {}).is_empty():
 		return {"ok": false, "error": "combat_deja_en_cours"}
-	var battle: Dictionary = context.tactical.create(party, enemies, floor_index)
+	var supported: Array = preload("res://scripts/services/pnj_daily_planner_service.gd").new(context).supported_combat_party(party)
+	var battle: Dictionary = context.tactical.create(supported, enemies, floor_index)
 	context.state.campaign["territorial_battle"] = {"maison_id": int(action.maison_id), "bastion_id": str(action.bastion_id), "battle": battle}
 	return {"ok": true, "battle": battle.duplicate(true)}
 

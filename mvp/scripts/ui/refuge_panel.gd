@@ -24,17 +24,17 @@ func _ready() -> void:
 		_label(priority, str(objective.hint))
 	_status = _label(priority, str(state.get("last_feedback", "")))
 	_status.add_theme_color_override("font_color", Color(0.85, 0.8, 0.7))
-	if not Refuge.has(ClanManager, "govern"):
+	if not Refuge.has(ClanManager.service_context, "govern"):
 		_label(priority, "12 rations au départ, un grenier ouvert au vent et une palissade fendue. Une réparation occupe la décision de la demi-journée ; les galeries attendent en contrebas.")
-		_button(priority, "Donner la priorité aux galeries", func(): _result(Refuge.prioritize_galleries(ClanManager)))
-	if Refuge.has(ClanManager, "govern") and not Refuge.has(ClanManager, "social"):
+		_button(priority, "Donner la priorité aux galeries", func(): _result(Refuge.prioritize_galleries(ClanManager.service_context)))
+	if Refuge.has(ClanManager.service_context, "govern") and not Refuge.has(ClanManager.service_context, "social"):
 		_label(priority, "Il reste de quoi préparer un repas pour deux. Kael attend votre décision.")
-		_button(priority, "Partager deux rations · −2 nourriture, +2 affinité d’intendance", func(): _result(Refuge.social_choice(ClanManager, true)))
-		_button(priority, "Faire garder les réserves · −1 affinité d’intendance", func(): _result(Refuge.social_choice(ClanManager, false)))
+		_button(priority, "Partager deux rations · −2 nourriture, +2 affinité d’intendance", func(): _result(Refuge.social_choice(ClanManager.service_context, true)))
+		_button(priority, "Faire garder les réserves · −1 affinité d’intendance", func(): _result(Refuge.social_choice(ClanManager.service_context, false)))
 	var shortcuts := HFlowContainer.new()
 	add_child(shortcuts)
 	var sections := ["Les personnes qui vous restent", "Reconstruire", "Préparer une sortie", "Archives du refuge"]
-	if int(state.get("version", 1)) >= 3 and Refuge.has(ClanManager, "social"): sections.push_front("Approches des galeries")
+	if int(state.get("version", 1)) >= 3 and Refuge.has(ClanManager.service_context, "social"): sections.push_front("Approches des galeries")
 	for target in sections:
 		var shortcut := _button(shortcuts, target, func():
 			var scroll := get_parent().get_parent() as ScrollContainer
@@ -44,7 +44,7 @@ func _ready() -> void:
 						scroll.scroll_vertical = int(child.position.y + position.y)
 		)
 		shortcut.custom_minimum_size.x = 190
-	if int(state.get("version", 1)) >= 3 and Refuge.has(ClanManager, "social"):
+	if int(state.get("version", 1)) >= 3 and Refuge.has(ClanManager.service_context, "social"):
 		var routes := preload("res://scripts/ui/power_routes_panel.gd").new()
 		routes.set_meta("section_title", "Approches des galeries")
 		add_child(routes)
@@ -53,7 +53,7 @@ func _ready() -> void:
 	_build_corruption()
 	_build_buildings()
 	_build_expedition()
-	if Refuge.has(ClanManager, "rebuild") and not Refuge.has(ClanManager, "soul"):
+	if Refuge.has(ClanManager.service_context, "rebuild") and not Refuge.has(ClanManager.service_context, "soul"):
 		var relic := _card("Le métal se souvient")
 		_label(relic, "Kael pose la relique sur l’établi. La Cicatrice de Sang répond. Kael : « Nous avons survécu sans elle jusqu’ici. Prenez le temps de choisir. »")
 		for key in StatDefs.SECONDARY_STAT_KEYS:
@@ -62,8 +62,8 @@ func _ready() -> void:
 			preload("res://scripts/ui/components/keyboard_tooltip.gd").bind(stat_button)
 			stat_button.tooltip_text = StatDefs.description(key) + "\nArchitecture de l’Âme instable : analyse complète et assimilation indisponibles."
 			stat_button.focus_entered.connect(func(): _status.text = stat_button.tooltip_text)
-		_button(relic, "Observer la résonance · Architecture verrouillée", func(): _result(Refuge.study_relic(ClanManager, true)))
-		_button(relic, "Examiner les marques", func(): _result(Refuge.study_relic(ClanManager, false)))
+		_button(relic, "Observer la résonance · Architecture verrouillée", func(): _result(Refuge.study_relic(ClanManager.service_context, true)))
+		_button(relic, "Examiner les marques", func(): _result(Refuge.study_relic(ClanManager.service_context, false)))
 	var archives := _card("Archives du refuge")
 	var memories: Dictionary = state.get("memories", {})
 	if not memories.is_empty():
@@ -101,10 +101,10 @@ func _ready() -> void:
 		_label(content, str(entry.title), 18)
 		_label(content, str(entry.text))
 	for step in Tutorial.STEPS:
-		if Refuge.has(ClanManager, str(step.id)) or str(objective.id) == str(step.id):
+		if Refuge.has(ClanManager.service_context, str(step.id)) or str(objective.id) == str(step.id):
 			_label(content, str(step.objective), 18)
 			_label(content, str(step.hint))
-	if Refuge.has(ClanManager, "combat"):
+	if Refuge.has(ClanManager.service_context, "combat"):
 		_label(content, "Combat : initiative = espionnage. Déplacement : 3 cases libres. Attaque : portée 1, force ÷ 3 + 2 dégâts. Trait d’Éther : portée 3, magie ÷ 2 + 3 dégâts, 3 mana. Une attaque et un déplacement par tour. Une unité à 0 PV ne joue plus. Les blessures persistent au retour jusqu’aux soins ou à l’aube.")
 
 func _build_roster() -> void:
@@ -131,7 +131,7 @@ func _build_roster() -> void:
 		person_label.mouse_filter = Control.MOUSE_FILTER_STOP
 		preload("res://scripts/ui/components/keyboard_tooltip.gd").bind(person_label)
 		if str(person.get("etat", "")) == "blesse":
-			_button(box, "Soigner %s · 2 nourriture, 2 mana" % person.nom, func(): _result(Refuge.recover(ClanManager, str(person.id))))
+			_button(box, "Soigner %s · 2 nourriture, 2 mana" % person.nom, func(): _result(Refuge.recover(ClanManager.service_context, str(person.id))))
 	if available_index >= 0: _worker.select(available_index)
 	else: _worker.disabled = true
 	var detail := _label(box, "")
@@ -139,7 +139,7 @@ func _build_roster() -> void:
 	_worker_details(detail)
 
 func _worker_details(detail: Label) -> void:
-	var person := Refuge.find_person(ClanManager, _worker_id())
+	var person := Refuge.find_person(ClanManager.service_context, _worker_id())
 	if person.is_empty():
 		detail.text = "Personne de disponible. Terminez la journée pour résoudre les affectations."
 		return
@@ -160,9 +160,9 @@ func _build_buildings() -> void:
 		_label(box, ("◆ " if repaired else "◇ ") + str(definition.name) + (" — En service" if repaired else " — En ruine"), 18)
 		_label(box, str(definition.benefit))
 		if repaired: continue
-		var reason := Refuge.building_reason(ClanManager, id)
+		var reason := Refuge.building_reason(ClanManager.service_context, id)
 		_label(box, "Coût : %s · Temps : une décision de demi-journée.%s" % [Refuge.resources_text(definition.cost), "\n" + reason if not reason.is_empty() else ""])
-		var repair := _button(box, "Restaurer " + str(definition.name), func(): _result(Refuge.repair(ClanManager, id, _worker_id())))
+		var repair := _button(box, "Restaurer " + str(definition.name), func(): _result(Refuge.repair(ClanManager.service_context, id, _worker_id())))
 		repair.disabled = not reason.is_empty() or _worker_id().is_empty()
 	_label(box, "Traces de reconstruction : %d. La fumée de vos foyers se voit depuis la route." % int(ClanManager.campaign.get("visibility", 0)))
 
@@ -171,9 +171,9 @@ func _build_expedition() -> void:
 	if not DungeonGenerator.current_run.is_empty() and not bool(DungeonGenerator.current_run.get("returned", false)):
 		_button(box, "Reprendre la sortie en cours", func(): GameManager.open_dungeon())
 		return
-	_label(box, "Les galeries sous le refuge" if not Refuge.has(ClanManager, "salvage") else "Les profondeurs — dix étages ; retour possible après chaque salle", 18)
+	_label(box, "Les galeries sous le refuge" if not Refuge.has(ClanManager.service_context, "salvage") else "Les profondeurs — dix étages ; retour possible après chaque salle", 18)
 	_label(box, "L’héritier accompagne un ou deux compagnons. Le mana est partagé avec le domaine ; les matériaux sont déposés au retour. Vous pouvez vous retirer à tout moment.")
-	if int(ClanManager.campaign.get("version", 1)) >= 3 and not Refuge.has(ClanManager, "salvage"):
+	if int(ClanManager.campaign.get("version", 1)) >= 3 and not Refuge.has(ClanManager.service_context, "salvage"):
 		_label(box, "Cette expédition est l’approche de combat personnel. Le Conseil, l’Occulte, la Caserne et l’Établi peuvent aussi récupérer les outils.")
 	for person in ClanManager.get_pnj_gestion_state().get("roster", []):
 		var check := CheckButton.new()

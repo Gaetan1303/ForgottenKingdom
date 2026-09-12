@@ -10,7 +10,7 @@ func run() -> void:
 	var dungeon := root.get_node("DungeonGenerator")
 	root.get_node("SaveSystem").set_active_slot("expedition_corruption_test")
 	cm.nouvelle_partie("Aren", "Cendres", "hellcaster", {})
-	Refuge.initialize(cm)
+	Refuge.initialize(cm.service_context)
 	var service = cm.get_corruption_service()
 	check(service.has_character("hero") and service.has_character("pnj_kael"), "profils canoniques")
 	check(not cm.apply_corruption("unknown", 10).ok, "personnage inconnu refusé")
