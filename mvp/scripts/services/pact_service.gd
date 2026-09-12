@@ -45,19 +45,19 @@ func attempt_pact_ritual(creature_id: String, target_id: String) -> Dictionary:
 		pact_rejected.emit(creature_id, target_id, "pact_not_offered")
 		return {"ok": false, "error": "pact_not_offered"}
 	var pact_id := str(candidate.get("pact_id", ""))
-	var chance := calculate_pact_success_chance(creature_id, target_id, int(candidate.get("pact_type", 0)))
+	var required_power := calculate_required_power(creature_id, target_id, int(candidate.get("pact_type", 0)))
 	var terms := candidate.get("terms", {}) as Dictionary
 	var ritual_power := clampf(float(terms.get("ritual_power", 50.0)), 0.0, 100.0)
-	if ritual_power < chance:
+	if ritual_power < required_power:
 		pact_rejected.emit(creature_id, target_id, "ritual_failed")
-		return {"ok": false, "error": "ritual_failed", "chance": chance}
+		return {"ok": false, "error": "ritual_failed", "required_power": required_power, "chance": required_power}
 	candidate["status"] = "active"
 	_active_pacts[pact_id] = candidate
 	pact_accepted.emit(pact_id, terms.duplicate(true))
-	return {"ok": true, "pact": candidate.duplicate(true), "chance": chance}
+	return {"ok": true, "pact": candidate.duplicate(true), "required_power": required_power, "chance": required_power}
 
 
-func calculate_pact_success_chance(_creature_id: String, _target_id: String, pact_type: int) -> float:
+func calculate_required_power(_creature_id: String, _target_id: String, pact_type: int) -> float:
 	var difficulty := float(maxi(0, pact_type - Enums.PactType.SERVICE)) * 7.5
 	return clampf(35.0 + difficulty, 5.0, 95.0)
 
@@ -120,3 +120,7 @@ func _filter_pacts(field: String, value: String) -> Array:
 		if str((pact as Dictionary).get(field, "")) == value.strip_edges():
 			result.append((pact as Dictionary).duplicate(true))
 	return result
+
+## Alias historique : cette valeur a toujours été un seuil, pas une probabilité.
+func calculate_pact_success_chance(creature_id: String, target_id: String, pact_type: int) -> float:
+	return calculate_required_power(creature_id, target_id, pact_type)

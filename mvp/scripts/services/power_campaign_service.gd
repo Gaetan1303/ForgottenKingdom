@@ -47,6 +47,8 @@ static func execute(cm: Node, action_id: String) -> Result:
 			{"ritual_power": 100, "requirements": ["secure_galleries"], "price": "corruption", "source": "memory_teaching"})
 		pacts.attempt_pact_ritual("gallery_echo", "hero")
 		cm.campaign.power_routes["pact_id"] = str(offer.pact.pact_id)
+		var echo: Resource = preload("res://scripts/factory/creature_factory.gd").new().create_from_dict({"id": "gallery_echo", "nom": "Écho des galeries", "species_id": "gallery_echo", "source": "pact"})
+		cm.get_creature_roster_service().acquire_creature(echo, "pacte")
 	if result.corruption > 0:
 		var corruption = cm.get_corruption_service()
 		if not corruption.has_character("hero"): corruption.register_character("hero")

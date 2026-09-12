@@ -41,23 +41,11 @@ var _assignments: Dictionary = {}
 var _bonds: Dictionary = {}
 var _history: Dictionary = {}
 var _training_system: RefCounted = TrainingSystemClass.new()
-var _clan_manager_ref: WeakRef
-
-
-func setup(clan_manager) -> void:
-	_clan_manager_ref = weakref(clan_manager) if clan_manager != null else null
-	_migrate_from_legacy()
-
-
-func _migrate_from_legacy() -> void:
-	if _clan_manager_ref == null:
-		return
-	var clan_manager = _clan_manager_ref.get_ref()
-	if clan_manager == null:
-		return
-	var legacy_state = clan_manager.get("pnj_gestion")
-	if not (legacy_state is Dictionary):
-		return
+## Accepte également les anciennes sources exposant pnj_gestion, sans les retenir.
+func setup(source) -> void:
+	if source == null: return
+	var legacy_state: Variant = source.get("pnj_gestion")
+	if not (legacy_state is Dictionary): return
 	for raw in (legacy_state as Dictionary).get("roster", []):
 		if not (raw is Dictionary):
 			continue

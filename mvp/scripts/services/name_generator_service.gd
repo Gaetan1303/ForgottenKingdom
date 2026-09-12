@@ -6,8 +6,10 @@ const DATA_PATH := "res://data/generation/name_fragments.json"
 var _rng := RandomNumberGenerator.new()
 var _data: Dictionary = {}
 
-func _init(seed_value: int = -1) -> void:
-	if seed_value >= 0:
+func _init(seed_value: int = -1, p_rng: RandomNumberGenerator = null) -> void:
+	if p_rng != null:
+		_rng = p_rng
+	elif seed_value >= 0:
 		_rng.seed = seed_value
 	else:
 		_rng.randomize()

@@ -32,6 +32,7 @@ var clanEventService = preload("res://scripts/services/clan_event_service.gd").n
 var conquestService = preload("res://scripts/services/conquest_service.gd").new(service_context)
 var victoryService = preload("res://scripts/services/victory_service.gd").new(service_context)
 var character_service = preload("res://scripts/services/clan_character_service.gd").new(service_context)
+var population_service = preload("res://scripts/services/clan_population_service.gd").new(service_context)
 
 var nom_clan: String:
 	get: return state.nom_clan
@@ -120,9 +121,9 @@ var day_report: String:
 var _bonus_par_action: Dictionary:
 	get: return state._bonus_par_action
 	set(value): state._bonus_par_action = value
-var _corruption_service: RefCounted = CorruptionServiceClass.new()
-var _creature_roster_service: RefCounted = CreatureRosterServiceClass.new()
-var _pact_service: RefCounted = PactServiceClass.new()
+var _corruption_service: RefCounted = service_context.corruption
+var _creature_roster_service: RefCounted = service_context.creatures
+var _pact_service: RefCounted = service_context.pacts
 var _day_transition_pending := false
 
 # ── Services (instanciation unique — DRY / SRP) ────────────────────────
@@ -140,6 +141,7 @@ const SOLDATS_MAX = SoldierAssignmentServiceClass.DEFAULT_MAX_SOLDIERS
 
 
 func _ready() -> void:
+	_sync_service_context()
 	service_context.save_requested.connect(sauvegarder)
 	service_context.level_changed.connect(func(level: int): niveau_montee.emit(level))
 	service_context.soul_depleted.connect(_on_soul_depleted)
@@ -167,6 +169,7 @@ func nouvelle_partie(
 	_corruption_service = CorruptionServiceClass.new()
 	_creature_roster_service = CreatureRosterServiceClass.new()
 	_pact_service = PactServiceClass.new()
+	_sync_service_context()
 	daily_phase = "matin"
 	day_report = ""
 	nom_personnage = p_nom_personnage
@@ -369,47 +372,15 @@ func magie_pactes_active() -> bool:
 
 
 func modifier_affinite_pnj(role: String, delta: int) -> void:
-	if role.is_empty():
-		return
-	var valeur := clampi(int(affinites_pnj.get(role, 0)) + delta, -100, 100)
-	affinites_pnj[role] = valeur
-	if fiches_domaine.has(role):
-		var fiche := (fiches_domaine[role] as Dictionary).duplicate(true)
-		fiche["affinite"] = valeur
-		fiches_domaine[role] = fiche
+	population_service.modifier_affinite_pnj(role, delta)
 
 
 func recruter_pnj_domaine() -> String:
-	if not magie_pactes_active():
-		return ""
-
-	for role in ROLE_DOMAINES:
-		var fiche := (fiches_domaine.get(role, {}) as Dictionary).duplicate(true)
-		if fiche.is_empty():
-			fiche = {
-				"nom": role.capitalize(),
-				"niveau": 1,
-				"specialite": role,
-				"actif": false,
-				"affinite": int(affinites_pnj.get(role, 0)),
-			}
-
-		if not bool(fiche.get("actif", false)):
-			fiche["actif"] = true
-			fiche["niveau"] = maxi(1, int(fiche.get("niveau", 1)))
-			fiches_domaine[role] = fiche
-			modifier_affinite_pnj(role, 12)
-			return role
-
-	return ""
+	return population_service.recruter_pnj_domaine()
 
 
 func peut_recruter_pnj_domaine() -> bool:
-	for role in ROLE_DOMAINES:
-		var fiche := fiches_domaine.get(role, {}) as Dictionary
-		if fiche.is_empty() or not bool(fiche.get("actif", false)):
-			return true
-	return false
+	return population_service.peut_recruter_pnj_domaine()
 
 
 func get_production_totale(base_production: Dictionary) -> Dictionary:
@@ -446,8 +417,7 @@ func _calculer_bonus_production_domaines() -> Dictionary:
 
 
 func get_pnj_gestion_state() -> Dictionary:
-	_sanitizer_pnj_gestion()
-	return pnj_gestion.duplicate(true)
+	return population_service.get_pnj_gestion_state()
 
 
 func ajouter_pnj_gere(
@@ -459,20 +429,7 @@ func ajouter_pnj_gere(
 	pnj_stats: Dictionary,
 	traits: Array = []
 ) -> Dictionary:
-	var fiche: Dictionary = _planner.make_pnj_profile(pnj_id, pnj_name, pnj_type, role, niveau, pnj_stats, traits)
-	var state := get_pnj_gestion_state()
-	var roster: Array = (state.get("roster", []) as Array).duplicate(true)
-	var index := _find_managed_pnj_index(roster, pnj_id)
-	if index >= 0:
-		roster[index] = fiche
-	else:
-		roster.append(fiche)
-	state["roster"] = roster
-	pnj_gestion = state
-	var corruption: RefCounted = get_corruption_service()
-	if not corruption.has_character(pnj_id):
-		corruption.register_character(pnj_id, 50.0, traits)
-	return fiche.duplicate(true)
+	return population_service.ajouter_pnj_gere(pnj_id, pnj_name, pnj_type, role, niveau, pnj_stats, traits)
 
 
 func planifier_mission_soldats(action_id: String, effectif: int) -> Dictionary:
@@ -504,57 +461,15 @@ func adjust_mission_soldier_count(index: int, delta: int) -> Dictionary:
 
 
 func annuler_mission_pnj(index: int) -> Dictionary:
-	var state := get_pnj_gestion_state()
-	var planning := (state.get("planning", {}) as Dictionary).duplicate(true)
-	var missions := (planning.get("missions_pnj", []) as Array).duplicate(true)
-	if index < 0 or index >= missions.size():
-		return {"ok": false, "error": "index_invalide"}
-	var mission := missions[index] as Dictionary
-	var pnj_id := str(mission.get("pnj_id", ""))
-	missions.remove_at(index)
-	planning["missions_pnj"] = missions
-	# restore pnj state to disponible if present in roster
-	var roster := (state.get("roster", []) as Array).duplicate(true)
-	var i := _find_managed_pnj_index(roster, pnj_id)
-	if i >= 0:
-		var pnj := (roster[i] as Dictionary).duplicate(true)
-		pnj["etat"] = "disponible"
-		roster[i] = pnj
-		state["roster"] = roster
-
-	state["planning"] = planning
-	pnj_gestion = state
-	return {"ok": true, "planning": planning, "roster": roster}
+	return population_service.annuler_mission_pnj(index)
 
 
 func assigner_pnj_support_journee(pnj_id: String, hero_action_id: String) -> Dictionary:
-	var state := get_pnj_gestion_state()
-	var result: Dictionary = _planner.assign_pnj_support(
-		state.get("roster", []) as Array,
-		state.get("planning", {}) as Dictionary,
-		pnj_id,
-		hero_action_id
-	)
-	if bool(result.get("ok", false)):
-		state["roster"] = (result.get("roster", state.get("roster", [])) as Array).duplicate(true)
-		state["planning"] = (result.get("planning", state.get("planning", {})) as Dictionary).duplicate(true)
-		pnj_gestion = state
-	return result
+	return population_service.assigner_pnj_support_journee(pnj_id, hero_action_id)
 
 
 func assigner_pnj_expedition_journee(pnj_id: String, seed_value: int = -1) -> Dictionary:
-	var state := get_pnj_gestion_state()
-	var result: Dictionary = _planner.assign_pnj_expedition(
-		state.get("roster", []) as Array,
-		state.get("planning", {}) as Dictionary,
-		pnj_id,
-		seed_value
-	)
-	if bool(result.get("ok", false)):
-		state["roster"] = (result.get("roster", state.get("roster", [])) as Array).duplicate(true)
-		state["planning"] = (result.get("planning", state.get("planning", {})) as Dictionary).duplicate(true)
-		pnj_gestion = state
-	return result
+	return population_service.assigner_pnj_expedition_journee(pnj_id, seed_value)
 
 
 func resoudre_planning_pnj_journee() -> Dictionary:
@@ -792,10 +707,11 @@ func charger_sauvegarde() -> bool:
 	campaign             = (data.get("campaign", {}) as Dictionary).duplicate(true)
 	_corruption_service = CorruptionServiceClass.new()
 	_corruption_service.import_state(data.get("corruption_state", data.get("corruption", {})))
-	_corruption_service.setup(self)
+	_corruption_service.setup(state)
 	_creature_roster_service = CreatureRosterServiceClass.new()
 	_creature_roster_service.import_state(data.get("creature_roster_state", {}) as Dictionary)
 	_pact_service = PactServiceClass.new()
+	_sync_service_context()
 	_pact_service.import_state(data.get("pact_state", {}) as Dictionary)
 	stats                = (data.get("stats", {}) as Dictionary).duplicate()
 	ressources           = (data.get("ressources", {}) as Dictionary).duplicate()
@@ -914,71 +830,15 @@ func _sanitizer_ressources() -> void:
 
 
 func _sanitizer_pnj_et_domaines() -> void:
-	for role in ROLE_DOMAINES:
-		affinites_pnj[role] = clampi(int(affinites_pnj.get(role, 0)), -100, 100)
-
-	if fiche_hero.is_empty():
-		_initialiser_fiches_personnage_et_domaine()
-
-	for role in ROLE_DOMAINES:
-		if not fiches_domaine.has(role):
-			fiches_domaine[role] = {
-				"nom": role.capitalize(),
-				"niveau": 1,
-				"specialite": role,
-				"actif": false,
-				"affinite": int(affinites_pnj.get(role, 0)),
-			}
-		else:
-			var fiche := (fiches_domaine[role] as Dictionary).duplicate(true)
-			fiche["niveau"] = clampi(int(fiche.get("niveau", 1)), 1, 20)
-			fiche["affinite"] = clampi(int(fiche.get("affinite", int(affinites_pnj.get(role, 0)))), -100, 100)
-			fiches_domaine[role] = fiche
+	population_service._sanitizer_pnj_et_domaines()
 
 
 func _sanitizer_pnj_gestion() -> void:
-	if pnj_gestion.is_empty():
-		pnj_gestion = _make_default_pnj_gestion_state()
-	if not pnj_gestion.has("roster") or not (pnj_gestion.get("roster", []) is Array):
-		pnj_gestion["roster"] = []
-	if not pnj_gestion.has("planning") or not (pnj_gestion.get("planning", {}) is Dictionary):
-		pnj_gestion["planning"] = _planner.make_daily_plan()
-	if not pnj_gestion.has("last_resolution") or not (pnj_gestion.get("last_resolution", {}) is Dictionary):
-		pnj_gestion["last_resolution"] = {}
-
-	var sanitized_roster: Array = []
-	for pnj_data in pnj_gestion.get("roster", []):
-		var pnj := pnj_data as Dictionary
-		if pnj.is_empty():
-			continue
-		sanitized_roster.append(
-			_planner.make_pnj_profile(
-				str(pnj.get("id", "pnj_%d" % sanitized_roster.size())),
-				str(pnj.get("nom", "PNJ")),
-				str(pnj.get("type", "recrute")),
-				str(pnj.get("role", "auxiliaire")),
-				int(pnj.get("niveau", 1)),
-				pnj.get("stats", {}) as Dictionary,
-				pnj.get("traits", []) as Array
-			)
-		)
-		sanitized_roster[-1]["etat"] = str(pnj.get("etat", "disponible"))
-	pnj_gestion["roster"] = sanitized_roster
-
-	var planning := (pnj_gestion.get("planning", _planner.make_daily_plan()) as Dictionary).duplicate(true)
-	if not planning.has("missions_soldats") or not (planning.get("missions_soldats", []) is Array):
-		planning["missions_soldats"] = []
-	if not planning.has("missions_pnj") or not (planning.get("missions_pnj", []) is Array):
-		planning["missions_pnj"] = []
-	pnj_gestion["planning"] = planning
+	population_service._sanitizer_pnj_gestion()
 
 
 func _make_default_pnj_gestion_state() -> Dictionary:
-	return {
-		"roster": [],
-		"planning": _planner.make_daily_plan(),
-		"last_resolution": {},
-	}
+	return population_service._make_default_pnj_gestion_state()
 
 
 # Calculer et appliquer les effets issus du profil (feats)
@@ -998,11 +858,7 @@ func _check_level_up() -> void:
 
 
 func _find_managed_pnj_index(roster: Array, pnj_id: String) -> int:
-	for index in range(roster.size()):
-		var pnj := roster[index] as Dictionary
-		if str(pnj.get("id", "")) == pnj_id:
-			return index
-	return -1
+	return population_service._find_managed_pnj_index(roster, pnj_id)
 
 
 func _forcer_magie_pactes() -> void:
@@ -1022,7 +878,7 @@ func _normalize_loaded_character_sheet() -> void:
 
 ## Façade : la corruption reste dans son service et dans le même instantané de sauvegarde.
 func get_corruption_service() -> RefCounted:
-	_corruption_service.setup(self)
+	_corruption_service.setup(state)
 	if not _corruption_service.has_character("hero"):
 		var secondary: Dictionary = get_fiche_complete().get("secondary_stats", {})
 		_corruption_service.register_character("hero", clampf(50.0 + float(secondary.get("ESE", 0)) * 2.0, 0.0, 90.0))
@@ -1087,7 +943,7 @@ func _require_autoload(autoload_name: String) -> Node:
 	return node
 
 func _on_recruitment_requested(role: String) -> void:
-	PnjGeneratorClass.new().generate_and_register_pnj(role, "recrute")
+	PnjGeneratorClass.new(service_context).generate_and_register_pnj(role, "recrute")
 
 func get_pnj_support_bonus(action_id: String) -> int:
 	return _planner.support_bonus(action_id)
@@ -1098,3 +954,13 @@ func consume_pnj_support(action_id: String) -> int:
 func _on_soul_depleted() -> void:
 	var manager := _require_autoload("GameManager")
 	if manager != null: manager.declencher_bad_end_dragon()
+
+func _sync_service_context() -> void:
+	service_context.corruption = _corruption_service
+	service_context.creatures = _creature_roster_service
+	service_context.pacts = _pact_service
+
+func acquire_creature(profile: Resource, route: String) -> Dictionary:
+	var result: Dictionary = _creature_roster_service.acquire_creature(profile, route)
+	if bool(result.get("ok", false)): sauvegarder()
+	return result

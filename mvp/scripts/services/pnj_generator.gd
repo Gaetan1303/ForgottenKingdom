@@ -5,11 +5,17 @@ const NameGeneratorServiceScript = preload("res://scripts/services/name_generato
 const StatDefsClass = preload("res://scripts/data/stat_defs.gd")
 const PnjDailyPlannerServiceClass = preload("res://scripts/services/pnj_daily_planner_service.gd")
 
-var _rng := RandomNumberGenerator.new()
-var _names: RefCounted = NameGeneratorServiceScript.new()
+var context: RefCounted
+var _rng: RandomNumberGenerator
+var _names: RefCounted
 
-func _init() -> void:
-    _rng.randomize()
+func _init(p_context: RefCounted = null) -> void:
+    context = p_context
+    if context != null: _rng = context.rng
+    else:
+        _rng = RandomNumberGenerator.new()
+        _rng.randomize()
+    _names = NameGeneratorServiceScript.new(-1, _rng)
 
 
 func _pick_name(role: String) -> String:
@@ -102,7 +108,7 @@ func generate_and_register_pnj(role_hint: String = "", pnj_type: String = "recru
     var niveau := _rng.randi_range(1, 4)
     var identity: Dictionary = _names.generate_pnj_identity(role, "marches")
     var name := str(identity.get("nom", _pick_name(role)))
-    var pnj_id := "%s_%d" % [name.replace(" ", "_").to_lower(), randi()]
+    var pnj_id := "%s_%d" % [name.replace(" ", "_").to_lower(), _rng.randi()]
 
     # 2. generate stats
     var stats := _stats_for_role(role, niveau)
@@ -120,35 +126,12 @@ func generate_and_register_pnj(role_hint: String = "", pnj_type: String = "recru
     profile["combativite"] = int(identity.get("combativite", profile.get("combativite", 45)))
     profile["temperament"] = str(identity.get("temperament", profile.get("temperament", "résolu")))
 
-    # 5. register with ClanManager if available (use SceneTree root lookup for reliability)
-    var main_loop := Engine.get_main_loop()
-    if main_loop != null and typeof(main_loop) == TYPE_OBJECT:
-        var tree := main_loop as SceneTree
-        if tree != null:
-            var root := tree.get_root()
-            if root != null:
-                var cm_node := root.get_node_or_null("/root/ClanManager")
-                if cm_node != null and cm_node.has_method("ajouter_pnj_gere"):
-                    var added: Dictionary = cm_node.ajouter_pnj_gere(pnj_id, name, pnj_type, role, niveau, stats, traits)
-                    # attach equipment/behavior to stored profile
-                    var state: Dictionary = cm_node.get_pnj_gestion_state()
-                    var roster := (state.get("roster", []) as Array)
-                    var idx := -1
-                    for i in range(roster.size()):
-                        if str(roster[i].get("id", "")) == pnj_id:
-                            idx = i
-                            break
-                    if idx >= 0:
-                        var p := (roster[idx] as Dictionary).duplicate(true)
-                        p["equipment"] = equipment
-                        p["behavior"] = behavior
-                        p["combativite"] = profile["combativite"]
-                        p["temperament"] = profile["temperament"]
-                        roster[idx] = p
-                        state["roster"] = roster
-                        cm_node.pnj_gestion = state
-                    added["combativite"] = profile["combativite"]
-                    added["temperament"] = profile["temperament"]
-                    return added
-
+    if context != null:
+        var population = preload("res://scripts/services/clan_population_service.gd").new(context)
+        population.ajouter_pnj_gere(pnj_id, name, pnj_type, role, niveau, stats, traits)
+        var roster: Array = context.state.pnj_gestion.get("roster", [])
+        for entry in roster:
+            if str(entry.get("id", "")) == pnj_id:
+                entry.merge(profile, true)
+                break
     return profile

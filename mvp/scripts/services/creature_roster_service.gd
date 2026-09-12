@@ -17,7 +17,7 @@ func capture_creature(creature_profile: Resource) -> bool:
 	if creature_profile == null or not creature_profile.is_valid() or _captured.has(creature_profile.id):
 		return false
 	_captured[creature_profile.id] = _entry(creature_profile)
-	_available.erase(creature_profile.id)
+	_available = _available.filter(func(entry): return str(entry.get("id", "")) != creature_profile.id)
 	creature_captured.emit(creature_profile.id, creature_profile)
 	return true
 
@@ -31,7 +31,7 @@ func release_creature(creature_id: String) -> bool:
 
 
 func add_available_creature(creature_profile: Resource) -> bool:
-	if creature_profile == null or not creature_profile.is_valid():
+	if creature_profile == null or not creature_profile.is_valid() or _captured.has(creature_profile.id):
 		return false
 	var data: Dictionary = creature_profile.to_dict()
 	for index in range(_available.size()):
@@ -218,3 +218,13 @@ static func _entry(profile: Resource) -> Dictionary:
 
 static func _error(roster: Array, code: String) -> Dictionary:
 	return {"ok": false, "error": code, "roster": roster.duplicate(true)}
+
+## Frontière de recrutement commune aux rencontres, alliances et pactes.
+func acquire_creature(profile: Resource, route: String) -> Dictionary:
+	if route not in ["combat", "diplomatie", "occultisme", "liberation", "pacte", "alliance"]:
+		return {"ok": false, "error": "voie_inconnue"}
+	if profile == null or not profile.is_valid(): return {"ok": false, "error": "profil_creature_invalide"}
+	var recruited: Resource = CreatureProfileClass.from_dict(profile.to_dict())
+	recruited.metadata["acquisition_route"] = route
+	if not capture_creature(recruited): return {"ok": false, "error": "creature_deja_presente"}
+	return {"ok": true, "creature_id": recruited.id, "route": route}

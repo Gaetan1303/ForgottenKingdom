@@ -19,7 +19,7 @@ func _run() -> void:
         _finish(failures)
         return
 
-    var gen: RefCounted = load("res://scripts/services/pnj_generator.gd").new()
+    var gen: RefCounted = load("res://scripts/services/pnj_generator.gd").new(cm.service_context)
     var res: Dictionary = (gen as Object).generate_and_register_pnj("garde") as Dictionary
     if res == null or not (res is Dictionary):
         failures.append("Generator returned invalid profile")
