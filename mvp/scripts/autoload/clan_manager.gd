@@ -28,6 +28,7 @@ var state = preload("res://scripts/data/clan_state.gd").new()
 var service_context = preload("res://scripts/services/clan_service_context.gd").new(state)
 var diplomacyService = preload("res://scripts/services/diplomacy_service.gd").new(service_context)
 var espionageService = preload("res://scripts/services/espionage_service.gd").new(service_context)
+var clanEventService = preload("res://scripts/services/clan_event_service.gd").new(service_context)
 
 var nom_clan: String:
 	get: return state.nom_clan
@@ -123,8 +124,8 @@ var _day_transition_pending := false
 
 # ── Services (instanciation unique — DRY / SRP) ────────────────────────
 var _planner: RefCounted = null
-var _economy = ClanEconomyServiceClass.new()
-var _soldier_assignment = SoldierAssignmentServiceClass.new()
+var _economy = service_context.economy
+var _soldier_assignment = service_context.soldiers
 
 # Bonus de classe chargés depuis les données
 
@@ -136,6 +137,9 @@ const SOLDATS_MAX = SoldierAssignmentServiceClass.DEFAULT_MAX_SOLDIERS
 
 
 func _ready() -> void:
+	service_context.resources_changed.connect(func(): ressources_mises_a_jour.emit())
+	service_context.recruitment_requested.connect(_on_recruitment_requested)
+	service_context.data_loader = get_node_or_null("/root/GameDataLoader")
 	_planner = PnjDailyPlannerServiceClass.new()
 	_charger_etat_defaut()
 
@@ -300,27 +304,12 @@ func peut_payer(cout: Dictionary) -> bool:
 
 ## Débite les ressources (sans vérification — utiliser peut_payer avant).
 func payer(cout: Dictionary) -> void:
-	for res in cout:
-		if str(res) == "soldats":
-			# remove soldier IDs from pool when paying soldiers
-			var to_remove := maxi(0, int(cout[res]))
-			_remove_soldiers(to_remove)
-		else:
-			_economy.debit(ressources, res, int(cout[res]))
-	emit_signal("ressources_mises_a_jour")
+	_economy.pay(service_context, cout)
 
 
 ## Ajoute des ressources.
 func gagner(gains: Dictionary) -> void:
-	for res in gains:
-		if ressources.has(res):
-			var inc := int(gains[res])
-			if str(res) == "soldats":
-				# add soldier IDs to pool when gaining soldiers
-				_add_soldiers(inc)
-			else:
-				_economy.credit(ressources, res, inc)
-	emit_signal("ressources_mises_a_jour")
+	_economy.gain_state(service_context, gains)
 
 
 func get_ressources() -> Dictionary:
@@ -341,20 +330,11 @@ func get_stat(key: String, default_value: int = 5) -> int:
 
 ## Pool helpers: ensure pool and ressources stay in sync when soldiers are added/removed.
 func _remove_soldiers(count: int) -> int:
-	var result: Dictionary = _soldier_assignment.remove_soldiers(_soldats_disponibles, count)
-	_soldats_disponibles = result.pool
-	ressources["soldats"] = _soldats_disponibles.size()
-	emit_signal("ressources_mises_a_jour")
-	return (result.removed_ids as Array).size()
+	return _economy.remove_available(service_context, count)
 
 
 func _add_soldiers(count: int) -> int:
-	var result: Dictionary = _soldier_assignment.add_soldiers(_soldats_disponibles, count, _soldat_next_id)
-	_soldats_disponibles = result.pool
-	_soldat_next_id = result.next_id
-	ressources["soldats"] = _soldats_disponibles.size()
-	emit_signal("ressources_mises_a_jour")
-	return (result.added_ids as Array).size()
+	return _economy.add_available(service_context, count)
 
 
 func action_deja_utilisee_pour_moment() -> bool:
@@ -841,87 +821,13 @@ func fin_de_tour(action_choisie: String, effets_action: Dictionary) -> void:
 
 
 func _appliquer_effets(effets: Dictionary) -> void:
-	# Gains directs
-	if effets.has("or_recupere"):       gagner({"or": int(effets["or_recupere"])})
-	if effets.has("or_penalite"):       payer({"or": absi(int(effets["or_penalite"]))})
-	if effets.has("mana_gain"):         gagner({"mana": int(effets["mana_gain"])})
-	if effets.has("soldats_gain"):      gagner({"soldats": int(effets["soldats_gain"])})
-	if effets.has("reputation_gain"):   gagner({"reputation": int(effets["reputation_gain"])})
-	if effets.has("renseignements_gain"): gagner({"renseignements": int(effets["renseignements_gain"])})
-
-	# Pertes en pourcentage
-	if effets.has("pertes_soldats_pct"):
-		var pct := int(effets["pertes_soldats_pct"])
-		var pertes := int(ressources.get("soldats", 0)) * pct / 100
-		payer({"soldats": maxi(1, pertes)})
-
-	if effets.has("soldats_perte_pct"):
-		var pct := int(effets["soldats_perte_pct"])
-		var pertes := int(ressources.get("soldats", 0)) * pct / 100
-		payer({"soldats": maxi(1, pertes)})
-
-	# Pertes de réputation
-	if effets.has("reputation_perte"):  payer({"reputation": int(effets["reputation_perte"])})
-	if effets.has("relation_perte"):
-		pass  # Géré par les scènes directement via modifier_relation
-
-	# Handle PNJ recruitment effect: generate and register PNJ(s)
-	if effets.has("pnj_recrute"):
-		var count := int(effets.get("pnj_recrute", 1))
-		var role_hint := str(effets.get("pnj_role", ""))
-		print("[DEBUG] _appliquer_effets: pnj_recrute=%d role_hint=%s moment=%s magie=%s" % [count, role_hint, str(moment_journee), str(magie_pactes_active())])
-		for i in range(count):
-			var gen: RefCounted = PnjGeneratorClass.new()
-			var added: Variant = gen.generate_and_register_pnj(role_hint, "recrute")
-			if added == null:
-				print("[DEBUG] generate_and_register_pnj returned null for hint=%s" % role_hint)
-			else:
-				print("[DEBUG] New PNJ registered: %s" % str(added))
-			# ensure effects reflect actual recruitment for UI
-			if added != null:
-				effets["pnj_recrute"] = int(effets.get("pnj_recrute", 0))
-
-	# Gains de renforcement (fortification)
-	if effets.has("soldats_bonus"): gagner({"soldats": int(effets["soldats_bonus"])})
-	if effets.has("production_or_bonus"):
-		ressources_par_tour["or"] = int(ressources_par_tour.get("or", 120)) + int(effets["production_or_bonus"])
-		emit_signal("ressources_mises_a_jour")
+	clanEventService.apply_effects(effets)
 
 
 ## Tire au plus un événement aléatoire pour le tour et applique ses effets.
 ## Retourne un message à afficher dans le log, ou une chaîne vide.
 func tirer_et_appliquer_evenement(evenements: Array) -> String:
-	if evenements.is_empty():
-		return ""
-
-	var rng := RandomNumberGenerator.new()
-	rng.randomize()
-
-	for ev in evenements:
-		var d := ev as Dictionary
-		if d.is_empty():
-			continue
-
-		var condition := str(d.get("condition", ""))
-		if not _condition_evenement_valide(condition):
-			continue
-
-		var probabilite := float(d.get("probabilite", 0.0))
-		if probabilite <= 0.0:
-			continue
-
-		if rng.randf() <= probabilite:
-			_appliquer_effets((d.get("effets", {}) as Dictionary).duplicate(true))
-			var id_evt := str(d.get("id", ""))
-			if not id_evt.is_empty() and not evenements_declenches.has(id_evt):
-				evenements_declenches.append(id_evt)
-			var titre := str(d.get("titre", "Événement"))
-			var texte := str(d.get("texte", ""))
-			if texte.is_empty():
-				return "Événement: %s." % titre
-			return "Événement: %s — %s" % [titre, texte]
-
-	return ""
+	return clanEventService.draw_and_apply(evenements)
 
 
 ## Évalue l'état de la partie (en cours / victoire / défaite).
@@ -965,84 +871,23 @@ func _a_alliance_active() -> bool:
 
 
 func _condition_evenement_valide(condition: String) -> bool:
-	var cond := condition.strip_edges()
-	if cond.is_empty() or cond == "null":
-		return true
-
-	var clauses := cond.split("AND")
-	for clause_raw in clauses:
-		var clause := clause_raw.strip_edges()
-		if clause.is_empty():
-			continue
-		if not _evaluer_clause_condition(clause):
-			return false
-	return true
+	return clanEventService.evaluate_conditions(condition)
 
 
 func _evaluer_clause_condition(clause: String) -> bool:
-	for op_any in [">=", "<=", "==", "!=", ">", "<", "="]:
-		var op: String = str(op_any)
-		var idx: int = clause.find(op)
-		if idx == -1:
-			continue
-
-		var gauche: String = clause.substr(0, idx).strip_edges().to_lower()
-		var droite: String = clause.substr(idx + op.length()).strip_edges()
-		if op == "=":
-			op = "=="
-
-		var left_value: Variant = _valeur_condition(gauche)
-		var right_value: Variant = _convertir_condition_value(droite)
-		if left_value == null or right_value == null:
-			return false
-		return _comparer_condition(left_value, right_value, op)
-
-	return false
+	return clanEventService._evaluer_clause_condition(clause)
 
 
 func _valeur_condition(key: String) -> Variant:
-	match key:
-		"tour":
-			return tour_actuel
-		"moment_journee":
-			return moment_journee
-		_:
-			if ressources.has(key):
-				return int(ressources.get(key, 0))
-	return null
+	return clanEventService._valeur_condition(key)
 
 
 func _convertir_condition_value(value: String) -> Variant:
-	var v := value.strip_edges()
-	if v.is_empty():
-		return null
-
-	if v.begins_with("\"") and v.ends_with("\"") and v.length() >= 2:
-		return v.substr(1, v.length() - 2)
-
-	if v.is_valid_int():
-		return int(v)
-	if v.is_valid_float():
-		return float(v)
-
-	return v.to_lower()
+	return clanEventService._convertir_condition_value(value)
 
 
 func _comparer_condition(a: Variant, b: Variant, op: String) -> bool:
-	match op:
-		">":
-			return a > b
-		"<":
-			return a < b
-		">=":
-			return a >= b
-		"<=":
-			return a <= b
-		"==":
-			return a == b
-		"!=":
-			return a != b
-	return false
+	return clanEventService._comparer_condition(a, b, op)
 
 
 # ─────────────────────────────────────────────────────────────────────
@@ -1608,3 +1453,6 @@ func _require_autoload(autoload_name: String) -> Node:
 	if node == null:
 		push_error("ClanManager: autoload requis introuvable : %s" % autoload_name)
 	return node
+
+func _on_recruitment_requested(role: String) -> void:
+	PnjGeneratorClass.new().generate_and_register_pnj(role, "recrute")

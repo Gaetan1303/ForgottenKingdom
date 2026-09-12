@@ -160,3 +160,39 @@ func action_cost(action_id: String, cout_base: Dictionary, traits: Dictionary, c
 		cout["soldats"] = maxi(0, int(round(int(cout["soldats"]) * (100 - soldats_reduc_atk) / 100.0)))
 
 	return cout
+
+func pay(context, cout: Dictionary) -> void:
+	for res in cout:
+		if str(res) == "soldats":
+			# remove soldier IDs from pool when paying soldiers
+			var to_remove := maxi(0, int(cout[res]))
+			remove_available(context, to_remove)
+		else:
+			debit(context.state.ressources, res, int(cout[res]))
+	context.resources_changed.emit()
+
+func gain_state(context, gains: Dictionary) -> void:
+	for res in gains:
+		if context.state.ressources.has(res):
+			var inc := int(gains[res])
+			if str(res) == "soldats":
+				# add soldier IDs to pool when gaining soldiers
+				add_available(context, inc)
+			else:
+				credit(context.state.ressources, res, inc)
+	context.resources_changed.emit()
+
+func remove_available(context, count: int) -> int:
+	var result: Dictionary = context.soldiers.remove_soldiers(context.state._soldats_disponibles, count)
+	context.state._soldats_disponibles = result.pool
+	context.state.ressources["soldats"] = context.state._soldats_disponibles.size()
+	context.resources_changed.emit()
+	return (result.removed_ids as Array).size()
+
+func add_available(context, count: int) -> int:
+	var result: Dictionary = context.soldiers.add_soldiers(context.state._soldats_disponibles, count, context.state._soldat_next_id)
+	context.state._soldats_disponibles = result.pool
+	context.state._soldat_next_id = result.next_id
+	context.state.ressources["soldats"] = context.state._soldats_disponibles.size()
+	context.resources_changed.emit()
+	return (result.added_ids as Array).size()
