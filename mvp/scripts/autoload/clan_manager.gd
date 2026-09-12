@@ -26,6 +26,7 @@ const ROLE_DOMAINES = ClanEconomyServiceClass.DOMAIN_ROLES
 # ── État du clan ────────────────────────────────────────────────────────
 var state = preload("res://scripts/data/clan_state.gd").new()
 var service_context = preload("res://scripts/services/clan_service_context.gd").new(state)
+var diplomacyService = preload("res://scripts/services/diplomacy_service.gd").new(service_context)
 
 var nom_clan: String:
 	get: return state.nom_clan
@@ -985,24 +986,7 @@ func maisons_soumises() -> int:
 
 ## Modification de la relation avec une maison noble.
 func modifier_relation(maison_id: int, nouvelle_relation: String) -> void:
-	for i in range(maisons_nobles.size()):
-		if int(maisons_nobles[i].get("id", -1)) == maison_id:
-			var relation := nouvelle_relation
-			var statut_courant := str(maisons_nobles[i].get("statut", "inconnue"))
-
-			if relation == "neutre_positive":
-				relation = "neutre"
-
-			maisons_nobles[i]["relation"] = relation
-
-			# Le hub utilise la clé "statut" pour filtrer les actions et colorer l'UI.
-			# On la synchronise avec la relation, sauf si la maison est déjà soumise.
-			if statut_courant != "soumise":
-				if relation in ["alliee", "hostile", "neutre", "revelee", "inconnue"]:
-					maisons_nobles[i]["statut"] = relation
-				else:
-					maisons_nobles[i]["statut"] = "neutre"
-			return
+	diplomacyService.modify_relation(maison_id, nouvelle_relation)
 
 
 # ─────────────────────────────────────────────────────────────────────
@@ -1154,12 +1138,7 @@ func evaluer_etat_partie() -> Dictionary:
 
 
 func _a_alliance_active() -> bool:
-	for maison in maisons_nobles:
-		var relation := str(maison.get("relation", ""))
-		var statut := str(maison.get("statut", ""))
-		if relation == "alliee" or statut == "alliee":
-			return true
-	return false
+	return diplomacyService.has_active_alliance()
 
 
 func _condition_evenement_valide(condition: String) -> bool:

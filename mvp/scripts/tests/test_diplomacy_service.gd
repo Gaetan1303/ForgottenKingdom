@@ -1,0 +1,28 @@
+extends SceneTree
+const StateType = preload("res://scripts/data/clan_state.gd")
+const ContextType = preload("res://scripts/services/clan_service_context.gd")
+const Diplomacy = preload("res://scripts/services/diplomacy_service.gd")
+func _init() -> void: call_deferred("_run")
+func _run() -> void:
+	var state := StateType.new()
+	state.maisons_nobles = [{"id": 1, "statut": "inconnue"}, {"id": 2, "statut": "soumise"}]
+	var service := Diplomacy.new(ContextType.new(state))
+	service.modify_relation(1, "neutre_positive")
+	assert(state.maisons_nobles[0].relation == "neutre" and state.maisons_nobles[0].statut == "neutre")
+	service.modify_relation(2, "hostile")
+	assert(state.maisons_nobles[1].statut == "soumise")
+	var before := state.ressources.duplicate()
+	assert(service.execute({"maison_id": 1, "resultat_id": "succes"}).ok)
+	assert(service.has_active_alliance() and state.ressources == before)
+	assert(not service.execute({"maison_id": 1, "resultat_id": "echec_detecte"}).ok)
+	assert(not service.has_active_alliance())
+	var cm = root.get_node("ClanManager")
+	cm.maisons_nobles = state.maisons_nobles.duplicate(true)
+	cm.modifier_relation(1, "alliee")
+	service.modify_relation(1, "alliee")
+	assert(cm.maisons_nobles == state.maisons_nobles)
+	cm.sauvegarder()
+	cm.maisons_nobles = []
+	assert(cm.charger_sauvegarde() and cm._a_alliance_active())
+	print("DIPLOMACY_SERVICE_OK")
+	quit()
