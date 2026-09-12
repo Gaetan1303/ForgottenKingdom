@@ -31,6 +31,7 @@ var espionageService = preload("res://scripts/services/espionage_service.gd").ne
 var clanEventService = preload("res://scripts/services/clan_event_service.gd").new(service_context)
 var conquestService = preload("res://scripts/services/conquest_service.gd").new(service_context)
 var victoryService = preload("res://scripts/services/victory_service.gd").new(service_context)
+var character_service = preload("res://scripts/services/clan_character_service.gd").new(service_context)
 
 var nom_clan: String:
 	get: return state.nom_clan
@@ -139,10 +140,13 @@ const SOLDATS_MAX = SoldierAssignmentServiceClass.DEFAULT_MAX_SOLDIERS
 
 
 func _ready() -> void:
+	service_context.save_requested.connect(sauvegarder)
+	service_context.level_changed.connect(func(level: int): niveau_montee.emit(level))
+	service_context.soul_depleted.connect(_on_soul_depleted)
 	service_context.resources_changed.connect(func(): ressources_mises_a_jour.emit())
 	service_context.recruitment_requested.connect(_on_recruitment_requested)
 	service_context.data_loader = get_node_or_null("/root/GameDataLoader")
-	_planner = PnjDailyPlannerServiceClass.new()
+	_planner = PnjDailyPlannerServiceClass.new(service_context)
 	_charger_etat_defaut()
 
 
@@ -361,7 +365,7 @@ func reset_actions_nouveau_tour() -> void:
 
 
 func magie_pactes_active() -> bool:
-	return bool(profil_personnage.get("magie_pactes", false))
+	return character_service.magie_pactes_active()
 
 
 func modifier_affinite_pnj(role: String, delta: int) -> void:
@@ -414,7 +418,7 @@ func get_production_totale(base_production: Dictionary) -> Dictionary:
 
 
 func get_traits_gameplay() -> Dictionary:
-	return (profil_personnage.get("traits_gameplay", {}) as Dictionary).duplicate(true)
+	return character_service.get_traits_gameplay()
 
 
 func get_action_cout_modifie(action_id: String, cout_base: Dictionary) -> Dictionary:
@@ -422,72 +426,19 @@ func get_action_cout_modifie(action_id: String, cout_base: Dictionary) -> Dictio
 
 
 func get_bonus_score_action(action_id: String) -> int:
-	var traits := get_traits_gameplay()
-	var caps := _get_traits_caps()
-	var map_bonus := traits.get("bonus_score_actions", {}) as Dictionary
-	var cap := int(caps.get("bonus_per_action_max", 3))
-	return clampi(int(map_bonus.get(action_id, 0)), -cap, cap)
+	return character_service.get_bonus_score_action(action_id)
 
 
 func appliquer_passifs_nuit() -> String:
-	var traits := get_traits_gameplay()
-	var caps := _get_traits_caps()
-	var details: Array[String] = []
-
-	var regen_ame := clampi(int(traits.get("night_soul_regen", 0)), 0, int(caps.get("night_soul_regen", 4)))
-	if regen_ame > 0:
-		barre_ame = clampi(barre_ame + regen_ame, 0, 100)
-		details.append("Ame +%d" % regen_ame)
-
-	var rep_gain := clampi(int(traits.get("night_reputation_gain", 0)), 0, int(caps.get("night_reputation_gain", 2)))
-	if rep_gain > 0:
-		gagner({"reputation": rep_gain})
-		details.append("Reputation +%d" % rep_gain)
-
-	if details.is_empty():
-		return ""
-	return "Passifs de nuit: %s" % FKHelpers.join_array(details, ", ")
+	return character_service.appliquer_passifs_nuit()
 
 
 func get_resume_traits_actifs() -> String:
-	var traits := get_traits_gameplay()
-	if traits.is_empty():
-		return "Traits actifs: aucun"
-
-	var parts: Array[String] = []
-	var mana_reduc := int(traits.get("mana_cost_reduction_pct", 0))
-	if mana_reduc > 0:
-		parts.append("Rituels -%d%% mana" % mana_reduc)
-
-	var sold_reduc := int(traits.get("soldats_cost_reduction_attaquer_pct", 0))
-	if sold_reduc > 0:
-		parts.append("Attaquer -%d%% soldats" % sold_reduc)
-
-	var regen_ame := int(traits.get("night_soul_regen", 0))
-	if regen_ame > 0:
-		parts.append("Nuit: Ame +%d" % regen_ame)
-
-	var rep_nuit := int(traits.get("night_reputation_gain", 0))
-	if rep_nuit > 0:
-		parts.append("Nuit: Reputation +%d" % rep_nuit)
-
-	var map_bonus := traits.get("bonus_score_actions", {}) as Dictionary
-	for action_id in map_bonus.keys():
-		var val := int(map_bonus[action_id])
-		if val != 0:
-			parts.append("%s %+d" % [str(action_id), val])
-
-	if parts.is_empty():
-		return "Traits actifs: aucun effet chiffré"
-	return "Traits actifs: %s" % FKHelpers.join_array(parts, " | ")
+	return character_service.get_resume_traits_actifs()
 
 
 func _get_traits_caps() -> Dictionary:
-	var loader: Node = _require_autoload("GameDataLoader")
-	if loader == null:
-		return {}
-	var traits_cfg: Dictionary = loader.get_character_traits()
-	return (traits_cfg.get("caps", {}) as Dictionary).duplicate(true)
+	return character_service._get_traits_caps()
 
 
 func _calculer_bonus_production_domaines() -> Dictionary:
@@ -613,48 +564,13 @@ func resoudre_planning_pnj_journee() -> Dictionary:
 		state.get("planning", {}) as Dictionary
 	)
 	var gains := (result.get("resource_gains", {}) as Dictionary).duplicate(true)
-	# Apply hero support effects (PNJ support can generate ressources like renseignements/reputation)
-	var hero_support := (result.get("hero_support", {}) as Dictionary).duplicate(true)
-	var HERO_ACTION_RESOURCE := {
-		"espionner": "renseignements",
-		"securiser": "reputation",
-	}
-	for action_key in hero_support.keys():
-		var amount := int(hero_support.get(action_key, 0))
-		if amount <= 0:
-			continue
-		if HERO_ACTION_RESOURCE.has(action_key):
-			var rkey: String = str(HERO_ACTION_RESOURCE.get(action_key, ""))
-			gains[rkey] = int(gains.get(rkey, 0)) + amount
+	_planner.store_resolved_support(result.get("hero_support", {}))
 
 	if not gains.is_empty():
 		gagner(gains)
 
-	# Special handling for espionnage soldier missions: reveal an unrevealed house if present
-	var soldier_results := (result.get("soldier_results", []) as Array)
-	for s in soldier_results:
-		if not (s is Dictionary):
-			continue
-		var aid := str(s.get("action_id", ""))
-		if aid == "espionner":
-			var r_gains := (s.get("gains", {}) as Dictionary)
-			var renseignements_gain := int(r_gains.get("renseignements", 0))
-			if renseignements_gain <= 0:
-				continue
-			# find first unrevealed house
-			var found_idx := -1
-			for i in range(maisons_nobles.size()):
-				if not bool(maisons_nobles[i].get("revelee", false)):
-					found_idx = i
-					break
-			if found_idx >= 0:
-				maisons_nobles[found_idx]["revelee"] = true
-				maisons_nobles[found_idx]["espionnee"] = true
-				var _set_status_msg = "Maison révélée: %s" % str(maisons_nobles[found_idx].get("nom", "Inconnu"))
-				print(_set_status_msg)
-			else:
-				# No unrevealed houses: treat as external espionnage, keep gain
-				print("Espionnage externe: +%d renseignements" % renseignements_gain)
+	var soldier_results: Array = result.get("soldier_results", [])
+	espionageService.apply_soldier_intelligence(soldier_results)
 
 	# If planner generated events (from failures), apply them now
 	var gen_events := (result.get("generated_events", []) as Array).duplicate(true)
@@ -678,6 +594,7 @@ func resoudre_planning_pnj_journee() -> Dictionary:
 	state["roster"] = (result.get("roster", state.get("roster", [])) as Array).duplicate(true)
 	state["planning"] = _planner.make_daily_plan()
 	state["last_resolution"] = result.duplicate(true)
+	state["support"] = pnj_gestion.get("support", {}).duplicate(true)
 	pnj_gestion = state
 	return result
 
@@ -729,17 +646,7 @@ func on_soir() -> void:
 
 ## Utilise la Forme Dragon (dépense de l'âme).
 func utiliser_forme_dragon(cout_ame: int = 25) -> bool:
-	if barre_ame <= 0:
-		return false
-	barre_ame = maxi(0, barre_ame - cout_ame)
-	forme_dragon_utilisee += 1
-	emit_signal("ressources_mises_a_jour")
-	if barre_ame <= 0:
-		# Déclenchement du Bad End
-		var game_manager: Node = _require_autoload("GameManager")
-		if game_manager != null:
-			game_manager.declencher_bad_end_dragon()
-	return true
+	return character_service.utiliser_forme_dragon(cout_ame)
 
 
 # ─────────────────────────────────────────────────────────────────────
@@ -921,150 +828,61 @@ func charger_sauvegarde() -> bool:
 
 
 func get_profil_personnage() -> Dictionary:
-	return profil_personnage.duplicate(true)
+	return character_service.get_profil_personnage()
 
 
 func get_fiche_complete() -> Dictionary:
-	_ensure_fiche_complete()
-	return (profil_personnage.get("fiche_complete", {}) as Dictionary).duplicate(true)
+	return character_service.get_fiche_complete()
 
 
 func get_personnage_niveau() -> int:
-	_ensure_fiche_complete()
-	var fiche := profil_personnage.get("fiche_complete", {}) as Dictionary
-	return maxi(1, int(fiche.get("niveau", 1)))
+	return character_service.get_personnage_niveau()
 
 
 func get_personnage_points_restants() -> int:
-	_ensure_fiche_complete()
-	var fiche := profil_personnage.get("fiche_complete", {}) as Dictionary
-	return maxi(0, int(fiche.get("points_restants", 0)))
+	return character_service.get_personnage_points_restants()
 
 
 func get_personnage_feats() -> Array:
-	return (profil_personnage.get("feats", []) as Array).duplicate(true)
+	return character_service.get_personnage_feats()
 
 
 func get_personnage_portrait_path() -> String:
-	var portrait := profil_personnage.get("portrait", {}) as Dictionary
-	return str(portrait.get("path", ""))
+	return character_service.get_personnage_portrait_path()
 
 
 func set_personnage_portrait(payload: Dictionary, do_save: bool = false) -> void:
-	if payload == null:
-		return
-	profil_personnage["portrait"] = (payload as Dictionary).duplicate(true)
-	if do_save:
-		sauvegarder()
+	character_service.set_personnage_portrait(payload, do_save)
 
 
 func get_personnage_experience() -> int:
-	if fiche_hero.is_empty():
-		_initialiser_fiches_personnage_et_domaine()
-	return int(fiche_hero.get("experience", 0))
+	return character_service.get_personnage_experience()
 
 
 func get_personnage_xp_for_next_level() -> int:
-	if fiche_hero.is_empty():
-		_initialiser_fiches_personnage_et_domaine()
-	var lvl := int(fiche_hero.get("niveau", 1))
-	return 100 * lvl
+	return character_service.get_personnage_xp_for_next_level()
 
 
 func is_personnage_xp_full() -> bool:
-	return get_personnage_experience() >= get_personnage_xp_for_next_level()
+	return character_service.is_personnage_xp_full()
 
 
 func apply_profile_sheet_update(stats_update: Dictionary, points_remaining: int, feats: Array = []) -> void:
-	print("ClanManager.apply_profile_sheet_update: called; stats_update=", JSON.stringify(stats_update), " points_remaining=", points_remaining, " feats=", JSON.stringify(feats))
-	# Store raw character stats (sanitized to character bounds)
-	var raw_stats: Dictionary = StatDefsClass.sanitize_stats(
-		stats_update,
-		StatDefsClass.CHARACTER_MIN_STAT,
-		StatDefsClass.CHARACTER_MAX_STAT,
-		StatDefsClass.CHARACTER_MIN_STAT
-	)
-
-	_ensure_fiche_complete()
-	var fiche := (profil_personnage.get("fiche_complete", {}) as Dictionary).duplicate(true)
-	fiche["points_restants"] = maxi(0, int(points_remaining))
-	fiche["stats_brutes"] = raw_stats.duplicate(true)
-	profil_personnage["fiche_complete"] = fiche
-	print("ClanManager.apply_profile_sheet_update: stored fiche_complete=", JSON.stringify(fiche))
-
-	if not feats.is_empty():
-		profil_personnage["feats"] = feats.duplicate(true)
-
-	# Recompute clan-level stats (final values) from class, raw stats and feats
-	var loader: Node = _require_autoload("GameDataLoader")
-	if loader == null:
-		return
-	var class_stats_bonus: Dictionary = {}
-	if classe != "":
-		# Get class data from centralized GameDataLoader
-		var class_entry: Dictionary = loader.get_class_by_id(classe)
-		if class_entry and not class_entry.is_empty():
-			class_stats_bonus = class_entry.get("stats_bonus", {}) as Dictionary
-
-	# Aggregate flat stat bonuses from feats through the canonical loader API.
-	# feats.json is namespaced under "dons"/"capacites", so direct root lookup is invalid.
-	var feats_bonus_stats: Dictionary = {}
-	var current_feats: Array = profil_personnage.get("feats", []) as Array
-	for f in current_feats:
-		var fdef: Dictionary = loader.get_feat(str(f))
-		var eff := (fdef.get("effects", {}) as Dictionary)
-		var stats_eff := (eff.get("stats", {}) as Dictionary)
-		for sk in stats_eff.keys():
-			feats_bonus_stats[sk] = int(feats_bonus_stats.get(sk, 0)) + int(stats_eff[sk])
-
-	# Compute final stats using CharacterBuildService
-	var final_stats: Dictionary = CharacterBuildServiceClass.compute_final_stats(
-		class_stats_bonus,
-		raw_stats,
-		{},
-		{},
-		feats_bonus_stats
-	)
-
-	# Persist final stats into clan-level `stats` used by other systems
-	for key in StatDefsClass.STAT_KEYS:
-		stats[key] = int(final_stats.get(key, 0))
-
-	_sanitizer_stats()
-
-	# Re-calculer et appliquer les effets dérivés des feats pour persistance et cohérence
-	_compute_and_apply_profil_effects(profil_personnage, true)
-
-	sauvegarder()
+	character_service.apply_profile_sheet_update(stats_update, points_remaining, feats)
 
 
 func level_up_personnage(points_awarded: int = 10) -> Dictionary:
-	_ensure_fiche_complete()
-	var fiche := (profil_personnage.get("fiche_complete", {}) as Dictionary).duplicate(true)
-	var current_lvl := maxi(1, int(fiche.get("niveau", 1)))
-	fiche["niveau"] = current_lvl + 1
-	fiche["points_restants"] = maxi(0, int(fiche.get("points_restants", 0))) + maxi(0, points_awarded)
-	profil_personnage["fiche_complete"] = fiche
-	sauvegarder()
-	return {
-		"ok": true,
-		"niveau": int(fiche.get("niveau", 1)),
-		"points_restants": int(fiche.get("points_restants", 0)),
-	}
+	return character_service.level_up_personnage(points_awarded)
 
 
 ## Lance un dé à N faces.
 func lancer_de(faces: int = 20) -> int:
-	return service_context.rng.randi_range(1, faces)
+	return character_service.lancer_de(faces)
 
 
 ## Calcule le score d'une action (stat principale + stat secondaire + dé).
 func calculer_score_action(stat_principale: String, stat_secondaire: String = "") -> int:
-	var score := int(stats.get(stat_principale, 5))
-	if stat_secondaire != "":
-		score += int(stats.get(stat_secondaire, 5))
-	score += lancer_de(20)
-	return score
+	return character_service.calculer_score_action(stat_principale, stat_secondaire)
 
 
 # ─────────────────────────────────────────────────────────────────────
@@ -1087,16 +905,7 @@ func _lire_json(path: String) -> Dictionary:
 
 
 func _sanitizer_stats() -> void:
-	# Protège la boucle de gameplay contre une sauvegarde corrompue.
-	stats = StatDefsClass.sanitize_stats(stats, StatDefsClass.CLAN_MIN_STAT, StatDefsClass.CLAN_MAX_STAT, 5)
-
-	for cle in ["vigueur", "esprit", "presence", "discipline"]:
-		var v := int(caracteristiques_hero.get(cle, 10))
-		caracteristiques_hero[cle] = clampi(v, 1, 30)
-
-	for cle in ["stabilite", "influence", "logistique", "autorite"]:
-		var s := int(stats_clan.get(cle, 5))
-		stats_clan[cle] = clampi(s, 1, 20)
+	character_service._sanitizer_stats()
 
 
 func _sanitizer_ressources() -> void:
@@ -1174,80 +983,18 @@ func _make_default_pnj_gestion_state() -> Dictionary:
 
 # Calculer et appliquer les effets issus du profil (feats)
 func _compute_and_apply_profil_effects(profil: Dictionary, do_save: bool = false) -> void:
-	if profil == null:
-		return
-	# Eviter double-application
-	if bool(profil.get("computed_effects_applied", false)):
-		return
-	var total_pv_bonus := 0
-	var total_mana_bonus := 0
-	var loader: Node = _require_autoload("GameDataLoader")
-	if loader == null:
-		return
-	if profil.has("feats") and (profil.get("feats") is Array):
-		for f in (profil.get("feats") as Array):
-			var fid := str(f)
-			var fdef: Dictionary = loader.get_feat(fid)
-			var eff := fdef.get("effects", {}) as Dictionary
-			if eff.has("pv_bonus"):
-				total_pv_bonus += int(eff.get("pv_bonus", 0))
-			if eff.has("mana_bonus"):
-				total_mana_bonus += int(eff.get("mana_bonus", 0))
-
-	# Appliquer PV bonus à la caractéristique 'vigueur' et à la fiche_hero si initialisée
-	if total_pv_bonus != 0:
-		caracteristiques_hero["vigueur"] = int(caracteristiques_hero.get("vigueur", 10)) + total_pv_bonus
-		if fiche_hero.has("caracteristiques"):
-			var fic := fiche_hero.duplicate(true)
-			var car := (fic.get("caracteristiques", caracteristiques_hero) as Dictionary).duplicate(true)
-			car["vigueur"] = int(car.get("vigueur", int(caracteristiques_hero.get("vigueur", 10))))
-			fic["caracteristiques"] = car
-			fiche_hero = fic
-
-	# Appliquer mana bonus aux ressources initiales
-	if total_mana_bonus != 0:
-		ressources["mana"] = int(ressources.get("mana", 0)) + total_mana_bonus
-
-	# Persister un résumé des effets pour traçabilité
-	profil["computed_effects"] = {"pv_bonus": total_pv_bonus, "mana_bonus": total_mana_bonus}
-	profil["computed_effects_applied"] = true
-	# Écriture optionnelle : si do_save, sauvegarder le nouveau flag et résumé
-	if do_save:
-		sauvegarder()
+	character_service._compute_and_apply_profil_effects(profil, do_save)
 
 
 # Gestion d'expérience simple pour le héros
 signal niveau_montee(nouveau_niveau: int)
 
 func donner_experience(amount: int) -> void:
-	if amount <= 0:
-		return
-	if fiche_hero.is_empty():
-		_initialiser_fiches_personnage_et_domaine()
-	var current_xp := int(fiche_hero.get("experience", 0))
-	var current_lvl := int(fiche_hero.get("niveau", 1))
-	current_xp += int(amount)
-	fiche_hero["experience"] = current_xp
-	_check_level_up()
-	# Notify listeners that experience changed
-	emit_signal("ressources_mises_a_jour")
+	character_service.donner_experience(amount)
 
 
 func _check_level_up() -> void:
-	var lvl := int(fiche_hero.get("niveau", 1))
-	var xp := int(fiche_hero.get("experience", 0))
-	var required := 100 * lvl
-	var leveled := false
-	while xp >= required:
-		xp -= required
-		lvl += 1
-		leveled = true
-		required = 100 * lvl
-	fiche_hero["niveau"] = lvl
-	fiche_hero["experience"] = xp
-	if leveled:
-		emit_signal("niveau_montee", lvl)
-		sauvegarder()
+	character_service._check_level_up()
 
 
 func _find_managed_pnj_index(roster: Array, pnj_id: String) -> int:
@@ -1259,86 +1006,19 @@ func _find_managed_pnj_index(roster: Array, pnj_id: String) -> int:
 
 
 func _forcer_magie_pactes() -> void:
-	profil_personnage["magie_pactes"] = true
-	var competences: Array = (profil_personnage.get("competences_depart", []) as Array).duplicate(true)
-	if not competences.has("Magie des Pactes"):
-		competences.append("Magie des Pactes")
-	profil_personnage["competences_depart"] = competences
+	character_service._forcer_magie_pactes()
 
 
 func _initialiser_fiches_personnage_et_domaine() -> void:
-	fiche_hero = {
-		"nom": nom_personnage,
-		"classe": classe,
-		"profil": profil_personnage.duplicate(true),
-		"caracteristiques": caracteristiques_hero.duplicate(true),
-		"stats_hero": stats.duplicate(true),
-		"niveau": 1,
-		"experience": 0,
-		"stats_clan": stats_clan.duplicate(true),
-	}
-
-	fiches_domaine = {
-		"forgeron": {
-			"nom": "Forgeron",
-			"niveau": 1,
-			"specialite": "Armes et armures",
-			"actif": false,
-			"affinite": int(affinites_pnj.get("forgeron", 0)),
-		},
-		"alchimiste": {
-			"nom": "Alchimiste",
-			"niveau": 1,
-			"specialite": "Potions et explosifs",
-			"actif": false,
-			"affinite": int(affinites_pnj.get("alchimiste", 0)),
-		},
-		"intendant": {
-			"nom": "Intendant",
-			"niveau": 1,
-			"specialite": "Logistique et taxes",
-			"actif": false,
-			"affinite": int(affinites_pnj.get("intendant", 0)),
-		},
-		"arcaniste": {
-			"nom": "Arcaniste",
-			"niveau": 1,
-			"specialite": "Rituels et pactes",
-			"actif": false,
-			"affinite": int(affinites_pnj.get("arcaniste", 0)),
-		},
-	}
+	character_service._initialiser_fiches_personnage_et_domaine()
 
 
 func _ensure_fiche_complete() -> void:
-	var fiche := (profil_personnage.get("fiche_complete", {}) as Dictionary).duplicate(true)
-	if fiche.is_empty():
-		fiche = {
-			"niveau": 1,
-			"points_restants": 0,
-		}
-	if not fiche.has("niveau"):
-		fiche["niveau"] = 1
-	if not fiche.has("points_restants"):
-		fiche["points_restants"] = 0
-	fiche["niveau"] = maxi(1, int(fiche.get("niveau", 1)))
-	fiche["points_restants"] = maxi(0, int(fiche.get("points_restants", 0)))
-	profil_personnage["fiche_complete"] = fiche
+	character_service._ensure_fiche_complete()
 
 
 func _normalize_loaded_character_sheet() -> void:
-	var fiche: Dictionary = (profil_personnage.get("fiche_complete", {}) as Dictionary).duplicate(true)
-	if fiche.is_empty():
-		return
-	var loaded_scores: Dictionary = fiche.get("character_scores", fiche.get("stats_brutes", {})) as Dictionary
-	if loaded_scores.is_empty():
-		return
-	var canonical_scores: Dictionary = StatDefsClass.sanitize_stats(loaded_scores, 1, 30, StatDefsClass.CHARACTER_MIN_STAT)
-	fiche["stats_brutes"] = canonical_scores.duplicate(true)
-	fiche["character_scores"] = canonical_scores.duplicate(true)
-	fiche["modifiers"] = CharacterBuildServiceClass.build_modifiers(canonical_scores)
-	fiche["derived_stats"] = CharacterBuildServiceClass.build_derived_stats(fiche["modifiers"] as Dictionary)
-	profil_personnage["fiche_complete"] = fiche
+	character_service._normalize_loaded_character_sheet()
 
 ## Façade : la corruption reste dans son service et dans le même instantané de sauvegarde.
 func get_corruption_service() -> RefCounted:
@@ -1408,3 +1088,13 @@ func _require_autoload(autoload_name: String) -> Node:
 
 func _on_recruitment_requested(role: String) -> void:
 	PnjGeneratorClass.new().generate_and_register_pnj(role, "recrute")
+
+func get_pnj_support_bonus(action_id: String) -> int:
+	return _planner.support_bonus(action_id)
+
+func consume_pnj_support(action_id: String) -> int:
+	return _planner.consume_support(action_id)
+
+func _on_soul_depleted() -> void:
+	var manager := _require_autoload("GameManager")
+	if manager != null: manager.declencher_bad_end_dragon()

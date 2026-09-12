@@ -123,6 +123,7 @@ func _calculer_resolution() -> void:
 	var bonus_classe := GameDataLoader.get_bonus_classe(_action_id, ClanManager.classe)
 	_score_joueur += bonus_classe
 	_score_joueur += ClanManager.get_bonus_score_action(_action_id)
+	_score_joueur += ClanManager.consume_pnj_support(_action_id)
 
 	# Résistance : basée sur la cible
 	_resistance = _calculer_resistance()

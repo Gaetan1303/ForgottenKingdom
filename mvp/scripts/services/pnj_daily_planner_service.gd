@@ -21,6 +21,18 @@ const ROLE_BONUS := {
 }
 
 
+const ContextType = preload("res://scripts/services/clan_service_context.gd")
+var context: ContextType
+var rng: RandomNumberGenerator
+
+func _init(p_context: ContextType = null) -> void:
+	context = p_context
+	if context != null: rng = context.rng
+	else:
+		rng = RandomNumberGenerator.new()
+		rng.randomize()
+
+
 func make_daily_plan() -> Dictionary:
 	return {
 		"phase": "matin",
@@ -94,6 +106,7 @@ func assign_soldiers(planning: Dictionary, action_id: String, effectif: int, ava
 
 
 func assign_pnj_support(roster: Array, planning: Dictionary, pnj_id: String, hero_action_id: String) -> Dictionary:
+	if not SUPPORT_STATS.has(hero_action_id): return {"ok": false, "error": "action_support_invalide"}
 	var index := _find_pnj_index(roster, pnj_id)
 	if index < 0:
 		return {"ok": false, "error": "pnj_introuvable"}
@@ -263,8 +276,6 @@ func resolve_daily_plan(roster: Array, planning: Dictionary) -> Dictionary:
 	var generated_events: Array = []
 	var total_soldier_losses: int = 0
 	var total_pnj_losses: int = 0
-	var rng := RandomNumberGenerator.new()
-	rng.randomize()
 
 	for mission_data in planning.get("missions_soldats", []):
 		var mission := mission_data as Dictionary
@@ -368,10 +379,8 @@ func _resolve_soldier_mission(mission: Dictionary) -> Dictionary:
 		}
 
 	# Other soldier actions (espionner, securiser): RNG success/failure
-	var rng := RandomNumberGenerator.new()
-	rng.randomize()
 	var success_chance := 0.7
-	var ok := rng.randf() <= success_chance
+	var ok: bool = preload("res://scripts/services/espionage_service.gd").new(context).mission_succeeds() if action_id == "espionner" and context != null else rng.randf() <= success_chance
 	if ok:
 		# success: apply gains and moderate attrition (5%)
 		var losses_succ: int = int(floor(float(effectif) * 0.05))
@@ -384,7 +393,7 @@ func _resolve_soldier_mission(mission: Dictionary) -> Dictionary:
 	else:
 		# failure: no gains, trigger PNJ losses (50%) as catastrophic event
 		var ev := {
-			"id": "catastrophe_%s_%d" % [action_id, randi()],
+			"id": "catastrophe_%s_%d" % [action_id, rng.randi()],
 			"titre": "Échec critique",
 			"texte": "Échec critique de la mission %s — conséquences graves." % action_id,
 			"probabilite": 1.0,
@@ -445,3 +454,31 @@ func _get_primary_expedition_stat(pnj: Dictionary) -> String:
 func _room_roll(rng: RandomNumberGenerator, pnj: Dictionary, stat_name: String, dice_sides: int) -> int:
 	var stats: Dictionary = pnj.get("stats", {}) as Dictionary
 	return int(stats.get(stat_name, StatDefsClass.CHARACTER_MIN_STAT)) + int(pnj.get("niveau", 1)) + rng.randi_range(1, dice_sides)
+
+func _support_state() -> Dictionary:
+	var data: Dictionary = context.state.pnj_gestion.get("support", {})
+	if int(data.get("tour", -1)) != context.state.tour_actuel:
+		data = {"tour": context.state.tour_actuel, "bonuses": {}, "used": []}
+		context.state.pnj_gestion["support"] = data
+	return data
+
+func store_resolved_support(bonuses: Dictionary) -> void:
+	var data := _support_state()
+	data.bonuses = bonuses.duplicate(true)
+
+func support_bonus(action_id: String) -> int:
+	if context == null or not SUPPORT_STATS.has(action_id): return 0
+	var data := _support_state()
+	if action_id in data.used: return 0
+	var bonus := 0
+	var roster: Array = context.state.pnj_gestion.get("roster", [])
+	for mission in context.state.pnj_gestion.get("planning", {}).get("missions_pnj", []):
+		if str(mission.get("mission_type", "")) != "support" or str(mission.get("hero_action_id", "")) != action_id: continue
+		var index := _find_pnj_index(roster, str(mission.get("pnj_id", "")))
+		if index >= 0: bonus += compute_support_bonus(roster[index], action_id)
+	return maxi(bonus, int(data.bonuses.get(action_id, 0)))
+
+func consume_support(action_id: String) -> int:
+	var bonus := support_bonus(action_id)
+	if bonus > 0: _support_state().used.append(action_id)
+	return bonus
