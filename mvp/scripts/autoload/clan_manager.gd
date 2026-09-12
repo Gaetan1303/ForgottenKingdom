@@ -212,9 +212,9 @@ func nouvelle_partie(
 	_soldat_next_id = 1
 	_soldats_disponibles.clear()
 	var initial_soldats := int(ressources.get("soldats", 0))
-	for i in range(initial_soldats):
-		_soldats_disponibles.append("S%d" % _soldat_next_id)
-		_soldat_next_id += 1
+	var pool: Dictionary = _soldier_assignment.build_pool(initial_soldats)
+	_soldats_disponibles = pool.pool
+	_soldat_next_id = pool.next_id
 	# conserver ressources comme le nombre de soldats disponibles
 	ressources["soldats"] = _soldats_disponibles.size()
 
@@ -280,9 +280,9 @@ func _charger_etat_defaut() -> void:
 	if _soldats_disponibles == null or _soldats_disponibles.is_empty():
 		_soldats_disponibles = []
 		var count: int = int(ressources.get("soldats", 0))
-		for i in range(count):
-			_soldats_disponibles.append("S%d" % _soldat_next_id)
-			_soldat_next_id += 1
+		var pool: Dictionary = _soldier_assignment.build_pool(count, _soldat_next_id)
+		_soldats_disponibles = pool.pool
+		_soldat_next_id = pool.next_id
 	# Ensure ressources matches available count
 	ressources["soldats"] = _soldats_disponibles.size()
 	if moment_journee not in ["jour", "nuit"]:
@@ -543,192 +543,31 @@ func ajouter_pnj_gere(
 
 
 func planifier_mission_soldats(action_id: String, effectif: int) -> Dictionary:
-	var state: Dictionary = get_pnj_gestion_state()
-	var result: Dictionary = _planner.assign_soldiers(
-		state.get("planning", {}) as Dictionary,
-		action_id,
-		effectif,
-		int(ressources.get("soldats", 0))
-	)
-	if bool(result.get("ok", false)):
-		state["planning"] = (result.get("planning", state.get("planning", {})) as Dictionary).duplicate(true)
-		# Reserve soldiers at planning time by assigning concrete IDs from pool.
-		var requested: int = int(effectif)
-		var available_pool: int = _soldats_disponibles.size()
-		var to_assign: int = min(requested, available_pool)
-		var assigned_ids: Array = []
-		for i in range(to_assign):
-			var sid: String = str(_soldats_disponibles[0])
-			assigned_ids.append(sid)
-			_soldats_disponibles.remove_at(0)
-		# If requested > available, return a warning so UI can inform user
-		if to_assign < requested:
-			result["warning"] = "insufficient"
-			result["assigned"] = to_assign
-		else:
-			result["assigned"] = to_assign
-
-		# Attach assigned ids to the last mission entry
-		var planning: Dictionary = (state.get("planning", {}) as Dictionary)
-		var missions: Array = (planning.get("missions_soldats", []) as Array)
-		if missions.size() > 0:
-			var last_idx := missions.size() - 1
-			var m: Dictionary = (missions[last_idx] as Dictionary).duplicate(true)
-			m["assigned"] = assigned_ids
-			missions[last_idx] = m
-			planning["missions_soldats"] = missions
-			state["planning"] = planning
-
-		# Keep ressources count in sync with available pool
-		ressources["soldats"] = _soldats_disponibles.size()
-		emit_signal("ressources_mises_a_jour")
-		pnj_gestion = state
+	_sanitizer_pnj_gestion()
+	var result: Dictionary = _soldier_assignment.assign_mission(state, action_id, effectif)
+	if bool(result.get("ok", false)): ressources_mises_a_jour.emit()
 	return result
 
 
 func annuler_mission_soldats(index: int) -> Dictionary:
-	var state: Dictionary = get_pnj_gestion_state()
-	var planning: Dictionary = (state.get("planning", {}) as Dictionary).duplicate(true)
-	var missions: Array = (planning.get("missions_soldats", []) as Array).duplicate(true)
-	if index < 0 or index >= missions.size():
-		return {"ok": false, "error": "index_invalide"}
-	var mission := missions[index] as Dictionary
-	# refund reserved soldiers when a mission is cancelled
-	var assigned_ids: Array = (mission.get("assigned", []) as Array).duplicate(true)
-	var effectif := int(mission.get("effectif", 0))
-	# If explicit assigned ids are present, return them to pool, otherwise refund by effectif
-	if assigned_ids.size() > 0:
-		for sid in assigned_ids:
-			_soldats_disponibles.append(str(sid))
-	else:
-		# generate placeholder IDs to return to pool
-		for i in range(effectif):
-			_soldats_disponibles.append("S%d" % _soldat_next_id)
-			_soldat_next_id += 1
-
-	missions.remove_at(index)
-	planning["missions_soldats"] = missions
-	state["planning"] = planning
-	pnj_gestion = state
-
-	# Update ressources count to reflect available pool
-	ressources["soldats"] = _soldats_disponibles.size()
-	emit_signal("ressources_mises_a_jour")
-	return {"ok": true, "planning": planning}
+	_sanitizer_pnj_gestion()
+	var result: Dictionary = _soldier_assignment.release_mission(state, index)
+	if bool(result.get("ok", false)): ressources_mises_a_jour.emit()
+	return result
 
 
 func unassign_soldier_from_mission(index: int, soldier_id: String) -> Dictionary:
-	var state: Dictionary = get_pnj_gestion_state()
-	var planning: Dictionary = (state.get("planning", {}) as Dictionary).duplicate(true)
-	var missions: Array = (planning.get("missions_soldats", []) as Array).duplicate(true)
-	if index < 0 or index >= missions.size():
-		return {"ok": false, "error": "index_invalide"}
-
-	var mission := (missions[index] as Dictionary).duplicate(true)
-	var assigned: Array = (mission.get("assigned", []) as Array).duplicate(true)
-	if assigned.is_empty():
-		return {"ok": false, "error": "aucun_soldat_assign"}
-
-	var sid_str: String = str(soldier_id)
-	var found: bool = false
-	for i in range(assigned.size()):
-		if str(assigned[i]) == sid_str:
-			assigned.remove_at(i)
-			found = true
-			break
-
-	if not found:
-		return {"ok": false, "error": "soldat_non_present"}
-
-	# Return the ID to the pool
-	_soldats_disponibles.append(sid_str)
-
-	# Decrement effectif and update/remove mission
-	var new_effectif: int = max(0, int(mission.get("effectif", 0)) - 1)
-	if new_effectif <= 0:
-		missions.remove_at(index)
-	else:
-		mission["effectif"] = new_effectif
-		mission["assigned"] = assigned
-		missions[index] = mission
-
-	planning["missions_soldats"] = missions
-	state["planning"] = planning
-	pnj_gestion = state
-
-	# Sync resources count with pool and persist
-	ressources["soldats"] = _soldats_disponibles.size()
-	emit_signal("ressources_mises_a_jour")
-	return {"ok": true, "planning": planning}
+	_sanitizer_pnj_gestion()
+	var result: Dictionary = _soldier_assignment.release_one(state, index, soldier_id)
+	if bool(result.get("ok", false)): ressources_mises_a_jour.emit()
+	return result
 
 
 func adjust_mission_soldier_count(index: int, delta: int) -> Dictionary:
-	# Adjusts a soldier mission's effectif by delta (positive = assign, negative = unassign)
-	var state: Dictionary = get_pnj_gestion_state()
-	var planning: Dictionary = (state.get("planning", {}) as Dictionary).duplicate(true)
-	var missions: Array = (planning.get("missions_soldats", []) as Array).duplicate(true)
-	if index < 0 or index >= missions.size():
-		return {"ok": false, "error": "index_invalide"}
-
-	var mission: Dictionary = (missions[index] as Dictionary).duplicate(true)
-	var assigned: Array = (mission.get("assigned", []) as Array).duplicate(true)
-	var effectif: int = int(mission.get("effectif", 0))
-
-	if delta > 0:
-		# Try to assign up to delta soldiers from pool
-		var available: int = _soldats_disponibles.size()
-		var to_assign: int = min(delta, available)
-		var assigned_ids: Array = []
-		for i in range(to_assign):
-			var sid: String = str(_soldats_disponibles[0])
-			assigned_ids.append(sid)
-			_soldats_disponibles.remove_at(0)
-
-		# merge into assigned
-		for sid in assigned_ids:
-			assigned.append(sid)
-		effectif += to_assign
-
-		mission["assigned"] = assigned
-		mission["effectif"] = effectif
-		missions[index] = mission
-		planning["missions_soldats"] = missions
-		state["planning"] = planning
-		pnj_gestion = state
-
-		ressources["soldats"] = _soldats_disponibles.size()
-		emit_signal("ressources_mises_a_jour")
-
-		if to_assign < delta:
-			return {"ok": true, "planning": planning, "assigned": to_assign, "warning": "insufficient"}
-		return {"ok": true, "planning": planning, "assigned": to_assign}
-
-	elif delta < 0:
-		var remove_n: int = min(abs(delta), assigned.size())
-		if remove_n <= 0:
-			return {"ok": false, "error": "aucun_soldat_a_retirer"}
-		# remove last remove_n ids and return them to pool
-		for i in range(remove_n):
-			var sid: String = str(assigned.pop_back())
-			_soldats_disponibles.append(sid)
-
-		effectif = max(0, effectif - remove_n)
-		if effectif <= 0:
-			missions.remove_at(index)
-		else:
-			mission["effectif"] = effectif
-			mission["assigned"] = assigned
-			missions[index] = mission
-
-		planning["missions_soldats"] = missions
-		state["planning"] = planning
-		pnj_gestion = state
-
-		ressources["soldats"] = _soldats_disponibles.size()
-		emit_signal("ressources_mises_a_jour")
-		return {"ok": true, "planning": planning, "removed": remove_n}
-
-	return {"ok": false, "error": "delta_zero"}
+	_sanitizer_pnj_gestion()
+	var result: Dictionary = _soldier_assignment.adjust_mission(state, index, delta)
+	if bool(result.get("ok", false)): ressources_mises_a_jour.emit()
+	return result
 
 
 func annuler_mission_pnj(index: int) -> Dictionary:
@@ -845,19 +684,9 @@ func resoudre_planning_pnj_journee() -> Dictionary:
 				if not applied_msg.is_empty():
 					print("Event applied: %s" % applied_msg)
 
-	# Apply soldier losses returned by the planner (remove IDs from pool)
-	var soldier_losses := int(result.get("soldier_losses", 0))
-	if soldier_losses > 0:
-		var removed := 0
-		for i in range(soldier_losses):
-			if _soldats_disponibles.size() > 0:
-				_soldats_disponibles.pop_back()
-				removed += 1
-			else:
-				break
-		# sync ressources count
-		ressources["soldats"] = _soldats_disponibles.size()
-		emit_signal("ressources_mises_a_jour")
+	# Les pertes touchent les réservations ; les survivants regagnent le pool.
+	_soldier_assignment.resolve_missions(self.state, soldier_results)
+	ressources_mises_a_jour.emit()
 
 	# PNJ losses: planner may have already marked PNJ as 'blesse' in returned roster
 	var pnj_losses := int(result.get("pnj_losses", 0))
@@ -1284,6 +1113,7 @@ func charger_sauvegarde() -> bool:
 	# restore soldier pool
 	_soldats_disponibles = (data.get("soldats_disponibles", []) as Array).duplicate(true)
 	_soldat_next_id = int(data.get("soldat_next_id", _soldat_next_id))
+	_soldier_assignment.restore_legacy_pool(state, data.has("soldats_disponibles"))
 	_sanitizer_pnj_et_domaines()
 	_sanitizer_pnj_gestion()
 	if moment_journee not in ["jour", "nuit"]:

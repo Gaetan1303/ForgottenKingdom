@@ -4,14 +4,8 @@ class_name PnjDailyPlannerService
 const StatDefsClass = preload("res://scripts/data/stat_defs.gd")
 
 const ROOM_ORDER := ["combat_faible", "evenement_aleatoire", "repos", "boss"]
-const SOLDIER_ACTIONS := {
-	"collecter_bois": {"resource": "bois", "rate": 2},
-	"collecter_fer": {"resource": "fer", "rate": 1},
-	"collecter_pierre": {"resource": "pierre", "rate": 1},
-	"collecter_nourriture": {"resource": "nourriture", "rate": 2},
-	"espionner": {"resource": "renseignements", "rate": 1},
-	"securiser": {"resource": "reputation", "rate": 1},
-}
+const Soldiers = preload("res://scripts/services/soldier_assignment_service.gd")
+const SOLDIER_ACTIONS = Soldiers.SOLDIER_ACTIONS
 const SUPPORT_STATS := {
 	"attaquer": ["commandement", "force"],
 	"espionner": ["espionnage", "commandement"],
@@ -432,11 +426,7 @@ func _find_pnj_index(roster: Array, pnj_id: String) -> int:
 
 
 func _get_assigned_soldiers(planning: Dictionary) -> int:
-	var total := 0
-	for mission_data in planning.get("missions_soldats", []):
-		var mission := mission_data as Dictionary
-		total += maxi(0, int(mission.get("effectif", 0)))
-	return total
+	return Soldiers.new().count_planned(planning)
 
 
 func _get_primary_expedition_stat(pnj: Dictionary) -> String:
