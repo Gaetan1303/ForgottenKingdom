@@ -1,0 +1,425 @@
+mvp/scripts/tests/test_persistence_effects.gd:9	var clan_mgr := get_root().get_node("ClanManager")
+mvp/scripts/tests/test_persistence_effects.gd:22	# And ClanManager state should have been updated accordingly
+mvp/scripts/tests/test_clan_economy_compatibility.gd:17	var clan = root.get_node("ClanManager")
+mvp/scripts/tests/e2e_clanhub_display.gd:7	var clan_mgr = get_root().get_node_or_null("/root/ClanManager")
+mvp/scripts/tests/e2e_clanhub_display.gd:9	print("ERROR: ClanManager not found")
+mvp/scripts/tests/test_multiroute_campaign.gd:23	cm = root.get_node("ClanManager")
+mvp/scripts/tests/e2e_creation_and_persistence.gd:8	var clan_mgr = get_root().get_node_or_null("/root/ClanManager")
+mvp/scripts/tests/e2e_creation_and_persistence.gd:10	print("ERROR: ClanManager autoload not found")
+mvp/scripts/tests/e2e_creation_and_persistence.gd:26	print("Called ClanManager.nouvelle_partie(...)")
+mvp/scripts/tests/e2e_creation_and_persistence.gd:28	# Force save and reload via ClanManager API to ensure persistence path executed
+mvp/scripts/tests/e2e_creation_and_persistence.gd:93	# build the profile and call ClanManager.nouvelle_partie directly so we can verify save.
+mvp/scripts/tests/e2e_creation_and_persistence.gd:102	var clan_mgr = get_root().get_node_or_null("/root/ClanManager")
+mvp/scripts/tests/e2e_creation_and_persistence.gd:104	print("ERROR: ClanManager autoload not found")
+mvp/scripts/tests/e2e_creation_and_persistence.gd:109	print("Called ClanManager.nouvelle_partie(...)")
+mvp/scripts/tests/test_memorial_resume.gd:15	var cm := root.get_node("ClanManager")
+mvp/scripts/tests/flow_test_assign_soldiers.gd:8	var clan := root.get_node("ClanManager")
+mvp/scripts/tests/test_prologue_navigation.gd:12	var cm := root.get_node("ClanManager")
+mvp/scripts/tests/smoke_clan_manager_pnj.gd:12	var clan_manager: Node = null
+mvp/scripts/tests/smoke_clan_manager_pnj.gd:15	clan_manager = get_root().get_node_or_null("/root/ClanManager")
+mvp/scripts/tests/smoke_clan_manager_pnj.gd:16	if clan_manager != null:
+mvp/scripts/tests/smoke_clan_manager_pnj.gd:20	if clan_manager == null:
+mvp/scripts/tests/smoke_clan_manager_pnj.gd:21	failures.append("ClanManager indisponible")
+mvp/scripts/tests/smoke_clan_manager_pnj.gd:25	clan_manager.nouvelle_partie("Aren", "Clan Test", "hellcaster", {"magie": 1}, {})
+mvp/scripts/tests/smoke_clan_manager_pnj.gd:27	if not clan_manager.has_method("ajouter_pnj_gere"):
+mvp/scripts/tests/smoke_clan_manager_pnj.gd:28	failures.append("ClanManager: API ajouter_pnj_gere manquante")
+mvp/scripts/tests/smoke_clan_manager_pnj.gd:32	var pnj_story: Dictionary = clan_manager.ajouter_pnj_gere("pnj_story_aren", "Aren", "scenario", "stratege", 4, {
+mvp/scripts/tests/smoke_clan_manager_pnj.gd:40	var pnj_recrue: Dictionary = clan_manager.ajouter_pnj_gere("pnj_recrue_01", "Vael", "recrute", "eclaireur", 2, {
+mvp/scripts/tests/smoke_clan_manager_pnj.gd:49	failures.append("ClanManager: type PNJ scenario non conserve")
+mvp/scripts/tests/smoke_clan_manager_pnj.gd:51	failures.append("ClanManager: type PNJ recrute non conserve")
+mvp/scripts/tests/smoke_clan_manager_pnj.gd:53	var mission_soldats: Dictionary = clan_manager.planifier_mission_soldats("collecter_bois", 12)
+mvp/scripts/tests/smoke_clan_manager_pnj.gd:55	failures.append("ClanManager: planification soldats invalide")
+mvp/scripts/tests/smoke_clan_manager_pnj.gd:57	var support: Dictionary = clan_manager.assigner_pnj_support_journee("pnj_story_aren", "attaquer")
+mvp/scripts/tests/smoke_clan_manager_pnj.gd:59	failures.append("ClanManager: support PNJ invalide")
+mvp/scripts/tests/smoke_clan_manager_pnj.gd:61	var expedition: Dictionary = clan_manager.assigner_pnj_expedition_journee("pnj_recrue_01", 4242)
+mvp/scripts/tests/smoke_clan_manager_pnj.gd:63	failures.append("ClanManager: expedition PNJ invalide")
+mvp/scripts/tests/smoke_clan_manager_pnj.gd:65	var resolution: Dictionary = clan_manager.resoudre_planning_pnj_journee()
+mvp/scripts/tests/smoke_clan_manager_pnj.gd:68	failures.append("ClanManager: gains soldats non appliques")
+mvp/scripts/tests/smoke_clan_manager_pnj.gd:71	failures.append("ClanManager: bonus support absent")
+mvp/scripts/tests/smoke_clan_manager_pnj.gd:74	failures.append("ClanManager: rapport expedition absent")
+mvp/scripts/tests/smoke_clan_manager_pnj.gd:76	var state: Dictionary = clan_manager.get_pnj_gestion_state()
+mvp/scripts/tests/smoke_clan_manager_pnj.gd:81	failures.append("ClanManager: le planning devrait etre reinitialise apres resolution")
+mvp/scripts/tests/smoke_clan_manager_pnj.gd:88	print("SMOKE_OK: integration ClanManager PNJ")
+mvp/scripts/tests/test_corruption_clan_manager.gd:12	var clan_manager := get_root().get_node_or_null("ClanManager")
+mvp/scripts/tests/test_corruption_clan_manager.gd:13	if clan_manager == null:
+mvp/scripts/tests/test_corruption_clan_manager.gd:17	clan_manager.ajouter_pnj_gere("pnj_shadow_test", "Shadow", "test", "auxiliaire", 1, {}, [])
+mvp/scripts/tests/test_corruption_clan_manager.gd:18	if clan_manager.get_corruption_profile("pnj_shadow_test").is_empty():
+mvp/scripts/tests/test_corruption_clan_manager.gd:20	var roster = clan_manager.get_creature_roster_service()
+mvp/scripts/tests/test_corruption_clan_manager.gd:25	var assigned: Dictionary = clan_manager.assign_creature_to_pnj("succubus_lilith", "pnj_shadow_test", Enums.AssignmentType.TRAINING)
+mvp/scripts/tests/test_corruption_clan_manager.gd:28	var started: Dictionary = clan_manager.start_pnj_training("pnj_shadow_test", Enums.TrainingType.SEDUCTION)
+mvp/scripts/tests/test_corruption_clan_manager.gd:31	clan_manager.process_corruption_tick(200.0)
+mvp/scripts/tests/test_corruption_clan_manager.gd:32	var saved_level := float(clan_manager.get_corruption_profile("pnj_shadow_test").get("level", 0.0))
+mvp/scripts/tests/test_corruption_clan_manager.gd:35	var pact_service = clan_manager.get_pact_service()
+mvp/scripts/tests/test_corruption_clan_manager.gd:37	clan_manager.sauvegarder()
+mvp/scripts/tests/test_corruption_clan_manager.gd:38	clan_manager.get_corruption_service().cleanse("pnj_shadow_test", 100.0)
+mvp/scripts/tests/test_corruption_clan_manager.gd:39	if not clan_manager.charger_sauvegarde():
+mvp/scripts/tests/test_corruption_clan_manager.gd:41	elif not is_equal_approx(float(clan_manager.get_corruption_profile("pnj_shadow_test").get("level", 0.0)), saved_level):
+mvp/scripts/tests/test_corruption_clan_manager.gd:43	elif clan_manager.get_creature_roster_service().get_captured_list().size() != 1:
+mvp/scripts/tests/test_corruption_clan_manager.gd:45	elif clan_manager.get_pact_service().get_pacts_for_character("pnj_shadow_test").size() != 1:
+mvp/scripts/tests/check_classe_stats.gd:7	var ClanManager = root.get_node("ClanManager")
+mvp/scripts/tests/check_classe_stats.gd:8	if ClanManager == null:
+mvp/scripts/tests/check_classe_stats.gd:9	print("ERROR: ClanManager not found as autoload")
+mvp/scripts/tests/check_classe_stats.gd:21	ClanManager.nouvelle_partie("Test", "ClanTest", "hellcaster", stats_bonus, profil)
+mvp/scripts/tests/check_classe_stats.gd:24	print("classe:", str(ClanManager.classe))
+mvp/scripts/tests/check_classe_stats.gd:25	print("nom_personnage:", str(ClanManager.nom_personnage))
+mvp/scripts/tests/check_classe_stats.gd:27	for k in ClanManager.stats.keys():
+mvp/scripts/tests/check_classe_stats.gd:28	print(" ", k, ":", int(ClanManager.stats[k]))
+mvp/scripts/tests/check_classe_stats.gd:31	ClanManager.sauvegarder()
+mvp/scripts/tests/check_classe_stats.gd:32	var ok: bool = ClanManager.charger_sauvegarde()
+mvp/scripts/tests/check_classe_stats.gd:35	print("classe:", str(ClanManager.classe))
+mvp/scripts/tests/check_classe_stats.gd:37	for k in ClanManager.stats.keys():
+mvp/scripts/tests/check_classe_stats.gd:38	print(" ", k, ":", int(ClanManager.stats[k]))
+mvp/scripts/tests/check_classe_stats.gd:45	var fiche = ClanManager.get_fiche_complete()
+mvp/scripts/tests/check_classe_stats.gd:47	sheet_node.setup(raw, int(fiche.get("points_restants", 0)), ClanManager.classe)
+mvp/scripts/tests/test_xp_level.gd:9	var clan_mgr := get_root().get_node("ClanManager")
+mvp/scripts/tests/test_compile_smoke.gd:33	"ClanManager",
+mvp/scripts/tests/test_world_state_adapter.gd:31	var world_state = WorldStateAdapterScript.from_clan_manager(clan)
+mvp/scripts/tests/test_world_state_adapter.gd:43	WorldStateAdapterScript.apply_to_clan_manager(restored, target)
+mvp/scripts/tests/test_creation_headless.gd:47	var cm: Node = get_root().get_node_or_null("/root/ClanManager")
+mvp/scripts/tests/test_creation_headless.gd:49	print("ClanManager.nom_clan =", str(cm.get("nom_clan")))
+mvp/scripts/tests/test_creation_headless.gd:50	print("ClanManager.nom_personnage =", str(cm.get("nom_personnage")))
+mvp/scripts/tests/test_creation_headless.gd:52	print("ClanManager autoload not found at /root/ClanManager")
+mvp/scripts/tests/game_loop_smoke.gd:11	var clan_manager: Node = null
+mvp/scripts/tests/game_loop_smoke.gd:14	clan_manager = get_root().get_node_or_null("/root/ClanManager")
+mvp/scripts/tests/game_loop_smoke.gd:15	if clan_manager != null:
+mvp/scripts/tests/game_loop_smoke.gd:19	if clan_manager == null:
+mvp/scripts/tests/game_loop_smoke.gd:20	failures.append("Autoload ClanManager indisponible après attente")
+mvp/scripts/tests/game_loop_smoke.gd:54	clan_manager.nouvelle_partie("Aren", "Clan Test", "hellcaster", stats_bonus, profil)
+mvp/scripts/tests/game_loop_smoke.gd:56	if str(clan_manager.nom_clan) != "Clan Test":
+mvp/scripts/tests/game_loop_smoke.gd:58	if not bool(clan_manager.magie_pactes_active()):
+mvp/scripts/tests/game_loop_smoke.gd:62	var cout_recruter: Dictionary = clan_manager.get_action_cout_modifie("recruter", {"mana": 35}) as Dictionary
+mvp/scripts/tests/game_loop_smoke.gd:65	var cout_attaquer: Dictionary = clan_manager.get_action_cout_modifie("attaquer", {"soldats": 10}) as Dictionary
+mvp/scripts/tests/game_loop_smoke.gd:70	if int(clan_manager.get_bonus_score_action("attaquer")) <= 0:
+mvp/scripts/tests/game_loop_smoke.gd:74	clan_manager.barre_ame = 90
+mvp/scripts/tests/game_loop_smoke.gd:75	var rep_avant := int((clan_manager.ressources as Dictionary).get("reputation", 0))
+mvp/scripts/tests/game_loop_smoke.gd:76	var msg_passifs := str(clan_manager.appliquer_passifs_nuit())
+mvp/scripts/tests/game_loop_smoke.gd:77	if int(clan_manager.barre_ame) <= 90:
+mvp/scripts/tests/game_loop_smoke.gd:79	if int((clan_manager.ressources as Dictionary).get("reputation", 0)) <= rep_avant:
+mvp/scripts/tests/game_loop_smoke.gd:85	var etat_cours: Dictionary = clan_manager.evaluer_etat_partie() as Dictionary
+mvp/scripts/tests/game_loop_smoke.gd:89	clan_manager.barre_ame = 0
+mvp/scripts/tests/game_loop_smoke.gd:90	var etat_defaite_ame: Dictionary = clan_manager.evaluer_etat_partie() as Dictionary
+mvp/scripts/tests/test_recruter_pnj_scenario.gd:9	# Ensure ClanManager autoload exists
+mvp/scripts/tests/test_recruter_pnj_scenario.gd:10	var cm = root.get_node_or_null("ClanManager")
+mvp/scripts/tests/test_recruter_pnj_scenario.gd:12	push_error("ClanManager not found")
+mvp/scripts/tests/generate_pnj_test.gd:12	cm = get_root().get_node_or_null("/root/ClanManager")
+mvp/scripts/tests/generate_pnj_test.gd:18	failures.append("ClanManager indisponible")
+mvp/scripts/tests/test_veyr_boot_contracts.gd:14	for autoload_name in ["GameManager", "SaveSystem", "ChapterLoader", "ClanManager", "GameDataLoader"]:
+mvp/scripts/tests/test_playable_prologue.gd:19	cm = root.get_node("ClanManager")
+mvp/scripts/tests/test_expedition_corruption.gd:9	var cm := root.get_node("ClanManager")
+mvp/scripts/tests/test_character_stats_roundtrip.gd:19	var clan_manager := root.get_node("ClanManager")
+mvp/scripts/tests/test_character_stats_roundtrip.gd:61	clan_manager.nouvelle_partie("Aren", "Cendres", "demon_blade", final_scores, profile)
+mvp/scripts/tests/test_character_stats_roundtrip.gd:62	_check(clan_manager.get_stats() == final_scores, "ClanManager doit conserver les scores validés sans recalcul")
+mvp/scripts/tests/test_character_stats_roundtrip.gd:63	_check(clan_manager.charger_sauvegarde(), "la sauvegarde doit être rechargeable")
+mvp/scripts/tests/test_character_stats_roundtrip.gd:64	_check(clan_manager.get_stats() == final_scores, "les scores doivent rester identiques après rechargement")
+mvp/scripts/tests/test_character_stats_roundtrip.gd:65	var saved_scores: Dictionary = clan_manager.get_fiche_complete().get("character_scores", {})
+mvp/scripts/tests/test_campaign_states.gd:31	var cm := root.get_node("ClanManager")
+mvp/scripts/ui/event_result_presenter.gd:2	## n'applique jamais les effets et ne connaît ni ClanManager ni la navigation.
+mvp/scripts/ui/intro_vn.gd:97	if not _opening_mode: Refuge.initialize(ClanManager)
+mvp/scripts/ui/intro_vn.gd:112	_show_scene(clampi(int(SaveSystem.get_value("opening", {}).get("index", 0)) if _opening_mode else int(ClanManager.campaign.get("intro_index", 0)), 0, _scenes.size() - 1))
+mvp/scripts/ui/intro_vn.gd:117	var cm: Node = get_node_or_null("/root/ClanManager")
+mvp/scripts/ui/intro_vn.gd:574	ClanManager.campaign["intro_index"] = idx
+mvp/scripts/ui/intro_vn.gd:575	ClanManager.sauvegarder()
+mvp/scripts/ui/intro_vn.gd:627	Refuge.intro_choice(ClanManager, str(s.id), choice)
+mvp/scripts/ui/intro_vn.gd:1009	var cm: Node = get_node_or_null("/root/ClanManager")
+mvp/scripts/ui/intro_vn.gd:1045	ClanManager.campaign["intro_done"] = true
+mvp/scripts/ui/intro_vn.gd:1046	ClanManager.sauvegarder()
+mvp/scripts/ui/refuge_panel.gd:15	_label(self, "Refuge · %s · Jour %d" % [ClanManager.nom_clan, ClanManager.tour_actuel], 16)
+mvp/scripts/ui/refuge_panel.gd:16	var state: Dictionary = ClanManager.campaign
+mvp/scripts/ui/refuge_panel.gd:27	if not Refuge.has(ClanManager, "govern"):
+mvp/scripts/ui/refuge_panel.gd:29	_button(priority, "Donner la priorité aux galeries", func(): _result(Refuge.prioritize_galleries(ClanManager)))
+mvp/scripts/ui/refuge_panel.gd:30	if Refuge.has(ClanManager, "govern") and not Refuge.has(ClanManager, "social"):
+mvp/scripts/ui/refuge_panel.gd:32	_button(priority, "Partager deux rations · −2 nourriture, +2 affinité d’intendance", func(): _result(Refuge.social_choice(ClanManager, true)))
+mvp/scripts/ui/refuge_panel.gd:33	_button(priority, "Faire garder les réserves · −1 affinité d’intendance", func(): _result(Refuge.social_choice(ClanManager, false)))
+mvp/scripts/ui/refuge_panel.gd:37	if int(state.get("version", 1)) >= 3 and Refuge.has(ClanManager, "social"): sections.push_front("Approches des galeries")
+mvp/scripts/ui/refuge_panel.gd:47	if int(state.get("version", 1)) >= 3 and Refuge.has(ClanManager, "social"):
+mvp/scripts/ui/refuge_panel.gd:56	if Refuge.has(ClanManager, "rebuild") and not Refuge.has(ClanManager, "soul"):
+mvp/scripts/ui/refuge_panel.gd:60	var stats: Dictionary = ClanManager.get_fiche_complete().get("secondary_stats", {})
+mvp/scripts/ui/refuge_panel.gd:65	_button(relic, "Observer la résonance · Architecture verrouillée", func(): _result(Refuge.study_relic(ClanManager, true)))
+mvp/scripts/ui/refuge_panel.gd:66	_button(relic, "Examiner les marques", func(): _result(Refuge.study_relic(ClanManager, false)))
+mvp/scripts/ui/refuge_panel.gd:90	ClanManager.campaign["help_mode"] = index
+mvp/scripts/ui/refuge_panel.gd:91	ClanManager.sauvegarder()
+mvp/scripts/ui/refuge_panel.gd:104	if Refuge.has(ClanManager, str(step.id)) or str(objective.id) == str(step.id):
+mvp/scripts/ui/refuge_panel.gd:107	if Refuge.has(ClanManager, "combat"):
+mvp/scripts/ui/refuge_panel.gd:115	var roster: Array = ClanManager.get_pnj_gestion_state().get("roster", [])
+mvp/scripts/ui/refuge_panel.gd:134	_button(box, "Soigner %s · 2 nourriture, 2 mana" % person.nom, func(): _result(Refuge.recover(ClanManager, str(person.id))))
+mvp/scripts/ui/refuge_panel.gd:142	var person := Refuge.find_person(ClanManager, _worker_id())
+mvp/scripts/ui/refuge_panel.gd:156	_label(box, "Récupération quotidienne du refuge : " + Refuge.resources_text(ClanManager.ressources_par_tour) + ". Les infrastructures ajoutent leur production à chaque aube.")
+mvp/scripts/ui/refuge_panel.gd:159	var repaired := bool(ClanManager.campaign.get("buildings", {}).get(id, false))
+mvp/scripts/ui/refuge_panel.gd:163	var reason := Refuge.building_reason(ClanManager, id)
+mvp/scripts/ui/refuge_panel.gd:165	var repair := _button(box, "Restaurer " + str(definition.name), func(): _result(Refuge.repair(ClanManager, id, _worker_id())))
+mvp/scripts/ui/refuge_panel.gd:167	_label(box, "Traces de reconstruction : %d. La fumée de vos foyers se voit depuis la route." % int(ClanManager.campaign.get("visibility", 0)))
+mvp/scripts/ui/refuge_panel.gd:174	_label(box, "Les galeries sous le refuge" if not Refuge.has(ClanManager, "salvage") else "Les profondeurs — dix étages ; retour possible après chaque salle", 18)
+mvp/scripts/ui/refuge_panel.gd:176	if int(ClanManager.campaign.get("version", 1)) >= 3 and not Refuge.has(ClanManager, "salvage"):
+mvp/scripts/ui/refuge_panel.gd:178	for person in ClanManager.get_pnj_gestion_state().get("roster", []):
+mvp/scripts/ui/refuge_panel.gd:195	ClanManager.campaign["last_feedback"] = message
+mvp/scripts/ui/refuge_panel.gd:228	var service := ClanManager.get_corruption_service()
+mvp/scripts/ui/refuge_panel.gd:229	var people: Array = [{"id": "hero", "nom": ClanManager.nom_personnage}]
+mvp/scripts/ui/refuge_panel.gd:230	people.append_array(ClanManager.get_pnj_gestion_state().get("roster", []))
+mvp/scripts/ui/refuge_panel.gd:244	_button(box, "Purifier %s · −10 corruption au maximum · 4 mana, 1 nourriture" % person.nom, func(): _result(str(ClanManager.purify_character(id).get("message", "Purification impossible."))))
+mvp/scripts/ui/clan_hub.gd:81	if ClanManager.campaign.is_empty():
+mvp/scripts/ui/clan_hub.gd:83	ClanManager.ressources_mises_a_jour.connect(_rafraichir_header)
+mvp/scripts/ui/clan_hub.gd:160	var initial := int(ClanManager.campaign.get("version", 1)) >= 2 and not bool(ClanManager.campaign.get("initial_tutorial_done", false))
+mvp/scripts/ui/clan_hub.gd:225	var res := ClanManager.get_ressources()
+mvp/scripts/ui/clan_hub.gd:226	$Header/BgHeader/InfoClan/LabelNomClan.text = ClanManager.nom_clan
+mvp/scripts/ui/clan_hub.gd:227	var moment := str({"matin": "Matin", "apres_midi": "Après-midi", "soir": "Nuit"}.get(ClanManager.daily_phase, "Matin"))
+mvp/scripts/ui/clan_hub.gd:228	$Header/BgHeader/InfoClan/LabelTour.text    = "Tour %d — %s" % [ClanManager.tour_actuel, moment]
+mvp/scripts/ui/clan_hub.gd:233	$Header/BgHeader/InfoClan/RessourcesHeader/LabelAme.text      = "Âme : %d%%" % ClanManager.barre_ame
+mvp/scripts/ui/clan_hub.gd:234	var phase_action := "Action utilisée" if ClanManager.action_deja_utilisee_pour_moment() else "Action disponible"
+mvp/scripts/ui/clan_hub.gd:235	$Header/BgHeader/InfoClan/LabelTour.text    = "Tour %d — %s (%s)" % [ClanManager.tour_actuel, moment, phase_action]
+mvp/scripts/ui/clan_hub.gd:237	{"matin": "Résoudre la journée", "apres_midi": "Passer à la nuit", "soir": "Accueillir l’aube"}.get(ClanManager.daily_phase, "Continuer")
+mvp/scripts/ui/clan_hub.gd:302	var aff := ClanManager.affinites_pnj
+mvp/scripts/ui/clan_hub.gd:303	var resume_traits := ClanManager.get_resume_traits_actifs().replace("Traits actifs: ", "")
+mvp/scripts/ui/clan_hub.gd:322	_actions_actuelles = _actions_jour if ClanManager.moment_journee == "jour" else _actions_nuit
+mvp/scripts/ui/clan_hub.gd:335	boutons[i].disabled = ClanManager.action_deja_utilisee_pour_moment()
+mvp/scripts/ui/clan_hub.gd:341	_maisons_cache = ClanManager.maisons_nobles
+mvp/scripts/ui/clan_hub.gd:434	var profil := ClanManager.get_profil_personnage()
+mvp/scripts/ui/clan_hub.gd:435	var fiche := ClanManager.get_fiche_complete()
+mvp/scripts/ui/clan_hub.gd:446	str(ClanManager.nom_personnage),
+mvp/scripts/ui/clan_hub.gd:447	str(ClanManager.nom_clan),
+mvp/scripts/ui/clan_hub.gd:448	_to_display_name(ClanManager.classe),
+mvp/scripts/ui/clan_hub.gd:506	# set initial value and max using ClanManager
+mvp/scripts/ui/clan_hub.gd:507	xp_bar.max_value = ClanManager.get_personnage_xp_for_next_level()
+mvp/scripts/ui/clan_hub.gd:508	xp_bar.value = ClanManager.get_personnage_experience()
+mvp/scripts/ui/clan_hub.gd:513	btn_lvlup.disabled = not ClanManager.is_personnage_xp_full()
+mvp/scripts/ui/clan_hub.gd:515	# Connect ClanManager signals to update XP bar and button when XP changes
+mvp/scripts/ui/clan_hub.gd:516	if ClanManager.has_signal("ressources_mises_a_jour"):
+mvp/scripts/ui/clan_hub.gd:517	if not ClanManager.ressources_mises_a_jour.is_connected(Callable(self, "_update_profile_xp_ui")):
+mvp/scripts/ui/clan_hub.gd:518	ClanManager.ressources_mises_a_jour.connect(Callable(self, "_update_profile_xp_ui"))
+mvp/scripts/ui/clan_hub.gd:519	if ClanManager.has_signal("niveau_montee"):
+mvp/scripts/ui/clan_hub.gd:520	if not ClanManager.niveau_montee.is_connected(Callable(self, "_update_profile_xp_ui")):
+mvp/scripts/ui/clan_hub.gd:521	ClanManager.niveau_montee.connect(Callable(self, "_update_profile_xp_ui"))
+mvp/scripts/ui/clan_hub.gd:522	if not ClanManager.niveau_montee.is_connected(Callable(self, "_on_niveau_montee")):
+mvp/scripts/ui/clan_hub.gd:523	ClanManager.niveau_montee.connect(Callable(self, "_on_niveau_montee"))
+mvp/scripts/ui/clan_hub.gd:531	portrait_tex = _texture_for_character(str(ClanManager.nom_personnage))
+mvp/scripts/ui/clan_hub.gd:580	var pts_restants := ClanManager.get_personnage_points_restants()
+mvp/scripts/ui/clan_hub.gd:584	var fiche_local := ClanManager.get_fiche_complete()
+mvp/scripts/ui/clan_hub.gd:585	print("clan_hub: fiche_local from ClanManager=", JSON.stringify(fiche_local))
+mvp/scripts/ui/clan_hub.gd:591	var final_stats := ClanManager.get_stats()
+mvp/scripts/ui/clan_hub.gd:597	sheet.setup(raw_stats, pts_restants, ClanManager.classe)
+mvp/scripts/ui/clan_hub.gd:614	# Persiste via API encapsulée du ClanManager
+mvp/scripts/ui/clan_hub.gd:615	ClanManager.apply_profile_sheet_update(stats, points_remaining, feats)
+mvp/scripts/ui/clan_hub.gd:618	ClanManager.sauvegarder()
+mvp/scripts/ui/clan_hub.gd:698	var classe_id := ClanManager.classe.to_lower()
+mvp/scripts/ui/clan_hub.gd:795	var r := ClanManager.get_ressources()
+mvp/scripts/ui/clan_hub.gd:867	var result := ClanManager.level_up_personnage(10)
+mvp/scripts/ui/clan_hub.gd:868	var new_lvl := int(result.get("niveau", ClanManager.get_personnage_niveau()))
+mvp/scripts/ui/clan_hub.gd:869	var points := int(result.get("points_restants", ClanManager.get_personnage_points_restants()))
+mvp/scripts/ui/clan_hub.gd:873	str(ClanManager.nom_personnage),
+mvp/scripts/ui/clan_hub.gd:874	str(ClanManager.nom_clan),
+mvp/scripts/ui/clan_hub.gd:875	_to_display_name(ClanManager.classe),
+mvp/scripts/ui/clan_hub.gd:879	var fiche2 := ClanManager.get_fiche_complete()
+mvp/scripts/ui/clan_hub.gd:894	var final_stats := ClanManager.get_stats()
+mvp/scripts/ui/clan_hub.gd:900	sheet.setup(raw_stats2, points, ClanManager.classe)
+mvp/scripts/ui/clan_hub.gd:924	ClanManager.set_personnage_portrait(payload, false)
+mvp/scripts/ui/clan_hub.gd:948	t2.tween_property(xp_bar, "value", ClanManager.get_personnage_experience(), 0.4).set_delay(0.02)
+mvp/scripts/ui/clan_hub.gd:998	var new_max := ClanManager.get_personnage_xp_for_next_level()
+mvp/scripts/ui/clan_hub.gd:999	var new_val := ClanManager.get_personnage_experience()
+mvp/scripts/ui/clan_hub.gd:1008	btn.disabled = not ClanManager.is_personnage_xp_full()
+mvp/scripts/ui/clan_hub.gd:1173	if ClanManager.action_deja_utilisee_pour_moment():
+mvp/scripts/ui/clan_hub.gd:1174	_afficher_message("Vous avez déjà effectué une action pour cette phase (%s)." % ClanManager.moment_journee)
+mvp/scripts/ui/clan_hub.gd:1177	if action_id == "recruter_pnj" and not ClanManager.magie_pactes_active():
+mvp/scripts/ui/clan_hub.gd:1180	if action_id == "recruter_pnj" and not ClanManager.peut_recruter_pnj_domaine():
+mvp/scripts/ui/clan_hub.gd:1186	if not ClanManager.peut_payer(cout):
+mvp/scripts/ui/clan_hub.gd:1211	_maisons_cache = ClanManager.maisons_nobles
+mvp/scripts/ui/clan_hub.gd:1256	ClanManager.marquer_action_utilisee()
+mvp/scripts/ui/clan_hub.gd:1269	var result := ClanManager.advance_day_phase()
+mvp/scripts/ui/clan_hub.gd:1276	var lignes := ["Tour %d terminé." % ClanManager.tour_actuel]
+mvp/scripts/ui/clan_hub.gd:1282	var etat := ClanManager.evaluer_etat_partie()
+mvp/scripts/ui/clan_hub.gd:1295	ClanManager.sauvegarder()
+mvp/scripts/ui/clan_hub.gd:1300	if not ClanManager.campaign.is_empty():
+mvp/scripts/ui/clan_hub.gd:1341	name_label.tooltip_text = ClanManager.nom_clan
+mvp/scripts/ui/slot_select.gd:132	if not ClanManager.charger_sauvegarde():
+mvp/scripts/ui/pnj_card.gd:207	if typeof(ClanManager) != TYPE_NIL:
+mvp/scripts/ui/pnj_card.gd:208	cm = ClanManager
+mvp/scripts/ui/pnj_card.gd:209	elif Engine.has_singleton("ClanManager"):
+mvp/scripts/ui/pnj_card.gd:210	cm = Engine.get_singleton("ClanManager")
+mvp/scripts/ui/pnj_card.gd:233	if typeof(ClanManager) != TYPE_NIL:
+mvp/scripts/ui/pnj_card.gd:234	cm = ClanManager
+mvp/scripts/ui/pnj_card.gd:235	elif Engine.has_singleton("ClanManager"):
+mvp/scripts/ui/pnj_card.gd:236	cm = Engine.get_singleton("ClanManager")
+mvp/scripts/ui/dungeon_view.gd:25	if ClanManager.campaign.is_empty():
+mvp/scripts/ui/dungeon_view.gd:109	lbl_enemies.text = "Ordre d’initiative : " + " → ".join(order) + "\nMana du domaine : %d" % ClanManager.get_ressource("mana")
+mvp/scripts/ui/dungeon_view.gd:123	if str(unit.team) == "ally": cell.tooltip_text += "\nPV maximum : 18 + Commandement, puis malus de corruption. À 0 PV, cette unité ne joue plus.\n" + ClanManager.get_corruption_service().expedition_description(str(unit.id))
+mvp/scripts/ui/dungeon_view.gd:132	var hint := Tutorial.hint(ClanManager.campaign, "combat_start", "Kael : « Les plus vifs ouvrent la marche. Déplacez-vous, puis choisissez votre cible. Vous pouvez garder votre position et terminer le tour. »")
+mvp/scripts/ui/dungeon_view.gd:134	ClanManager.sauvegarder()
+mvp/scripts/ui/dungeon_view.gd:151	var text := Tutorial.hint(ClanManager.campaign, "first_" + _mode, str(tips[_mode]))
+mvp/scripts/ui/dungeon_view.gd:153	ClanManager.sauvegarder()
+mvp/scripts/ui/dungeon_view.gd:170	var score := ClanManager.get_stat("force", 5) + ClanManager.get_stat("magie", 5) + randi_range(1, 20)
+mvp/scripts/ui/dungeon_view.gd:172	ClanManager.gagner({"or": 45, "essence": 2})
+mvp/scripts/ui/dungeon_view.gd:175	ClanManager.gagner({"mana": 20, "soldats": 3})
+mvp/scripts/ui/dungeon_view.gd:178	ClanManager.gagner({"or": 20, "renseignements": 2})
+mvp/scripts/ui/dungeon_view.gd:181	ClanManager.payer({"soldats": 6, "mana": 8})
+mvp/scripts/ui/dungeon_view.gd:184	ClanManager.sauvegarder()
+mvp/scripts/ui/dungeon_view.gd:194	ClanManager.sauvegarder()
+mvp/scripts/ui/character_sheet.gd:490	var clan_mgr: Node = get_node_or_null("/root/ClanManager") if is_inside_tree() else null
+mvp/scripts/ui/pnj_manager.gd:268	var avail := ClanManager.get_ressource("soldats", 0)
+mvp/scripts/ui/pnj_manager.gd:309	var state := ClanManager.get_pnj_gestion_state()
+mvp/scripts/ui/pnj_manager.gd:498	var state := ClanManager.get_pnj_gestion_state()
+mvp/scripts/ui/pnj_manager.gd:609	result = ClanManager.assigner_pnj_support_journee(pnj_id, "attaquer")
+mvp/scripts/ui/pnj_manager.gd:611	result = ClanManager.assigner_pnj_expedition_journee(pnj_id, -1)
+mvp/scripts/ui/pnj_manager.gd:635	var state := ClanManager.get_pnj_gestion_state()
+mvp/scripts/ui/pnj_manager.gd:659	soldiers_to_assign = ClanManager.get_ressource("soldats", 0)
+mvp/scripts/ui/pnj_manager.gd:661	var avail_total := ClanManager.get_ressource("soldats", 0)
+mvp/scripts/ui/pnj_manager.gd:670	var result := ClanManager.planifier_mission_soldats(action_id, soldiers_to_assign)
+mvp/scripts/ui/pnj_manager.gd:694	var state := ClanManager.get_pnj_gestion_state()
+mvp/scripts/ui/pnj_manager.gd:703	var report := ClanManager.resoudre_planning_pnj_journee()
+mvp/scripts/ui/pnj_manager.gd:704	ClanManager.sauvegarder()
+mvp/scripts/ui/pnj_manager.gd:716	var result := ClanManager.annuler_mission_soldats(index)
+mvp/scripts/ui/pnj_manager.gd:722	var result := ClanManager.adjust_mission_soldier_count(mission_index, delta)
+mvp/scripts/ui/pnj_manager.gd:728	ClanManager.sauvegarder()
+mvp/scripts/ui/pnj_manager.gd:736	var result := ClanManager.annuler_mission_pnj(index)
+mvp/scripts/ui/pnj_manager.gd:750	ClanManager.sauvegarder()
+mvp/scripts/ui/resolution_action.gd:66	var maison := ClanManager.get_maison(_maison_id)
+mvp/scripts/ui/resolution_action.gd:69	var hero_img_path: String = str(ClanManager.get_personnage_portrait_path())
+mvp/scripts/ui/resolution_action.gd:71	var profil := ClanManager.profil_personnage as Dictionary
+mvp/scripts/ui/resolution_action.gd:120	_score_joueur  = ClanManager.calculer_score_action(stat_princ, stat_sec)
+mvp/scripts/ui/resolution_action.gd:123	var bonus_classe := GameDataLoader.get_bonus_classe(_action_id, ClanManager.classe)
+mvp/scripts/ui/resolution_action.gd:125	_score_joueur += ClanManager.get_bonus_score_action(_action_id)
+mvp/scripts/ui/resolution_action.gd:146	var maison := ClanManager.get_maison(_maison_id)
+mvp/scripts/ui/resolution_action.gd:162	var maison := ClanManager.get_maison(_maison_id)
+mvp/scripts/ui/resolution_action.gd:166	base = 12 + ClanManager.get_ressource("reputation", 0) / 5
+mvp/scripts/ui/resolution_action.gd:421	var cout := ClanManager.get_action_cout_modifie(_action_id, cout_base)
+mvp/scripts/ui/resolution_action.gd:422	ClanManager.payer(cout)
+mvp/scripts/ui/resolution_action.gd:429	ClanManager._appliquer_effets(_effets)
+mvp/scripts/ui/resolution_action.gd:434	ClanManager.gagner({"soldats": gain})
+mvp/scripts/ui/resolution_action.gd:442	ClanManager.espionner_maison(_maison_id, true)
+mvp/scripts/ui/resolution_action.gd:444	ClanManager.espionner_maison(_maison_id, false)
+mvp/scripts/ui/resolution_action.gd:448	ClanManager.modifier_relation(_maison_id, relation)
+mvp/scripts/ui/resolution_action.gd:450	ClanManager.modifier_relation(_maison_id, "hostile")
+mvp/scripts/ui/resolution_action.gd:455	var cmd := clampi(ClanManager.get_stat("commandement", 5), 1, 20)
+mvp/scripts/ui/resolution_action.gd:458	var soldats_actuels := ClanManager.get_ressource("soldats", 0)
+mvp/scripts/ui/resolution_action.gd:475	if not ClanManager.magie_pactes_active():
+mvp/scripts/ui/resolution_action.gd:479	var role := ClanManager.recruter_pnj_domaine()
+mvp/scripts/ui/resolution_action.gd:490	var maison := ClanManager.get_maison(_maison_id)
+mvp/scripts/ui/resolution_action.gd:496	ClanManager.conquerir_bastion(_maison_id, b.get("id", "") as String)
+mvp/scripts/ui/power_routes_panel.gd:14	Campaign.ensure(ClanManager)
+mvp/scripts/ui/power_routes_panel.gd:29	if not ClanManager.campaign.power_routes.get("pending_feedback", {}).is_empty():
+mvp/scripts/ui/power_routes_panel.gd:40	var state: Dictionary = ClanManager.campaign.power_routes
+mvp/scripts/ui/power_routes_panel.gd:48	var resources: Dictionary = ClanManager.get_ressources()
+mvp/scripts/ui/power_routes_panel.gd:49	var stats: Dictionary = ClanManager.stats.duplicate(true)
+mvp/scripts/ui/power_routes_panel.gd:50	stats.merge(ClanManager.get_fiche_complete().get("secondary_stats", {}), true)
+mvp/scripts/ui/power_routes_panel.gd:60	_label(_content, "Mana : %d · Corruption : %d\nLe cercle réduit le prix du sceau. Le pacte prête sa puissance contre une trace durable. Le sceau peut provoquer une résonance supplémentaire." % [int(resources.get("mana", 0)), int(ClanManager.get_corruption_service().get_corruption_level("hero"))], 16)
+mvp/scripts/ui/power_routes_panel.gd:83	var reason := Campaign.reason(ClanManager, str(action_id))
+mvp/scripts/ui/power_routes_panel.gd:89	var result := Campaign.execute(ClanManager, action_id)
+mvp/scripts/ui/power_routes_panel.gd:103	_modal.present(ClanManager.campaign.power_routes.pending_feedback)
+mvp/scripts/ui/power_routes_panel.gd:105	Campaign.acknowledge(ClanManager)
+mvp/scripts/adapters/world_state_adapter.gd:8	static func from_clan_manager(clan_manager) -> WorldState:
+mvp/scripts/adapters/world_state_adapter.gd:10	if clan_manager == null:
+mvp/scripts/adapters/world_state_adapter.gd:13	"tour_actuel": int(clan_manager.get("tour_actuel")),
+mvp/scripts/adapters/world_state_adapter.gd:14	"moment_journee": str(clan_manager.get("moment_journee")),
+mvp/scripts/adapters/world_state_adapter.gd:15	"ressources": (clan_manager.get("ressources") as Dictionary).duplicate(true),
+mvp/scripts/adapters/world_state_adapter.gd:16	"maisons_nobles": (clan_manager.get("maisons_nobles") as Array).duplicate(true),
+mvp/scripts/adapters/world_state_adapter.gd:18	if clan_manager.has_meta("corruption_service"):
+mvp/scripts/adapters/world_state_adapter.gd:19	var service = clan_manager.get_meta("corruption_service")
+mvp/scripts/adapters/world_state_adapter.gd:22	if clan_manager.has_meta("creature_roster"):
+mvp/scripts/adapters/world_state_adapter.gd:23	var roster = clan_manager.get_meta("creature_roster")
+mvp/scripts/adapters/world_state_adapter.gd:26	if clan_manager.has_meta("pact_service"):
+mvp/scripts/adapters/world_state_adapter.gd:27	var pacts = clan_manager.get_meta("pact_service")
+mvp/scripts/adapters/world_state_adapter.gd:33	static func apply_to_clan_manager(world_state: WorldState, clan_manager) -> void:
+mvp/scripts/adapters/world_state_adapter.gd:34	if world_state == null or clan_manager == null:
+mvp/scripts/adapters/world_state_adapter.gd:36	if clan_manager.has_meta("corruption_service"):
+mvp/scripts/adapters/world_state_adapter.gd:37	var service = clan_manager.get_meta("corruption_service")
+mvp/scripts/adapters/world_state_adapter.gd:40	if clan_manager.has_meta("creature_roster"):
+mvp/scripts/adapters/world_state_adapter.gd:41	var roster = clan_manager.get_meta("creature_roster")
+mvp/scripts/adapters/world_state_adapter.gd:44	if clan_manager.has_meta("pact_service"):
+mvp/scripts/adapters/world_state_adapter.gd:45	var pacts = clan_manager.get_meta("pact_service")
+mvp/scripts/adapters/world_state_adapter.gd:48	_sync_corruption_to_legacy(clan_manager, world_state.corruption_data)
+mvp/scripts/adapters/world_state_adapter.gd:64	static func _sync_corruption_to_legacy(clan_manager, corruption_data: Dictionary) -> void:
+mvp/scripts/adapters/world_state_adapter.gd:65	var legacy = clan_manager.get("pnj_gestion")
+mvp/scripts/adapters/world_state_adapter.gd:85	clan_manager.set("pnj_gestion", next_state)
+mvp/scripts/autoload/game_manager.gd:54	var clan_manager: Node = _require_autoload("ClanManager")
+mvp/scripts/autoload/game_manager.gd:55	if clan_manager == null:
+mvp/scripts/autoload/game_manager.gd:89	clan_manager.nouvelle_partie("Aren", "Clan Test", "hellcaster", stats_bonus, profil)
+mvp/scripts/autoload/game_manager.gd:90	if str(clan_manager.get("nom_clan")) != "Clan Test":
+mvp/scripts/autoload/game_manager.gd:93	var cout_recruter: Dictionary = clan_manager.get_action_cout_modifie("recruter", {"mana": 35})
+mvp/scripts/autoload/game_manager.gd:96	var cout_attaquer: Dictionary = clan_manager.get_action_cout_modifie("attaquer", {"soldats": 10})
+mvp/scripts/autoload/game_manager.gd:100	if clan_manager.get_bonus_score_action("attaquer") <= 0:
+mvp/scripts/autoload/game_manager.gd:103	clan_manager.set("barre_ame", 90)
+mvp/scripts/autoload/game_manager.gd:104	var rep_avant: int = clan_manager.get_ressource("reputation", 0)
+mvp/scripts/autoload/game_manager.gd:105	var msg_passifs: String = clan_manager.appliquer_passifs_nuit()
+mvp/scripts/autoload/game_manager.gd:106	if int(clan_manager.get("barre_ame")) <= 90:
+mvp/scripts/autoload/game_manager.gd:108	if clan_manager.get_ressource("reputation", 0) <= rep_avant:
+mvp/scripts/autoload/game_manager.gd:113	clan_manager.set("barre_ame", 0)
+mvp/scripts/autoload/game_manager.gd:114	var etat_defaite: Dictionary = clan_manager.evaluer_etat_partie()
+mvp/scripts/autoload/game_manager.gd:208	var clan_manager: Node = _require_autoload("ClanManager")
+mvp/scripts/autoload/game_manager.gd:209	if save_system == null or clan_manager == null:
+mvp/scripts/autoload/game_manager.gd:214	if not run_id.is_empty() and str(clan_manager.campaign.get("opening_run_id", "")) == run_id and bool(opening.get("active", false)):
+mvp/scripts/autoload/game_manager.gd:224	elif not (clan_manager.get("campaign") as Dictionary).get("run", {}).is_empty() and not bool((clan_manager.get("campaign") as Dictionary).get("run", {}).get("returned", false)):
+mvp/scripts/autoload/game_manager.gd:226	elif not (clan_manager.get("campaign") as Dictionary).is_empty() and not bool((clan_manager.get("campaign") as Dictionary).get("intro_done", true)):
+mvp/scripts/autoload/game_data_loader.gd:379	var clan_manager: Node = get_node_or_null("/root/ClanManager")
+mvp/scripts/autoload/game_data_loader.gd:380	if clan_manager != null and not (clan_manager.get("campaign") as Dictionary).is_empty():
+mvp/scripts/autoload/game_data_loader.gd:387	var clan_manager: Node = get_node_or_null("/root/ClanManager")
+mvp/scripts/autoload/game_data_loader.gd:388	if clan_manager == null:
+mvp/scripts/autoload/game_data_loader.gd:389	push_error("GameDataLoader: autoload ClanManager introuvable.")
+mvp/scripts/autoload/game_data_loader.gd:391	var state: Dictionary = clan_manager.get("campaign") as Dictionary
+mvp/scripts/autoload/game_data_loader.gd:545	var clan_manager: Node = get_node_or_null("/root/ClanManager")
+mvp/scripts/autoload/game_data_loader.gd:546	if clan_manager != null and not (clan_manager.get("campaign") as Dictionary).is_empty():
+mvp/scripts/autoload/dungeon_generator.gd:12	func _clan_manager() -> Node:
+mvp/scripts/autoload/dungeon_generator.gd:13	var node: Node = get_node_or_null("/root/ClanManager")
+mvp/scripts/autoload/dungeon_generator.gd:14	assert(node != null, "DungeonGenerator: autoload ClanManager introuvable")
+mvp/scripts/autoload/dungeon_generator.gd:31	return _clan_manager().campaign.get("run", {}) if not _clan_manager().campaign.is_empty() else _legacy_run
+mvp/scripts/autoload/dungeon_generator.gd:33	if _clan_manager().campaign.is_empty():
+mvp/scripts/autoload/dungeon_generator.gd:37	_clan_manager().campaign["run"] = value
+mvp/scripts/autoload/dungeon_generator.gd:157	if not _clan_manager().campaign.is_empty() and Expedition.state_of(current_run) != "exploration": return false
+mvp/scripts/autoload/dungeon_generator.gd:171	_clan_manager().sauvegarder()
+mvp/scripts/autoload/dungeon_generator.gd:185	var party: Array = [{"id": "hero", "nom": _clan_manager().nom_personnage, "stats": _clan_manager().get_stats()}]
+mvp/scripts/autoload/dungeon_generator.gd:187	var person := Refuge.find_person(_clan_manager(), str(id))
+mvp/scripts/autoload/dungeon_generator.gd:191	var short_run := not Refuge.has(_clan_manager(), "salvage")
+mvp/scripts/autoload/dungeon_generator.gd:192	preload("res://scripts/services/power_campaign_service.gd").ensure(_clan_manager())
+mvp/scripts/autoload/dungeon_generator.gd:199	if int(_clan_manager().campaign.get("version", 2)) >= 3:
+mvp/scripts/autoload/dungeon_generator.gd:209	Refuge.set_person_state(_clan_manager(), str(id), "en_expedition")
+mvp/scripts/autoload/dungeon_generator.gd:210	Refuge.mark(_clan_manager(), "assignment")
+mvp/scripts/autoload/dungeon_generator.gd:211	Refuge.log_entry(_clan_manager(), "Sous la Brèche-Sèche", "L’équipe emporte ses armes. Les compagnons seront indisponibles au domaine jusqu’au retour.")
+mvp/scripts/autoload/dungeon_generator.gd:212	_clan_manager().sauvegarder()
+mvp/scripts/autoload/dungeon_generator.gd:229	person["corruption_modifiers"] = _clan_manager().get_corruption_service().expedition_modifiers(str(person.id))
+mvp/scripts/autoload/dungeon_generator.gd:231	_clan_manager().sauvegarder()
+mvp/scripts/autoload/dungeon_generator.gd:238	var result := Combat.command(battle, kind, x, y, _clan_manager().get_ressource("mana"))
+mvp/scripts/autoload/dungeon_generator.gd:241	_clan_manager().payer({"mana": int(result.get("cost", 0))})
+mvp/scripts/autoload/dungeon_generator.gd:253	Refuge.mark(_clan_manager(), "combat")
+mvp/scripts/autoload/dungeon_generator.gd:259	_clan_manager().sauvegarder()
+mvp/scripts/autoload/dungeon_generator.gd:281	_clan_manager().sauvegarder()
+mvp/scripts/autoload/dungeon_generator.gd:301	Refuge.set_person_state(_clan_manager(), str(person.id), "blesse" if wounded else "disponible")
+mvp/scripts/autoload/dungeon_generator.gd:304	_clan_manager().gagner(loot)
+mvp/scripts/autoload/dungeon_generator.gd:306	preload("res://scripts/services/power_campaign_service.gd").record_expedition(_clan_manager(), current_run)
+mvp/scripts/autoload/dungeon_generator.gd:307	Refuge.mark(_clan_manager(), "salvage")
+mvp/scripts/autoload/dungeon_generator.gd:308	Refuge.mark(_clan_manager(), "return")
+mvp/scripts/autoload/dungeon_generator.gd:315	Refuge.log_entry(_clan_manager(), "Le retour", message)
+mvp/scripts/autoload/dungeon_generator.gd:316	_clan_manager().donner_experience(int(current_run.get("experience", 0)))
+mvp/scripts/autoload/dungeon_generator.gd:317	_clan_manager().sauvegarder()
+mvp/scripts/autoload/dungeon_generator.gd:331	Refuge.log_entry(_clan_manager(), "Au seuil du donjon", descriptions[target])
+mvp/scripts/autoload/dungeon_generator.gd:332	_clan_manager().sauvegarder()
+mvp/scripts/autoload/dungeon_generator.gd:339	_clan_manager().sauvegarder()
+mvp/scripts/autoload/dungeon_generator.gd:356	var result: Dictionary = _clan_manager().apply_corruption(str(person.id), amount, "dungeon:" + key, false)
+mvp/scripts/autoload/dungeon_generator.gd:358	Refuge.log_entry(_clan_manager(), "Exposition à l’Éther", "Corruption — " + ", ".join(lines) + ". La purification est disponible au refuge.")
+mvp/scripts/autoload/dungeon_generator.gd:359	_clan_manager().sauvegarder()
+mvp/scripts/game_loop/soir_state.gd:11	if data.has("clan_manager"):
+mvp/scripts/game_loop/soir_state.gd:12	var cm = data["clan_manager"]
+mvp/scripts/game_loop/game_loop_state_machine.gd:9	var clan_manager: Node
+mvp/scripts/game_loop/game_loop_state_machine.gd:12	clan_manager = cm
+mvp/scripts/game_loop/game_loop_state_machine.gd:22	machine.restore(str(clan_manager.daily_phase) if clan_manager != null else "matin")
+mvp/scripts/game_loop/game_loop_state_machine.gd:25	if clan_manager == null: return false
+mvp/scripts/game_loop/game_loop_state_machine.gd:27	var run: Dictionary = clan_manager.campaign.get("run", {})
+mvp/scripts/game_loop/game_loop_state_machine.gd:29	return machine.handle_event("advance", {"clan_manager": clan_manager})
+mvp/scripts/game_loop/matin_state.gd:11	if data.has("clan_manager"):
+mvp/scripts/game_loop/matin_state.gd:12	var cm = data["clan_manager"]
+mvp/scripts/game_loop/apres_midi_state.gd:11	if data.has("clan_manager"):
+mvp/scripts/game_loop/apres_midi_state.gd:12	var cm = data["clan_manager"]
+mvp/scripts/factory/creature_factory.gd:67	## API de compatibilité utilisée par ClanManager refactoré.
+mvp/scripts/repositories/creature_repository.gd:5	## ClanManager reste temporairement la façade de compatibilité et sérialise
+mvp/scripts/services/corruption_service.gd:2	## il ne modifie jamais ClanManager directement.
+mvp/scripts/services/corruption_service.gd:44	var _clan_manager_ref: WeakRef
+mvp/scripts/services/corruption_service.gd:47	func setup(clan_manager) -> void:
+mvp/scripts/services/corruption_service.gd:48	_clan_manager_ref = weakref(clan_manager) if clan_manager != null else null
+mvp/scripts/services/corruption_service.gd:53	if _clan_manager_ref == null:
+mvp/scripts/services/corruption_service.gd:55	var clan_manager = _clan_manager_ref.get_ref()
+mvp/scripts/services/corruption_service.gd:56	if clan_manager == null:
+mvp/scripts/services/corruption_service.gd:58	var legacy_state = clan_manager.get("pnj_gestion")
+mvp/scripts/services/soldier_assignment_service.gd:1	## Gère la réservation de soldats par identifiants sans dépendre du ClanManager.
+mvp/scripts/services/soldier_assignment_service.gd:143	## Retire les derniers IDs disponibles, comme le débit historique de ClanManager.
+mvp/scripts/services/refuge_service.gd:1	## Règles permanentes du refuge. État exclusivement détenu et sauvegardé par ClanManager.
+mvp/scripts/services/clan_economy_service.gd:1	## Règles économiques pures du clan. Aucune dépendance au singleton ClanManager.
+mvp/scripts/services/clan_house_service.gd:138	## Alias de compatibilité pour le vocabulaire du ClanManager.
+mvp/scripts/services/pnj_generator.gd:123	# 5. register with ClanManager if available (use SceneTree root lookup for reliability)
+mvp/scripts/services/pnj_generator.gd:130	var cm_node := root.get_node_or_null("/root/ClanManager")
+mvp/scripts/services/training_system.gd:2	## jamais directement ClanManager ni les profils de corruption.
+mvp/scripts/ui/character_creation/character_creation_screen.gd:258	var clan_mgr := get_node_or_null("/root/ClanManager")

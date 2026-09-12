@@ -24,102 +24,99 @@ const RESSOURCE_KEYS = ClanEconomyServiceClass.RESOURCE_KEYS
 const ROLE_DOMAINES = ClanEconomyServiceClass.DOMAIN_ROLES
 
 # ── État du clan ────────────────────────────────────────────────────────
-var nom_clan:       String     = ""
-var clan_id:        String     = ""
-var nom_personnage: String     = ""
-var classe:         String     = ""
-var profil_personnage: Dictionary = {
-	"genre": "Homme",
-	"apparence": "Vétéran balafré",
-	"portrait": {},
-	"pouvoir_magique": "Pyromancie",
-	"archetype_pathfinder": "Lame jurée (inspiration Guerrier)",
-	"don": "Volonté de fer",
-	"competence": "Maîtrise martiale",
-	"equipement_depart": "Arme lourde + bouclier",
-	"magie_pactes": true,
-	"competences_depart": ["Magie des Pactes"],
-}
+var state = preload("res://scripts/data/clan_state.gd").new()
+var service_context = preload("res://scripts/services/clan_service_context.gd").new(state)
 
-var stats: Dictionary = {
-	"force": 5,
-	"magie": 5,
-	"espionnage": 5,
-	"artisanat": 5,
-	"diplomatie": 5,
-	"commandement": 5,
-}
-
-var caracteristiques_hero: Dictionary = {
-	"vigueur": 10,
-	"esprit": 10,
-	"presence": 10,
-	"discipline": 10,
-}
-
-var stats_clan: Dictionary = {
-	"stabilite": 5,
-	"influence": 5,
-	"logistique": 5,
-	"autorite": 5,
-}
-
-var ressources: Dictionary = {
-	"or": 500,
-	"soldats": 50,
-	"mana": 100,
-	"reputation": 10,
-	"renseignements": 0,
-	"bois": 60,
-	"fer": 40,
-	"pierre": 30,
-	"nourriture": 120,
-	"essence": 10,
-}
-
-var ressources_par_tour: Dictionary = {
-	"or": 120,
-	"soldats": 0,
-	"mana": 20,
-	"reputation": 0,
-	"renseignements": 0,
-	"bois": 10,
-	"fer": 6,
-	"pierre": 5,
-	"nourriture": 12,
-	"essence": 2,
-}
-
-var affinites_pnj: Dictionary = {
-	"forgeron": 0,
-	"alchimiste": 0,
-	"intendant": 0,
-	"arcaniste": 0,
-}
-
-var fiche_hero: Dictionary = {}
-var fiches_domaine: Dictionary = {}
-# Pool de soldats (micro-gestion): liste d'IDs disponibles et compteur
-var _soldat_next_id: int = 1
-var _soldats_disponibles: Array = []
-
-var barre_ame: int          = 100
-var forme_dragon_utilisee:  int = 0
-var tour_actuel: int        = 1
-var moment_journee: String  = "jour"
-var action_jour_effectuee: bool = false
-var action_nuit_effectuee: bool = false
-var maisons_nobles: Array   = []
-var evenements_declenches: Array = []
-var historique_tours: Array = []
-var pnj_gestion: Dictionary = {}
-## Progression du refuge et expédition : même transaction que ressources et habitants.
-var campaign: Dictionary = {}
+var nom_clan: String:
+	get: return state.nom_clan
+	set(value): state.nom_clan = value
+var clan_id: String:
+	get: return state.clan_id
+	set(value): state.clan_id = value
+var nom_personnage: String:
+	get: return state.nom_personnage
+	set(value): state.nom_personnage = value
+var classe: String:
+	get: return state.classe
+	set(value): state.classe = value
+var profil_personnage: Dictionary:
+	get: return state.profil_personnage
+	set(value): state.profil_personnage = value
+var stats: Dictionary:
+	get: return state.stats
+	set(value): state.stats = value
+var caracteristiques_hero: Dictionary:
+	get: return state.caracteristiques_hero
+	set(value): state.caracteristiques_hero = value
+var stats_clan: Dictionary:
+	get: return state.stats_clan
+	set(value): state.stats_clan = value
+var ressources: Dictionary:
+	get: return state.ressources
+	set(value): state.ressources = value
+var ressources_par_tour: Dictionary:
+	get: return state.ressources_par_tour
+	set(value): state.ressources_par_tour = value
+var affinites_pnj: Dictionary:
+	get: return state.affinites_pnj
+	set(value): state.affinites_pnj = value
+var fiche_hero: Dictionary:
+	get: return state.fiche_hero
+	set(value): state.fiche_hero = value
+var fiches_domaine: Dictionary:
+	get: return state.fiches_domaine
+	set(value): state.fiches_domaine = value
+var _soldat_next_id: int:
+	get: return state._soldat_next_id
+	set(value): state._soldat_next_id = value
+var _soldats_disponibles: Array:
+	get: return state._soldats_disponibles
+	set(value): state._soldats_disponibles = value
+var barre_ame: int:
+	get: return state.barre_ame
+	set(value): state.barre_ame = value
+var forme_dragon_utilisee: int:
+	get: return state.forme_dragon_utilisee
+	set(value): state.forme_dragon_utilisee = value
+var tour_actuel: int:
+	get: return state.tour_actuel
+	set(value): state.tour_actuel = value
+var moment_journee: String:
+	get: return state.moment_journee
+	set(value): state.moment_journee = value
+var action_jour_effectuee: bool:
+	get: return state.action_jour_effectuee
+	set(value): state.action_jour_effectuee = value
+var action_nuit_effectuee: bool:
+	get: return state.action_nuit_effectuee
+	set(value): state.action_nuit_effectuee = value
+var maisons_nobles: Array:
+	get: return state.maisons_nobles
+	set(value): state.maisons_nobles = value
+var evenements_declenches: Array:
+	get: return state.evenements_declenches
+	set(value): state.evenements_declenches = value
+var historique_tours: Array:
+	get: return state.historique_tours
+	set(value): state.historique_tours = value
+var pnj_gestion: Dictionary:
+	get: return state.pnj_gestion
+	set(value): state.pnj_gestion = value
+var campaign: Dictionary:
+	get: return state.campaign
+	set(value): state.campaign = value
+var daily_phase: String:
+	get: return state.daily_phase
+	set(value): state.daily_phase = value
+var day_report: String:
+	get: return state.day_report
+	set(value): state.day_report = value
+var _bonus_par_action: Dictionary:
+	get: return state._bonus_par_action
+	set(value): state._bonus_par_action = value
 var _corruption_service: RefCounted = CorruptionServiceClass.new()
 var _creature_roster_service: RefCounted = CreatureRosterServiceClass.new()
 var _pact_service: RefCounted = PactServiceClass.new()
-var daily_phase := "matin"
-var day_report := ""
 var _day_transition_pending := false
 
 # ── Services (instanciation unique — DRY / SRP) ────────────────────────
@@ -128,7 +125,6 @@ var _economy = ClanEconomyServiceClass.new()
 var _soldier_assignment = SoldierAssignmentServiceClass.new()
 
 # Bonus de classe chargés depuis les données
-var _bonus_par_action: Dictionary = {}
 
 # Signal émis quand le tour avance
 signal tour_suivant(numero_tour: int)
@@ -1252,39 +1248,10 @@ func _comparer_condition(a: Variant, b: Variant, op: String) -> bool:
 # ─────────────────────────────────────────────────────────────────────
 
 func sauvegarder() -> void:
-	var data := {
-		"clan_id": clan_id,
-		"nom_clan": nom_clan,
-		"nom_personnage": nom_personnage,
-		"classe": classe,
-		"profil_personnage": profil_personnage.duplicate(true),
-		"caracteristiques_hero": caracteristiques_hero.duplicate(true),
-		"stats_clan": stats_clan.duplicate(true),
-		"affinites_pnj": affinites_pnj.duplicate(true),
-		"fiche_hero": fiche_hero.duplicate(true),
-		"fiches_domaine": fiches_domaine.duplicate(true),
-		"pnj_gestion": pnj_gestion.duplicate(true),
-		"campaign": campaign.duplicate(true),
-		"daily_phase": daily_phase,
-		"corruption_state": get_corruption_service().export_state(),
-		"creature_roster_state": _creature_roster_service.export_state(),
-		"pact_state": _pact_service.export_state(),
-		"day_report": day_report,
-		"stats": stats.duplicate(),
-		"ressources": ressources.duplicate(),
-		"ressources_par_tour": ressources_par_tour.duplicate(),
-		"barre_ame": barre_ame,
-		"forme_dragon_utilisee": forme_dragon_utilisee,
-		"tour_actuel": tour_actuel,
-		"moment_journee": moment_journee,
-		"action_jour_effectuee": action_jour_effectuee,
-		"action_nuit_effectuee": action_nuit_effectuee,
-		"maisons_nobles": maisons_nobles.duplicate(true),
-		"evenements_declenches": evenements_declenches.duplicate(),
-		"historique_tours": historique_tours.duplicate(true),
-		"soldats_disponibles": _soldats_disponibles.duplicate(true),
-		"soldat_next_id": _soldat_next_id,
-	}
+	var data: Dictionary = state.export_state()
+	data["corruption_state"] = get_corruption_service().export_state()
+	data["creature_roster_state"] = _creature_roster_service.export_state()
+	data["pact_state"] = _pact_service.export_state()
 	var save_path := _get_clan_save_path()
 	if not JsonPersistenceServiceClass.write_json_atomic(save_path, data):
 		push_error("ClanManager: impossible d'écrire la sauvegarde du clan pour le slot actif.")
@@ -1488,7 +1455,7 @@ func level_up_personnage(points_awarded: int = 10) -> Dictionary:
 
 ## Lance un dé à N faces.
 func lancer_de(faces: int = 20) -> int:
-	return randi_range(1, faces)
+	return service_context.rng.randi_range(1, faces)
 
 
 ## Calcule le score d'une action (stat principale + stat secondaire + dé).
