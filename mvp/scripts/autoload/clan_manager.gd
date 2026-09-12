@@ -27,6 +27,7 @@ const ROLE_DOMAINES = ClanEconomyServiceClass.DOMAIN_ROLES
 var state = preload("res://scripts/data/clan_state.gd").new()
 var service_context = preload("res://scripts/services/clan_service_context.gd").new(state)
 var diplomacyService = preload("res://scripts/services/diplomacy_service.gd").new(service_context)
+var espionageService = preload("res://scripts/services/espionage_service.gd").new(service_context)
 
 var nom_clan: String:
 	get: return state.nom_clan
@@ -944,14 +945,7 @@ func get_maison(id: int) -> Dictionary:
 
 ## Marque une maison comme espionnée et révèle ses infos.
 func espionner_maison(id: int, succes_critique: bool = false) -> void:
-	for i in range(maisons_nobles.size()):
-		if int(maisons_nobles[i].get("id", -1)) == id:
-			maisons_nobles[i]["revelee"]   = true
-			maisons_nobles[i]["espionnee"] = true
-			if str(maisons_nobles[i].get("statut", "inconnue")) == "inconnue":
-				maisons_nobles[i]["statut"] = "revelee"
-			if succes_critique:
-				maisons_nobles[i]["ressources_revelees"] = true
+	espionageService.reveal_information(id, succes_critique)
 
 
 ## Conquiert un bastion d'une maison noble.
